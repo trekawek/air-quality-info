@@ -38,6 +38,9 @@
         <div class="col-md-8 offset-md-2">
         <nav class="navbar navbar-expand-md navbar-light bg-light">
           <a href="index.php" class="navbar-left"><img src="img/dragon.png"/></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Nawigacja">
+            <span class="navbar-toggler-icon"></span>
+          </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
             <?php foreach(array('index.php' => 'Strona główna', 'graph_all.php' => 'Wykresy') as $page => $name): ?>
