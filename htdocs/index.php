@@ -1,68 +1,24 @@
 <?php
 require('config.php');
-require('constants.php');
+require('lib/pollution_levels.php');
+require('lib/rrd.php');
+
 date_default_timezone_set('Europe/Warsaw');
 
-$data = rrd_lastupdate($rrd_file);
-$ts = $data['last_update'];
-$sensors = array();
-for ($i = 0; $i < $data['ds_cnt']; $i++) {
-  $sensors[$data['ds_navm'][$i]] = $data['data'][$i];
-}
+$sensors = get_sensor_data($rrd_file);
 
-function fmt_nmbr($number) {
-  return number_format($number, 0, ',', ' ');
-}
-
-function find_index($index, $value) {
-  foreach ($index as $i => $v) {
-    if ($v > $value) {
-      return $i - 1;
-    }
-  }
-  return count($index) - 1;
-}
-
-$pm10_index = find_index(PM10_INDEX, $sensors['PM10']);
-$pm25_index = find_index(PM25_INDEX, $sensors['PM25']);
-$max_index = max($pm10_index, $pm25_index);
-
-$rel_pm10 = 100 * $sensors['PM10'] / PM10_LIMIT;
-$rel_pm25 = 100 * $sensors['PM25'] / PM25_LIMIT;
-
-?><!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta http-equiv="refresh" content="180" >
-    <link rel="apple-touch-icon" href="img/dragon_white_background.png">
-    <link rel="icon" type="image/png" href="img/dragon.png">
-
-    <title>Jakość powietrza</title>
-
-    <!-- Bootstrap -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link href="css/style.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body>
+$pm10_level = find_level(PM10_THRESHOLDS, $sensors['PM10']);
+$pm25_level = find_level(PM25_THRESHOLDS, $sensors['PM25']);
+$max_level = max($pm10_level, $pm25_level);
+?><?php include('partials/head.php'); ?>
     <div class="container">
       <div class="row">
           <div class="col-md-6 offset-md-3">
           <h4>Indeks jakości powietrza</h4>
           <h4>
-            <span class="badge index-cat-<?php echo $max_index; ?>"><?php echo INDEX_DESC[$max_index][0] ?></span>
+            <span class="badge index-cat-<?php echo $max_level; ?>"><?php echo POLLUTION_LEVELS[$max_level]['name']; ?></span>
           </h4>
-          <p><?php echo INDEX_DESC[$max_index][1]; ?></p>
+          <p><?php echo POLLUTION_LEVELS[$max_level]['desc']; ?></p>
           <p><small>Źródło: <a href="http://powietrze.gios.gov.pl/pjp/content/health_informations">Główny Inspektorat Ochrony Środowiska</a></small></p>
         </div>
       </div>
@@ -80,24 +36,26 @@ $rel_pm25 = 100 * $sensors['PM25'] / PM25_LIMIT;
               </tr>
             </thead>
             <tbody>
-              <tr class="index-cat-<?php echo $pm25_index; ?>">
+              <tr class="index-cat-<?php echo $pm25_level; ?>">
                 <th scope="row">PM<sub>2.5</sub></th>
-                <td><?php echo fmt_nmbr($sensors['PM25']); ?> <small>µg/m<sup>3</sup></small></td>
-                <td><?php echo INDEX_DESC[$pm25_index][0]; ?></td>
-                <td><?php echo fmt_nmbr($rel_pm25); ?>%</td>
+                <td><?php echo round($sensors['PM25'], 0); ?> <small>µg/m<sup>3</sup></small></td>
+                <td><?php echo POLLUTION_LEVELS[$pm25_level]['name'] ?></td>
+                <td><?php echo round(100 * $sensors['PM25'] / PM25_LIMIT, 0); ?>%</td>
               </tr>
-              <tr class="index-cat-<?php echo $pm10_index; ?>">
+              <tr class="index-cat-<?php echo $pm10_level; ?>">
                 <th scope="row">PM<sub>10</sub></th>
-                <td><?php echo fmt_nmbr($sensors['PM10']); ?> <small>µg/m<sup>3</sup></small></td>
-                <td><?php echo INDEX_DESC[$pm10_index][0]; ?></td>
-                <td><?php echo fmt_nmbr($rel_pm10); ?>%</td>
+                <td><?php echo round($sensors['PM10'], 0); ?> <small>µg/m<sup>3</sup></small></td>
+                <td><?php echo POLLUTION_LEVELS[$pm10_level]['name'] ?></td>
+                <td><?php echo round(100 * $sensors['PM10'] / PM10_LIMIT, 0); ?>%</td>
               </tr>
             </tbody>
           </table>
-          <img src="graph.php" class="graph" />
-          <p><small><a href="all_graphs.php">Zobacz wszystkie wykresy</a></small></p>
+          <a href="graph_img.php?type=pm&range=day&size=large">
+            <img src="graph_img.php?type=pm&range=day" class="graph" />
+          </a>
+          <p><small><a href="graph_all.php">Zobacz wszystkie wykresy</a></small></p>
 
-          <p>Ostatnia aktualizacja: <?php echo date("Y-m-d H:i:s", $ts); ?></p>
+          <p>Ostatnia aktualizacja: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?></p>
         </div>
       </div>
 
@@ -141,6 +99,4 @@ $rel_pm25 = 100 * $sensors['PM25'] / PM25_LIMIT;
       </div>
 
     </div> <!-- /container -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-  </body>
-</html>
+<?php include('partials/tail.php'); ?>
