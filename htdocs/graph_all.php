@@ -8,7 +8,7 @@
         <div class="col-md-6">
           <?php echo $range_name; ?>
           <a href="graph_img.php?type=<?php echo $type; ?>&range=<?php echo $range; ?>&size=large">
-            <img src="graph_img.php?type=<?php echo $type; ?>&range=<?php echo $range; ?>" class="graph" />
+            <img src="graph_img.php?type=<?php echo $type; ?>&range=<?php echo $range; ?>&size=default" class="graph" />
           </a>
         </div>
 <?php endforeach; ?>

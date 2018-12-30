@@ -19,6 +19,7 @@ switch ($_GET['size']) {
   );
   break;
 
+  case 'default':
   default:
   array_push($options,
     '--width=400',
