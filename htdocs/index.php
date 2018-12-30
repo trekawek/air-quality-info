@@ -55,8 +55,8 @@ list($pm25_index) = find_index(PM25_INDEX, $sensors['PM25']);
 $max_index = max($pm10_index, $pm25_index);
 $index_desc = INDEX_DESC[$max_index];
 
-$rel_pm10 = 100 * $sensors['PM10'] / 50;
-$rel_pm25 = 100 * $sensors['PM25'] / 25;
+$rel_pm10 = 100 * $sensors['PM10'] / PM10_LIMIT;
+$rel_pm25 = 100 * $sensors['PM25'] / PM25_LIMIT;
 
 ?><!DOCTYPE html>
 <html lang="en">
