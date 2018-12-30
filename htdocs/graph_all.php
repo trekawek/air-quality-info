@@ -14,9 +14,4 @@
 <?php endforeach; ?>
       </div>
 <?php endforeach; ?>
-      <div class="row">
-        <div class="col-md-12">
-          <a class="btn btn-primary" href="index.php" role="button">Powrót</a>
-        </div>
-      </div>
 <?php include('partials/tail.php'); ?>
