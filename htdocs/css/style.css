@@ -2,7 +2,7 @@ body {
   padding-bottom: 1rem;
 }
 
-.row {
+.row:not(:first-child) {
   padding-top: 2rem;
 }
 
@@ -11,7 +11,11 @@ body {
 }
 
 img.graph {
-  width: 100%
+  width: 100%;
+}
+
+.navbar img {
+  height: 2rem;
 }
 
 .index-cat-0 {

@@ -1,5 +1,4 @@
 <?php include('partials/head.php'); ?>
-    <div class="container">
 <?php foreach(array('pm' => 'PM'/*, "temperature" => 'Temperatura', "humidity" => 'Wilgotność', "pressure" => 'Ciśnienie'*/) as $type => $name): ?>
       <div class="row">
         <div class="col-md-12">
@@ -20,5 +19,4 @@
           <a class="btn btn-primary" href="index.php" role="button">Powrót</a>
         </div>
       </div>
-    </div> <!-- /container -->
 <?php include('partials/tail.php'); ?>

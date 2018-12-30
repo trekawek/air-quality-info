@@ -33,3 +33,20 @@
     <![endif]-->
   </head>
   <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
+          <a href="index.php" class="navbar-left"><img src="img/dragon.png"/></a>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+            <?php foreach(array('index.php' => 'Strona główna', 'graph_all.php' => 'Wykresy') as $page => $name): ?>
+              <li class="nav-item">
+                <a class="nav-link <?php echo (basename($_SERVER["SCRIPT_FILENAME"]) == $page) ? 'active' : ''; ?>" href="<?php echo $page; ?>"><?php echo $name; ?></a>
+              </li>
+            <?php endforeach ?>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>

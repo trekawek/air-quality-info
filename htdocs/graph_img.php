@@ -4,16 +4,27 @@ require('lib/pollution_levels.php');
 
 $options = array();
 
-if (isset($_GET['size']) && $_GET['size'] == 'large') {
+switch ($_GET['size']) {
+  case 'large':
   array_push($options,
     '--width=800',
     '--height=200'
   );
-} else {
+  break;
+
+  case 'mid':
+  array_push($options,
+    '--width=600',
+    '--height=150'
+  );
+  break;
+
+  default:
   array_push($options,
     '--width=400',
     '--height=100'
   );
+  break;
 }
 
 switch ($_GET['range']) {

@@ -11,9 +11,8 @@ $pm10_level = find_level(PM10_THRESHOLDS, $sensors['PM10']);
 $pm25_level = find_level(PM25_THRESHOLDS, $sensors['PM25']);
 $max_level = max($pm10_level, $pm25_level);
 ?><?php include('partials/head.php'); ?>
-    <div class="container">
       <div class="row">
-          <div class="col-md-6 offset-md-3">
+          <div class="col-md-8 offset-md-2">
           <h4>Indeks jakości powietrza</h4>
           <h4>
             <span class="badge index-cat-<?php echo $max_level; ?>"><?php echo POLLUTION_LEVELS[$max_level]['name']; ?></span>
@@ -24,7 +23,7 @@ $max_level = max($pm10_level, $pm25_level);
       </div>
       
       <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-8 offset-md-2">
           <h4>Pomiary</h4>
           <table class="table">
             <thead>
@@ -51,7 +50,7 @@ $max_level = max($pm10_level, $pm25_level);
             </tbody>
           </table>
           <a href="graph_img.php?type=pm&range=day&size=large">
-            <img src="graph_img.php?type=pm&range=day" class="graph" />
+            <img src="graph_img.php?type=pm&range=day&size=mid" class="graph" />
           </a>
           <p><small><a href="graph_all.php">Zobacz wszystkie wykresy</a></small></p>
 
@@ -73,7 +72,7 @@ $max_level = max($pm10_level, $pm25_level);
       </div-->
 
       <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-8 offset-md-2">
           <h4>Informacje</h4>
           <ul>
             <li><a href="https://nettigo.pl/products/nettigo-air-monitor-kit-0-2-1-zbuduj-wlasny-czujnik-smogowy">Informacja o użytym detektorze smogu</a></li>
@@ -85,7 +84,7 @@ $max_level = max($pm10_level, $pm25_level);
       </div>
 
       <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-8 offset-md-2">
           <h4>Kontakt</h4>
           <a href="mailto:tomek@rekawek.eu">Tomek Rękawek</a>
           </ul>
@@ -93,10 +92,9 @@ $max_level = max($pm10_level, $pm25_level);
       </div>
 
       <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-8 offset-md-2">
           <small>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></small>
         </div>
       </div>
 
-    </div> <!-- /container -->
 <?php include('partials/tail.php'); ?>
