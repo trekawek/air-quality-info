@@ -2,6 +2,8 @@
 
 This PHP-based page allows to display the current PM10 and PM2.5 measurements made by the Luftdaten.info-compatible device.
 
+![Screenshot](img/screenshot.png)
+
 ## Requirements
 
 * PHP 7.2
