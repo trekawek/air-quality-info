@@ -1,0 +1,12 @@
+
+.row {
+  padding-top: 2rem;
+}
+
+.apps a img {
+  width: 100px;
+}
+
+img.graph {
+  width: 100%
+}
