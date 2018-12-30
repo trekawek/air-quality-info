@@ -14,46 +14,18 @@ function fmt_nmbr($number) {
   return number_format($number, 0, ',', ' ');
 }
 
-function parse_rgb($hex) {
-  return sscanf($hex, "%02x%02x%02x");
-}
-
 function find_index($index, $value) {
-  if ($value == 0) {
-    return array(0, 0);
-  }
   foreach ($index as $i => $v) {
-    if ($v >= $value) {
-      return array($i - 1, $i);
+    if ($v > $value) {
+      return $i - 1;
     }
   }
-  return array(count($index) - 1, count($index) - 1);
+  return count($index) - 1;
 }
 
-function pm_color($index, $value) {
-  list($i1, $i2) = find_index($index, $value);
-  $x1 = $index[$i1];
-  $x2 = $index[$i2];
-  $rgb1 = parse_rgb(INDEX_DESC[$i1][0]);
-  $rgb2 = parse_rgb(INDEX_DESC[$i2][0]);
-  if ($x1 == $x2) {
-    $x = 0;
-  } else {
-    $x = ($value - $x1) / ($x2 - $x1);
-  }
-  $rgb = array(
-    (($rgb2[0] - $rgb1[0]) * $x + $rgb1[0]),
-    (($rgb2[1] - $rgb1[1]) * $x + $rgb1[1]),
-    (($rgb2[2] - $rgb1[2]) * $x + $rgb1[2])
-  );
-  return "rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.5)";
-}
-
-list($pm10_index) = find_index(PM10_INDEX, $sensors['PM10']);
-list($pm25_index) = find_index(PM25_INDEX, $sensors['PM25']);
-
+$pm10_index = find_index(PM10_INDEX, $sensors['PM10']);
+$pm25_index = find_index(PM25_INDEX, $sensors['PM25']);
 $max_index = max($pm10_index, $pm25_index);
-$index_desc = INDEX_DESC[$max_index];
 
 $rel_pm10 = 100 * $sensors['PM10'] / PM10_LIMIT;
 $rel_pm25 = 100 * $sensors['PM25'] / PM25_LIMIT;
@@ -88,9 +60,9 @@ $rel_pm25 = 100 * $sensors['PM25'] / PM25_LIMIT;
           <div class="col-md-6 offset-md-3">
           <h4>Indeks jakości powietrza</h4>
           <h4>
-            <span class="badge" style="color: #<?php echo $index_desc[1] ?>; background-color: #<?php echo $index_desc[0] ?>;"><?php echo $index_desc[2] ?></span>
+            <span class="badge index-cat-<?php echo $max_index; ?>"><?php echo INDEX_DESC[$max_index][0] ?></span>
           </h4>
-          <p><?php echo $index_desc[3]; ?></p>
+          <p><?php echo INDEX_DESC[$max_index][1]; ?></p>
           <p><small>Źródło: <a href="http://powietrze.gios.gov.pl/pjp/content/health_informations">Główny Inspektorat Ochrony Środowiska</a></small></p>
         </div>
       </div>
@@ -108,16 +80,16 @@ $rel_pm25 = 100 * $sensors['PM25'] / PM25_LIMIT;
               </tr>
             </thead>
             <tbody>
-              <tr style="background-color: <?php echo pm_color(PM25_INDEX, $sensors['PM25']); ?>;">
+              <tr class="index-cat-<?php echo $pm25_index; ?>">
                 <th scope="row">PM<sub>2.5</sub></th>
                 <td><?php echo fmt_nmbr($sensors['PM25']); ?> <small>µg/m<sup>3</sup></small></td>
-                <td><?php echo INDEX_DESC[$pm25_index][2]; ?></td>
+                <td><?php echo INDEX_DESC[$pm25_index][0]; ?></td>
                 <td><?php echo fmt_nmbr($rel_pm25); ?>%</td>
               </tr>
-              <tr style="background-color: <?php echo pm_color(PM10_INDEX, $sensors['PM10']); ?>;">
+              <tr class="index-cat-<?php echo $pm10_index; ?>">
                 <th scope="row">PM<sub>10</sub></th>
                 <td><?php echo fmt_nmbr($sensors['PM10']); ?> <small>µg/m<sup>3</sup></small></td>
-                <td><?php echo INDEX_DESC[$pm10_index][2]; ?></td>
+                <td><?php echo INDEX_DESC[$pm10_index][0]; ?></td>
                 <td><?php echo fmt_nmbr($rel_pm10); ?>%</td>
               </tr>
             </tbody>
