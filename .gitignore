@@ -1,2 +1,4 @@
 htdocs/data.rrd
 htdocs/config.php
+htdocs/data/*.rrd
+htdocs/data/*.json

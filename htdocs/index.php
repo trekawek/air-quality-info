@@ -5,7 +5,7 @@ require_once('lib/rrd.php');
 
 date_default_timezone_set('Europe/Warsaw');
 
-$sensors = get_sensor_data($rrd_file);
+$sensors = get_sensor_data($esp8266id);
 
 $pm10_level = find_level(PM10_THRESHOLDS, $sensors['PM10']);
 $pm25_level = find_level(PM25_THRESHOLDS, $sensors['PM25']);

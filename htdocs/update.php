@@ -17,14 +17,10 @@ foreach ($sensors as $row) {
   $map[$row['value_type']] = $row['value'];
 }
 
-if (!file_exists($rrd_file)) {
-  create_rrd($rrd_file);
-}
-
-update_rrd($rrd_file, time(), $map['SDS_P2'], $map['SDS_P1'], 'U', 'U', 'U');
+update_rrd($esp8266id, time(), $map['SDS_P2'], $map['SDS_P1'], 'U', 'U', 'U');
 
 if ($store_json_payload) {
-  file_put_contents('data.json', $payload);
+  file_put_contents("data/${esp8266id}.json", $payload);
 }
 
 echo "OK";

@@ -1,7 +1,12 @@
 <?php
 require_once('pollution_levels.php');
 
-function get_sensor_data($rrd_file) {
+function get_rrd_path($esp8266id) {
+  return __DIR__ . "/../data/${esp8266id}.rrd";
+}
+
+function get_sensor_data($esp8266id) {
+  $rrd_file = get_rrd_path($esp8266id);
   $data = rrd_lastupdate($rrd_file);
   $sensors = array('last_update' => $data['last_update']);
   for ($i = 0; $i < $data['ds_cnt']; $i++) {
@@ -10,7 +15,8 @@ function get_sensor_data($rrd_file) {
   return $sensors;
 }
 
-function create_rrd($rrd_file) {
+function create_rrd($esp8266id) {
+  $rrd_file = get_rrd_path($esp8266id);
   rrd_create($rrd_file, array(
     '--step=3m',
     'DS:PM25:GAUGE:5m:0:1000',
@@ -24,11 +30,16 @@ function create_rrd($rrd_file) {
   ));
 }
 
-function update_rrd($rrd_file, $time, $pm25, $pm10, $temp, $press, $hum) {
+function update_rrd($esp8266id, $time, $pm25, $pm10, $temp, $press, $hum) {
+  $rrd_file = get_rrd_path($esp8266id);
+  if (!file_exists($rrd_file)) {
+    create_rrd($esp8266id);
+  }
   rrd_update($rrd_file, array("${time}:${pm25}:${pm10}:${temp}:${press}:${hum}"));
 }
 
-function generate_graph($rrd_file, $type = 'pm', $range = 'day', $size = 'default') {
+function generate_graph($esp8266id, $type = 'pm', $range = 'day', $size = 'default') {
+  $rrd_file = get_rrd_path($esp8266id);
   $options = array();
 
   switch ($size) {

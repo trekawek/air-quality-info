@@ -2,7 +2,7 @@
 require_once('config.php');
 require_once('lib/rrd.php');
 
-$graph = generate_graph($rrd_file,
+$graph = generate_graph($esp8266id,
   isset($_GET['type']) ? $_GET['type'] : 'pm',
   isset($_GET['range']) ? $_GET['range'] : 'day',
   isset($_GET['size']) ? $_GET['size'] : 'default'
