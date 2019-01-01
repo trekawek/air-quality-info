@@ -9,7 +9,6 @@ if (!($_SERVER['PHP_AUTH_USER'] == $user && $_SERVER['PHP_AUTH_PW'] == $pass)) {
 
 function create($rrd_file) {
   rrd_create($rrd_file, array(
-    '--start=now-2h',
     '--step=3m',
     'DS:PM25:GAUGE:5m:0:1000',
     'DS:PM10:GAUGE:5m:0:1000',
@@ -17,8 +16,7 @@ function create($rrd_file) {
     'DS:PRESSURE:GAUGE:5m:900:1100',
     'DS:HUMIDITY:GAUGE:5m:0:1100',
     'RRA:AVERAGE:0.5:3m:24h',
-    'RRA:AVERAGE:0.5:15m:7d',
-    'RRA:AVERAGE:0.5:1h:30d',
+    'RRA:AVERAGE:0.5:15m:35d',
     'RRA:AVERAGE:0.5:12h:1y'
   ));
 }
