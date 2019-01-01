@@ -19,7 +19,7 @@
     <link rel="apple-touch-icon" href="/public/img/dragon_white_background.png">
     <link rel="icon" type="image/png" href="/public/img/dragon.png">
 
-    <title>Jakość powietrza</title>
+    <title>Jakość powietrza - <? echo $device['description']; ?></title>
 
     <!-- Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
