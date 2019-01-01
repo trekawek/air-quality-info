@@ -7,8 +7,8 @@
 <?php foreach(array('day' => 'Wykres dzienny', "week" => 'Wykres tygodniowy', "month" => 'Wykres miesięczny', "year" => 'Wykres roczny') as $range => $range_name): ?>
         <div class="col-md-6">
           <?php echo $range_name; ?>
-          <a href="graph_img.php?type=<?php echo $type; ?>&range=<?php echo $range; ?>&size=large">
-            <img src="graph_img.php?type=<?php echo $type; ?>&range=<?php echo $range; ?>&size=default" class="graph" />
+          <a href="<?php echo l($device, 'graph.png', array('type' => $type, 'range' => $range, 'size' => 'large')); ?>">
+            <img src="<?php echo l($device, 'graph.png', array('type' => $type, 'range' => $range, 'size' => 'default')); ?>" class="graph" />
           </a>
         </div>
 <?php endforeach; ?>
