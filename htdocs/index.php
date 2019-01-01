@@ -1,7 +1,7 @@
 <?php
-require('config.php');
-require('lib/pollution_levels.php');
-require('lib/rrd.php');
+require_once('config.php');
+require_once('lib/pollution_levels.php');
+require_once('lib/rrd.php');
 
 date_default_timezone_set('Europe/Warsaw');
 
