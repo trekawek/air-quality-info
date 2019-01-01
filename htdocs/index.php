@@ -9,15 +9,22 @@ $uri = explode('/', $uri);
 $uri = array_values(array_filter($uri));
 
 $device = CONFIG['devices'][0];
-foreach (CONFIG['devices'] as $d) {
-  if ($uri[0] == $d['name']) {
-    $device = $d;
-    array_shift($uri);
-    break;
+
+if (count($uri) > 0) {
+  foreach (CONFIG['devices'] as $d) {
+    if ($uri[0] == $d['name']) {
+        $device = $d;
+        array_shift($uri);
+        break;
+    }
   }
 }
 
-$current_action = $uri[0];
+if (count($uri) > 0) {
+  $current_action = array_shift($uri);
+} else {
+  $current_action = 'sensors';
+}
 switch ($current_action) {
   case 'update':
   require('update.php');
@@ -33,7 +40,6 @@ switch ($current_action) {
 
   case 'sensors':
   default:
-  $current_action = 'sensors';
   require('views/sensors.php');
   break;
 }

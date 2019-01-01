@@ -1,6 +1,4 @@
 <?php
-require_once('pollution_levels.php');
-
 function get_rrd_path($esp8266id) {
   return __DIR__ . "/../data/${esp8266id}.rrd";
 }
