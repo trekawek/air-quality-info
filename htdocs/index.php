@@ -52,7 +52,7 @@ if (count($uri) > 0) {
 if ($device == null) {
   header('Location: '
     .l(CONFIG['devices'][0], $current_action)
-    .(isset($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : ''));
+    .($_SERVER['QUERY_STRING'] ? '?'.$_SERVER['QUERY_STRING'] : ''));
   exit;
 }
 
