@@ -55,7 +55,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <?php foreach(CONFIG['devices'] as $d): ?>
                   <a class="dropdown-item <?php echo ($d == $device) ? 'active' : ''; ?>" href="<?php echo l($d, $current_action); ?>"><?php echo $d['description']; ?></a>
-                <? endforeach ?>
+                <?php endforeach ?>
                 </div>
               </li>
             </ul>
