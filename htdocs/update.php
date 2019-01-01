@@ -39,5 +39,10 @@ if (!file_exists($rrd_file)) {
 }
 
 update($rrd_file, time(), $map['SDS_P2'], $map['SDS_P1'], 'U', 'U', 'U');
+
+if ($store_json_payload) {
+  file_put_contents('data.json', $payload);
+}
+
 echo "OK";
 ?>
