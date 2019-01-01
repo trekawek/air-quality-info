@@ -4,7 +4,7 @@ require_once('lib/pollution_levels.php');
 require_once('lib/rrd.php');
 require_once('lib/utils.php');
 
-list ($uri, $query) = explode('?', $_SERVER['REQUEST_URI']);
+list($uri) = explode('?', $_SERVER['REQUEST_URI']);
 $uri = explode('/', $uri);
 $uri = array_values(array_filter($uri));
 
@@ -25,6 +25,7 @@ if (count($uri) > 0) {
 } else {
   $current_action = 'sensors';
 }
+
 switch ($current_action) {
   case 'update':
   require('update.php');
