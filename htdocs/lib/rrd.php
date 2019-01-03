@@ -95,6 +95,7 @@ function generate_graph($esp8266id, $type = 'pm', $range = 'day', $size = 'defau
     case 'pressure':
     array_push($options,
       '--vertical-label=hPa',
+      '--units-exponent=0',
       "DEF:Ciśnienie=${rrd_file}:PRESSURE:AVERAGE",
       'LINE2:Ciśnienie#CC3118'
     );
