@@ -44,16 +44,9 @@ $max_level = max($pm10_level, $pm25_level);
                 <td><?php echo round(100 * $sensors['PM10'] / PM10_LIMIT, 0); ?>%</td>
               </tr>
               <tr>
-                <th scope="row">Temperatura</th>
-                <td colspan="3"><?php echo round($sensors['TEMPERATURE'], 0) ?> &deg;C</td>
-              </tr>
-              <tr>
-                <th scope="row">Wilgotność</th>
-                <td colspan="3"><?php echo round($sensors['HUMIDITY'], 0) ?>%</td>
-              </tr>
-              <tr>
-                <th scope="row">Ciśnienie</th>
-                <td colspan="3"><?php echo round($sensors['PRESSURE'], 0) ?> hPa</td>
+                <td colspan="2"><strong>Temperatura: </strong><?php echo round($sensors['TEMPERATURE'], 0) ?> &deg;C</td>
+                <td colspan="1"><strong>Wilgotność: </strong><?php echo round($sensors['HUMIDITY'], 0) ?>%</td>
+                <td colspan="1"><strong>Ciśnienie: </strong><?php echo round($sensors['PRESSURE'], 0) ?> hPa</td>
               </tr>
             </tbody>
           </table>
