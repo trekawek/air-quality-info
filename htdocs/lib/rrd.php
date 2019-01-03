@@ -21,7 +21,7 @@ function create_rrd($esp8266id) {
     'DS:PM10:GAUGE:5m:0:1000',
     'DS:TEMPERATURE:GAUGE:5m:-100:100',
     'DS:PRESSURE:GAUGE:5m:900:1100',
-    'DS:HUMIDITY:GAUGE:5m:0:1100',
+    'DS:HUMIDITY:GAUGE:5m:0:100',
     'RRA:AVERAGE:0.5:3m:24h',
     'RRA:AVERAGE:0.5:15m:35d',
     'RRA:AVERAGE:0.5:12h:1y'

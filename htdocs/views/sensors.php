@@ -53,7 +53,7 @@ $max_level = max($pm10_level, $pm25_level);
               </tr>
               <tr>
                 <th scope="row">Ciśnienie</th>
-                <td colspan="3"><?php echo round($sensors['PRESSURE'] / 100, 0) ?> hPa</td>
+                <td colspan="3"><?php echo round($sensors['PRESSURE'], 0) ?> hPa</td>
               </tr>
             </tbody>
           </table>
