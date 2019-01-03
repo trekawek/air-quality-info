@@ -1,5 +1,5 @@
 <?php include('partials/head.php'); ?>
-<?php foreach(array('pm' => 'PM'/*, "temperature" => 'Temperatura', "humidity" => 'Wilgotność', "pressure" => 'Ciśnienie'*/) as $type => $name): ?>
+<?php foreach(array('pm' => 'PM', "temperature" => 'Temperatura', "humidity" => 'Wilgotność', "pressure" => 'Ciśnienie') as $type => $name): ?>
       <div class="row">
         <div class="col-md-12">
           <h3><?php echo $name; ?></h3>
