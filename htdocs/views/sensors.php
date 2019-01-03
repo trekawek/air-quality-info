@@ -43,6 +43,18 @@ $max_level = max($pm10_level, $pm25_level);
                 <td><?php echo POLLUTION_LEVELS[$pm10_level]['name'] ?></td>
                 <td><?php echo round(100 * $sensors['PM10'] / PM10_LIMIT, 0); ?>%</td>
               </tr>
+              <tr>
+                <th scope="row">Temperatura</th>
+                <td colspan="3"><?php echo round($sensors['TEMPERATURE'], 0) ?> &deg;C</td>
+              </tr>
+              <tr>
+                <th scope="row">Ciśnienie</th>
+                <td colspan="3"><?php echo round($sensors['PRESSURE'] / 100, 0) ?> hPa</td>
+              </tr>
+              <tr>
+                <th scope="row">Wilgotność</th>
+                <td colspan="3"><?php echo round($sensors['HUMIDITY'], 0) ?>%</td>
+              </tr>
             </tbody>
           </table>
           <a href="<?php echo l($device, 'graph.png', array('type' => 'pm', 'range' => 'day', 'size' => 'large')); ?>">
