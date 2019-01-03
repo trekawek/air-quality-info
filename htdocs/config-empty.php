@@ -6,7 +6,8 @@ define('CONFIG', array(
         'password'    => '...',
         'esp8266id'   => '...',
         'name'        => 'main',         # this will be used in URLs
-        'description' => 'Main location' # user-friendly location name, will be used in navbar
+        'description' => 'Main location', # user-friendly location name, will be used in navbar
+        # 'maintenance' => 'Trwa przerwa techniczna. Detektor zostanie uruchomiony ponownie w ciągu godziny.'
     ),
 #    array(
 #        'user'        => '...',

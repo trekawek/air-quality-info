@@ -36,30 +36,39 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8 offset-md-2">
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
-          <a href="<?php echo l($device, 'sensors'); ?>" class="navbar-left"><img src="/public/img/dragon.png"/></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Nawigacja">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <?php foreach(array('sensors' => 'Strona główna', 'graphs' => 'Wykresy') as $action => $name): ?>
-              <li class="nav-item">
-                <a class="nav-link <?php echo ($action == $current_action) ? 'active' : ''; ?>" href="<?php echo l($device, $action); ?>"><?php echo $name; ?></a>
-              </li>
-              <?php endforeach ?>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Lokacje
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <?php foreach(CONFIG['devices'] as $d): ?>
-                  <a class="dropdown-item <?php echo ($d == $device) ? 'active' : ''; ?>" href="<?php echo l($d, $current_action); ?>"><?php echo $d['description']; ?></a>
+          <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <a href="<?php echo l($device, 'sensors'); ?>" class="navbar-left"><img src="/public/img/dragon.png"/></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Nawigacja">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <?php foreach(array('sensors' => 'Strona główna', 'graphs' => 'Wykresy') as $action => $name): ?>
+                <li class="nav-item">
+                  <a class="nav-link <?php echo ($action == $current_action) ? 'active' : ''; ?>" href="<?php echo l($device, $action); ?>"><?php echo $name; ?></a>
+                </li>
                 <?php endforeach ?>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </nav>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Lokacje
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <?php foreach(CONFIG['devices'] as $d): ?>
+                    <a class="dropdown-item <?php echo ($d == $device) ? 'active' : ''; ?>" href="<?php echo l($d, $current_action); ?>"><?php echo $d['description']; ?></a>
+                  <?php endforeach ?>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
       </div>
-    </div>
+<?php if (isset($device['maintenance'])): ?>
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <div class="alert alert-warning">
+            <?php echo $device['maintenance'] ?>
+          </div>
+        </div>
+      </div>
+<?php endif ?>
