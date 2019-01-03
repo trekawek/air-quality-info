@@ -1,7 +1,7 @@
 <?php include('partials/head.php'); ?>
 <?php
 $graphs = array();
-if (isset($device['value_mapping']['pm10']) || isset($device['value_mapping']['pm_25'])) {
+if (isset($device['value_mapping']['pm10']) || isset($device['value_mapping']['pm25'])) {
   $graphs['pm'] = 'PM';
 }
 if (isset($device['value_mapping']['temperature'])) {
