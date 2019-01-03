@@ -14,7 +14,7 @@ foreach ($sensors as $row) {
   $map[$row['value_type']] = $row['value'];
 }
 
-update_rrd($device['esp8266id'], time(), $map['SDS_P2'], $map['SDS_P1'], 'U', 'U', 'U');
+update_rrd($device['esp8266id'], time(), $map['SDS_P2'], $map['SDS_P1'], $map['BME280_temperature'], $map['BME280_pressure'], $map['BME280_humidity']);
 
 if (CONFIG['store_json_payload']) {
   file_put_contents('data/'.$device['esp8266id'].'.json', $payload);
