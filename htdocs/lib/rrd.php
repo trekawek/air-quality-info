@@ -87,6 +87,7 @@ function generate_graph($esp8266id, $type = 'pm', $range = 'day', $size = 'defau
     case 'temperature':
     array_push($options,
       '--vertical-label=°C',
+      '--alt-autoscale-min',
       "DEF:Temperatura=${rrd_file}:TEMPERATURE:AVERAGE",
       'LINE2:Temperatura#CC3118'
     );
