@@ -16,6 +16,9 @@ define('PM10_LIMIT', 50);
 define('PM25_LIMIT', 25);
 
 function find_level($thresholds, $value) {
+  if ($value === null) {
+    return null;
+  }
   foreach ($thresholds as $i => $v) {
     if ($v > $value) {
       return $i - 1;

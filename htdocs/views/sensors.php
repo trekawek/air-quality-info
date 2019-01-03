@@ -2,11 +2,24 @@
 date_default_timezone_set('Europe/Warsaw');
 
 $sensors = get_sensor_data($device['esp8266id']);
-
-$pm10_level = find_level(PM10_THRESHOLDS, $sensors['PM10']);
-$pm25_level = find_level(PM25_THRESHOLDS, $sensors['PM25']);
-$max_level = max($pm10_level, $pm25_level);
+$max_level = null;
+if (isset($device['value_mapping']['pm10'])) {
+  $pm10_level = find_level(PM10_THRESHOLDS, $sensors['PM10']);
+  $max_level = $pm10_level;
+} else {
+  $pm10_level = null;
+}
+if (isset($device['value_mapping']['pm25'])) {
+  $pm25_level = find_level(PM25_THRESHOLDS, $sensors['PM25']);
+  $max_level = $pm25_level;
+} else {
+  $pm25_level = null;
+}
+if ($pm10_level !== null && $pm25_level !== null) {
+  $max_level = max($pm10_level, $pm25_level);
+}
 ?><?php include('partials/head.php'); ?>
+      <?php if ($max_level !== null): ?>
       <div class="row">
           <div class="col-md-8 offset-md-2">
           <h4>Indeks jakości powietrza</h4>
@@ -17,11 +30,21 @@ $max_level = max($pm10_level, $pm25_level);
           <p><small>Źródło: <a href="http://powietrze.gios.gov.pl/pjp/content/health_informations">Główny Inspektorat Ochrony Środowiska</a></small></p>
         </div>
       </div>
+      <?php else: ?>
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <div class="alert alert-warning">
+            Brak danych na temat zanieczyszczenia.
+          </div>
+        </div>
+      </div>
+      <?php endif ?>
       
       <div class="row">
         <div class="col-md-8 offset-md-2">
           <h4>Pomiary</h4>
           <table class="table">
+            <?php if ($pm10_level !== null || $pm25_level !== null): ?>
             <thead>
               <tr>
                 <th scope="col">Nazwa</th>
@@ -30,29 +53,48 @@ $max_level = max($pm10_level, $pm25_level);
                 <th scope="col">Procent <a href="http://ec.europa.eu/environment/air/quality/standards.htm">normy UE</a></th>
               </tr>
             </thead>
+            <?php endif ?>
             <tbody>
+              <?php if ($pm25_level !== null): ?>
               <tr class="index-cat-<?php echo $pm25_level; ?>">
                 <th scope="row">PM<sub>2.5</sub></th>
                 <td><?php echo round($sensors['PM25'], 0); ?> <small>µg/m<sup>3</sup></small></td>
                 <td><?php echo POLLUTION_LEVELS[$pm25_level]['name'] ?></td>
                 <td><?php echo round(100 * $sensors['PM25'] / PM25_LIMIT, 0); ?>%</td>
               </tr>
+              <?php endif ?>
+              <?php if ($pm10_level !== null): ?>
               <tr class="index-cat-<?php echo $pm10_level; ?>">
                 <th scope="row">PM<sub>10</sub></th>
                 <td><?php echo round($sensors['PM10'], 0); ?> <small>µg/m<sup>3</sup></small></td>
                 <td><?php echo POLLUTION_LEVELS[$pm10_level]['name'] ?></td>
                 <td><?php echo round(100 * $sensors['PM10'] / PM10_LIMIT, 0); ?>%</td>
               </tr>
+              <?php endif ?>
               <tr>
-                <td colspan="2"><strong>Temperatura: </strong><?php echo round($sensors['TEMPERATURE'], 1) ?> &deg;C</td>
-                <td colspan="1"><strong>Wilgotność: </strong><?php echo round($sensors['HUMIDITY'], 0) ?>%</td>
-                <td colspan="1"><strong>Ciśnienie: </strong><?php echo round($sensors['PRESSURE'], 0) ?> hPa</td>
+                <td colspan="2">
+                  <?php if ($sensors['TEMPERATURE'] !== null): ?>
+                  <strong>Temperatura: </strong><?php echo round($sensors['TEMPERATURE'], 1) ?> &deg;C
+                  <?php endif ?>
+                </td>
+                <td colspan="1">
+                  <?php if ($sensors['HUMIDITY'] !== null): ?>
+                  <strong>Wilgotność: </strong><?php echo round($sensors['HUMIDITY'], 0) ?>%
+                  <?php endif ?>
+                </td>
+                <td colspan="1">
+                  <?php if ($sensors['PRESSURE'] !== null): ?>
+                  <strong>Ciśnienie: </strong><?php echo round($sensors['PRESSURE'], 0) ?> hPa
+                  <?php endif ?>
+                </td>
               </tr>
             </tbody>
           </table>
+          <?php if ($pm10_level !== null || $pm25_level !== null): ?>
           <a href="<?php echo l($device, 'graph.png', array('type' => 'pm', 'range' => 'day', 'size' => 'large')); ?>">
             <img src="<?php echo l($device, 'graph.png', array('type' => 'pm', 'range' => 'day', 'size' => 'mid')); ?>" class="graph" />
           </a>
+          <?php endif ?>
           <p><small><a href="<?php echo l($device, 'graphs'); ?>">Zobacz wszystkie wykresy</a></small></p>
 
           <p>Ostatnia aktualizacja: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?></p>

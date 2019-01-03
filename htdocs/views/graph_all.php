@@ -1,5 +1,20 @@
 <?php include('partials/head.php'); ?>
-<?php foreach(array('pm' => 'PM', "temperature" => 'Temperatura', "humidity" => 'Wilgotność', "pressure" => 'Ciśnienie') as $type => $name): ?>
+<?php
+$graphs = array();
+if (isset($device['value_mapping']['pm10']) || isset($device['value_mapping']['pm_25'])) {
+  $graphs['pm'] = 'PM';
+}
+if (isset($device['value_mapping']['temperature'])) {
+  $graphs['temperature'] = 'Temperatura';
+}
+if (isset($device['value_mapping']['humidity'])) {
+  $graphs['humidity'] = 'Wilgotność';
+}
+if (isset($device['value_mapping']['pressure'])) {
+  $graphs['pressure'] = 'Ciśnienie';
+}
+foreach($graphs as $type => $name):
+?>
       <div class="row">
         <div class="col-md-12">
           <h3><?php echo $name; ?></h3>

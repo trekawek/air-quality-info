@@ -5,6 +5,10 @@ function get_rrd_path($esp8266id) {
 
 function get_sensor_data($esp8266id) {
   $rrd_file = get_rrd_path($esp8266id);
+  if (!file_exists($rrd_file)) {
+    return array();
+  }
+
   $data = rrd_lastupdate($rrd_file);
   $sensors = array('last_update' => $data['last_update']);
   for ($i = 0; $i < $data['ds_cnt']; $i++) {
@@ -38,6 +42,10 @@ function update_rrd($esp8266id, $time, $pm25, $pm10, $temp, $press, $hum) {
 
 function generate_graph($esp8266id, $type = 'pm', $range = 'day', $size = 'default') {
   $rrd_file = get_rrd_path($esp8266id);
+  if (!file_exists($rrd_file)) {
+    return null;
+  }
+
   $options = array();
 
   switch ($size) {

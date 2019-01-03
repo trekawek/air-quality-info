@@ -4,6 +4,10 @@ $graph = generate_graph($device['esp8266id'],
   isset($_GET['range']) ? $_GET['range'] : 'day',
   isset($_GET['size']) ? $_GET['size'] : 'default'
 );
+if ($graph === null) {
+  http_response_code(404);
+  die();
+}
 
 header("Content-type: image/png");
 header('Pragma: public');
