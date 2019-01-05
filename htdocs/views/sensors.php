@@ -90,14 +90,32 @@ if ($pm10_level !== null && $pm25_level !== null) {
               </tr>
             </tbody>
           </table>
-          <?php if ($pm10_level !== null || $pm25_level !== null): ?>
-          <a href="<?php echo l($device, 'graph.png', array('type' => 'pm', 'range' => 'day', 'size' => 'large')); ?>">
-            <img src="<?php echo l($device, 'graph.png', array('type' => 'pm', 'range' => 'day', 'size' => 'mid')); ?>" class="graph" />
-          </a>
-          <?php endif ?>
-          <p><small><a href="<?php echo l($device, 'graphs'); ?>">Zobacz wszystkie wykresy</a></small></p>
+          <div class="graph-container">
+            <canvas class="graph"></canvas>
+          </div>
+        </div>
+      </div>
 
-          <p>Ostatnia aktualizacja: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?></p>
+      <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+          <div class="btn-group btn-group-sm graph-type" role="group" aria-label="Rodzaj">
+            <button type="button" class="btn btn-primary" data-type="pm">PM</button>
+            <button type="button" class="btn btn-secondary" data-type="temperature">Temperatura</button>
+            <button type="button" class="btn btn-secondary" data-type="humidity">Wilgotność</button>
+            <button type="button" class="btn btn-secondary" data-type="pressure">Ciśnienie</button>
+          </div>
+          <div class="btn-group btn-group-sm graph-range" role="group" aria-label="Zakres">
+            <button type="button" class="btn btn-primary" data-range="day">Dzień</button>
+            <button type="button" class="btn btn-secondary" data-range="week">Tydzień</button>
+            <button type="button" class="btn btn-secondary" data-range="month">Miesiąc</button>
+            <button type="button" class="btn btn-secondary" data-range="year">Rok</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <small>Ostatnia aktualizacja: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?></small>
         </div>
       </div>
 

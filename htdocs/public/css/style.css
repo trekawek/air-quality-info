@@ -10,8 +10,8 @@ body {
   width: 100px;
 }
 
-img.graph {
-  width: 100%;
+div.graph-container {
+
 }
 
 .navbar img {

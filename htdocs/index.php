@@ -61,12 +61,8 @@ switch ($current_action) {
   require('update.php');
   break;
 
-  case 'graphs':
-  require('views/graph_all.php');
-  break;
-
-  case 'graph.png':
-  require('views/graph_img.php');
+  case 'graph_data.json':
+  require('views/graph_json.php');
   break;
 
   case 'sensors':
