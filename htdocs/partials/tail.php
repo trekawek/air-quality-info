@@ -5,6 +5,6 @@
   <script src="/public/js/moment.min.js"></script>
   <script src="/public/js/moment-pl.js"></script>
   <script src="/public/js/Chart.min.js"></script>
-  <script src="/public/js/graphs.js?<?php echo rand(); ?>"></script>
+  <script src="/public/js/graphs.js"></script>
   </body>
 </html>

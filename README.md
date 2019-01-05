@@ -7,7 +7,8 @@ This PHP-based page allows to display the current PM10 and PM2.5 measurements ma
 ## Features
 
 * Nice and clean interface
-* Graphs based on RRD
+* Records stored in the RRD
+* Graphs rendered with ChartJS
 * No external database required
 * Support for multiple devices
 

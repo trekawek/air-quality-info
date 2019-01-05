@@ -43,7 +43,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
-                <?php foreach(array('sensors' => 'Strona główna', 'graphs' => 'Wykresy') as $action => $name): ?>
+                <?php foreach(array('sensors' => 'Strona główna') as $action => $name): ?>
                 <li class="nav-item">
                   <a class="nav-link <?php echo ($action == $current_action) ? 'active' : ''; ?>" href="<?php echo l($device, $action); ?>"><?php echo $name; ?></a>
                 </li>
