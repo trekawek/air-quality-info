@@ -13,6 +13,8 @@ define('CONFIG', array(
             # 'temperature' => 'BME280_temperature',
             # 'humidity'    => 'BME280_humidity',
             # 'pressure'    => 'BME280_pressure',
+            # 'gps_time'    => 'GPS_time',
+            # 'gps_date'    => 'GPS_date',
           ),
         # 'maintenance' => 'Trwa przerwa techniczna. Detektor zostanie uruchomiony ponownie w ciągu godziny.'
     ),
