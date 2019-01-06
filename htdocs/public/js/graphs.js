@@ -57,13 +57,13 @@ function renderGraph(ctx, data, type) {
             datasets: [{
                 backgroundColor: window.chartColors.purple,
                 borderColor: window.chartColors.red,
-                label: 'PM₂₅',
+                label: 'PM₂₅ (µg/m³)',
                 data: mapToTimeSeries(data.data.PM25),
                 borderWidth: 1
             }, {
                 backgroundColor: window.chartColors.orange,
                 borderColor: window.chartColors.red,
-                label: 'PM₁₀',
+                label: 'PM₁₀ (µg/m³)',
                 data: mapToTimeSeries(data.data.PM10),
                 borderWidth: 1
             }]
@@ -71,8 +71,7 @@ function renderGraph(ctx, data, type) {
         config.options.scales.yAxes = [{
             display: true,
             scaleLabel: {
-                display: true,
-                labelString: "µg/m³"
+                display: false
             }
         }];
         break;
@@ -81,7 +80,7 @@ function renderGraph(ctx, data, type) {
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.red,
-                label: 'Temperatura',
+                label: 'Temperatura (°C)',
                 data: mapToTimeSeries(data.data.TEMPERATURE),
                 borderWidth: 2,
                 fill: false
@@ -90,8 +89,7 @@ function renderGraph(ctx, data, type) {
         config.options.scales.yAxes = [{
             display: true,
             scaleLabel: {
-                display: true,
-                labelString: "°C"
+                display: false
             }
         }];
         break;
@@ -100,7 +98,7 @@ function renderGraph(ctx, data, type) {
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.red,
-                label: 'Ciśnienie',
+                label: 'Ciśnienie (hPa)',
                 data: mapToTimeSeries(data.data.PRESSURE),
                 borderWidth: 2,
                 fill: false
@@ -109,8 +107,7 @@ function renderGraph(ctx, data, type) {
         config.options.scales.yAxes = [{
             display: true,
             scaleLabel: {
-                display: true,
-                labelString: "hPa"
+                display: false
             }
         }];
         break;
@@ -119,7 +116,7 @@ function renderGraph(ctx, data, type) {
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.red,
-                label: 'Wilgotność',
+                label: 'Wilgotność (%)',
                 data: mapToTimeSeries(data.data.HUMIDITY),
                 borderWidth: 2,
                 fill: false
@@ -128,8 +125,7 @@ function renderGraph(ctx, data, type) {
         config.options.scales.yAxes = [{
             display: true,
             scaleLabel: {
-                display: true,
-                labelString: "%"
+                display: false
             }
         }];
         break;
