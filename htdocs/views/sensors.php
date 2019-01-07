@@ -40,15 +40,15 @@ $rel_pm25_1h = 100 * $avg_1h['PM25'] / PM25_LIMIT_1H;
       <tbody>
         <tr class="index-cat-<?php echo $pm25_1h ?>">
           <th scope="row">PM<sub>2.5</sub></th>
-          <td><?php echo round($avg_1h['PM25'], 0); ?> <small>µg/m<sup>3</sup></small> (<?php echo round($rel_pm25_1h, 0); ?>%)</td>
+          <td><?php echo round($avg_1h['PM25'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small> (<?php echo round($rel_pm25_1h, 0); ?>%)</td>
           <td><?php echo POLLUTION_LEVELS[$pm25_1h]['name']; ?></td>
-          <td><?php echo round($avg_24h['PM25'], 0); ?> <small>µg/m<sup>3</sup></small></td>
+          <td><?php echo round($avg_24h['PM25'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
         </tr>
         <tr class="index-cat-<?php echo $pm10_1h ?>">
           <th scope="row">PM<sub>10</sub></th>
-          <td><?php echo round($avg_1h['PM10'], 0); ?> <small>µg/m<sup>3</sup></small> (<?php echo round($rel_pm10_1h, 0); ?>%)</td>
+          <td><?php echo round($avg_1h['PM10'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small> (<?php echo round($rel_pm10_1h, 0); ?>%)</td>
           <td><?php echo POLLUTION_LEVELS[$pm10_1h]['name']; ?></td>
-          <td><?php echo round($avg_24h['PM10'], 0); ?> <small>µg/m<sup>3</sup></small></td>
+          <td><?php echo round($avg_24h['PM10'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
         </tr>
         <tr>
           <td colspan="4" class="weather-measurements">
