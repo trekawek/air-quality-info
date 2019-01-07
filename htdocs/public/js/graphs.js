@@ -89,7 +89,7 @@ function renderGraph(ctx, data, type) {
                 borderColor: 'purple',
                 borderWidth: 1,
                 label: {
-                  content: 'Limit PM₂₅',
+                  content: 'Norma PM₂₅',
                   enabled: true,
                   position: 'left',
 		          backgroundColor: 'rgba(0,0,0,0.3)'
@@ -102,7 +102,7 @@ function renderGraph(ctx, data, type) {
                 borderColor: 'orange',
                 borderWidth: 1,
                 label: {
-                  content: 'Limit PM₁₀',
+                  content: 'Norma PM₁₀',
                   enabled: true,
                   position: 'left',
 		          backgroundColor: 'rgba(0,0,0,0.3)'

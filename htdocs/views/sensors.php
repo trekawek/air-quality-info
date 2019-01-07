@@ -21,7 +21,7 @@ if ($pm10_level !== null && $pm25_level !== null) {
 ?><?php include('partials/head.php'); ?>
 <div class="row">
     <div class="col-md-8 offset-md-2 text-center">
-    <small><a href="http://powietrze.gios.gov.pl/pjp/content/health_informations">Indeks jakości powietrza</a>:</small>
+    <small>Poziom zanieczyszczenia <a href="https://www.airqualitynow.eu/pl/about_indices_definition.php">CAQI</a>:</small>
     <h2>
       <span
         class="badge index-cat-<?php echo $max_level; ?>"
@@ -43,7 +43,7 @@ if ($pm10_level !== null && $pm25_level !== null) {
           <th scope="col">Nazwa</th>
           <th scope="col">Wartość</th>
           <th scope="col">Indeks</th>
-          <th scope="col"><a href="http://ec.europa.eu/environment/air/quality/standards.htm">Norma UE</a></th>
+          <th scope="col">Procent <a href="http://ec.europa.eu/environment/air/quality/standards.htm">normy</a></th>
         </tr>
       </thead>
       <?php endif ?>
