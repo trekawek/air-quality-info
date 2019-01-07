@@ -193,7 +193,11 @@ function updateGraph(graphContainer) {
     var ctx = graphContainer.querySelector('canvas.graph');
 
     var request = new XMLHttpRequest();
-    request.open('GET', '/graph_data.json?type=' + type + '&range=' + range, true);
+    var url = '/graph_data.json?type=' + type + '&range=' + range;
+    if (type == 'pm') {
+        url += '&ma_h=1';
+    }
+    request.open('GET', url, true);
     request.onload = function() {
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);

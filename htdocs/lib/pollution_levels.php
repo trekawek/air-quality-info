@@ -14,8 +14,8 @@ define('PM10_THRESHOLDS_24H', array(0, 15, 30, 50, 100));
 define('PM25_THRESHOLDS_1H',  array(0, 15, 30, 55, 110));
 define('PM25_THRESHOLDS_24H', array(0, 10, 20, 30, 60));
 
-define('PM10_LIMIT', 50);
-define('PM25_LIMIT', 30);
+define('PM10_LIMIT_1H', 50);
+define('PM25_LIMIT_1H', 30);
 
 function find_level($thresholds, $value) {
   if ($value === null) {

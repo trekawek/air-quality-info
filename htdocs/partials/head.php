@@ -32,7 +32,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body data-pm10-limit="<?php echo PM10_LIMIT ?>" data-pm25-limit="<?php echo PM25_LIMIT ?>">
+  <body data-pm10-limit="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit="<?php echo PM25_LIMIT_1H ?>">
     <div class="container">
       <div class="row">
         <div class="col-md-8 offset-md-2">

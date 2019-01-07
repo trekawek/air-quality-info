@@ -24,17 +24,21 @@ function get_avg_sensor_data($esp8266id, $hours) {
   }
   $options = array(
     'AVERAGE',
-    '--start=now-'.$hours.'h');
+    '--start=now-'.$hours.'h',
+    "--resolution=3m",
+    "--end=now");
   $result = rrd_fetch($rrd_file, $options);
   $data = $result['data'];
   foreach ($data as $name => $values) {
-    $filtered = array();
+    $sum = 0;
+    $count = 0;
     foreach ($values as $v) {
       if (!is_nan($v)) {
-        array_push($filtered, $v);
+        $sum += $v;
+        $count++;
       }
     }
-    $data[$name] = array_sum($filtered) / count($filtered);
+    $data[$name] = $sum / $count;
   }
   return $data;
 }
@@ -70,7 +74,7 @@ function update_rrd($esp8266id, $time, $pm25, $pm10, $temp, $press, $hum, $heate
   return $data;
 }
 
-function get_data($esp8266id, $type = 'pm', $range = 'day') {
+function get_data($esp8266id, $type = 'pm', $range = 'day', $walking_average_hours = null) {
   $rrd_file = get_rrd_path($esp8266id);
   if (!file_exists($rrd_file)) {
     return null;
@@ -79,7 +83,11 @@ function get_data($esp8266id, $type = 'pm', $range = 'day') {
   $options = array('AVERAGE');
   switch ($range) {
     case 'week':
-    array_push($options, "--start=now-7d", "--resolution=15m");
+    if ($walking_average_hours !== null) {
+      array_push($options, '--start=now-'.($walking_average_hours+24*7).'h', "--resolution=3m");
+    } else {
+      array_push($options, '--start=now-7d', "--resolution=3m");
+    }
     break;
 
     case 'month':
@@ -92,7 +100,11 @@ function get_data($esp8266id, $type = 'pm', $range = 'day') {
 
     case 'day':
     default:
-    array_push($options, "--start=now-24h", "--resolution=3m");
+    if ($walking_average_hours !== null) {
+      array_push($options, '--start=now-'.($walking_average_hours+24).'h', "--resolution=3m");
+    } else {
+      array_push($options, '--start=now-24h', "--resolution=3m");
+    }
     break;
   }
   array_push($options, "--end=now");
@@ -129,7 +141,52 @@ function get_data($esp8266id, $type = 'pm', $range = 'day') {
     }
   }
 
+  if ($walking_average_hours !== null) {
+    foreach ($data as $k => $values) {
+      $data[$k] = transform_to_walking_average($values, 60 * 60 * $walking_average_hours);
+    }
+    $result['start'] += 60 * 60 * $walking_average_hours;
+  }
+
   $result['data'] = $data;
+  return $result;
+}
+
+function transform_to_walking_average($data, $walking_average_seconds) {
+  $data_array = array();
+  foreach ($data as $ts => $v) {
+    $data_array[] = array('ts' => $ts, 'v' => $v);
+  }
+  $data = $data_array;
+  $result = array();
+  $data_size = count($data);
+
+  $j = null;
+  $sum = 0;
+  $count = 0;
+  for ($j = 0; $j < $data_size; $j++) {
+    if (($data[$j]['ts'] - $data[0]['ts']) >= $walking_average_seconds) {
+      break;
+    }
+    if ($data[$j]['v'] != null) {
+      $sum += $data[$j]['v'];
+      $count++;
+    }
+  }
+
+  $i = 0;
+  for ($j--; $j < $data_size; $j++) {
+    if ($data[$j]['v'] != null) {
+      $sum += $data[$j]['v'];
+      $count++;
+    }
+    $result[$data[$j]['ts']] = $sum / $count;
+    if ($data[$i]['v'] != null) {
+      $sum -= $data[$i]['v'];
+      $count--;
+    }
+    $i++;
+  }
   return $result;
 }
 ?>
