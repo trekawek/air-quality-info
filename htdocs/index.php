@@ -58,11 +58,19 @@ if ($device == null) {
 
 switch ($current_action) {
   case 'update':
-  require('update.php');
+  require('api/update.php');
   break;
 
   case 'graph_data.json':
-  require('views/graph_json.php');
+  require('api/graph_json.php');
+  break;
+
+  case 'about':
+  require('views/about.php');
+  break;
+
+  case 'graphs':
+  require('views/graphs.php');
   break;
 
   case 'sensors':

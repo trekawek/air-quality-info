@@ -32,7 +32,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>
+  <body data-pm10-limit="<?php echo PM10_LIMIT ?>" data-pm25-limit="<?php echo PM25_LIMIT ?>">
     <div class="container">
       <div class="row">
         <div class="col-md-8 offset-md-2">
@@ -43,7 +43,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
-                <?php foreach(array('sensors' => 'Strona główna') as $action => $name): ?>
+                <?php foreach(array('sensors' => 'Strona główna', 'graphs' => 'Wykresy', 'about' => 'O stronie') as $action => $name): ?>
                 <li class="nav-item">
                   <a class="nav-link <?php echo ($action == $current_action) ? 'active' : ''; ?>" href="<?php echo l($device, $action); ?>"><?php echo $name; ?></a>
                 </li>

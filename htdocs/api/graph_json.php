@@ -9,9 +9,5 @@ if ($data === null) {
 }
 
 header('Content-type:application/json;charset=utf-8');
-header('Pragma: public');
-header('Cache-Control: max-age=300');
-header('Expires: '. gmdate('D, d M Y H:i:s \G\M\T', time() + 300));
-
 echo json_encode($data);
 ?>

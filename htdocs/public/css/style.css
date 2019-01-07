@@ -2,16 +2,13 @@ body {
   padding-bottom: 1rem;
 }
 
-.row:not(:first-child) {
-  padding-top: 2rem;
-}
-
 .apps a img {
   width: 100px;
 }
 
-div.graph-container {
-
+.tooltip-inner {
+  max-width: 400px;
+  text-align: justify;
 }
 
 .navbar img {

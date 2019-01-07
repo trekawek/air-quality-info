@@ -11,25 +11,31 @@ window.chartColors = {
 };
 moment.locale('pl');
 
-function mapToTimeSeries(data) {
-    var result = new Array();
-    for(var timeStamp in data) {
-        if (data.hasOwnProperty(timeStamp)) {
-            result.push({
-                t: new Date(timeStamp * 1000),
-                y: data[timeStamp] == null ? null : Math.round(data[timeStamp] * 100) / 100
-            });
-        }
-    }
-    return result;
-}
+const CONFIG = document.querySelector('body').dataset;
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
 
 function renderGraph(ctx, data, type) {
+    function mapToTimeSeries(data) {
+        var result = new Array();
+        for(var timeStamp in data) {
+            if (data.hasOwnProperty(timeStamp)) {
+                result.push({
+                    t: new Date(timeStamp * 1000),
+                    y: data[timeStamp] == null ? null : Math.round(data[timeStamp] * 100) / 100
+                });
+            }
+        }
+        return result;
+    }
+
     var config = {
         type: 'line',
         options: {
             responsive: true,
-            aspectRatio: 3,
+            aspectRatio: 2,
             tooltips: {
                 mode: 'index',
                 intersect: false,
@@ -74,6 +80,36 @@ function renderGraph(ctx, data, type) {
                 display: false
             }
         }];
+        config.options.annotation = {
+            annotations: [{
+                type: 'line',
+                mode: 'horizontal',
+                scaleID: 'y-axis-0',
+                value: CONFIG.pm25Limit,
+                borderColor: 'purple',
+                borderWidth: 1,
+                label: {
+                  content: 'Limit PM₂₅',
+                  enabled: true,
+                  position: 'left',
+		          backgroundColor: 'rgba(0,0,0,0.3)'
+                }
+            },{
+                type: 'line',
+                mode: 'horizontal',
+                scaleID: 'y-axis-0',
+                value: CONFIG.pm10Limit,
+                borderColor: 'orange',
+                borderWidth: 1,
+                label: {
+                  content: 'Limit PM₁₀',
+                  enabled: true,
+                  position: 'left',
+		          backgroundColor: 'rgba(0,0,0,0.3)'
+                }
+            }]
+        };
+    
         break;
 
         case 'temperature':
@@ -97,7 +133,7 @@ function renderGraph(ctx, data, type) {
         case 'pressure':
         config.data = {
             datasets: [{
-                borderColor: window.chartColors.red,
+                borderColor: window.chartColors.green,
                 label: 'Ciśnienie (hPa)',
                 data: mapToTimeSeries(data.data.PRESSURE),
                 borderWidth: 2,
@@ -115,7 +151,7 @@ function renderGraph(ctx, data, type) {
         case 'humidity':
         config.data = {
             datasets: [{
-                borderColor: window.chartColors.red,
+                borderColor: window.chartColors.blue,
                 label: 'Wilgotność (%)',
                 data: mapToTimeSeries(data.data.HUMIDITY),
                 borderWidth: 2,
@@ -131,16 +167,18 @@ function renderGraph(ctx, data, type) {
         break;
     }
 
-    if (window.chart) {
-        window.chart.destroy();
+    if (typeof ctx.chart !== 'undefined') {
+        ctx.chart.destroy();
+        ctx.chart = null;
     } 
-    window.chart = new Chart(ctx, config);
+    ctx.chart = new Chart(ctx, config);
 }
 
-function updateGraph() {
-    var type = document.querySelector('.graph-type button.btn-primary').dataset.type;
-    var range = document.querySelector('.graph-range button.btn-primary').dataset.range;
-    var ctx = document.querySelector('canvas.graph');
+function updateGraph(graphContainer) {
+    var dataset = graphContainer.dataset;
+    var type = dataset.type;
+    var range = dataset.range;
+    var ctx = graphContainer.querySelector('canvas.graph');
 
     var request = new XMLHttpRequest();
     request.open('GET', '/graph_data.json?type=' + type + '&range=' + range, true);
@@ -153,16 +191,8 @@ function updateGraph() {
     request.send();
 }
 
-document.querySelectorAll('.graph-type button').forEach(element => {
-    element.onclick = ev => {
-        var oldPrimary = document.querySelector('.graph-type button.btn-primary');
-        oldPrimary.classList.remove('btn-primary');
-        oldPrimary.classList.add('btn-secondary');
-
-        element.classList.remove('btn-secondary');
-        element.classList.add('btn-primary');
-        updateGraph();
-    };
+document.querySelectorAll('div.graph-container').forEach(element => {
+    updateGraph(element);
 });
 
 document.querySelectorAll('.graph-range button').forEach(element => {
@@ -173,8 +203,11 @@ document.querySelectorAll('.graph-range button').forEach(element => {
 
         element.classList.remove('btn-secondary');
         element.classList.add('btn-primary');
-        updateGraph();
+        
+        var range = element.dataset.range;
+        document.querySelectorAll('.graph-container').forEach(graphContainer => {
+            graphContainer.dataset.range = range;
+            updateGraph(graphContainer);
+        });
     };
 });
-
-updateGraph();
