@@ -61,6 +61,10 @@ switch ($current_action) {
   require('api/update.php');
   break;
 
+  case 'migrate_rrd':
+  require('api/migrate_rrd.php');
+  break;
+
   case 'graph_data.json':
   require('api/graph_json.php');
   break;

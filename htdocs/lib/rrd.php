@@ -19,25 +19,33 @@ function get_sensor_data($esp8266id) {
 
 function create_rrd($esp8266id) {
   $rrd_file = get_rrd_path($esp8266id);
-  rrd_create($rrd_file, array(
+  $options = array(
     '--step=3m',
     'DS:PM25:GAUGE:5m:0:1000',
     'DS:PM10:GAUGE:5m:0:1000',
     'DS:TEMPERATURE:GAUGE:5m:-100:100',
     'DS:PRESSURE:GAUGE:5m:900:1100',
     'DS:HUMIDITY:GAUGE:5m:0:100',
+    'DS:HEATER_TEMPERATURE:GAUGE:5m:-100:100',
+    'DS:HEATER_HUMIDITY:GAUGE:5m:0:100',
     'RRA:AVERAGE:0.5:3m:24h',
     'RRA:AVERAGE:0.5:15m:35d',
     'RRA:AVERAGE:0.5:12h:1y'
-  ));
+  );
+  if (file_exists($rrd_file)) {
+    array_push($options, '--source='.$rrd_file);
+  }
+  rrd_create($rrd_file, $options);
 }
 
-function update_rrd($esp8266id, $time, $pm25, $pm10, $temp, $press, $hum) {
+function update_rrd($esp8266id, $time, $pm25, $pm10, $temp, $press, $hum, $heater_temp, $heater_hum) {
   $rrd_file = get_rrd_path($esp8266id);
   if (!file_exists($rrd_file)) {
     create_rrd($esp8266id);
   }
-  rrd_update($rrd_file, array("${time}:${pm25}:${pm10}:${temp}:${press}:${hum}"));
+  $data = "${time}:${pm25}:${pm10}:${temp}:${press}:${hum}:${heater_temp}:${heater_hum}";
+  rrd_update($rrd_file, array($data));
+  return $data;
 }
 
 function get_data($esp8266id, $type = 'pm', $range = 'day') {
@@ -72,7 +80,7 @@ function get_data($esp8266id, $type = 'pm', $range = 'day') {
   
   switch ($type) {
     case 'temperature':
-    $fields = array('TEMPERATURE');
+    $fields = array('TEMPERATURE', 'HEATER_TEMPERATURE');
     break;
 
     case 'pressure':
@@ -80,7 +88,7 @@ function get_data($esp8266id, $type = 'pm', $range = 'day') {
     break;
 
     case 'humidity':
-    $fields = array('HUMIDITY');
+    $fields = array('HUMIDITY', 'HEATER_HUMIDITY');
     break;
 
     case 'pm':

@@ -13,6 +13,8 @@ define('CONFIG', array(
             # 'temperature' => 'BME280_temperature',
             # 'humidity'    => 'BME280_humidity',
             # 'pressure'    => 'BME280_pressure',
+            # 'heater_temperature' => 'temperature',
+            # 'heater_humidity'    => 'humidity',
             # 'gps_time'    => 'GPS_time',
             # 'gps_date'    => 'GPS_date',
           ),

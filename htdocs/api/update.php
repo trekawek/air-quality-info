@@ -42,23 +42,15 @@ if ($gps_date && $gps_time) {
   $time = DateTime::createFromFormat('m/d/Y H:i:s.u', $gps_date.' '.$gps_time, new DateTimeZone('UTC'))->getTimestamp();
 }
 
-var_dump(
+echo update_rrd(
   $device['esp8266id'],
   $time,
   read_value($device, 'pm25', $map, 'U'),
   read_value($device, 'pm10', $map, 'U'),
   read_value($device, 'temperature', $map, 'U'),
   read_value($device, 'pressure', $map, 'U') / 100,
-  read_value($device, 'humidity', $map, 'U')
-);
-
-update_rrd(
-  $device['esp8266id'],
-  $time,
-  read_value($device, 'pm25', $map, 'U'),
-  read_value($device, 'pm10', $map, 'U'),
-  read_value($device, 'temperature', $map, 'U'),
-  read_value($device, 'pressure', $map, 'U') / 100,
-  read_value($device, 'humidity', $map, 'U')
+  read_value($device, 'humidity', $map, 'U'),
+  read_value($device, 'heater_temperature', $map, 'U'),
+  read_value($device, 'heater_humidity', $map, 'U')
 );
 ?>
