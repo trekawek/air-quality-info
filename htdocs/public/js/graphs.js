@@ -15,10 +15,6 @@ moment.locale('pl');
 
 const CONFIG = document.querySelector('body').dataset;
 
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-})
-
 function renderGraph(ctx, data, type) {
     function mapToTimeSeries(data) {
         var result = new Array();
