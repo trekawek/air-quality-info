@@ -1,5 +1,8 @@
 'use strict';
 
+const CONFIG = document.querySelector('body').dataset;
+const LOCALE = JSON.parse(CONFIG.locale);
+
 window.chartColors = {
 	red: 'rgb(255, 99, 132)',
 	lightRed: 'rgb(255, 160, 181)',
@@ -11,9 +14,19 @@ window.chartColors = {
 	purple: 'rgb(153, 102, 255)',
 	grey: 'rgb(201, 203, 207)'
 };
-moment.locale('pl');
 
-const CONFIG = document.querySelector('body').dataset;
+moment.locale(CONFIG.currentLang);
+
+function _(msg) {
+    if (typeof LOCALE[msg] != 'undefined') {
+        return LOCALE[msg];
+    } else {
+        if (CONFIG.currentLang != 'en') {
+            console.log("Unknown msg: [" + msg + "] for locale [" + CONFIG.currentLang +"]");
+        }
+        return msg;
+    }
+}
 
 function mapToTimeSeries(data) {
     var result = new Array();
@@ -128,13 +141,13 @@ function renderGraph(ctx, data, type, avgType) {
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.red,
-                label: 'Temperatura (°C)',
+                label: _('Temperature') + ' (°C)',
                 data: mapToTimeSeries(data.data.TEMPERATURE),
                 borderWidth: 2,
                 fill: false
             },{
                 borderColor: window.chartColors.lightRed,
-                label: 'Temperatura detektora (°C)',
+                label: _('Detector temperature') + '(°C)',
                 data: mapToTimeSeries(data.data.HEATER_TEMPERATURE),
                 borderWidth: 2,
                 fill: false,
@@ -153,7 +166,7 @@ function renderGraph(ctx, data, type, avgType) {
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.green,
-                label: 'Ciśnienie (hPa)',
+                label: _('Pressure') + ' (hPa)',
                 data: mapToTimeSeries(data.data.PRESSURE),
                 borderWidth: 2,
                 fill: false
@@ -171,13 +184,13 @@ function renderGraph(ctx, data, type, avgType) {
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.blue,
-                label: 'Wilgotność (%)',
+                label: _('Humidity') + ' (%)',
                 data: mapToTimeSeries(data.data.HUMIDITY),
                 borderWidth: 2,
                 fill: false
             },{
                 borderColor: window.chartColors.lightBlue,
-                label: 'Wilgotność detektora (%)',
+                label: _('Detector humidity') + ' (%)',
                 data: mapToTimeSeries(data.data.HEATER_HUMIDITY),
                 borderWidth: 2,
                 fill: false,

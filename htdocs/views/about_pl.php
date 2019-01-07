@@ -4,8 +4,9 @@
     <div class="col-md-8 offset-md-2">
         <h4>Informacje</h4>
         <ul>
-        <li><a href="https://nettigo.pl/products/nettigo-air-monitor-kit-0-2-1-zbuduj-wlasny-czujnik-smogowy">Informacja o użytym detektorze smogu</a></li>
-        <li><a href="https://github.com/trekawek/air-quality-info">Kod źródłowy</a></li>
+            <li><a href="<?php echo l($device, 'debug'); ?>">Informacje diagnostyczne detektora</a></li>
+            <li><a href="https://starter-kit.nettigo.pl/2018/12/nettigo-air-monitor-zbuduj-wlasny-czujnik-smogowy-wersja-0-2-1/">Budowa detektora</a></li>
+            <li><a href="https://github.com/trekawek/air-quality-info">Źródła</a></li>
         </ul>
     </div>
 </div>
