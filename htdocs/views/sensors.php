@@ -51,21 +51,15 @@ $rel_pm25_1h = 100 * $avg_1h['PM25'] / PM25_LIMIT_1H;
           <td><?php echo round($avg_24h['PM10'], 0); ?> <small>µg/m<sup>3</sup></small></td>
         </tr>
         <tr>
-          <td colspan="4">
+          <td colspan="4" class="weather-measurements">
             <?php if ($sensors['TEMPERATURE'] !== null): ?>
-            <small>Temperatura: </small><?php echo round($sensors['TEMPERATURE'], 1) ?> &deg;C
+            <?php echo round($sensors['TEMPERATURE'], 1) ?> &deg;C
             <?php endif ?>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">
             <?php if ($sensors['PRESSURE'] !== null): ?>
-            <small>Ciśnienie: </small><?php echo round($sensors['PRESSURE'], 0) ?> hPa
+            | <?php echo round($sensors['PRESSURE'], 0) ?> hPa
             <?php endif ?>
-          </td>
-          <td colspan="2">
             <?php if ($sensors['HUMIDITY'] !== null): ?>
-            <small>Wilgotność: </small><?php echo round($sensors['HUMIDITY'], 0) ?>%
+            | <?php echo round($sensors['HUMIDITY'], 0) ?>% wilgotności
             <?php endif ?>
           </td>
         </tr>
