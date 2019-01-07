@@ -4,6 +4,8 @@ This PHP-based page allows to display the current PM10 and PM2.5 measurements ma
 
 ![Screenshot](img/screenshot.png)
 
+[Live demo](http://smog.rekawek.eu/)
+
 ## Features
 
 * Nice and clean interface
