@@ -2,10 +2,12 @@
 
 window.chartColors = {
 	red: 'rgb(255, 99, 132)',
+	lightRed: 'rgb(255, 160, 181)',
 	orange: 'rgb(255, 159, 64)',
 	yellow: 'rgb(255, 205, 86)',
 	green: 'rgb(75, 192, 192)',
 	blue: 'rgb(54, 162, 235)',
+	lightBlue: 'rgb(120, 187, 232)',
 	purple: 'rgb(153, 102, 255)',
 	grey: 'rgb(201, 203, 207)'
 };
@@ -120,6 +122,13 @@ function renderGraph(ctx, data, type) {
                 data: mapToTimeSeries(data.data.TEMPERATURE),
                 borderWidth: 2,
                 fill: false
+            },{
+                borderColor: window.chartColors.lightRed,
+                label: 'Temperatura detektora (°C)',
+                data: mapToTimeSeries(data.data.HEATER_TEMPERATURE),
+                borderWidth: 2,
+                fill: false,
+                hidden: true
             }]
         };
         config.options.scales.yAxes = [{
@@ -156,6 +165,13 @@ function renderGraph(ctx, data, type) {
                 data: mapToTimeSeries(data.data.HUMIDITY),
                 borderWidth: 2,
                 fill: false
+            },{
+                borderColor: window.chartColors.lightBlue,
+                label: 'Wilgotność detektora (%)',
+                data: mapToTimeSeries(data.data.HEATER_HUMIDITY),
+                borderWidth: 2,
+                fill: false,
+                hidden: true
             }]
         };
         config.options.scales.yAxes = [{
