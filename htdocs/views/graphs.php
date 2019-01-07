@@ -30,8 +30,7 @@ foreach($graphs as $type => $name):
 <?php if ($i % 2 == 0): ?>
 <div class="row">
 <?php endif ?>
-  <div class="col-md-6">
-    <h3><?php echo $name; ?></h3>
+  <div class="col-md-6 text-center">
     <div class="graph-container" data-range="day" data-type="<?php echo $type ?>">
       <canvas class="graph"></canvas>
     </div>
