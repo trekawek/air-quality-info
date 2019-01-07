@@ -39,7 +39,7 @@ if ($pm10_level !== null && $pm25_level !== null) {
           <th scope="col">Nazwa</th>
           <th scope="col">Wartość</th>
           <th scope="col">Indeks</th>
-          <th scope="col">Procent <a href="http://ec.europa.eu/environment/air/quality/standards.htm">normy</a></th>
+          <th scope="col"><a href="http://ec.europa.eu/environment/air/quality/standards.htm">Norma UE</a></th>
         </tr>
       </thead>
       <?php endif ?>
