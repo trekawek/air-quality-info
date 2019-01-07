@@ -2,7 +2,7 @@
 
 This PHP-based page allows to display the current PM10 and PM2.5 measurements made by the Luftdaten.info-compatible device.
 
-![Screenshot](img/screenshot.png)
+<img src="img/screenshot.png" width="50%">
 
 [Live demo](http://smog.rekawek.eu/)
 
