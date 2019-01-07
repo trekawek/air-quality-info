@@ -2,6 +2,7 @@
 require_once('config.php');
 require_once('lib/pollution_levels.php');
 require_once('lib/rrd.php');
+require_once('lib/themes.php');
 
 function l($device, $action, $query_args = array()) {
   $link = '/'.$device['name'];
@@ -47,6 +48,22 @@ if (count($uri) > 0) {
   $current_action = array_shift($uri);
 } else {
   $current_action = 'sensors';
+}
+
+$current_theme = 'default';
+$set_cookie = false;
+if (isset($_COOKIE['current_theme'])) {
+  $current_theme = $_COOKIE['current_theme'];
+}
+if (isset($_GET['theme'])) {
+  $current_theme = $_GET['theme'];
+  $set_cookie = true;
+}
+if (!isset(THEMES[$current_theme])) {
+  $current_theme = 'default';
+}
+if ($set_cookie) {
+  setcookie('current_theme', $current_theme, time()+60*60*24*30*12, '/');
 }
 
 if ($device == null) {
