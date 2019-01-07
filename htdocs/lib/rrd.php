@@ -17,6 +17,28 @@ function get_sensor_data($esp8266id) {
   return $sensors;
 }
 
+function get_avg_sensor_data($esp8266id, $hours) {
+  $rrd_file = get_rrd_path($esp8266id);
+  if (!file_exists($rrd_file)) {
+    return array();
+  }
+  $options = array(
+    'AVERAGE',
+    '--start=now-'.$hours.'h');
+  $result = rrd_fetch($rrd_file, $options);
+  $data = $result['data'];
+  foreach ($data as $name => $values) {
+    $filtered = array();
+    foreach ($values as $v) {
+      if (!is_nan($v)) {
+        array_push($filtered, $v);
+      }
+    }
+    $data[$name] = array_sum($filtered) / count($filtered);
+  }
+  return $data;
+}
+
 function create_rrd($esp8266id) {
   $rrd_file = get_rrd_path($esp8266id);
   $options = array(
