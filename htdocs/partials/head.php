@@ -69,7 +69,7 @@
                   <?php endforeach ?>
                   </div>
                 </li>
-                <? endif ?>
+                <?php endif ?>
               </ul>
             </div>
           </nav>
