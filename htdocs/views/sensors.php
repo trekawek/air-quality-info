@@ -23,11 +23,7 @@ if ($pm10_level !== null && $pm25_level !== null) {
     <div class="col-md-8 offset-md-2 text-center">
     <small>Poziom zanieczyszczenia <a href="https://www.airqualitynow.eu/pl/about_indices_definition.php">CAQI</a>:</small>
     <h2>
-      <span
-        class="badge index-cat-<?php echo $max_level; ?>"
-        data-toggle="tooltip"
-        data-placement="bottom"
-        title="<?php echo POLLUTION_LEVELS[$max_level]['desc']; ?>">
+      <span class="badge index-cat-<?php echo $max_level; ?>">
         <?php echo POLLUTION_LEVELS[$max_level]['name']; ?>
       </span>
     </h2>
