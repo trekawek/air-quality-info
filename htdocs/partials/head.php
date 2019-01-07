@@ -50,7 +50,7 @@
                 <?php endforeach ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Wygląd
+                    Motyw
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <?php foreach(THEMES as $name => $desc): ?>
