@@ -38,7 +38,11 @@ function get_avg_sensor_data($esp8266id, $hours) {
         $count++;
       }
     }
-    $data[$name] = $sum / $count;
+    if ($count == 0) {
+      $data[$name] = null;
+    } else {
+      $data[$name] = $sum / $count;
+    }
   }
   return $data;
 }
@@ -176,11 +180,13 @@ function transform_to_walking_average($data, $walking_average_seconds) {
 
   $i = 0;
   for ($j--; $j < $data_size; $j++) {
-    if ($data[$j]['v'] != null) {
+    if ($data[$j]['v'] == null) {
+      $result[$data[$j]['ts']] = null;
+    } else {
       $sum += $data[$j]['v'];
       $count++;
+      $result[$data[$j]['ts']] = $sum / $count;
     }
-    $result[$data[$j]['ts']] = $sum / $count;
     if ($data[$i]['v'] != null) {
       $sum -= $data[$i]['v'];
       $count--;

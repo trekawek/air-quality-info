@@ -21,9 +21,8 @@
 
     <title>Jakość powietrza - <?php echo $device['description']; ?></title>
 
-    <!-- Bootstrap -->
-    <link href="/public/css/themes/<?php echo $current_theme ?>.min.css" rel="stylesheet">
-    <link href="/public/css/style.css?v=1.1" rel="stylesheet">
+    <link rel="stylesheet" href="/public/css/themes/<?php echo $current_theme ?>.min.css" >
+    <link rel="stylesheet" href="/public/css/style.css?v=1.2" >
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,7 +31,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body data-pm10-limit="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit="<?php echo PM25_LIMIT_1H ?>">
+  <body data-pm10-limit1h="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo PM25_LIMIT_24H ?>">
     <div class="container">
       <div class="row">
         <div class="col-md-8 offset-md-2">

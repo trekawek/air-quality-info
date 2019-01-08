@@ -15,20 +15,20 @@ moment.locale('pl');
 
 const CONFIG = document.querySelector('body').dataset;
 
-function renderGraph(ctx, data, type) {
-    function mapToTimeSeries(data) {
-        var result = new Array();
-        for(var timeStamp in data) {
-            if (data.hasOwnProperty(timeStamp)) {
-                result.push({
-                    t: new Date(timeStamp * 1000),
-                    y: data[timeStamp] == null ? null : Math.round(data[timeStamp] * 100) / 100
-                });
-            }
+function mapToTimeSeries(data) {
+    var result = new Array();
+    for(var timeStamp in data) {
+        if (data.hasOwnProperty(timeStamp)) {
+            result.push({
+                t: new Date(timeStamp * 1000),
+                y: data[timeStamp] == null ? null : Math.round(data[timeStamp] * 100) / 100
+            });
         }
-        return result;
     }
+    return result;
+}
 
+function renderGraph(ctx, data, type, avgType) {
     var config = {
         type: 'line',
         options: {
@@ -78,12 +78,24 @@ function renderGraph(ctx, data, type) {
                 display: false
             }
         }];
-        config.options.annotation = {
-            annotations: [{
+
+        var pm25Limit = null;
+        var pm10Limit = null;
+        if (avgType == 1) {
+            pm25Limit = CONFIG.pm25Limit1h;
+            pm10Limit = CONFIG.pm10Limit1h;
+        } else if (avgType == 24) {
+            pm25Limit = CONFIG.pm25Limit24h;
+            pm10Limit = CONFIG.pm10Limit24h;
+        }
+        config.options.annotation = { annotations: [] };
+        
+        if (pm25Limit) {
+            config.options.annotation.annotations.push({
                 type: 'line',
                 mode: 'horizontal',
                 scaleID: 'y-axis-0',
-                value: CONFIG.pm25Limit,
+                value: pm25Limit,
                 borderColor: 'purple',
                 borderWidth: 1,
                 label: {
@@ -92,11 +104,14 @@ function renderGraph(ctx, data, type) {
                   position: 'left',
 		          backgroundColor: 'rgba(0,0,0,0.3)'
                 }
-            },{
+            });
+        }
+        if (pm10Limit) {
+            config.options.annotation.annotations.push({
                 type: 'line',
                 mode: 'horizontal',
                 scaleID: 'y-axis-0',
-                value: CONFIG.pm10Limit,
+                value: pm10Limit,
                 borderColor: 'orange',
                 borderWidth: 1,
                 label: {
@@ -105,9 +120,8 @@ function renderGraph(ctx, data, type) {
                   position: 'left',
 		          backgroundColor: 'rgba(0,0,0,0.3)'
                 }
-            }]
-        };
-    
+            });
+        }
         break;
 
         case 'temperature':
@@ -190,18 +204,19 @@ function updateGraph(graphContainer) {
     var dataset = graphContainer.dataset;
     var type = dataset.type;
     var range = dataset.range;
+    var avgType = dataset.avgType;
     var ctx = graphContainer.querySelector('canvas.graph');
 
     var request = new XMLHttpRequest();
     var url = '/graph_data.json?type=' + type + '&range=' + range;
-    if (type == 'pm') {
-        url += '&ma_h=1';
+    if (typeof dataset.avgType !== 'undefined' && dataset.avgType != 0) {
+        url += '&ma_h=' + dataset.avgType;
     }
     request.open('GET', url, true);
     request.onload = function() {
         if (request.status == 200) {
             var data = JSON.parse(request.responseText);
-            renderGraph(ctx, data, type);
+            renderGraph(ctx, data, type, avgType);
         }
     };
     request.send();
@@ -223,6 +238,23 @@ document.querySelectorAll('.graph-range button').forEach(element => {
         var range = element.dataset.range;
         document.querySelectorAll('.graph-container').forEach(graphContainer => {
             graphContainer.dataset.range = range;
+            updateGraph(graphContainer);
+        });
+    };
+});
+
+document.querySelectorAll('.graph-avg-type button').forEach(element => {
+    element.onclick = ev => {
+        var oldPrimary = document.querySelector('.graph-avg-type button.btn-primary');
+        oldPrimary.classList.remove('btn-primary');
+        oldPrimary.classList.add('btn-secondary');
+
+        element.classList.remove('btn-secondary');
+        element.classList.add('btn-primary');
+        
+        var avgType = element.dataset.avgType;
+        document.querySelectorAll('.graph-container').forEach(graphContainer => {
+            graphContainer.dataset.avgType = avgType;
             updateGraph(graphContainer);
         });
     };
