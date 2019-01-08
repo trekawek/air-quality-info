@@ -7,7 +7,7 @@ if ($_GET['avg_type'] == '24') {
   $current_avg_type = '24';
 }
 
-if ($current_avg_type == '1h') {
+if ($current_avg_type == '1') {
   $averages = get_avg_sensor_data($device['esp8266id'], 1);
   $pm10_thresholds = PM10_THRESHOLDS_1H;
   $pm25_thresholds = PM25_THRESHOLDS_1H;
