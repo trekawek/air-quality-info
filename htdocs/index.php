@@ -1,11 +1,11 @@
 <?php
+session_start();
+
 require_once('config.php');
 require_once('lib/locale.php');
 require_once('lib/pollution_levels.php');
 require_once('lib/rrd.php');
 require_once('lib/themes.php');
-
-session_start();
 
 function l($device, $action, $query_args = array()) {
   $link = '/'.$device['name'];
