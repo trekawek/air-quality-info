@@ -19,7 +19,7 @@
     <link rel="apple-touch-icon" href="/public/img/dragon_white_background.png">
     <link rel="icon" type="image/png" href="/public/img/dragon.png">
 
-    <title><?php echo _('Air quality') ?> - <?php echo $device['description']; ?></title>
+    <title><?php echo __('Air quality') ?> - <?php echo $device['description']; ?></title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
 
@@ -48,14 +48,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
-                <?php foreach(array('sensors' => _('Home'), 'graphs' => _('Graphs'), 'about' => _('About')) as $action => $name): ?>
+                <?php foreach(array('sensors' => __('Home'), 'graphs' => __('Graphs'), 'about' => __('About')) as $action => $name): ?>
                 <li class="nav-item">
                   <a class="nav-link <?php echo ($action == $current_action) ? 'active' : ''; ?>" href="<?php echo l($device, $action); ?>"><?php echo $name; ?></a>
                 </li>
                 <?php endforeach ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo _('Theme') ?>
+                    <?php echo __('Theme') ?>
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <?php foreach(THEMES as $name => $desc): ?>
@@ -66,7 +66,7 @@
                 <?php if (count(CONFIG['devices']) > 1): ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo _('Locations') ?>
+                    <?php echo __('Locations') ?>
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <?php foreach(CONFIG['devices'] as $d): ?>

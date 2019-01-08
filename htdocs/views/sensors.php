@@ -46,7 +46,7 @@ if ($pm10_level === null && $pm25_level === null) {
 ?><?php include('partials/head.php'); ?>
 <div class="row">
     <div class="col-md-8 offset-md-2 text-center">
-    <small><?php echo _('<a href="https://www.airqualitynow.eu/about_indices_definition.php">CAQI</a> index') ?>
+    <small><?php echo __('<a href="https://www.airqualitynow.eu/about_indices_definition.php">CAQI</a> index') ?>
     (<?php
         foreach (array('1' => '1h', '24' => '24h') as $value => $name) {
           if ($current_avg_type == $value) {
@@ -66,7 +66,7 @@ if ($pm10_level === null && $pm25_level === null) {
       </span>
       <?php else: ?>
         <span class="badge badge-dark">
-          <?php echo _('There are no data') ?>
+          <?php echo __('There are no data') ?>
         </span>
       <?php endif ?>
     </h2>
@@ -81,9 +81,9 @@ if ($pm10_level === null && $pm25_level === null) {
     <table class="table">
       <thead>
         <tr>
-          <th scope="col"><?php echo _('Name') ?></th>
-          <th scope="col" colspan="2"><?php echo _('Value') ?></th>
-          <th scope="col"><?php echo _('Index') ?></th>
+          <th scope="col"><?php echo __('Name') ?></th>
+          <th scope="col" colspan="2"><?php echo __('Value') ?></th>
+          <th scope="col"><?php echo __('Index') ?></th>
         </tr>
       </thead>
       <tbody>
@@ -108,7 +108,7 @@ if ($pm10_level === null && $pm25_level === null) {
             | <?php echo round($sensors['PRESSURE'], 0) ?> hPa
             <?php endif ?>
             <?php if ($sensors['HUMIDITY'] !== null): ?>
-            | <?php echo _('Humidity') ?>: <?php echo round($sensors['HUMIDITY'], 0) ?>%
+            | <?php echo __('Humidity') ?>: <?php echo round($sensors['HUMIDITY'], 0) ?>%
             <?php endif ?>
           </td>
         </tr>
@@ -117,7 +117,7 @@ if ($pm10_level === null && $pm25_level === null) {
     <?php endif ?>
     <div class="graph-container" data-range="day" data-type="pm" data-avg-type="<?php echo $current_avg_type ?>">
       <canvas class="graph"></canvas>
-      <?php echo _('Last update') ?>: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?>.</small>
+      <?php echo __('Last update') ?>: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?>.</small>
     </div>
   </div>
 </div>

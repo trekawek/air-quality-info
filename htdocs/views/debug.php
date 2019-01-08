@@ -13,18 +13,18 @@ if (file_exists($json_path)) {
 unset($sensors['last_update']);
 ?><?php include('partials/head.php'); ?>
 <dl class="row">
-  <dt class="col-md-3 offset-md-2"><?php echo _('Sensor ID') ?></dt>
+  <dt class="col-md-3 offset-md-2"><?php echo __('Sensor ID') ?></dt>
   <dd class="col-md-5"><?php echo $device['esp8266id'] ?></dd>
 
 <?php if ($json): ?>
-  <dt class="col-md-3 offset-md-2"><?php echo _('Firmware version') ?></dt>
+  <dt class="col-md-3 offset-md-2"><?php echo __('Firmware version') ?></dt>
   <dd class="col-md-5"><?php echo $json['software_version'] ?></dd>
 <?php endif ?>
 
-  <dt class="col-md-3 offset-md-2"><?php echo _('Last update') ?></dt>
+  <dt class="col-md-3 offset-md-2"><?php echo __('Last update') ?></dt>
   <dd class="col-md-5"><?php echo date("Y-m-d H:i:s", $last_update); ?></dd>
 
-  <dt class="col-md-3 offset-md-2"><?php echo _('Values stored in RRD') ?></dt>
+  <dt class="col-md-3 offset-md-2"><?php echo __('Values stored in RRD') ?></dt>
   <dd class="col-md-5">
     <dl class="row">
       <?php foreach($sensors as $key => $value): ?>
@@ -35,7 +35,7 @@ unset($sensors['last_update']);
   </dd>
 
   <?php if ($json): ?>
-  <dt class="col-md-3 offset-md-2"><?php echo _('Received JSON') ?></dt>
+  <dt class="col-md-3 offset-md-2"><?php echo __('Received JSON') ?></dt>
   <dd class="col-md-5">
     <dl class="row">
       <?php foreach($json['sensordatavalues'] as $e): ?>

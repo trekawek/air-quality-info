@@ -1,5 +1,5 @@
 <?php
-function _($msg) {
+function __($msg) {
     global $locale;
     global $current_lang;
 

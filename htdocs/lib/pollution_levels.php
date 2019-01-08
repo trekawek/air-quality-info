@@ -1,11 +1,11 @@
 <?php
 // http://powietrze.gios.gov.pl/pjp/current
 define('POLLUTION_LEVELS', array(
-  array('name' => _('Very low')),
-  array('name' => _('Low')),
-  array('name' => _('Medium')),
-  array('name' => _('High')),
-  array('name' => _('Very high')),
+  array('name' => __('Very low')),
+  array('name' => __('Low')),
+  array('name' => __('Medium')),
+  array('name' => __('High')),
+  array('name' => __('Very high')),
 ));
 
 define('PM10_THRESHOLDS_1H',  array(0, 25, 50, 90, 180));

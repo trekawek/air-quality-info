@@ -17,7 +17,7 @@ window.chartColors = {
 
 moment.locale(CONFIG.currentLang);
 
-function _(msg) {
+function __(msg) {
     if (typeof LOCALE[msg] != 'undefined') {
         return LOCALE[msg];
     } else {
@@ -141,13 +141,13 @@ function renderGraph(ctx, data, type, avgType) {
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.red,
-                label: _('Temperature') + ' (°C)',
+                label: __('Temperature') + ' (°C)',
                 data: mapToTimeSeries(data.data.TEMPERATURE),
                 borderWidth: 2,
                 fill: false
             },{
                 borderColor: window.chartColors.lightRed,
-                label: _('Detector temperature') + '(°C)',
+                label: __('Detector temperature') + '(°C)',
                 data: mapToTimeSeries(data.data.HEATER_TEMPERATURE),
                 borderWidth: 2,
                 fill: false,
@@ -166,7 +166,7 @@ function renderGraph(ctx, data, type, avgType) {
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.green,
-                label: _('Pressure') + ' (hPa)',
+                label: __('Pressure') + ' (hPa)',
                 data: mapToTimeSeries(data.data.PRESSURE),
                 borderWidth: 2,
                 fill: false
@@ -184,13 +184,13 @@ function renderGraph(ctx, data, type, avgType) {
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.blue,
-                label: _('Humidity') + ' (%)',
+                label: __('Humidity') + ' (%)',
                 data: mapToTimeSeries(data.data.HUMIDITY),
                 borderWidth: 2,
                 fill: false
             },{
                 borderColor: window.chartColors.lightBlue,
-                label: _('Detector humidity') + ' (%)',
+                label: __('Detector humidity') + ' (%)',
                 data: mapToTimeSeries(data.data.HEATER_HUMIDITY),
                 borderWidth: 2,
                 fill: false,
