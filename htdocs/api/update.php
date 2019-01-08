@@ -1,11 +1,21 @@
 <?php
+define('VALUE_MAPPING', array(
+  'pm10'        => 'SDS_P1',
+  'pm25'        => 'SDS_P2',
+  'temperature' => 'BME280_temperature',
+  'humidity'    => 'BME280_humidity',
+  'pressure'    => 'BME280_pressure',
+  'heater_temperature' => 'temperature',
+  'heater_humidity'    => 'humidity',
+  'gps_time'    => 'GPS_time',
+  'gps_date'    => 'GPS_date',
+));
+
 function read_value($device, $value_name, $sensor_values, $undefined_value = null) {
   $value = null;
-  if (isset($device['value_mapping'][$value_name])) {
-    $mapped_name = $device['value_mapping'][$value_name];
-    if ($mapped_name && isset($sensor_values[$mapped_name])) {
-      $value = $sensor_values[$mapped_name];
-    }
+  $mapped_name = VALUE_MAPPING[$value_name];
+  if ($mapped_name && isset($sensor_values[$mapped_name])) {
+    $value = $sensor_values[$mapped_name];
   }
   return $value == null ? $undefined_value : $value;
 }

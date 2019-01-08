@@ -1,3 +1,6 @@
+<?php
+$sensors = get_sensor_data($device['esp8266id']);
+?>
 <?php include('partials/head.php'); ?>
 <p></p>
 <div class="row">
@@ -17,16 +20,16 @@
 </div>
 <?php
 $graphs = array();
-if (isset($device['value_mapping']['pm10']) || isset($device['value_mapping']['pm25'])) {
+if ($sensors['PM10'] !== null || $sensors['PM25'] !== null) {
   $graphs['pm'] = __('PM');
 }
-if (isset($device['value_mapping']['temperature'])) {
+if ($sensors['TEMPERATURE'] !== null) {
   $graphs['temperature'] = __('Temperature');
 }
-if (isset($device['value_mapping']['humidity'])) {
+if ($sensors['HUMIDITY'] !== null) {
   $graphs['humidity'] = __('Humidity');
 }
-if (isset($device['value_mapping']['pressure'])) {
+if ($sensors['PRESSURE'] !== null) {
   $graphs['pressure'] = __('Pressure');
 }
 $i = 0;
