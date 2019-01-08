@@ -117,7 +117,7 @@ if ($pm10_level === null && $pm25_level === null) {
     <?php endif ?>
     <div class="graph-container" data-range="day" data-type="pm" data-avg-type="<?php echo $current_avg_type ?>">
       <canvas class="graph"></canvas>
-      <small><a href="<?php echo l($device, 'graphs'); ?>">Zobacz wszystkie wykresy</a>.<br/>Ostatnia aktualizacja: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?>.</small>
+      Ostatnia aktualizacja: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?>.</small>
     </div>
   </div>
 </div>
