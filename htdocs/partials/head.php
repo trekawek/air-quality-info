@@ -36,7 +36,7 @@
       <div class="row">
         <div class="col-md-8 offset-md-2">
           <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <a href="<?php echo l($device, 'sensors'); ?>" class="navbar-left"><img src="/public/img/dragon.png"/></a>
+            <a href="<?php echo l($device, 'sensors'); ?>" class="navbar-left navbar-brand"><img src="/public/img/dragon.png"/> Air Quality Info</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Nawigacja">
               <span class="navbar-toggler-icon"></span>
             </button>
