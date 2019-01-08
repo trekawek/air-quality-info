@@ -13,6 +13,7 @@ This PHP-based page allows to display the current PM10 and PM2.5 measurements ma
 * Graphs rendered with ChartJS
 * No external database required
 * Support for multiple devices
+* Locale support
 
 ## Requirements
 
