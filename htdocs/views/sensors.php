@@ -3,7 +3,7 @@ date_default_timezone_set('Europe/Warsaw');
 
 $sensors = get_sensor_data($device['esp8266id']);
 $current_avg_type = '1';
-if ($_GET['avg_type'] == '24') {
+if (isset($_GET['avg_type']) && $_GET['avg_type'] == '24') {
   $current_avg_type = '24';
 }
 
