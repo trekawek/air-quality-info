@@ -54,7 +54,15 @@ function renderGraph(ctx, data, type, avgType) {
             scales: {
                 xAxes: [{
                     display: true,
-                    type: 'time'
+                    type: 'time',
+                    time: {
+                        displayFormats: {
+                            millisecond: 'HH:mm:ss.SSS',
+                            second: 'HH:mm:ss',
+                            minute: 'HH:mm',
+                            hour: 'HH',
+                        }
+                    }    
                 }]
             },
             elements: {
