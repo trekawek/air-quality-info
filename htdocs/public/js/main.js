@@ -112,7 +112,7 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: 'purple',
                 borderWidth: 1,
                 label: {
-                  content: 'Norma PM₂₅',
+                  content: __('PM₂₅ limit'),
                   enabled: true,
                   position: 'left',
 		          backgroundColor: 'rgba(0,0,0,0.3)'
@@ -128,7 +128,7 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: 'orange',
                 borderWidth: 1,
                 label: {
-                  content: 'Norma PM₁₀',
+                  content: __('PM₁₀ limit'),
                   enabled: true,
                   position: 'left',
 		          backgroundColor: 'rgba(0,0,0,0.3)'
