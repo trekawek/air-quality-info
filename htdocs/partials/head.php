@@ -69,6 +69,9 @@
                   </div>
                 </li>
                 <?php endif ?>
+                <li class="nav-item">
+                  <a class="nav-link <?php echo ('debug' == $current_action) ? 'active' : ''; ?>" href="<?php echo l($device, 'debug'); ?>"><?php echo 'Czujnik'; ?></a>
+                </li>
               </ul>
             </div>
           </nav>

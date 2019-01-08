@@ -94,6 +94,10 @@ switch ($current_action) {
   require('views/graphs.php');
   break;
 
+  case 'debug':
+  require('views/debug.php');
+  break;
+
   case 'sensors':
   default:
   require('views/sensors.php');
