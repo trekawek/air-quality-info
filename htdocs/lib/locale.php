@@ -25,11 +25,11 @@ if (isset($_GET['lang'])) {
 if (!isset($supported_languages[$current_lang])) {
     $current_lang = null;
 }
-if ($current_lang === null) {
+if ($current_lang === null && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
     $current_lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-    if (!isset($supported_languages[$current_lang])) {
-        $current_lang = 'en';
-    }
+}
+if ($current_lang === null || !isset($supported_languages[$current_lang])) {
+    $current_lang = 'en';
 }
 $_SESSION['lang'] = $current_lang;
 
