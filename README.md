@@ -31,3 +31,13 @@ The web server should redirect all the requests for unknown paths to the [htdocs
 3. Upload the files from the [htdocs](htdocs) directory to the web server.
 4. Make sure that the web server has permissions to create files in the [htdocs/data](htdocs/data) directory.
 5. Configure the Wemos-based detector to send data to the *own API*. Use username and password the same as in the `config.php`. The path should reference the path: `/DEVICE_NAME/update`, where the `DEVICE_NAME` matches the one set in `config.php`.
+
+## Deployment script
+
+[install.sh](install.sh) is an interactive script can be used to setup nginx, PHP and Air Quality Dashboard on a Debian Stretch server. It can be run with a single command:
+
+```
+curl https://raw.githubusercontent.com/trekawek/air-quality-info/master/install.sh | bash -e
+```
+
+Remember to review the script before running the command below. 
