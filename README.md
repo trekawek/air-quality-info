@@ -34,11 +34,16 @@ The web server should redirect all the requests for unknown paths to the [htdocs
 
 ## Deployment script
 
-[install.sh](install.sh) is an interactive script can be used to setup nginx, PHP and Air Quality Dashboard on a Debian Stretch server. It can be run with a single command:
+[install.sh](install.sh) is an interactive script can be used to setup nginx, PHP and Air Quality Dashboard on a Linux server. It can be run with a single command:
 
 ```
 curl https://raw.githubusercontent.com/trekawek/air-quality-info/master/install.sh > /tmp/install.sh
 bash -e /tmp/install.sh
 ```
 
-Remember to review the script before running the command below. 
+Remember to review the script before running the command below.
+
+The supported Linux distributions:
+
+* Debian 9 Stretch
+* Ubuntu 18.04 Bionic
