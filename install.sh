@@ -52,7 +52,6 @@ if [ "${domain}" == 'default_server' ]; then
 fi
 
 echo "Downloading Air Quality Info..."
-mkdir -p /var/www/air-quality-info
 curl -L https://github.com/trekawek/air-quality-info/archive/master.zip > /tmp/air-quality-info.zip
 
 if [ -d /var/www/air-quality-info ]; then
@@ -62,7 +61,7 @@ fi
 
 echo "Unpacking the htdocs"
 unzip -q /tmp/air-quality-info.zip -d /tmp
-mv /tmp/air-quality-info-master/htdocs/* /var/www/air-quality-info
+mv /tmp/air-quality-info-master/htdocs /var/www/air-quality-info
 rm -rf /tmp/air-quality-info-master
 
 if [ -d /tmp/air-quality-info.old ]; then
