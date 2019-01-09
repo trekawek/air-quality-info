@@ -1,7 +1,6 @@
 # Air Quality Info
 
-<a href="README-en.md"><img src="htdocs/public/img/flags/en.png"/></a>
-<a href="README-pl.md"><img src="htdocs/public/img/flags/pl.png"/></a>
+<a href="README-pl.md"><img src="htdocs/public/img/flags/pl.png" height="30"/></a>
 
 This PHP-based page allows to display the current PM10 and PM2.5 measurements made by the Luftdaten.info-compatible device.
 
