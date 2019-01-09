@@ -65,7 +65,7 @@ if [ "${domain}" == '_' ]; then
 fi
 
 echo "Downloading Air Quality Info..."
-curl -L https://github.com/trekawek/air-quality-info/archive/master.zip > /tmp/air-quality-info.zip
+curl -s -L https://github.com/trekawek/air-quality-info/archive/master.zip > /tmp/air-quality-info.zip
 
 if [ -d /var/www/air-quality-info ]; then
     echo "Moving the old installation"
