@@ -13,7 +13,7 @@ echo "It's ${server_ip}"
 if [ -e /etc/nginx/sites-available/air-quality-info ]; then
     echo "nginx config already exists, skipping..."
 else
-    read -e -p 'Enter the site domain (or press Enter to just use IP ${server_ip}): ' domain
+    read -e -p "Enter the site domain (or press Enter to just use IP ${server_ip}): " domain
 
     echo "Creating nginx config..."
     cat <<EOF > /etc/nginx/sites-available/air-quality-info
@@ -55,9 +55,22 @@ echo "Downloading Air Quality Info..."
 mkdir -p /var/www/air-quality-info
 curl -L https://github.com/trekawek/air-quality-info/archive/master.zip > /tmp/air-quality-info.zip
 
+if [ -d /var/www/air-quality-info ]; then
+    echo "Moving the old installation"
+    mv /var/www/air-quality-info /tmp/air-quality-info.old
+fi
+
 echo "Unpacking the htdocs"
 unzip -q /tmp/air-quality-info.zip -d /tmp
 mv /tmp/air-quality-info-master/htdocs/* /var/www/air-quality-info
+rm -rf /tmp/air-quality-info-master
+
+if [ -d /tmp/air-quality-info.old ]; then
+    echo "Restoring config and data"
+    mv /tmp/air-quality-info.old/data/* /var/www/air-quality-info/data
+    mv /tmp/air-quality-info.old/config.php /var/www/air-quality-info/config.php
+    rm -rf /tmp/air-quality-info.old
+fi
 
 if [ -e /var/www/air-quality-info/config.php ]; then
     echo "Air Quality Info config already exists, skipping..."
