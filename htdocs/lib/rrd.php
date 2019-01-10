@@ -44,6 +44,14 @@ function get_avg_sensor_data($esp8266id, $hours) {
       $data[$name] = $sum / $count;
     }
   }
+  
+  $last_update = get_sensor_data($esp8266id);
+  foreach ($data as $k => $v) {
+    if ($v === null) {
+      $data[$k] = $last_update[$k];
+    }
+  }
+
   return $data;
 }
 
