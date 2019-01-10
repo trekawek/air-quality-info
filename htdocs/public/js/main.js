@@ -41,6 +41,18 @@ function mapToTimeSeries(data) {
     return result;
 }
 
+function isEmptyData(data) {
+    for(var timeStamp in data) {
+        if (data.hasOwnProperty(timeStamp)) {
+            if (data[timeStamp] !== null) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
 function renderGraph(ctx, data, type, avgType) {
     var config = {
         type: 'line',
@@ -153,15 +165,17 @@ function renderGraph(ctx, data, type, avgType) {
                 data: mapToTimeSeries(data.data.TEMPERATURE),
                 borderWidth: 2,
                 fill: false
-            },{
+            }]};
+        if (!isEmptyData(data.data.HEATER_TEMPERATURE)) {
+            config.data.datasets.push({
                 borderColor: window.chartColors.lightRed,
                 label: __('Detector temperature') + '(°C)',
                 data: mapToTimeSeries(data.data.HEATER_TEMPERATURE),
                 borderWidth: 2,
                 fill: false,
                 hidden: true
-            }]
-        };
+            });
+        }
         config.options.scales.yAxes = [{
             display: true,
             scaleLabel: {
@@ -196,15 +210,17 @@ function renderGraph(ctx, data, type, avgType) {
                 data: mapToTimeSeries(data.data.HUMIDITY),
                 borderWidth: 2,
                 fill: false
-            },{
+            }]};
+        if (!isEmptyData(data.data.HEATER_HUMIDITY)) {
+            config.data.datasets.push({
                 borderColor: window.chartColors.lightBlue,
                 label: __('Detector humidity') + ' (%)',
                 data: mapToTimeSeries(data.data.HEATER_HUMIDITY),
                 borderWidth: 2,
                 fill: false,
                 hidden: true
-            }]
-        };
+            });
+        }
         config.options.scales.yAxes = [{
             display: true,
             scaleLabel: {
