@@ -3,9 +3,11 @@ session_start();
 
 require_once('config.php');
 require_once('lib/locale.php');
+require_once('lib/math.php');
 require_once('lib/pollution_levels.php');
-require_once('lib/rrd.php');
 require_once('lib/themes.php');
+require_once('db/dao.php');
+require_once('db/rrd.php');
 
 function l($device, $action, $query_args = array()) {
   $link = '/'.$device['name'];
@@ -59,6 +61,8 @@ if ($device == null) {
     .($_SERVER['QUERY_STRING'] ? '?'.$_SERVER['QUERY_STRING'] : ''));
   exit;
 }
+
+$dao = new RRRDao($device['esp8266id']);
 
 switch ($current_action) {
   case 'update':

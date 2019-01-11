@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set('Europe/Warsaw');
-$sensors = get_sensor_data($device['esp8266id']);
+$sensors = $dao->getLastData();
 
 $json_path = 'data/'.$device['esp8266id'].'.json';
 if (file_exists($json_path)) {

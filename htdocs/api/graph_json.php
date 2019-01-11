@@ -1,5 +1,5 @@
 <?php
-$data = get_data($device['esp8266id'],
+$data = $dao->getHistoricData(
   isset($_GET['type']) ? $_GET['type'] : 'pm',
   isset($_GET['range']) ? $_GET['range'] : 'day',
   isset($_GET['ma_h']) ? $_GET['ma_h'] : null

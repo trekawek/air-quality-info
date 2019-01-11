@@ -5,7 +5,7 @@ if (!($_SERVER['PHP_AUTH_USER'] == $device['user'] && $_SERVER['PHP_AUTH_PW'] ==
   exit;
 }
 
-create_rrd($device['esp8266id']);
+$dao->createDb();
 
 echo "RRD file migrated";
 ?>

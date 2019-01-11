@@ -1,20 +1,21 @@
 <?php
 date_default_timezone_set('Europe/Warsaw');
 
-$sensors = get_sensor_data($device['esp8266id']);
+$sensors = $dao->getLastData();
+
 $current_avg_type = '1';
 if (isset($_GET['avg_type']) && $_GET['avg_type'] == '24') {
   $current_avg_type = '24';
 }
 
 if ($current_avg_type == '1') {
-  $averages = get_avg_sensor_data($device['esp8266id'], 1);
+  $averages = $dao->getLastAvg(1);
   $pm10_thresholds = PM10_THRESHOLDS_1H;
   $pm25_thresholds = PM25_THRESHOLDS_1H;
   $pm10_limit = PM10_LIMIT_1H;
   $pm25_limit = PM25_LIMIT_1H;
 } else {
-  $averages = get_avg_sensor_data($device['esp8266id'], 24);
+  $averages = $dao->getLastAvg(24);
   $pm10_thresholds = PM10_THRESHOLDS_24H;
   $pm25_thresholds = PM25_THRESHOLDS_24H;
   $pm10_limit = PM10_LIMIT_24H;

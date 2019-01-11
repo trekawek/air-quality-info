@@ -1,5 +1,5 @@
 <?php
-$sensors = get_sensor_data($device['esp8266id']);
+$sensors = $dao->getLastData();
 ?>
 <?php include('partials/head.php'); ?>
 <p></p>
