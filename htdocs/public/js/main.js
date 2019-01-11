@@ -273,6 +273,11 @@ document.querySelectorAll('.graph-range button').forEach(element => {
         element.classList.add('btn-primary');
         
         var range = element.dataset.range;
+        if (range == 'day') {
+            selectAvgType(1);
+        } else {
+            selectAvgType(24);
+        }
         document.querySelectorAll('.graph-container').forEach(graphContainer => {
             graphContainer.dataset.range = range;
             updateGraph(graphContainer);
@@ -280,18 +285,25 @@ document.querySelectorAll('.graph-range button').forEach(element => {
     };
 });
 
+function selectAvgType(avgType) {
+    var oldPrimary = document.querySelector('.graph-avg-type button.btn-primary');
+    oldPrimary.classList.remove('btn-primary');
+    oldPrimary.classList.add('btn-secondary');
+
+    var element = document.querySelector('.graph-avg-type button[data-avg-type="' + avgType + '"]')
+    element.classList.remove('btn-secondary');
+    element.classList.add('btn-primary');
+
+    document.querySelectorAll('.graph-container').forEach(graphContainer => {
+        graphContainer.dataset.avgType = avgType;
+    });
+}
+
 document.querySelectorAll('.graph-avg-type button').forEach(element => {
     element.onclick = ev => {
-        var oldPrimary = document.querySelector('.graph-avg-type button.btn-primary');
-        oldPrimary.classList.remove('btn-primary');
-        oldPrimary.classList.add('btn-secondary');
-
-        element.classList.remove('btn-secondary');
-        element.classList.add('btn-primary');
-        
         var avgType = element.dataset.avgType;
+        selectAvgType(avgType);        
         document.querySelectorAll('.graph-container').forEach(graphContainer => {
-            graphContainer.dataset.avgType = avgType;
             updateGraph(graphContainer);
         });
     };
