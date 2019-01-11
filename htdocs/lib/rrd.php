@@ -66,14 +66,17 @@ function create_rrd($esp8266id) {
     'DS:HUMIDITY:GAUGE:5m:0:100',
     'DS:HEATER_TEMPERATURE:GAUGE:5m:-100:100',
     'DS:HEATER_HUMIDITY:GAUGE:5m:0:100',
-    'RRA:AVERAGE:0.5:3m:24h',
-    'RRA:AVERAGE:0.5:15m:35d',
-    'RRA:AVERAGE:0.5:12h:1y'
+    'RRA:AVERAGE:0.5:3m:2d',
+    'RRA:AVERAGE:0.5:15m:2w',
+    'RRA:AVERAGE:0.5:90m:62d',
+    'RRA:AVERAGE:0.5:12h:2y'
   );
   if (file_exists($rrd_file)) {
     array_push($options, '--source='.$rrd_file);
   }
-  rrd_create($rrd_file, $options);
+  if (!rrd_create($rrd_file, $options)) {
+    error_log(rrd_error());
+  }
 }
 
 function update_rrd($esp8266id, $time, $pm25, $pm10, $temp, $press, $hum, $heater_temp, $heater_hum) {
@@ -96,9 +99,9 @@ function get_data($esp8266id, $type = 'pm', $range = 'day', $walking_average_hou
   switch ($range) {
     case 'week':
     if ($walking_average_hours !== null) {
-      array_push($options, '--start=now-'.($walking_average_hours+24*7).'h', "--resolution=3m");
+      array_push($options, '--start=now-'.($walking_average_hours + 24 * 7).'h', "--resolution=15m");
     } else {
-      array_push($options, '--start=now-7d', "--resolution=3m");
+      array_push($options, '--start=now-7d', "--resolution=15m");
     }
     break;
 
@@ -113,7 +116,7 @@ function get_data($esp8266id, $type = 'pm', $range = 'day', $walking_average_hou
     case 'day':
     default:
     if ($walking_average_hours !== null) {
-      array_push($options, '--start=now-'.($walking_average_hours+24).'h', "--resolution=3m");
+      array_push($options, '--start=now-'.($walking_average_hours + 24).'h', "--resolution=3m");
     } else {
       array_push($options, '--start=now-24h', "--resolution=3m");
     }
