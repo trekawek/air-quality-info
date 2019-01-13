@@ -1,8 +1,30 @@
-version: '3'
+version: '3.4'
+
+x-mysql-variables: &mysql-variables
+    MYSQL_DATABASE: air_quality_info
+    MYSQL_USER: air_quality_info
+    MYSQL_PASSWORD: test
+    MYSQL_ROOT_PASSWORD: test
+
 services:
   web:
     build: .
+    environment: *mysql-variables
     ports:
     - "8080:80"
     volumes:
     - ./src:/opt/air-quality-info
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment: *mysql-variables
+    ports:
+    - "8081:80"
+
+  db:
+    image: mysql:5
+    environment: *mysql-variables
+    ports:
+    - "3306:3306"
+    volumes:
+    - ./mysql-data:/var/lib/mysql

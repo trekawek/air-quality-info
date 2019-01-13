@@ -1,5 +1,5 @@
-htdocs/data.rrd
-htdocs/config.php
-htdocs/data/*.rrd
-htdocs/data/*.json
+src/htdocs/data.rrd
+src/htdocs/config.php
+src/htdocs/data/*.rrd
+src/htdocs/data/*.json
 mysql-data
