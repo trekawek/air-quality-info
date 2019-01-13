@@ -77,12 +77,12 @@ Informacje z sekcji "Configuration" należy przepisać do ustawień czujnika. Vo
 
 ### Konfiguracja serwera WWW
 
-Serwer WWW powinien przekierować wszystkie żądania do nieznanych ścieżek do strony [htdocs/index.php](htdocs/index.php). Apache2 będzie skonfigurowany automatycznie dzięki dołączonemu plikowi [.htaccess](htdocs/.htaccess) (wymaga mod_rewrite). Dla nginxa, dostępna jest [przykładowa konfiguracja](docs/sample-nginx.conf).
+Serwer WWW powinien przekierować wszystkie żądania do nieznanych ścieżek do strony [htdocs/index.php](src/htdocs/index.php). Apache2 będzie skonfigurowany automatycznie dzięki dołączonemu plikowi [.htaccess](src/htdocs/.htaccess) (wymaga mod_rewrite). Dla nginxa, dostępna jest [przykładowa konfiguracja](docs/sample-nginx.conf).
 
 ### Kroki instalacji
 
 1. Sklonuj lub ściągnij to repozytorium.
-2. Skopiuj plik [htdocs/config-empty.php](htdocs/config-empty.php) do `htdocs/config.php`. Wpisz nazwę użytkownika, hasło i ID sensora.
-3. Skopiuj katalog [htdocs](htdocs) do serwera web.
-4. Upewnij się, że serwer ma prawo zapisu w katalogu [htdocs/data](htdocs/data).
+2. Skopiuj plik [htdocs/config-empty.php](src/htdocs/config-empty.php) do `config.php`. Wpisz nazwę użytkownika, hasło i ID sensora.
+3. Skopiuj katalog [htdocs](src/htdocs) do serwera web.
+4. Upewnij się, że serwer ma prawo zapisu w katalogu [htdocs/data](src/htdocs/data).
 5. Skonfiguruj detektor, aby wysyłał dane *własnego API*. Nazwa użytkownika i hasło powinny być takie jak w pliku `config.php`. Ścieżka to: `/main/update`, gdzie `main` odnosi się do nazwy urządzenia w pliku `config.php`.

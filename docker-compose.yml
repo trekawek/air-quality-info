@@ -5,4 +5,4 @@ services:
     ports:
     - "8080:80"
     volumes:
-    - ./htdocs:/var/www/html
+    - ./src:/opt/air-quality-info

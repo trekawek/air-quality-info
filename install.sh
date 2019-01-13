@@ -75,7 +75,7 @@ fi
 echo "Unpacking the htdocs"
 unzip -q /tmp/air-quality-info.zip -d /tmp
 rm /tmp/air-quality-info.zip
-mv /tmp/air-quality-info-master/htdocs /var/www/air-quality-info
+mv /tmp/air-quality-info-master/src/htdocs /var/www/air-quality-info
 rm -rf /tmp/air-quality-info-master
 
 if [ -d /tmp/air-quality-info.old ]; then
