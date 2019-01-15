@@ -22,20 +22,20 @@ if ($current_avg_type == '1') {
   $pm25_limit = PM25_LIMIT_24H;
 }
 
-if ($averages['PM10'] === null) {
+if ($averages['pm10'] === null) {
   $pm10_level = null;
   $rel_pm10 = null;
 } else {
-  $pm10_level = find_level($pm10_thresholds, $averages['PM10']);
-  $rel_pm10 = 100 * $averages['PM10'] / $pm10_limit;
+  $pm10_level = find_level($pm10_thresholds, $averages['pm10']);
+  $rel_pm10 = 100 * $averages['pm10'] / $pm10_limit;
 }
 
-if ($averages['PM25'] === null) {
+if ($averages['pm25'] === null) {
   $pm25_level = null;
   $rel_pm25 = null;
 } else {
-  $pm25_level = find_level($pm25_thresholds, $averages['PM25']);
-  $rel_pm25 = 100 * $averages['PM25'] / $pm25_limit;
+  $pm25_level = find_level($pm25_thresholds, $averages['pm25']);
+  $rel_pm25 = 100 * $averages['pm25'] / $pm25_limit;
 }
 
 if ($pm10_level === null && $pm25_level === null) {
@@ -90,33 +90,33 @@ if ($pm10_level === null && $pm25_level === null) {
       <tbody>
         <tr class="index-cat-<?php echo $pm25_level ?>">
           <th scope="row">PM<sub>2.5</sub></th>
-          <td><?php echo round($averages['PM25'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
+          <td><?php echo round($averages['pm25'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
           <td><?php echo round($rel_pm25, 0); ?>%</td>
           <td><?php echo POLLUTION_LEVELS[$pm25_level]['name']; ?></td>
         </tr>
         <tr class="index-cat-<?php echo $pm10_level ?>">
           <th scope="row">PM<sub>10</sub></th>
-          <td><?php echo round($averages['PM10'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
+          <td><?php echo round($averages['pm10'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
           <td><?php echo round($rel_pm10, 0); ?>%</td>
           <td><?php echo POLLUTION_LEVELS[$pm10_level]['name']; ?></td>
         </tr>
         <tr>
           <td colspan="4" class="weather-measurements">
-            <?php if ($sensors['TEMPERATURE'] !== null): ?>
-            <?php echo round($sensors['TEMPERATURE'], 1) ?> &deg;C
+            <?php if ($sensors['temperature'] !== null): ?>
+            <?php echo round($sensors['temperature'], 1) ?> &deg;C
             <?php endif ?>
-            <?php if ($sensors['PRESSURE'] !== null): ?>
-            | <?php echo round($sensors['PRESSURE'], 0) ?> hPa
+            <?php if ($sensors['pressure'] !== null): ?>
+            | <?php echo round($sensors['pressure'], 0) ?> hPa
             <?php endif ?>
-            <?php if ($sensors['HUMIDITY'] !== null): ?>
-            | <?php echo __('Humidity') ?>: <?php echo round($sensors['HUMIDITY'], 0) ?>%
+            <?php if ($sensors['humidity'] !== null): ?>
+            | <?php echo __('Humidity') ?>: <?php echo round($sensors['humidity'], 0) ?>%
             <?php endif ?>
           </td>
         </tr>
       </tbody>
     </table>
     <?php endif ?>
-    <?php if ($sensors['PM10'] !== null || $sensors['PM25'] !== null): ?>
+    <?php if ($sensors['pm10'] !== null || $sensors['pm25'] !== null): ?>
     <div class="graph-container" data-range="day" data-type="pm" data-avg-type="<?php echo $current_avg_type ?>">
       <canvas class="graph"></canvas>
       <?php echo __('Last update') ?>: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?>.</small>

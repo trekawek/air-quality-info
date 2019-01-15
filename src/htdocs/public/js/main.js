@@ -95,13 +95,13 @@ function renderGraph(ctx, data, type, avgType) {
                 backgroundColor: window.chartColors.purple,
                 borderColor: window.chartColors.red,
                 label: 'PM₂₅ (µg/m³)',
-                data: mapToTimeSeries(data.data.PM25),
+                data: mapToTimeSeries(data.data.pm25),
                 borderWidth: 1
             }, {
                 backgroundColor: window.chartColors.orange,
                 borderColor: window.chartColors.red,
                 label: 'PM₁₀ (µg/m³)',
-                data: mapToTimeSeries(data.data.PM10),
+                data: mapToTimeSeries(data.data.pm10),
                 borderWidth: 1
             }]
         };
@@ -162,15 +162,15 @@ function renderGraph(ctx, data, type, avgType) {
             datasets: [{
                 borderColor: window.chartColors.red,
                 label: __('Temperature') + ' (°C)',
-                data: mapToTimeSeries(data.data.TEMPERATURE),
+                data: mapToTimeSeries(data.data.temperature),
                 borderWidth: 2,
                 fill: false
             }]};
-        if (!isEmptyData(data.data.HEATER_TEMPERATURE)) {
+        if (!isEmptyData(data.data.heater_temperature)) {
             config.data.datasets.push({
                 borderColor: window.chartColors.lightRed,
                 label: __('Detector temperature') + '(°C)',
-                data: mapToTimeSeries(data.data.HEATER_TEMPERATURE),
+                data: mapToTimeSeries(data.data.heater_temperature),
                 borderWidth: 2,
                 fill: false,
                 hidden: true
@@ -189,7 +189,7 @@ function renderGraph(ctx, data, type, avgType) {
             datasets: [{
                 borderColor: window.chartColors.green,
                 label: __('Pressure') + ' (hPa)',
-                data: mapToTimeSeries(data.data.PRESSURE),
+                data: mapToTimeSeries(data.data.pressure),
                 borderWidth: 2,
                 fill: false
             }]
@@ -207,15 +207,15 @@ function renderGraph(ctx, data, type, avgType) {
             datasets: [{
                 borderColor: window.chartColors.blue,
                 label: __('Humidity') + ' (%)',
-                data: mapToTimeSeries(data.data.HUMIDITY),
+                data: mapToTimeSeries(data.data.humidity),
                 borderWidth: 2,
                 fill: false
             }]};
-        if (!isEmptyData(data.data.HEATER_HUMIDITY)) {
+        if (!isEmptyData(data.data.heater_humidity)) {
             config.data.datasets.push({
                 borderColor: window.chartColors.lightBlue,
                 label: __('Detector humidity') + ' (%)',
-                data: mapToTimeSeries(data.data.HEATER_HUMIDITY),
+                data: mapToTimeSeries(data.data.heater_humidity),
                 borderWidth: 2,
                 fill: false,
                 hidden: true

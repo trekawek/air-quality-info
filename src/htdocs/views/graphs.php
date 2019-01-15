@@ -20,16 +20,16 @@ $sensors = $dao->getLastData();
 </div>
 <?php
 $graphs = array();
-if ($sensors['PM10'] !== null || $sensors['PM25'] !== null) {
+if ($sensors['pm10'] !== null || $sensors['pm25'] !== null) {
   $graphs['pm'] = __('PM');
 }
-if ($sensors['TEMPERATURE'] !== null) {
+if ($sensors['temperature'] !== null) {
   $graphs['temperature'] = __('Temperature');
 }
-if ($sensors['HUMIDITY'] !== null) {
+if ($sensors['humidity'] !== null) {
   $graphs['humidity'] = __('Humidity');
 }
-if ($sensors['PRESSURE'] !== null) {
+if ($sensors['pressure'] !== null) {
   $graphs['pressure'] = __('Pressure');
 }
 $i = 0;

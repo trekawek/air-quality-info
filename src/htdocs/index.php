@@ -8,6 +8,7 @@ require_once('lib/pollution_levels.php');
 require_once('lib/themes.php');
 require_once('db/dao.php');
 require_once('db/rrd.php');
+require_once('db/mysql.php');
 
 function l($device, $action, $query_args = array()) {
   $link = '/'.$device['name'];
@@ -62,7 +63,10 @@ if ($device == null) {
   exit;
 }
 
-$dao = new RRRDao($device['esp8266id']);
+//$dao = new RRRDao($device['esp8266id']);
+
+$mysqli = new mysqli(CONFIG['db']['host'], CONFIG['db']['user'], CONFIG['db']['password'], CONFIG['db']['name']);
+$dao = new MysqlDao($device['esp8266id'], $mysqli);
 
 switch ($current_action) {
   case 'update':
