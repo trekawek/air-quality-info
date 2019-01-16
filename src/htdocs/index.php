@@ -83,29 +83,7 @@ switch (CONFIG['db']['type']) {
   break;
 }
 
-switch ($current_action) {
-  case 'update':
-  authenticate($device);
-  require('api/update.php');
-  break;
-
-  case 'graph_data.json':
-  require('api/graph_json.php');
-  break;
-
-  case 'about':
-  require("views/about_${current_lang}.php");
-  break;
-
-  case 'graphs':
-  require('views/graphs.php');
-  break;
-
-  case 'debug':
-  require('views/debug.php');
-  break;
-
-  case 'tools':
+if ($current_action == 'tools') {
   authenticate($device);
   switch ($uri[0]) {
     case 'update_rrd_schema':
@@ -116,10 +94,33 @@ switch ($current_action) {
     require('tools/rrd_to_mysql.php');
     break;
   }
+} else {
+  switch ($current_action) {
+    case 'update':
+    authenticate($device);
+    require('api/update.php');
+    break;
 
-  case 'sensors':
-  default:
-  require('views/sensors.php');
-  break;
+    case 'graph_data.json':
+    require('api/graph_json.php');
+    break;
+
+    case 'about':
+    require("views/about_${current_lang}.php");
+    break;
+
+    case 'graphs':
+    require('views/graphs.php');
+    break;
+
+    case 'debug':
+    require('views/debug.php');
+    break;
+
+    case 'sensors':
+    default:
+    require('views/sensors.php');
+    break;
+  }
 }
 ?>
