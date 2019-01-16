@@ -9,7 +9,7 @@ Air Quality Info to panel informacyjny oparty o PHP, wyświetlający dane nt. cz
 ## Cechy
 
 * Ładny i przejrzysty interfejs
-* Dane zapisane w bazie RRD
+* Dane zapisane w bazie RRD lub MySQL
 * Wykresy renderowane za pomocją ChartJS
 * Zewnętrzna baza danych nie jest wymagana
 * Wsparcie dla wielu czujników w ramach jednej strony
@@ -18,11 +18,11 @@ Air Quality Info to panel informacyjny oparty o PHP, wyświetlający dane nt. cz
 ## Wymagania
 
 * PHP 7
-* Zainstalowane rozszerzenie php-rrd
+* Zainstalowane rozszerzenie php-rrd lub dostęp do bazy MySQL
 
 ## Instalacja automatyczna
 
-Plik [install.sh](install.sh) to interaktywny skrypt który zainstaluje panel i niezbędne oprogramowanie (nginx, PHP) na serwerze linuksowym opartym o Debiana lub Ubuntu.
+Plik [install.sh](install.sh) to interaktywny skrypt który zainstaluje panel i niezbędne oprogramowanie (nginx, php, php-rrd) na serwerze linuksowym opartym o Debiana lub Ubuntu.
 
 Dystrybucje wspierane przez skrypt to:
 
@@ -86,3 +86,22 @@ Serwer WWW powinien przekierować wszystkie żądania do nieznanych ścieżek do
 3. Skopiuj katalog [htdocs](src/htdocs) do serwera web.
 4. Upewnij się, że serwer ma prawo zapisu w katalogu [htdocs/data](src/htdocs/data).
 5. Skonfiguruj detektor, aby wysyłał dane *własnego API*. Nazwa użytkownika i hasło powinny być takie jak w pliku `config.php`. Ścieżka to: `/main/update`, gdzie `main` odnosi się do nazwy urządzenia w pliku `config.php`.
+
+### Użycie bazy MySQL
+
+Aby wykorzystać bazę MySQL, należy wykonać następujące kroki:
+
+1. Utwórz bazę dla Air Quality Info:
+```
+CREATE DATABASE air_quality_info;
+```
+2. Utwórz użytkownika i nadaj mu uprawnienia:
+```
+GRANT ALL PRIVILEGES ON air_quality_info.* TO 'air_quality_info'@'localhost' IDENTIFIED BY '<tu wpisz hasło>';
+```
+3. Zaimportuj plik [mysql-schema.sql](src/mysql-schema.sql):
+```
+mysql -u air_quality_info -p air_quality_info < mysql-schema.sql
+```
+Te same kroki można wykonać wykorzystując phpmyadmin lub inny panel obsługi bazy MySQL.
+4. Edytuj plik `config.php`. Zmień wartość `db.type` na `mysql` i wypełnij pola specyficzne dla bazy.

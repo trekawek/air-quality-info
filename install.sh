@@ -111,7 +111,10 @@ define('CONFIG', array(
 # Whether to store the last received JSON dump.
 'store_json_payload' => true,
 # Google Analytics ID
-'ga_id' => ''
+'ga_id' => '',
+'db' => array(
+  'type' => 'rrd'
+)
 ));
 ?>
 EOF

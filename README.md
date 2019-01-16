@@ -12,7 +12,7 @@ See the README in different language:
 ## Features
 
 * Nice and clean interface
-* Records stored in the RRD
+* Records stored in the RRD or MySQL
 * Graphs rendered with ChartJS
 * No external database required
 * Support for multiple devices
@@ -21,7 +21,7 @@ See the README in different language:
 ## Requirements
 
 * PHP 7
-* php-rrd extension
+* php-rrd extension or MySQL access
 
 ## Deployment script
 
@@ -53,3 +53,22 @@ The web server should redirect all the requests for unknown paths to the [htdocs
 3. Upload the files from the [htdocs](src/htdocs) directory to the web server.
 4. Make sure that the web server has permissions to create files in the [htdocs/data](src/htdocs/data) directory.
 5. Configure the Wemos-based detector to send data to the *own API*. Use username and password the same as in the `config.php`. The path should reference the path: `/main/update`, where the `main` matches the device name set in `config.php`.
+
+### Using MySQL
+
+By default, the site will use RRD. MySQL database can be configured as follows:
+
+1. Create the database:
+```
+CREATE DATABASE air_quality_info;
+```
+2. Create the user and grant him the privileges:
+```
+GRANT ALL PRIVILEGES ON air_quality_info.* TO 'air_quality_info'@'localhost' IDENTIFIED BY '<tu wpisz hasło>';
+```
+3. Import [mysql-schema.sql](src/mysql-schema.sql):
+```
+mysql -u air_quality_info -p air_quality_info < mysql-schema.sql
+```
+These steps can be also done with the phpmyadmin.
+4. Update the `config.php`: change the `db.type` to `mysql` and fill the properties specific for the MySQL.

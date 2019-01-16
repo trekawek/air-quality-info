@@ -20,6 +20,13 @@ define('CONFIG', array(
 # Whether to store the last received JSON dump.
   'store_json_payload' => true,
 # Google Analytics ID
-  'ga_id' => ''
+  'ga_id' => '',
+  'db' => array(
+    'type' => 'rrd', # or 'mysql'
+    # 'host' => 'localhost',
+    # 'user' => 'air_quality_info',
+    # 'password' => '...',
+    # 'name' => 'air_quality_info'
+  )
 ));
 ?>
