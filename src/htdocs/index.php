@@ -33,6 +33,14 @@ function l($device, $action, $query_args = array()) {
   return $link;
 }
 
+function authenticate($device) {
+  if (!($_SERVER['PHP_AUTH_USER'] == $device['user'] && $_SERVER['PHP_AUTH_PW'] == $device['password'])) {
+    header('WWW-Authenticate: Basic realm="Air Quality Info Page"');
+    header('HTTP/1.0 401 Unauthorized');
+    exit;
+  }  
+}
+
 list($uri) = explode('?', $_SERVER['REQUEST_URI']);
 $uri = explode('/', $uri);
 $uri = array_values(array_filter($uri));
@@ -77,11 +85,8 @@ switch (CONFIG['db']['type']) {
 
 switch ($current_action) {
   case 'update':
+  authenticate($device);
   require('api/update.php');
-  break;
-
-  case 'migrate_rrd':
-  require('api/migrate_rrd.php');
   break;
 
   case 'graph_data.json':
@@ -99,6 +104,18 @@ switch ($current_action) {
   case 'debug':
   require('views/debug.php');
   break;
+
+  case 'tools':
+  authenticate($device);
+  switch ($uri[0]) {
+    case 'update_rrd_schema':
+    require('tools/update_rrd_schema.php');
+    break;
+
+    case 'rrd_to_mysql':
+    require('tools/update_rrd_schema.php');
+    break;
+  }
 
   case 'sensors':
   default:
