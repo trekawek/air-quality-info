@@ -28,7 +28,7 @@
     <?php else: ?>
     <link rel="stylesheet" href="/public/css/themes/<?php echo $current_theme ?>.min.css" >
     <?php endif ?>
-    <link rel="stylesheet" href="/public/css/style.css?v=1.2" >
+    <link rel="stylesheet" href="/public/css/style.css?v=1.3" >
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
