@@ -52,7 +52,7 @@ class RRRDao implements Dao {
         for ($i = 0; $i < $data['ds_cnt']; $i++) {
             $sensors[$data['ds_navm'][$i]] = $data['data'][$i];
         }
-        return keysToLower($sensors);
+        return RRRDao::keysToLower($sensors);
     }
       
     public function getLastAvg($hours) {
@@ -87,7 +87,7 @@ class RRRDao implements Dao {
                 $data[$k] = $last_update[$k];
             }
         }
-        return keysToLower($data);
+        return RRRDao::keysToLower($data);
     }
 
     function getHistoricData($type = 'pm', $range = 'day', $walking_average_hours = null) {
@@ -161,7 +161,7 @@ class RRRDao implements Dao {
             }
             $result['start'] += 60 * 60 * $walking_average_hours;
         }
-        $result['data'] = keysToLower($data);
+        $result['data'] = RRRDao::keysToLower($data);
         return $result;
     }
 

@@ -63,10 +63,7 @@ if ($device == null) {
   exit;
 }
 
-//$dao = new RRRDao($device['esp8266id']);
-
-$mysqli = new mysqli(CONFIG['db']['host'], CONFIG['db']['user'], CONFIG['db']['password'], CONFIG['db']['name']);
-$dao = new MysqlDao($device['esp8266id'], $mysqli);
+$dao = new RRRDao($device['esp8266id']);
 
 switch ($current_action) {
   case 'update':
