@@ -103,13 +103,16 @@ if ($pm10_level === null && $pm25_level === null) {
         <tr>
           <td colspan="4" class="weather-measurements">
             <?php if ($sensors['temperature'] !== null): ?>
-            <?php echo round($sensors['temperature'], 1) ?> &deg;C
+            <i class="wi wi-thermometer"></i>
+            <?php echo round($sensors['temperature'], 1) ?> &deg;C | 
             <?php endif ?>
             <?php if ($sensors['pressure'] !== null): ?>
-            | <?php echo round($sensors['pressure'], 0) ?> hPa
+            <i class="wi wi-barometer"></i>
+            <?php echo round($sensors['pressure'], 0) ?> hPa | 
             <?php endif ?>
             <?php if ($sensors['humidity'] !== null): ?>
-            | <?php echo __('Humidity') ?>: <?php echo round($sensors['humidity'], 0) ?>%
+            <i class="wi wi-humidity"></i>
+            <?php echo round($sensors['humidity'], 0) ?>%
             <?php endif ?>
           </td>
         </tr>
