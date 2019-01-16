@@ -13,5 +13,5 @@ mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" -e "DROP DATABASE IF EXISTS ${MYSQL_DATA
 mysql "${MYSQL_DATABASE}" < mysql-schema.sql
 
 for rrd in htdocs/data/*.rrd; do
-  php migrate-rrd-to-mysql.php "${rrd}"
+  php -d memory_limit=256M migrate-rrd-to-mysql.php "${rrd}"
 done
