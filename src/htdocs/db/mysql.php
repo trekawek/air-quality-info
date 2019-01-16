@@ -1,7 +1,7 @@
 <?php
 class MysqlDao implements Dao {
 
-    const FIELDS = array('pm25','pm10','temperature','humidity','pressure','heater_temperature','heater_humidity');
+    const FIELDS = array('pm25','pm10','temperature','pressure','humidity','heater_temperature','heater_humidity');
 
     private $esp8266id;
 

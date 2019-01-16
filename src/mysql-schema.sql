@@ -14,8 +14,8 @@ CREATE TABLE `records` (
   `pm25` decimal(6,2) DEFAULT NULL,
   `pm10` decimal(6,2) DEFAULT NULL,
   `temperature` decimal(5,2) DEFAULT NULL,
-  `humidity` decimal(5,2) DEFAULT NULL,
   `pressure` decimal(6,2) DEFAULT NULL,
+  `humidity` decimal(5,2) DEFAULT NULL,
   `heater_temperature` decimal(5,2) DEFAULT NULL,
   `heater_humidity` decimal(5,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
