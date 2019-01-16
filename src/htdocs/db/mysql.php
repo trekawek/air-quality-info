@@ -43,8 +43,8 @@ class MysqlDao implements Dao {
             'pm25' => $pm25,
             'pm10' => $pm10,
             'temperature' => $temp,
-            'humidity' => $hum,
             'pressure' => $press,
+            'humidity' => $hum,
             'heater_temperature' => $heaterTemp,
             'heater_humidity' => $heaterHum
         );
@@ -60,8 +60,8 @@ class MysqlDao implements Dao {
             $record['pm25'],
             $record['pm10'],
             $record['temperature'],
-            $record['humidity'],
             $record['pressure'],
+            $record['humidity'],
             $record['heater_temperature'],
             $record['heater_humidity']
         );
