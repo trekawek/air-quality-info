@@ -6,6 +6,8 @@ if (!($_SERVER['PHP_AUTH_USER'] == $device['user'] && $_SERVER['PHP_AUTH_PW'] ==
     exit;
 }
 
+ini_set('memory_limit', '256M');
+
 function append_to_data($result, &$data) {
     $field_names = array('PM25', 'PM10', 'TEMPERATURE', 'PRESSURE', 'HUMIDITY', 'HEATER_TEMPERATURE', 'HEATER_HUMIDITY');
     $timestamps = array_keys($result['data'][$field_names[0]]);
