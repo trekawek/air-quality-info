@@ -113,7 +113,7 @@ switch ($current_action) {
     break;
 
     case 'rrd_to_mysql':
-    require('tools/update_rrd_schema.php');
+    require('tools/rrd_to_mysql.php');
     break;
   }
 

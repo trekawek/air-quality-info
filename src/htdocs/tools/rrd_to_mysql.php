@@ -65,10 +65,10 @@ function migrate_rrd_to_mysql($rrd_file, $dao) {
     }
 }
 
-foreach (glob(__DIR__."/../data/*.rrd") as $rrd_file) {
-    echo "Migrating $rrd_file...\n";
-    migrate_rrd_to_mysql($rrd_file, $dao);
-    echo "Done.\n";
-}
+$esp8266id = $device['esp8266id'];
+$rrd_file = __DIR__ . "/../data/${esp8266id}.rrd";
+echo "Migrating $esp8266id.rrd...\n";
+migrate_rrd_to_mysql($rrd_file, $dao);
+echo "Done.\n";
 
 ?>
