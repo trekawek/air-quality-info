@@ -70,4 +70,5 @@ GRANT ALL PRIVILEGES ON air_quality_info.* TO 'air_quality_info'@'localhost' IDE
 mysql -u air_quality_info -p air_quality_info < mysql-schema.sql
 ```
 These steps can be also done with the phpmyadmin.
+
 4. Update the `config.php`: change the `db.type` to `mysql` and fill the properties specific for the MySQL.

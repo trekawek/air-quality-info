@@ -104,4 +104,5 @@ GRANT ALL PRIVILEGES ON air_quality_info.* TO 'air_quality_info'@'localhost' IDE
 mysql -u air_quality_info -p air_quality_info < mysql-schema.sql
 ```
 Te same kroki można wykonać wykorzystując phpmyadmin lub inny panel obsługi bazy MySQL.
+
 4. Edytuj plik `config.php`. Zmień wartość `db.type` na `mysql` i wypełnij pola specyficzne dla bazy.
