@@ -6,8 +6,7 @@ This PHP-based page allows to display the current PM10 and PM2.5 measurements ma
 
 [Live demo](http://smog.rekawek.eu/)
 
-See the README in different language:
-<a href="README-pl.md"><img src="htdocs/public/img/flags/pl.png" height="30"/></a>
+See the README in <a href="README-pl.md">Polish</a>.
 
 ## Features
 
@@ -64,7 +63,7 @@ CREATE DATABASE air_quality_info;
 ```
 2. Create the user and grant him the privileges:
 ```
-GRANT ALL PRIVILEGES ON air_quality_info.* TO 'air_quality_info'@'localhost' IDENTIFIED BY '<tu wpisz hasło>';
+GRANT ALL PRIVILEGES ON air_quality_info.* TO 'air_quality_info'@'localhost' IDENTIFIED BY '<enter password here>';
 ```
 3. Import [mysql-schema.sql](src/mysql-schema.sql):
 ```
