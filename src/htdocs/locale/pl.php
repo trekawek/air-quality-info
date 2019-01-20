@@ -18,6 +18,7 @@ $locale['Humidity'] = 'Wilgotność';
 $locale['Index'] = 'Indeks';
 $locale['Instantaneous'] = 'Dane chwilowe';
 $locale['Last update'] = 'Ostatnia aktualizacja';
+$locale['Locations'] = 'Lokacje';
 $locale['Low'] = 'Niski';
 $locale['Medium'] = 'Średni';
 $locale['Month'] = 'Miesiąc';
