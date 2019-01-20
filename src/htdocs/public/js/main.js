@@ -246,7 +246,7 @@ function updateGraph(graphContainer) {
     var ctx = graphContainer.querySelector('canvas.graph');
 
     var request = new XMLHttpRequest();
-    var url = '/graph_data.json?type=' + type + '&range=' + range;
+    var url = '/' + CONFIG.deviceName + '/graph_data.json?type=' + type + '&range=' + range;
     if (typeof dataset.avgType !== 'undefined' && dataset.avgType != 0) {
         url += '&ma_h=' + dataset.avgType;
     }
