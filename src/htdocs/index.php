@@ -9,8 +9,9 @@ require_once('lib/themes.php');
 require_once('db/dao.php');
 
 function l($device, $action, $query_args = array()) {
+  $link = '';
   if (count(CONFIG['devices']) > 1) {
-    $link = '/'.$device['name'];
+    $link .= '/'.$device['name'];
   }
 
   if ($action != 'sensors') {
