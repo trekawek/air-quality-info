@@ -21,7 +21,7 @@ class MysqlDao implements Dao {
     }
 
     public function update($timestamp, $pm25, $pm10, $temp, $press, $hum, $heaterTemp, $heaterHum) {
-        $recordTimestamp = ceil($timestamp / 180) * 180;
+        $recordTimestamp = floor($timestamp / 180) * 180;
 
         $stmt = $this->mysqli->prepare("SELECT `timestamp` FROM `records` WHERE `esp8266id` = ? ORDER BY `timestamp` DESC LIMIT 1");
         $stmt->bind_param('i', $this->esp8266id);
@@ -31,7 +31,7 @@ class MysqlDao implements Dao {
         if ($row != null) {
             $lastTimestamp = $row[0];
             $insertStmt = $this->mysqli->prepare("INSERT INTO `records` (`timestamp`, `esp8266id`) VALUES (?, ?)");
-            for ($ts = $lastTimestamp + 180; $ts < $recordTimestamp; $ts += 180) {
+            for ($ts = $lastTimestamp + 180; $ts <= $recordTimestamp; $ts += 180) {
                 $insertStmt->bind_param('ii', $ts, $this->esp8266id);
                 $insertStmt->execute();
             }
@@ -53,20 +53,27 @@ class MysqlDao implements Dao {
                 $record[$k] = null;
             }
         }
-        $insertStmt = $this->mysqli->prepare("INSERT INTO `records` (`timestamp`, `esp8266id`, ".implode(',', MysqlDao::FIELDS).") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $insertStmt->bind_param("iiddddddd",
-            $recordTimestamp,
-            $this->esp8266id,
-            $record['pm25'],
-            $record['pm10'],
-            $record['temperature'],
-            $record['pressure'],
-            $record['humidity'],
-            $record['heater_temperature'],
-            $record['heater_humidity']
-        );
-        $insertStmt->execute();
-        $insertStmt->close();
+
+        // fill empty properties for the last 6 minutes
+        $updateSql = "UPDATE `records` SET ";
+        $updates = array();
+        $params = array();
+        foreach ($record as $k => $v) {
+            $updates[] = "`$k` = IFNULL(`$k`, ?)";
+            $params[] = $v;
+        }
+        $updateSql .= implode(", ", $updates);
+        $updateSql .= "WHERE `timestamp` in (?, ?) AND `esp8266id` = ?";
+        $params[] = $recordTimestamp;
+        $params[] = $recordTimestamp - 180;
+        $params[] = $this->esp8266id;
+
+        $updateStmt = $this->mysqli->prepare($updateSql);
+        $pattern = str_repeat('s', count($record));
+        $pattern .= 'iii';
+        $updateStmt->bind_param($pattern, ...$params);
+        $updateStmt->execute();
+        $updateStmt->close();
     }
 
     public function getLastData() {
