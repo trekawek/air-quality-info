@@ -95,6 +95,8 @@ else
     read -e -s -p 'Enter password: ' password
     echo
     read -e -p    'Enter sensor id: ' sensor_id
+    read -e -p    'Enter contact name (will be displayed on page, eg. John Doe): ' contact_name
+    read -e -p    'Enter contact email (will be displayed on page, eg. john.doe@example.com): ' contact_email
 
     cat <<EOF > /var/www/air-quality-info/config.php
 <?php
@@ -106,6 +108,8 @@ define('CONFIG', array(
         'esp8266id'   => '${sensor_id}',
         'name'        => 'main',          # this will be used in URLs
         'description' => 'Main location', # user-friendly location name, will be used in navbar
+        'contact_name' => '${contact_name}',
+        'contact_email' => '${contact_email}',
     ),
 ),
 # Whether to store the last received JSON dump.

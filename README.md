@@ -22,6 +22,12 @@ See the README in <a href="README-pl.md">Polish</a>.
 * PHP 7
 * php-rrd extension or MySQL access
 
+## Resources
+
+* [Nettigo Air Monitor](https://easyeda.com/nettigo/Nettigo-Air-Monitor/)
+* [Luftdaten](https://luftdaten.info/)
+* [Forum thread on the app](https://forum.kodujdlapolski.pl/t/strona-informacyjna-dla-czujnika-luftdaten/3217/35) (in Polish)
+
 ## Deployment script
 
 [install.sh](install.sh) is an interactive script can be used to setup nginx, PHP and Air Quality Dashboard on a Linux server. It can be run with two commands:

@@ -3,6 +3,7 @@ $locale = array();
 $locale['<a href="https://www.airqualitynow.eu/about_indices_definition.php">CAQI</a> index'] = 'Indeks <a href="https://www.airqualitynow.eu/pl/about_indices_definition.php">CAQI</a>';
 $locale['About'] = 'O stronie';
 $locale['Air quality'] = 'Jakość powietrza';
+$locale['Contact info'] = 'Kontakt';
 $locale['Darkly theme'] = 'Darkly';
 $locale['Day'] = 'Dzień';
 $locale['Default theme'] = 'Domyślny';

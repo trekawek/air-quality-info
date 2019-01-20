@@ -20,6 +20,12 @@ Air Quality Info to panel informacyjny oparty o PHP, wyświetlający dane nt. cz
 * PHP 7
 * Zainstalowane rozszerzenie php-rrd lub dostęp do bazy MySQL
 
+## Zasoby
+
+* [Nettigo Air Monitor](https://easyeda.com/nettigo/Nettigo-Air-Monitor/)
+* [Luftdaten](https://luftdaten.info/en/construction-manual/)
+* [Wątek na forum Koduj dla Polski](https://forum.kodujdlapolski.pl/t/strona-informacyjna-dla-czujnika-luftdaten/3217/35)
+
 ## Instalacja automatyczna
 
 Plik [install.sh](install.sh) to interaktywny skrypt który zainstaluje panel i niezbędne oprogramowanie (nginx, php, php-rrd) na serwerze linuksowym opartym o Debiana lub Ubuntu.
@@ -58,6 +64,12 @@ Hasło, j/w. Hasło będzie niewidoczne przy wpisywaniu.
 Enter sensor id: ...
 ```
 ID czujnika.
+
+```
+Enter contact name (will be displayed on page, eg. John Doe): ...
+Enter contact email (will be displayed on page, eg. john.doe@example.com):
+```
+Informacje kontaktowe do wyświetlenia na stronie.
 
 Na końcu instalator wyświetla podsumowanie:
 ```
