@@ -273,10 +273,19 @@ document.querySelectorAll('.graph-range button').forEach(element => {
         element.classList.add('btn-primary');
         
         var range = element.dataset.range;
-        if (range == 'day') {
+        switch (range) {
+            case 'day':
             selectAvgType(1);
-        } else {
+            break;
+
+            case 'week':
+            case 'month':
             selectAvgType(24);
+            break;
+
+            case 'year':
+            selectAvgType(720);
+            break;
         }
         document.querySelectorAll('.graph-container').forEach(graphContainer => {
             graphContainer.dataset.range = range;
