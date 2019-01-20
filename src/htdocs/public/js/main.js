@@ -57,6 +57,7 @@ function renderGraph(ctx, data, type, avgType) {
     var config = {
         type: 'line',
         options: {
+            spanGaps: true,
             responsive: true,
             aspectRatio: 2,
             tooltips: {
