@@ -2,9 +2,9 @@
 define('VALUE_MAPPING', array(
   'pm10'        => 'SDS_P1',
   'pm25'        => 'SDS_P2',
-  'temperature' => 'BME280_temperature',
+  'temperature' => array('BME280_temperature', 'BMP_temperature'),
   'humidity'    => 'BME280_humidity',
-  'pressure'    => 'BME280_pressure',
+  'pressure'    => array('BME280_pressure', 'BMP_pressure'),
   'heater_temperature' => 'temperature',
   'heater_humidity'    => 'humidity',
   'gps_time'    => 'GPS_time',
@@ -13,9 +13,18 @@ define('VALUE_MAPPING', array(
 
 function read_value($device, $value_name, $sensor_values, $undefined_value = null) {
   $value = null;
-  $mapped_name = VALUE_MAPPING[$value_name];
-  if ($mapped_name && isset($sensor_values[$mapped_name])) {
-    $value = $sensor_values[$mapped_name];
+  if (!isset(VALUE_MAPPING[$value_name])) {
+    return $undefined_value;
+  }
+  $mapped_names = VALUE_MAPPING[$value_name];
+  if (!is_array($mapped_names)) {
+    $mapped_names = array($mapped_names);
+  }
+  foreach ($mapped_names as $mapped_name) {
+    if (isset($sensor_values[$mapped_name])) {
+      $value = $sensor_values[$mapped_name];
+      break;
+    }
   }
   return $value == null ? $undefined_value : $value;
 }
@@ -52,14 +61,19 @@ if ($gps_date && $gps_time) {
   $time = DateTime::createFromFormat('m/d/Y H:i:s.u', $gps_date.' '.$gps_time, new DateTimeZone('UTC'))->getTimestamp();
 }
 
+$pressure = read_value($device, 'pressure', $map);
+if ($pressure !== null) {
+  $pressure /= 100;
+}
+
 echo $dao->update(
   $time,
-  read_value($device, 'pm25', $map, 'U'),
-  read_value($device, 'pm10', $map, 'U'),
-  read_value($device, 'temperature', $map, 'U'),
-  read_value($device, 'pressure', $map, 'U') / 100,
-  read_value($device, 'humidity', $map, 'U'),
-  read_value($device, 'heater_temperature', $map, 'U'),
-  read_value($device, 'heater_humidity', $map, 'U')
+  read_value($device, 'pm25', $map),
+  read_value($device, 'pm10', $map),
+  read_value($device, 'temperature', $map),
+  $pressure,
+  read_value($device, 'humidity', $map),
+  read_value($device, 'heater_temperature', $map),
+  read_value($device, 'heater_humidity', $map)
 );
 ?>
