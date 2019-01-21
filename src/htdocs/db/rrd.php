@@ -38,7 +38,14 @@ class RRRDao implements Dao {
         if (!$this->dbExists()) {
             $this->createDb();
         }
-        $data = "${time}:${pm25}:${pm10}:${temp}:${press}:${hum}:${heater_temp}:${heater_hum}";
+
+        $data = array($time, $pm25, $pm10, $temp, $press, $hum, $heater_temp, $heater_hum);
+        foreach ($data as $i => $v) {
+            if ($v === null) {
+                $data[$i] = 'U';
+            }
+        }
+        $data = implode(':', $data);
         rrd_update($this->rrd_file, array($data));
         return $data;
     }
@@ -169,6 +176,9 @@ class RRRDao implements Dao {
     private static function keysToLower($data) {
         $result = array();
         foreach ($data as $k => $v) {
+            if ($v === 'U') {
+                $v = null;
+            }
             $result[strtolower($k)] = $v;
         }
         return $result;
