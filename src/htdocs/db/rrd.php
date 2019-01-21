@@ -36,7 +36,7 @@ class RRRDao implements Dao {
 
     function update($time, $pm25, $pm10, $temp, $press, $hum, $heater_temp, $heater_hum) {
         if (!$this->dbExists()) {
-            createDb();
+            $this->createDb();
         }
         $data = "${time}:${pm25}:${pm10}:${temp}:${press}:${hum}:${heater_temp}:${heater_hum}";
         rrd_update($this->rrd_file, array($data));
