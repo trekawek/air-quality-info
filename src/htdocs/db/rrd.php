@@ -81,13 +81,14 @@ class RRRDao implements Dao {
                 $data[$name] = $sum / $count;
             }
         }
+        $data = RRRDao::keysToLower($data);
         $last_update = $this->getLastData();
         foreach ($data as $k => $v) {
             if ($v === null) {
                 $data[$k] = $last_update[$k];
             }
         }
-        return RRRDao::keysToLower($data);
+        return $data;
     }
 
     function getHistoricData($type = 'pm', $range = 'day', $walking_average_hours = null) {
