@@ -191,5 +191,32 @@ class MysqlDao implements Dao {
 
         return array('start' => $since, 'end' => $now, 'data' => $data);
     }
+
+    public function logJsonUpdate($time, $json) {
+        $insertStmt = $this->mysqli->prepare("INSERT INTO `json_updates` (`timestamp`, `esp8266id`, `data`) VALUES (?, ?, ?)");
+        $insertStmt->bind_param('iis', $time, $this->esp8266id, $json);
+        $insertStmt->execute();
+        $insertStmt->close();
+
+        $deleteStmt = $this->mysqli->prepare("DELETE FROM `json_updates` WHERE `timestamp` < ? AND `esp8266id` = ?");
+        $deleteStmt->bind_param('ii', $time - 24 * 60 * 60, $this->esp8266id);
+        $deleteStmt->execute();
+        $deleteStmt->close();
+    }
+
+    public function getJsonUpdates() {
+        $result = array();
+        $stmt = $this->mysqli->prepare("SELECT `timestamp`, `data` FROM `json_updates` WHERE `esp8266id` = ? ORDER BY `timestamp` DESC");
+        $stmt->bind_param('i', $this->esp8266id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = array();
+        while ($row = $result->fetch_row()) {
+            $data[$row[0]] = $row[1];
+        }
+        $stmt->close();
+        return $data;
+    }
+
 }
 ?>

@@ -3,8 +3,11 @@ class RRRDao implements Dao {
 
     private $rrd_file;
 
+    private $json_file;
+
     public function __construct($esp8266id) {
-        $this -> rrd_file = __DIR__ . "/../data/${esp8266id}.rrd";
+        $this->rrd_file = __DIR__ . "/../data/${esp8266id}.rrd";
+        $this->json_file = __DIR__ . "/../data/${esp8266id}.json";
     }
 
     function dbExists() {
@@ -180,6 +183,19 @@ class RRRDao implements Dao {
                 $v = null;
             }
             $result[strtolower($k)] = $v;
+        }
+        return $result;
+    }
+
+    public function logJsonUpdate($time, $json) {
+        file_put_contents($this->json_file, $json);
+    }
+
+    public function getJsonUpdates() {
+        $result = array();
+        if (file_exists($this->json_file)) {
+            $ts = filemtime($this->json_file);
+            $result[$ts] = file_get_contents($this->json_file);
         }
         return $result;
     }

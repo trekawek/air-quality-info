@@ -8,21 +8,28 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-CREATE TABLE `records` (
+
+CREATE TABLE IF NOT EXISTS `json_updates` (
+  `timestamp` int(11) NOT NULL,
+  `esp8266id` int(11) NOT NULL,
+  `data` varchar(2048) NOT NULL,
+  PRIMARY KEY (`timestamp`,`esp8266id`),
+  KEY `timestamp` (`timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `records` (
   `timestamp` int(11) NOT NULL,
   `esp8266id` int(11) NOT NULL,
   `pm25` decimal(6,2) DEFAULT NULL,
   `pm10` decimal(6,2) DEFAULT NULL,
   `temperature` decimal(5,2) DEFAULT NULL,
-  `pressure` decimal(6,2) DEFAULT NULL,
   `humidity` decimal(5,2) DEFAULT NULL,
+  `pressure` decimal(6,2) DEFAULT NULL,
   `heater_temperature` decimal(5,2) DEFAULT NULL,
-  `heater_humidity` decimal(5,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-ALTER TABLE `records`
-  ADD PRIMARY KEY (`timestamp`,`esp8266id`),
-  ADD KEY `timestamp` (`timestamp`);
+  `heater_humidity` decimal(5,2) DEFAULT NULL,
+  PRIMARY KEY (`timestamp`,`esp8266id`),
+  KEY `timestamp` (`timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

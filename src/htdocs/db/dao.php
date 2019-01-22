@@ -7,11 +7,16 @@ interface Dao {
 
     public function update($time, $pm25, $pm10, $temp, $press, $hum, $heaterTemp, $heaterHum);
 
+
     public function getLastData();
 
     public function getLastAvg($avgType);
 
     public function getHistoricData($type = 'pm', $range = 'day', $avgType = null);
+    
+    public function logJsonUpdate($time, $json);
+
+    public function getJsonUpdates();
 
 }
 ?>

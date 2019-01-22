@@ -49,16 +49,16 @@ if ($device['esp8266id'] != $data['esp8266id']) {
   exit;
 }
 
-if (CONFIG['store_json_payload']) {
-  file_put_contents('data/'.$device['esp8266id'].'.json', $payload);
-}
-
 $time = time();
 
 $gps_date = read_value($device, 'gps_date', $map, null);
 $gps_time = read_value($device, 'gps_time', $map, null);
 if ($gps_date && $gps_time) {
   $time = DateTime::createFromFormat('m/d/Y H:i:s.u', $gps_date.' '.$gps_time, new DateTimeZone('UTC'))->getTimestamp();
+}
+
+if (CONFIG['store_json_payload']) {
+  $dao->logJsonUpdate($time, $payload);
 }
 
 $pressure = read_value($device, 'pressure', $map);
