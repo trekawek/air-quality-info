@@ -110,7 +110,12 @@ switch ($current_action) {
   break;
 
   case 'debug':
-  switch ($uri[0]) {
+  if (isset($uri[0])) {
+    $debug_action = $uri[0];
+  } else {
+    $debug_action = null;
+  }
+  switch ($debug_action) {
     case 'json':
     authenticate($device);
     require('views/debug_json.php');

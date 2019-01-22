@@ -8,11 +8,6 @@ unset($sensors['last_update']);
   <dt class="col-md-3 offset-md-2"><?php echo __('Sensor ID') ?></dt>
   <dd class="col-md-5"><?php echo $device['esp8266id'] ?></dd>
 
-<?php if ($json): ?>
-  <dt class="col-md-3 offset-md-2"><?php echo __('Firmware version') ?></dt>
-  <dd class="col-md-5"><?php echo $json['software_version'] ?></dd>
-<?php endif ?>
-
   <dt class="col-md-3 offset-md-2"><?php echo __('Last update') ?></dt>
   <dd class="col-md-5"><?php echo date("Y-m-d H:i:s", $last_update); ?></dd>
 
