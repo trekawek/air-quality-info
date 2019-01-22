@@ -193,7 +193,7 @@ class MysqlDao implements Dao {
     }
 
     private function jsonUpdateTableExists() {
-        $result = $this->query("SHOW TABLES LIKE 'json_updates'");
+        $result = $this->myqli->query("SHOW TABLES LIKE 'json_updates'");
         $table_exists = $result->num_rows > 0;
         $result->close();
         return $table_exists;
