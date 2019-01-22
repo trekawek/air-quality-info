@@ -192,7 +192,18 @@ class MysqlDao implements Dao {
         return array('start' => $since, 'end' => $now, 'data' => $data);
     }
 
+    private function jsonUpdateTableExists() {
+        $result = $this->query("SHOW TABLES LIKE 'json_updates'");
+        $table_exists = $result->num_rows > 0;
+        $result->close();
+        return $table_exists;
+    }
+
     public function logJsonUpdate($time, $json) {
+        if (!$this->jsonUpdateTableExists()) {
+            return;
+        }
+
         $insertStmt = $this->mysqli->prepare("INSERT INTO `json_updates` (`timestamp`, `esp8266id`, `data`) VALUES (?, ?, ?)");
         $insertStmt->bind_param('iis', $time, $this->esp8266id, $json);
         $insertStmt->execute();
@@ -206,6 +217,10 @@ class MysqlDao implements Dao {
 
     public function getJsonUpdates() {
         $result = array();
+        if (!$this->jsonUpdateTableExists()) {
+            return $result;
+        }
+
         $stmt = $this->mysqli->prepare("SELECT `timestamp`, `data` FROM `json_updates` WHERE `esp8266id` = ? ORDER BY `timestamp` DESC");
         $stmt->bind_param('i', $this->esp8266id);
         $stmt->execute();
@@ -219,6 +234,10 @@ class MysqlDao implements Dao {
     }
 
     public function getJsonUpdate($ts) {
+        if (!$this->jsonUpdateTableExists()) {
+            return null;
+        }
+
         $stmt = $this->mysqli->prepare("SELECT `data` FROM `json_updates` WHERE `esp8266id` = ? AND `timestamp` = ?");
         $stmt->bind_param('ii', $this->esp8266id, $ts);
         $stmt->execute();
