@@ -13,10 +13,12 @@ interface Dao {
     public function getLastAvg($avgType);
 
     public function getHistoricData($type = 'pm', $range = 'day', $avgType = null);
-    
+
     public function logJsonUpdate($time, $json);
 
     public function getJsonUpdates();
+
+    public function getJsonUpdate($ts);
 
 }
 ?>

@@ -1,6 +1,4 @@
 <?php
-date_default_timezone_set('Europe/Warsaw');
-
 $sensors = $dao->getLastData();
 
 $current_avg_type = '1';

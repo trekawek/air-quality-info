@@ -1,7 +1,6 @@
 <?php
 date_default_timezone_set('Europe/Warsaw');
 $sensors = $dao->getLastData();
-$json_updates = $dao->getJsonUpdates();
 $last_update = $sensors['last_update'];
 unset($sensors['last_update']);
 ?><?php include('partials/head.php'); ?>
@@ -17,7 +16,7 @@ unset($sensors['last_update']);
   <dt class="col-md-3 offset-md-2"><?php echo __('Last update') ?></dt>
   <dd class="col-md-5"><?php echo date("Y-m-d H:i:s", $last_update); ?></dd>
 
-  <dt class="col-md-3 offset-md-2"><?php echo __('Values stored in RRD') ?></dt>
+  <dt class="col-md-3 offset-md-2"><?php echo __('Values') ?></dt>
   <dd class="col-md-5">
     <dl class="row">
       <?php foreach($sensors as $key => $value): ?>
@@ -27,28 +26,4 @@ unset($sensors['last_update']);
     </dl>
   </dd>
 </dl>
-
-<?php if (CONFIG['store_json_payload'] && count($json_updates) > 0): ?>
-<div class="row">
-  <div class="col-md-8 offset-md-2">
-    <h4>Received JSONs</h4>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Time</th>
-          <th scope="col">Data</th>
-        </tr>
-      </thead>
-      <tbody>
-      <?php foreach($json_updates as $ts => $data): ?>
-        <tr>
-          <td><?php echo date("Y-m-d H:i:s", $ts); ?></td>
-          <td><?php echo substr($data, 0, 64) ?>...</td>
-        </tr>
-      <?php endforeach ?>
-      </tbody>
-    </table>
-  </div>
-</div>
-<?php endif ?>
 <?php include('partials/tail.php'); ?>

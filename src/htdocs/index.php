@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('Europe/Warsaw');
 
 require_once('config.php');
 require_once('lib/locale.php');
@@ -90,7 +91,38 @@ switch (CONFIG['db']['type']) {
   break;
 }
 
-if ($current_action == 'tools') {
+switch ($current_action) {
+  case 'update':
+  authenticate($device);
+  require('api/update.php');
+  break;
+
+  case 'graph_data.json':
+  require('api/graph_json.php');
+  break;
+
+  case 'about':
+  require("views/about_${current_lang}.php");
+  break;
+
+  case 'graphs':
+  require('views/graphs.php');
+  break;
+
+  case 'debug':
+  switch ($uri[0]) {
+    case 'json':
+    authenticate($device);
+    require('views/debug_json.php');
+    break;
+
+    default:
+    require('views/debug.php');
+    break;
+  }
+  break;
+
+  case 'tools':
   authenticate($device);
   switch ($uri[0]) {
     case 'update_rrd_schema':
@@ -101,33 +133,11 @@ if ($current_action == 'tools') {
     require('tools/rrd_to_mysql.php');
     break;
   }
-} else {
-  switch ($current_action) {
-    case 'update':
-    authenticate($device);
-    require('api/update.php');
-    break;
+  break;
 
-    case 'graph_data.json':
-    require('api/graph_json.php');
-    break;
-
-    case 'about':
-    require("views/about_${current_lang}.php");
-    break;
-
-    case 'graphs':
-    require('views/graphs.php');
-    break;
-
-    case 'debug':
-    require('views/debug.php');
-    break;
-
-    case 'sensors':
-    default:
-    require('views/sensors.php');
-    break;
-  }
+  case 'sensors':
+  default:
+  require('views/sensors.php');
+  break;
 }
 ?>

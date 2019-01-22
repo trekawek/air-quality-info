@@ -218,5 +218,18 @@ class MysqlDao implements Dao {
         return $data;
     }
 
+    public function getJsonUpdate($ts) {
+        $stmt = $this->mysqli->prepare("SELECT `data` FROM `json_updates` WHERE `esp8266id` = ? AND `timestamp` = ?");
+        $stmt->bind_param('ii', $this->esp8266id, $ts);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = null;
+        if ($row == $result->fetch_row()) {
+            $data = $row[0];
+        }
+        $stmt->close();
+        return $data;
+    }
+
 }
 ?>

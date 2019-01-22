@@ -199,5 +199,14 @@ class RRRDao implements Dao {
         }
         return $result;
     }
+
+    public function getJsonUpdate($ts) {
+        $data = $this->getJsonUpdates();
+        if (isset($data[$ts])) {
+            return $data[$ts];
+        } else {
+            return null;
+        }
+    }
 }
 ?>
