@@ -224,7 +224,7 @@ class MysqlDao implements Dao {
         $stmt->execute();
         $result = $stmt->get_result();
         $data = null;
-        if ($row == $result->fetch_row()) {
+        if ($row = $result->fetch_row()) {
             $data = $row[0];
         }
         $stmt->close();
