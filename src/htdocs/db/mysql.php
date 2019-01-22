@@ -209,8 +209,9 @@ class MysqlDao implements Dao {
         $insertStmt->execute();
         $insertStmt->close();
 
+        $before = $time - 24 * 60 * 60;
         $deleteStmt = $this->mysqli->prepare("DELETE FROM `json_updates` WHERE `timestamp` < ? AND `esp8266id` = ?");
-        $deleteStmt->bind_param('ii', $time - 24 * 60 * 60, $this->esp8266id);
+        $deleteStmt->bind_param('ii', $before, $this->esp8266id);
         $deleteStmt->execute();
         $deleteStmt->close();
     }
