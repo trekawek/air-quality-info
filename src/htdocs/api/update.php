@@ -1,7 +1,8 @@
 <?php
 define('VALUE_MAPPING', array(
-  'pm10'        => 'SDS_P1',
-  'pm25'        => 'SDS_P2',
+  'pm1'         => array(          'PMS_P0'),
+  'pm10'        => array('SDS_P1', 'PMS_P1', 'HPM_P1'),
+  'pm25'        => array('SDS_P2', 'PMS_P2', 'HPM_P2'),
   'temperature' => array('BME280_temperature', 'BMP_temperature'),
   'humidity'    => 'BME280_humidity',
   'pressure'    => array('BME280_pressure', 'BMP_pressure'),
