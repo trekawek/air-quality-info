@@ -29,9 +29,6 @@ $routes = array(
 );
 
 $route = get_route($routes, $current_action);
-if ($route === null) {
-  $route = $routes['sensors'];
-}
 if ($route['authenticate']) {
   authenticate($device);
 }

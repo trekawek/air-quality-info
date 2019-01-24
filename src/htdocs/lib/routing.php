@@ -64,7 +64,7 @@ function l($device, $action, $query_args = array()) {
 }
 
 function authenticate($device) {
-    if (!($_SERVER['PHP_AUTH_USER'] == $device['user'] && $_SERVER['PHP_AUTH_PW'] == $device['password'])) {
+    if (!(isset($_SERVER['PHP_AUTH_USER']) && $_SERVER['PHP_AUTH_USER'] == $device['user'] && $_SERVER['PHP_AUTH_PW'] == $device['password'])) {
         header('WWW-Authenticate: Basic realm="Air Quality Info Page"');
         header('HTTP/1.0 401 Unauthorized');
         exit;
@@ -72,15 +72,16 @@ function authenticate($device) {
 }
 
 function get_route($routes, $current_action) {
-    foreach ($routes as $uri => $route) {
+    $route = array_values($routes)[0];
+    foreach ($routes as $uri => $r) {
         if ($uri == $current_action) {
-            if (!isset($route['authenticate'])) {
-                $route['authenticate'] = false;
-            }
-            return $route;
+            $route = $r;
+            break;
         }
     }
-
-    return null;
+    if (!isset($route['authenticate'])) {
+        $route['authenticate'] = false;
+    }
+    return $route;
 }
 ?>
