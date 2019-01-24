@@ -7,142 +7,33 @@ require_once('lib/locale.php');
 require_once('lib/math.php');
 require_once('lib/pollution_levels.php');
 require_once('lib/themes.php');
+require_once('lib/routing.php');
 require_once('db/dao.php');
+require_once('db/dao_factory.php');
 
-function l($device, $action, $query_args = array()) {
-  $link = '';
-  if (count(CONFIG['devices']) > 1) {
-    $link .= '/'.$device['name'];
-  }
+list($device, $current_action) = parse_uri();
+$dao = create_dao($device);
 
-  if ($action != 'sensors') {
-    $link .= '/'.$action;
-  }
-  
-  $query_arg_added = false;
-  foreach ($query_args as $k => $v) {
-    if ($query_arg_added) {
-      $link .= '&';
-    } else {
-      $link .= '?';
-      $query_arg_added = true;
-    }
-    $link .= "${k}=${v}";
-  }
+$routes = array(
+  'sensors'         => array('include' => 'views/sensors.php'),
+  'graphs'          => array('include' => 'views/graphs.php'),
+  'graph_data.json' => array('include' => 'api/graph_json.php'),
+  'about'           => array('include' => "views/about_${current_lang}.php"),
+  'update'          => array('include' => 'api/update.php', 'authenticate' => true),
 
-  if ($link == '') {
-    $link = '/';
-  }
+  'debug'           => array('include' => 'views/debug.php'),
+  'debug/json'      => array('include' => 'views/debug_json.php', 'authenticate' => true),
 
-  return $link;
+  'tools/update_rrd_schema' => array('include' => 'tools/update_rrd_schema.php', 'authenticate' => true),
+  'tools/rrd_to_mysql' =>      array('include' => 'tools/rrd_to_mysql.php',      'authenticate' => true),
+);
+
+$route = get_route($routes, $current_action);
+if ($route === null) {
+  $route = $routes['sensors'];
 }
-
-function authenticate($device) {
-  if (!($_SERVER['PHP_AUTH_USER'] == $device['user'] && $_SERVER['PHP_AUTH_PW'] == $device['password'])) {
-    header('WWW-Authenticate: Basic realm="Air Quality Info Page"');
-    header('HTTP/1.0 401 Unauthorized');
-    exit;
-  }  
-}
-
-list($uri) = explode('?', $_SERVER['REQUEST_URI']);
-$uri = explode('/', $uri);
-$uri = array_values(array_filter($uri));
-
-$device = null;
-if (count($uri) > 0) {
-  foreach (CONFIG['devices'] as $d) {
-    if ($uri[0] == $d['name']) {
-        $device = $d;
-        array_shift($uri);
-        break;
-    }
-  }
-}
-
-if ($device === null && count(CONFIG['devices']) == 1) {
-  $device = CONFIG['devices'][0];
-}
-
-if (count($uri) > 0) {
-  $current_action = array_shift($uri);
-} else {
-  $current_action = 'sensors';
-}
-
-if ($device == null) {
-  header('Location: '
-    .l(CONFIG['devices'][0], $current_action)
-    .($_SERVER['QUERY_STRING'] ? '?'.$_SERVER['QUERY_STRING'] : ''));
-  exit;
-}
-
-switch (CONFIG['db']['type']) {
-  case 'mysql':
-  require_once('db/mysql.php');
-  $mysqli = new mysqli(CONFIG['db']['host'], CONFIG['db']['user'], CONFIG['db']['password'], CONFIG['db']['name']);
-  $dao = new MysqlDao($device['esp8266id'], $mysqli);
-  break;
-
-  default:
-  case 'rrd':
-  require_once('db/rrd.php');
-  $dao = new RRRDao($device['esp8266id']);
-  break;
-}
-
-switch ($current_action) {
-  case 'update':
+if ($route['authenticate']) {
   authenticate($device);
-  require('api/update.php');
-  break;
-
-  case 'graph_data.json':
-  require('api/graph_json.php');
-  break;
-
-  case 'about':
-  require("views/about_${current_lang}.php");
-  break;
-
-  case 'graphs':
-  require('views/graphs.php');
-  break;
-
-  case 'debug':
-  if (isset($uri[0])) {
-    $debug_action = $uri[0];
-  } else {
-    $debug_action = null;
-  }
-  switch ($debug_action) {
-    case 'json':
-    authenticate($device);
-    require('views/debug_json.php');
-    break;
-
-    default:
-    require('views/debug.php');
-    break;
-  }
-  break;
-
-  case 'tools':
-  authenticate($device);
-  switch ($uri[0]) {
-    case 'update_rrd_schema':
-    require('tools/update_rrd_schema.php');
-    break;
-
-    case 'rrd_to_mysql':
-    require('tools/rrd_to_mysql.php');
-    break;
-  }
-  break;
-
-  case 'sensors':
-  default:
-  require('views/sensors.php');
-  break;
 }
+require($route['include']);
 ?>
