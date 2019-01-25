@@ -28,6 +28,7 @@
     <?php else: ?>
     <link rel="stylesheet" href="/public/css/themes/<?php echo $current_theme ?>.min.css" >
     <?php endif ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.smartmenus/1.1.0/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.min.css" integrity="sha256-IbVTniyadRTitKPpYX/0NvZ1dyrr0e1sD4+MR9q4CWM=" crossorigin="anonymous" />
     <link rel="stylesheet" href="/public/css/style.css?v=1.3" >
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -53,37 +54,30 @@
                   <a class="nav-link <?php echo ($action == $current_action) ? 'active' : ''; ?>" href="<?php echo l($device, $action); ?>"><?php echo $name; ?></a>
                 </li>
                 <?php endforeach ?>
+                <?php require('partials/navbar/locations.php') ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo __('Theme') ?>
                   </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li>
                   <?php foreach(THEMES as $name => $desc): ?>
                     <a class="dropdown-item <?php echo ($name == $current_theme) ? 'active' : ''; ?>" href="<?php echo l($device, $current_action, array('theme' => $name)); ?>"><?php echo $desc ?></a>
                   <?php endforeach ?>
-                  </div>
+                  </li>
+                  </ul>
                 </li>
-                <?php if (count(CONFIG['devices']) > 1): ?>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo __('Locations') ?>
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <?php foreach(CONFIG['devices'] as $d): ?>
-                    <a class="dropdown-item <?php echo ($d == $device) ? 'active' : ''; ?>" href="<?php echo l($d, $current_action); ?>"><?php echo $d['description']; ?></a>
-                  <?php endforeach ?>
-                  </div>
-                </li>
-                <?php endif ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-globe" aria-hidden="true"></i>
                   </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <?php foreach($supported_languages as $lang => $desc): ?>
+                  <li>
                     <a class="dropdown-item <?php echo ($lang == $current_lang) ? 'active' : ''; ?>" href="<?php echo l($device, $current_action, array('lang' => $lang)); ?>"><img src="/public/img/flags/<?php echo $lang ?>.png"/> <?php echo $desc ?></a>
+                  </li>
                   <?php endforeach ?>
-                  </div>
+                  </ul>
                 </li>
               </ul>
             </div>

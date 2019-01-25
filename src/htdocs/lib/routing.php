@@ -1,28 +1,42 @@
 <?php
+function array_starts_with($needle, $haystack) {
+    $needle = array_values($needle);
+    $haystack = array_values($haystack);
+    foreach ($needle as $i => $e) {
+        if ($haystack[$i] != $e) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function find_device($uri) {
+    if (count($uri) == 0) {
+        return array(null, $uri);
+    }
+    $found_device = null;
+    $found_device_len = 0;
+    foreach (CONFIG['devices'] as $d) {
+        $name = array_map('trim', explode('/', $d['name']));
+        $name_len = count($name);
+        if (array_starts_with($name, $uri) && $found_device_len < $name_len) {
+            $found_device = $d;
+            $found_device_len = $name_len;
+        }
+    }
+    return array($found_device, array_slice($uri, $found_device_len));
+}
+
 function parse_uri() {
     list($uri) = explode('?', $_SERVER['REQUEST_URI']);
     $uri = explode('/', $uri);
     $uri = array_values(array_filter($uri));
 
     $device = null;
-    if (count($uri) > 0) {
-        foreach (CONFIG['devices'] as $d) {
-            if ($uri[0] == $d['name']) {
-                $device = $d;
-                array_shift($uri);
-                break;
-            }
-        }
-    }
+    list($device, $uri) = find_device($uri);
 
     if ($device === null && count(CONFIG['devices']) == 1) {
         $device = CONFIG['devices'][0];
-    }
-
-    if (count($uri) > 0) {
-        $current_action = implode('/', $uri);
-    } else {
-        $current_action = 'sensors';
     }
 
     if ($device == null) {
@@ -32,6 +46,12 @@ function parse_uri() {
         die();
     }
   
+    if (count($uri) > 0) {
+        $current_action = implode('/', $uri);
+    } else {
+        $current_action = 'sensors';
+    }
+
     return array($device, $current_action);
 }
 
