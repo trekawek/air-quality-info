@@ -27,16 +27,18 @@ class MysqlDao implements Dao {
         $stmt->bind_param('i', $this->esp8266id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $row = $result->fetch_row();
-        if ($row != null) {
+        if ($row = $result->fetch_row()) {
             $lastTimestamp = $row[0];
-            $insertStmt = $this->mysqli->prepare("INSERT INTO `records` (`timestamp`, `esp8266id`) VALUES (?, ?)");
-            for ($ts = $lastTimestamp + 180; $ts <= $recordTimestamp; $ts += 180) {
-                $insertStmt->bind_param('ii', $ts, $this->esp8266id);
-                $insertStmt->execute();
-            }
-            $insertStmt->close();
+        } else {
+            // first row
+            $lastTimestamp = $recordTimestamp - 180;
         }
+        $insertStmt = $this->mysqli->prepare("INSERT INTO `records` (`timestamp`, `esp8266id`) VALUES (?, ?)");
+        for ($ts = $lastTimestamp + 180; $ts <= $recordTimestamp; $ts += 180) {
+            $insertStmt->bind_param('ii', $ts, $this->esp8266id);
+            $insertStmt->execute();
+        }
+        $insertStmt->close();
         $stmt->close();
 
         $record = array (
