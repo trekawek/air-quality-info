@@ -119,7 +119,7 @@ if ($pm10_level === null && $pm25_level === null) {
     </table>
     <?php endif ?>
     <?php if ($sensors['pm10'] !== null || $sensors['pm25'] !== null): ?>
-    <div class="graph-container" data-range="day" data-type="pm" data-avg-type="<?php echo $current_avg_type ?>">
+    <div class="graph-container" data-range="<?php echo $current_avg_type == 24 ? 'week' : 'day' ?>" data-type="pm" data-avg-type="<?php echo $current_avg_type ?>">
       <canvas class="graph"></canvas>
       <?php echo __('Last update') ?>: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?>.</small>
     </div>
