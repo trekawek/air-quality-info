@@ -39,6 +39,12 @@ function parse_uri() {
         $device = CONFIG['devices'][0];
     }
 
+    if (count($uri) > 0) {
+        $current_action = implode('/', $uri);
+    } else {
+        $current_action = 'sensors';
+    }
+
     if ($device == null) {
         header('Location: '
           .l(CONFIG['devices'][0], $current_action)
@@ -46,12 +52,6 @@ function parse_uri() {
         die();
     }
   
-    if (count($uri) > 0) {
-        $current_action = implode('/', $uri);
-    } else {
-        $current_action = 'sensors';
-    }
-
     return array($device, $current_action);
 }
 
