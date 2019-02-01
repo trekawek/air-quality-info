@@ -21,22 +21,12 @@
 
     <title><?php echo __('Air quality') ?> - <?php echo $device['description']; ?></title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha256-NuCn4IvuZXdBaFKJOAcsU2Q3ZpwbdFisd5dux4jkQ5w=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css" integrity="sha256-KcCcakqMaamBrTFaxb9tkrP2iq1X8vUnsm86W8pRcgI=" crossorigin="anonymous" />
-    <?php if ($current_theme == 'default'): ?>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha256-azvvU9xKluwHFJ0Cpgtf0CYzK7zgtOznnzxV4924X1w=" crossorigin="anonymous" />
-    <?php else: ?>
-    <link rel="stylesheet" href="/public/css/themes/<?php echo $current_theme ?>.min.css" >
-    <?php endif ?>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.smartmenus/1.1.0/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.min.css" integrity="sha256-IbVTniyadRTitKPpYX/0NvZ1dyrr0e1sD4+MR9q4CWM=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="/public/css/style.css?v=1.3" >
+    <link rel="stylesheet" href="/public/css/themes/<?php echo $current_theme ?>.min.css"/>
+    <link rel="stylesheet" href="/public/css/vendor.min.css"/>
+    <link rel="stylesheet" href="/public/css/style.css?v=1.3"/>
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script defer src="/public/js/vendor.min.js"></script>
+    <script defer src="/public/js/main.js?v=1.11"></script>
   </head>
   <body data-device-name="<?php echo $device['name'] ?>" data-pm10-limit1h="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo PM25_LIMIT_24H ?>" data-current-lang='<?php echo $current_lang ?>' data-locale='<?php echo json_encode($locale) ?>'>
     <div class="container">
