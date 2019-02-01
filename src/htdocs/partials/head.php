@@ -21,9 +21,7 @@
 
     <title><?php echo __('Air quality') ?> - <?php echo $device['description']; ?></title>
 
-    <link rel="stylesheet" href="/public/css/themes/<?php echo $current_theme ?>.min.css"/>
-    <link rel="stylesheet" href="/public/css/vendor.min.css"/>
-    <link rel="stylesheet" href="/public/css/style.css?v=1.3"/>
+    <style><?php echo file_get_contents('public/css/critical.css') ?></style>
 
     <script defer src="/public/js/vendor.min.js"></script>
     <script defer src="/public/js/main.js?v=1.11"></script>

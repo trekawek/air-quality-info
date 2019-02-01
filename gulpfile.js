@@ -4,6 +4,8 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var cleanCSS = require('gulp-clean-css');
 var merge = require('merge-stream');
+var penthouse = require('penthouse');
+const fs = require('fs');
 
 var paths = {
   styles: {
@@ -69,6 +71,25 @@ function scripts() {
     .pipe(gulp.dest(paths.scripts.dest));
 }
 
+function createCriticalCss() {
+  var cssString = "";
+  [
+    'src/htdocs/public/css/themes/default.min.css',
+    'src/htdocs/public/css/vendor.min.css',
+    'src/htdocs/public/css/style.css'
+  ].forEach(function(path) {
+    cssString += fs.readFileSync(path);
+  });
+  return penthouse({
+    url: 'http://localhost:8080/graphs',
+    cssString: cssString
+  })
+  .then(criticalCss => {
+    // use the critical css
+    fs.writeFileSync('src/htdocs/public/css/critical.css', criticalCss);
+  });
+}
+
 function watch() {
   gulp.watch(paths.scripts.src, scripts);
   gulp.watch(paths.styles.src, styles);
@@ -87,6 +108,7 @@ exports.themes = bootstrapThemes;
 exports.scripts = scripts;
 exports.watch = watch;
 exports.build = build;
+exports.createCriticalCss = createCriticalCss;
 /*
  * Define default task that can be called by just running `gulp` from cli
  */
