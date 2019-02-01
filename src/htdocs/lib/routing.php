@@ -35,21 +35,10 @@ function parse_uri() {
     $device = null;
     list($device, $uri) = find_device($uri);
 
-    if ($device === null && count(CONFIG['devices']) == 1) {
-        $device = CONFIG['devices'][0];
-    }
-
     if (count($uri) > 0) {
         $current_action = implode('/', $uri);
     } else {
-        $current_action = 'sensors';
-    }
-
-    if ($device == null) {
-        header('Location: '
-          .l(CONFIG['devices'][0], $current_action)
-          .($_SERVER['QUERY_STRING'] ? '?'.$_SERVER['QUERY_STRING'] : ''));
-        die();
+        $current_action = null;
     }
   
     return array($device, $current_action);
@@ -57,12 +46,16 @@ function parse_uri() {
 
 function l($device, $action, $query_args = array()) {
     $link = '';
-    if (count(CONFIG['devices']) > 1) {
-        $link .= '/'.$device['name'];
-    }
-  
-    if ($action != 'sensors') {
-        $link .= '/'.$action;
+
+    if ($action == 'index' && $device['name'] == CONFIG['devices'][0]['name']) {
+        $link = '/';
+    } else {
+        if (count(CONFIG['devices']) > 0) {
+            $link .= '/'.$device['name'];
+        }
+        if ($action != 'index') {
+            $link .= '/'.$action;
+        }
     }
     
     $query_arg_added = false;

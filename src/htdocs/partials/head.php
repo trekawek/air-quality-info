@@ -14,30 +14,30 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta http-equiv="refresh" content="180" >
-    <link rel="apple-touch-icon" href="/public/img/dragon_white_background.png">
-    <link rel="icon" type="image/png" href="/public/img/dragon.png">
+
+    <link rel="apple-touch-icon" sizes="512x512" href="/public/img/dragon-512.png">
+    <link rel="manifest" href="/manifest.json">
 
     <title><?php echo __('Air quality') ?> - <?php echo $device['description']; ?></title>
 
     <style><?php echo file_get_contents('public/css/critical.css') ?></style>
 
     <script defer src="/public/js/vendor.min.js"></script>
-    <script defer src="/public/js/main.js?v=1.11"></script>
+    <script defer src="/public/js/main.js?v=15"></script>
+    <script defer src="/public/js/graph.js?v=15"></script>
   </head>
-  <body data-device-name="<?php echo $device['name'] ?>" data-pm10-limit1h="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo PM25_LIMIT_24H ?>" data-current-lang='<?php echo $current_lang ?>' data-locale='<?php echo json_encode($locale) ?>'>
+  <body data-is-pwa="<?php echo $current_action == 'index_pwa' ?>" data-device-name="<?php echo $device['name'] ?>" data-pm10-limit1h="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo PM25_LIMIT_24H ?>" data-current-lang='<?php echo $current_lang ?>' data-locale='<?php echo json_encode($locale) ?>'>
     <div class="container">
       <div class="row">
         <div class="col-md-8 offset-md-2">
           <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <a href="<?php echo l($device, 'sensors'); ?>" class="navbar-left navbar-brand"><img src="/public/img/dragon.png"/> Air Quality Info</a>
+            <a href="<?php echo l($device, 'index'); ?>" class="navbar-left navbar-brand"><img src="/public/img/dragon.png"/> Air Quality Info</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Nawigacja">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
-                <?php foreach(array('sensors' => __('Home'), 'graphs' => __('Graphs'), 'about' => __('About')) as $action => $name): ?>
+                <?php foreach(array('index' => __('Home'), 'graphs' => __('Graphs'), 'about' => __('About')) as $action => $name): ?>
                 <li class="nav-item">
                   <a class="nav-link <?php echo ($action == $current_action) ? 'active' : ''; ?>" href="<?php echo l($device, $action); ?>"><?php echo $name; ?></a>
                 </li>

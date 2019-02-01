@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var replace = require('gulp-replace');
 var cleanCSS = require('gulp-clean-css');
 var merge = require('merge-stream');
 var penthouse = require('penthouse');
@@ -11,7 +12,7 @@ var paths = {
   styles: {
     src: [
       'node_modules/font-awesome/css/font-awesome.css',
-      'node_modules/weather-icons/css/weather-icons.css',
+      'node_modules/weathericons/css/weather-icons.css',
       'node_modules/smartmenus/dist/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.css'
     ],
     dest: 'src/htdocs/public/css/'
@@ -44,10 +45,8 @@ var paths = {
 function styles() {
   return gulp.src(paths.styles.src)
     .pipe(cleanCSS())
-    .pipe(rename({
-      basename: 'vendor',
-      suffix: '.min'
-    }))
+    .pipe(concat('vendor.min.css'))
+    .pipe(replace('../weathericons/font/', 'fonts/'))
     .pipe(gulp.dest(paths.styles.dest));
 }
 
