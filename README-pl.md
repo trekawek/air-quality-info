@@ -14,6 +14,7 @@ Air Quality Info to panel informacyjny oparty o PHP, wyświetlający dane nt. cz
 * Zewnętrzna baza danych nie jest wymagana
 * Wsparcie dla wielu czujników w ramach jednej strony
 * Panel dostępny w języku polskim i angielskim
+* Łatwa instalacja na ekranie startowym smartfonu (Progressive Web App)
 
 ## Wymagania
 

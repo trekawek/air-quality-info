@@ -16,6 +16,7 @@ See the README in <a href="README-pl.md">Polish</a>.
 * No external database required
 * Support for multiple devices
 * Locale support
+* Progressive Web App
 
 ## Requirements
 
