@@ -18,7 +18,7 @@ var staticFiles = [
   "/public/fonts/fontawesome-webfont.woff2?v=4.7.0",
   "/public/fonts/weathericons-regular-webfont.woff",
   "/offline",
-  "/index",
+  "/",
   "/sensors?avg_type=1",
   "/sensors?avg_type=24",
   "/graph_data.json?type=pm&range=day&ma_h=1",
