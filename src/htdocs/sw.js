@@ -31,9 +31,11 @@ var dynamicResources = [
 ];
 
 var unavailableOffline = [
+  "/",
   "/graphs",
   "/about",
-  "/debug"
+  "/debug",
+  "/offline"
 ];
 
 self.addEventListener('install', function(e) {
