@@ -1,10 +1,7 @@
 <?php
 include('partials/head.php');
 ?>
-<div class="reload-sensors sensors" data-avg-type="1">
-<?php
-include('views/sensors.php');
-?>
+<div class="reload-sensors load-sensors sensors" data-avg-type="1">
 </div>
 <?php
 include('partials/tail.php');

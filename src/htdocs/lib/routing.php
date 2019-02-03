@@ -45,17 +45,22 @@ function parse_uri() {
 }
 
 function l($device, $action, $query_args = array()) {
-    $link = '';
+    global $routes;
+    $isFirstRoute = array_keys($routes)[0] == $action;
+    $isFirstDevice = CONFIG['devices'][0]['name'] == $device['name'];
+    $route = $routes[$action];
+    $skipDefaultDevice = isset($route['skip_default_device']) && $route['skip_default_device'] === true;
 
-    if ($action == 'index' && $device['name'] == CONFIG['devices'][0]['name']) {
+    if ($isFirstDevice && $skipDefaultDevice) {
         $link = '/';
     } else {
-        if (count(CONFIG['devices']) > 0) {
-            $link .= '/'.$device['name'];
+        $link = '/'.$device['name'];
+    }
+    if (!$isFirstRoute) {
+        if (substr($link, -1) != '/') {
+            $link .= '/';
         }
-        if ($action != 'index') {
-            $link .= '/'.$action;
-        }
+        $link .= $action;
     }
     
     $query_arg_added = false;
@@ -68,11 +73,7 @@ function l($device, $action, $query_args = array()) {
         }
         $link .= "${k}=${v}";
     }
-  
-    if ($link == '') {
-      $link = '/';
-    }
-  
+
     return $link;
 }
 

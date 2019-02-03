@@ -13,12 +13,11 @@ require_once('db/dao.php');
 require_once('db/dao_factory.php');
 
 $routes = array(
-  'index'           => array('include' => 'views/main.php',     'redirect' => false),
-  'index_pwa'       => array('include' => 'views/main_pwa.php', 'redirect' => false),
-  'sensors'         => array('include' => 'views/sensors.php',  'redirect' => false),
+  'index'           => array('include' => 'views/main.php',     'skip_default_device' => true),
+  'sensors'         => array('include' => 'views/sensors.php',  'skip_default_device' => true),
   'graphs'          => array('include' => 'views/graphs.php'),
-  'graph_data.json' => array('include' => 'api/graph_json.php', 'redirect' => false),
-  'offline'         => array('include' => 'views/offline.php',  'redirect' => false),
+  'graph_data.json' => array('include' => 'api/graph_json.php', 'skip_default_device' => true),
+  'offline'         => array('include' => 'views/offline.php',  'skip_default_device' => true),
   'about'           => array('include' => "views/about_${current_lang}.php"),
   'update'          => array('include' => 'api/update.php', 'authenticate' => true),
 
@@ -38,14 +37,14 @@ if ($current_action === null) {
 }
 $route = get_route($routes, $current_action);
 if ($device === null) {
-  if (!isset($route['redirect']) || $route['redirect'] === true) {
+  if (isset($route['skip_default_device']) && $route['skip_default_device'] === true) {
+    $device = CONFIG['devices'][0];
+  } else {
     header("Location: /"
       .CONFIG['devices'][0]['name']
       .'/'.$current_action
       .($_SERVER['QUERY_STRING'] === '' ? '' : '?'.$_SERVER['QUERY_STRING']));
     exit;
-  } else {
-    $device = CONFIG['devices'][0];
   }
 }
 $dao = create_dao($device);

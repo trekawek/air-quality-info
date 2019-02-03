@@ -228,11 +228,7 @@ function updateGraph(graphContainer) {
     var avgType = dataset.avgType;
     var ctx = graphContainer.querySelector('canvas.graph');
 
-    var url = '';
-    if (!CONFIG.isPwa) {
-        url += '/' + CONFIG.deviceName;
-    }
-    url += '/graph_data.json?type=' + type + '&range=' + range;
+    var url = CONFIG.graphUri + '?type=' + type + '&range=' + range;
     if (typeof dataset.avgType !== 'undefined' && dataset.avgType != 0) {
         url += '&ma_h=' + dataset.avgType;
     }

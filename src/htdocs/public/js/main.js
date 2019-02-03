@@ -28,11 +28,7 @@ function bindAvgTypeSwitch(element) {
 function loadSensor(element) {
     element.innerHTML = document.querySelector('#spinner').innerHTML;
 
-    var url = '';
-    if (!CONFIG.isPwa) {
-        url += '/' + CONFIG.deviceName;
-    }
-    url += '/sensors?avg_type=' + element.dataset.avgType;
+    var url = CONFIG.sensorsUri + '?avg_type=' + element.dataset.avgType;
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
     request.onload = function() {

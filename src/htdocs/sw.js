@@ -18,7 +18,7 @@ var staticFiles = [
   "/public/fonts/fontawesome-webfont.woff2?v=4.7.0",
   "/public/fonts/weathericons-regular-webfont.woff",
   "/offline",
-  "/index_pwa",
+  "/index",
   "/sensors?avg_type=1",
   "/sensors?avg_type=24",
   "/graph_data.json?type=pm&range=day&ma_h=1",
@@ -68,8 +68,6 @@ self.addEventListener('fetch', function(event) {
         response = caches.match(event.request).then(function(response) {
             return response || fetch(event.request);
         });
-    } else if (url.pathname == '/') {
-        response = caches.match("/index_pwa");
     } else { // return from network or fallback to /offline
         response = fetch(event.request).catch(function() {
             if (endsWithAny(url.pathname, unavailableOffline)) {
