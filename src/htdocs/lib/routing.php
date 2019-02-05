@@ -86,16 +86,20 @@ function authenticate($device) {
 }
 
 function get_route($routes, $current_action) {
+    $current_action = explode('/', $current_action);
     $route = array_values($routes)[0];
     foreach ($routes as $uri => $r) {
-        if ($uri == $current_action) {
+        $route_name = $uri;
+        $uri = explode('/', $uri);
+        if (array_starts_with($uri, $current_action)) {
             $route = $r;
+            $uriSegments = array_slice($current_action, count($uri));
             break;
         }
     }
     if (!isset($route['authenticate'])) {
         $route['authenticate'] = false;
     }
-    return $route;
+    return array($route, $route_name, $uriSegments);
 }
 ?>

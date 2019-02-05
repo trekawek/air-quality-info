@@ -1,5 +1,4 @@
 <?php
-date_default_timezone_set('Europe/Warsaw');
 $sensors = $dao->getLastData();
 $last_update = $sensors['last_update'];
 unset($sensors['last_update']);

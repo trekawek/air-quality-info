@@ -3,6 +3,7 @@ session_start();
 date_default_timezone_set('Europe/Warsaw');
 
 require_once('config.php');
+require_once('lib/config.php');
 require_once('lib/locale.php');
 require_once('lib/math.php');
 require_once('lib/pollution_levels.php');
@@ -15,6 +16,7 @@ require_once('db/dao_factory.php');
 $routes = array(
   'index'           => array('include' => 'views/main.php',     'skip_default_device' => true),
   'sensors'         => array('include' => 'views/sensors.php',  'skip_default_device' => true),
+  'all_sensors'     => array('include' => 'views/all_sensors.php', 'skip_default_device' => true),
   'graphs'          => array('include' => 'views/graphs.php'),
   'graph_data.json' => array('include' => 'api/graph_json.php', 'skip_default_device' => true),
   'offline'         => array('include' => 'views/offline.php',  'skip_default_device' => true),
@@ -35,7 +37,7 @@ if ($current_action === null) {
     $device = CONFIG['devices'][0];
   }
 }
-$route = get_route($routes, $current_action);
+list($route, $route_name, $uri) = get_route($routes, $current_action);
 if ($device === null) {
   if (isset($route['skip_default_device']) && $route['skip_default_device'] === true) {
     $device = CONFIG['devices'][0];
