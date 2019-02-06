@@ -40,7 +40,7 @@ foreach($graphs as $type => $name):
 <div class="row">
 <?php endif ?>
   <div class="col-md-6 text-center">
-    <div class="graph-container" data-range="day" data-type="<?php echo $type ?>" data-avg-type="1">
+    <div class="graph-container" data-range="day" data-type="<?php echo $type ?>" data-avg-type="1" data-graph-uri="<?php echo l($device, 'graph_data.json')?>" >
       <canvas class="graph"></canvas>
     </div>
   </div>

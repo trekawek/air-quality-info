@@ -26,7 +26,7 @@
     <script defer src="/public/js/main.js?v=15"></script>
     <script defer src="/public/js/graph.js?v=15"></script>
   </head>
-  <body data-graph-uri="<?php echo l($device, 'graph_data.json')?>" data-sensors-uri="<?php echo l($device, 'sensors')?>" data-device-name="<?php echo $device['name'] ?>" data-pm10-limit1h="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo PM25_LIMIT_24H ?>" data-current-lang='<?php echo $current_lang ?>' data-locale='<?php echo json_encode($locale) ?>'>
+  <body data-pm10-limit1h="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo PM25_LIMIT_24H ?>" data-current-lang='<?php echo $current_lang ?>' data-locale='<?php echo json_encode($locale) ?>'>
     <div class="container">
       <div class="row">
         <div class="col-md-8 offset-md-2">

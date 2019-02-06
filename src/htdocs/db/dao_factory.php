@@ -1,9 +1,13 @@
 <?php
 function create_dao($device) {
+    static $mysqli = null;
+
     switch (CONFIG['db']['type']) {
         case 'mysql':
         require_once('db/mysql.php');
-        $mysqli = new mysqli(CONFIG['db']['host'], CONFIG['db']['user'], CONFIG['db']['password'], CONFIG['db']['name']);
+        if ($mysqli === null) {
+            $mysqli = new mysqli(CONFIG['db']['host'], CONFIG['db']['user'], CONFIG['db']['password'], CONFIG['db']['name']);
+        }
         $dao = new MysqlDao($device['esp8266id'], $mysqli);
         break;
     

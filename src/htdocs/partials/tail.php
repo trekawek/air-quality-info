@@ -1,4 +1,14 @@
+  <div class="row">
+    <div class="col-md-8 offset-md-2 text-muted text-center">
+      <hr>
+      <small>
+        <?php echo __('Powered by ') ?><a href="https://github.com/trekawek/air-quality-info">Air Quality Info</a>.
+      </small>
+    </div>
   </div>
+
+  </div>
+
   <link rel="stylesheet" href="/public/css/themes/<?php echo $current_theme ?>.min.css"/>
   <link rel="stylesheet" href="/public/css/vendor.min.css"/>
   <link rel="stylesheet" href="/public/css/style.css?v=15"/>

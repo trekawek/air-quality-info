@@ -7,7 +7,6 @@ interface Dao {
 
     public function update($time, $pm25, $pm10, $temp, $press, $hum, $heaterTemp, $heaterHum);
 
-
     public function getLastData();
 
     public function getLastAvg($avgType);
