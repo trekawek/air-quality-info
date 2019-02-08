@@ -50,7 +50,7 @@
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <li>
                   <?php foreach(Theme::THEMES as $name => $desc): ?>
-                    <a class="dropdown-item <?php echo ($name == $currentTheme->getTheme()) ? 'active' : ''; ?>" href="<?php echo l($currentController, $currentAction, null, array(), array('theme' => $name)); ?>"><?php echo $desc ?></a>
+                    <a class="dropdown-item <?php echo ($name == $currentTheme->getTheme()) ? 'active' : ''; ?>" href="<?php echo l($currentController, $currentAction, null, array(), array('theme' => $name)); ?>"><?php echo __($desc) ?></a>
                   <?php endforeach ?>
                   </li>
                   </ul>
