@@ -1,15 +1,35 @@
 <?php
-define('THEMES', array('default' => __('Default theme'), 'darkly' => __('Darkly theme')));
+class Theme {
 
-$current_theme = null;
-if (isset($_SESSION['theme'])) {
-  $current_theme = $_SESSION['theme'];
+  const THEMES = array('default' => 'Default theme', 'darkly' => 'Darkly theme');
+
+  private $theme;
+
+  function __construct() {
+    $theme = null;
+    if (isset($_SESSION['theme'])) {
+      $theme = $_SESSION['theme'];
+    }
+    if (!isset(Theme::THEMES[$theme])) {
+      $theme = 'default';
+    }
+    $this->theme = $theme;
+  }
+
+  function getTheme() {
+    return $this->theme;
+  }
+
+  function setTheme($theme) {
+    if (isset(Theme::THEMES[$theme])) {
+      $_SESSION['theme'] = $theme;
+      $this->theme = $theme;
+    }
+  }
 }
+
+$currentTheme = new Theme();
 if (isset($_GET['theme'])) {
-  $current_theme = $_GET['theme'];
+  $currentTheme->setTheme($_GET['theme']);
 }
-if (!isset(THEMES[$current_theme])) {
-  $current_theme = 'default';
-}
-$_SESSION['theme'] = $current_theme;
 ?>

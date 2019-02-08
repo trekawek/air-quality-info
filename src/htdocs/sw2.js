@@ -19,14 +19,14 @@ var staticFiles = [
   "/public/fonts/weathericons-regular-webfont.woff",
   "/offline",
   "/",
-  "/sensors?avg_type=1",
-  "/sensors?avg_type=24",
+  "/main_inner?avgType=1",
+  "/main_inner?avgType=24",
   "/graph_data.json?type=pm&range=day&ma_h=1",
   "/graph_data.json?type=pm&range=week&ma_h=24",
 ];
 
 var dynamicResources = [
-  "/sensors",
+  "/main_inner",
   "/graph_data.json"
 ];
 
@@ -72,7 +72,7 @@ self.addEventListener('fetch', function(event) {
         });
     } else { // return from network or fallback to /offline
         response = fetch(event.request).catch(function() {
-            if (endsWithAny(url.pathname, unavailableOffline)) {
+            if (endsWithAny(url.pathname, unavailableOffline) || url.pathname.startsWith("/all/")) {
                 return caches.match("/offline");
             } else {
                 return this;

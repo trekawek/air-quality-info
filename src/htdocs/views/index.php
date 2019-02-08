@@ -1,0 +1,1 @@
+<div class="reload-sensors load-sensors sensors" data-avg-type="1" data-sensors-uri="<?php echo l('main', 'index_inner')?>"></div>

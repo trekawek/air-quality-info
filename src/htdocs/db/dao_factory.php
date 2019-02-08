@@ -1,5 +1,5 @@
 <?php
-function create_dao($device) {
+function create_dao() {
     static $mysqli = null;
 
     switch (CONFIG['db']['type']) {
@@ -8,13 +8,13 @@ function create_dao($device) {
         if ($mysqli === null) {
             $mysqli = new mysqli(CONFIG['db']['host'], CONFIG['db']['user'], CONFIG['db']['password'], CONFIG['db']['name']);
         }
-        $dao = new MysqlDao($device['esp8266id'], $mysqli);
+        $dao = new MysqlDao($mysqli);
         break;
     
         default:
         case 'rrd':
         require_once('db/rrd.php');
-        $dao = new RRRDao($device['esp8266id']);
+        $dao = new RRRDao();
         break;
     }
     return $dao;

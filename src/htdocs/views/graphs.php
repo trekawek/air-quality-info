@@ -1,7 +1,3 @@
-<?php
-$sensors = $dao->getLastData();
-?>
-<?php include('partials/head.php'); ?>
 <p></p>
 <div class="row">
   <div class="col-md-8 offset-md-2 text-center">
@@ -20,27 +16,13 @@ $sensors = $dao->getLastData();
   </div>
 </div>
 <?php
-$graphs = array();
-if ($sensors['pm10'] !== null || $sensors['pm25'] !== null) {
-  $graphs['pm'] = __('PM');
-}
-if ($sensors['temperature'] !== null) {
-  $graphs['temperature'] = __('Temperature');
-}
-if ($sensors['humidity'] !== null) {
-  $graphs['humidity'] = __('Humidity');
-}
-if ($sensors['pressure'] !== null) {
-  $graphs['pressure'] = __('Pressure');
-}
-$i = 0;
 foreach($graphs as $type => $name):
 ?>
 <?php if ($i % 2 == 0): ?>
 <div class="row">
 <?php endif ?>
   <div class="col-md-6 text-center">
-    <div class="graph-container" data-range="day" data-type="<?php echo $type ?>" data-avg-type="1" data-graph-uri="<?php echo l($device, 'graph_data.json')?>" >
+    <div class="graph-container" data-range="day" data-type="<?php echo $type ?>" data-avg-type="1" data-graph-uri="<?php echo l('graph', 'get_data')?>" >
       <canvas class="graph"></canvas>
     </div>
   </div>
@@ -48,4 +30,3 @@ foreach($graphs as $type => $name):
 </div>
 <?php endif ?>
 <?php endforeach; ?>
-<?php include('partials/tail.php'); ?>

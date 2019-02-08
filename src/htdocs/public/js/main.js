@@ -28,7 +28,7 @@ function bindAvgTypeSwitch(element) {
 function loadSensor(element) {
     element.innerHTML = document.querySelector('#spinner').innerHTML;
 
-    var url = element.dataset.sensorsUri + '?avg_type=' + element.dataset.avgType;
+    var url = element.dataset.sensorsUri + '?avgType=' + element.dataset.avgType;
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
     request.onload = function() {

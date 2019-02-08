@@ -1,4 +1,3 @@
-<?php include('partials/head.php'); ?>
 <p></p>
 <div class="row">
     <div class="col-md-8 offset-md-2">
@@ -6,4 +5,3 @@
         <p><?php echo __('Please connect to the internet to get the most recent info.') ?></p>
     </div>
 </div>
-<?php include('partials/tail.php'); ?>

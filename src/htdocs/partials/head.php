@@ -26,20 +26,20 @@
     <script defer src="/public/js/main.js?v=15"></script>
     <script defer src="/public/js/graph.js?v=15"></script>
   </head>
-  <body data-pm10-limit1h="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo PM25_LIMIT_24H ?>" data-current-lang='<?php echo $current_lang ?>' data-locale='<?php echo json_encode($locale) ?>'>
+  <body data-pm10-limit1h="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo PM25_LIMIT_24H ?>" data-current-lang='<?php echo $currentLocale->getCurrentLang() ?>' data-locale='<?php echo json_encode($currentLocale->getMessages()) ?>'>
     <div class="container">
       <div class="row">
         <div class="col-md-8 offset-md-2">
           <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <a href="<?php echo l($device, 'index'); ?>" class="navbar-left navbar-brand"><img src="/public/img/dragon.png"/> Air Quality Info</a>
+            <a href="<?php echo l('main', 'index'); ?>" class="navbar-left navbar-brand"><img src="/public/img/dragon.png"/> Air Quality Info</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Nawigacja">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
-                <?php foreach(array('index' => __('Home'), 'graphs' => __('Graphs'), 'about' => __('About')) as $action => $name): ?>
+                <?php foreach(array('Home' => array('main', 'index'), 'Graphs' => array('graph', 'index'), 'About' => array('static', 'about')) as $desc => $action): ?>
                 <li class="nav-item">
-                  <a class="nav-link <?php echo ($action == $current_action) ? 'active' : ''; ?>" href="<?php echo l($device, $action); ?>"><?php echo $name; ?></a>
+                  <a class="nav-link <?php echo ($action == array($currentController, $currentAction)) ? 'active' : ''; ?>" href="<?php echo l(...$action) ?>"><?php echo __($desc) ?></a>
                 </li>
                 <?php endforeach ?>
                 <?php require('partials/navbar/locations.php') ?>
@@ -49,8 +49,8 @@
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <li>
-                  <?php foreach(THEMES as $name => $desc): ?>
-                    <a class="dropdown-item <?php echo ($name == $current_theme) ? 'active' : ''; ?>" href="<?php echo l($device, $current_action, array('theme' => $name)); ?>"><?php echo $desc ?></a>
+                  <?php foreach(Theme::THEMES as $name => $desc): ?>
+                    <a class="dropdown-item <?php echo ($name == $currentTheme->getTheme()) ? 'active' : ''; ?>" href="<?php echo l($currentController, $currentAction, null, array(), array('theme' => $name)); ?>"><?php echo $desc ?></a>
                   <?php endforeach ?>
                   </li>
                   </ul>
@@ -60,9 +60,9 @@
                     <i class="fa fa-globe" aria-hidden="true"></i>
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <?php foreach($supported_languages as $lang => $desc): ?>
+                  <?php foreach(Locale::SUPPORTED_LANGUAGES as $lang => $desc): ?>
                   <li>
-                    <a class="dropdown-item <?php echo ($lang == $current_lang) ? 'active' : ''; ?>" href="<?php echo l($device, $current_action, array('lang' => $lang)); ?>"><img src="/public/img/flags/<?php echo $lang ?>.png"/> <?php echo $desc ?></a>
+                    <a class="dropdown-item <?php echo ($lang == $currentLocale->getCurrentLang()) ? 'active' : ''; ?>" href="<?php echo l($currentController, $currentAction, null, array(), array('lang' => $lang)); ?>"><img src="/public/img/flags/<?php echo $lang ?>.png"/> <?php echo $desc ?></a>
                   </li>
                   <?php endforeach ?>
                   </ul>

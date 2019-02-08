@@ -3,28 +3,25 @@ class MysqlDao implements Dao {
 
     const FIELDS = array('pm25','pm10','temperature','pressure','humidity','heater_temperature','heater_humidity');
 
-    private $esp8266id;
-
     private $mysqli;
 
-    public function __construct($esp8266id, $mysqli) {
+    public function __construct($mysqli) {
         $this->mysqli = $mysqli;
-        $this->esp8266id = $esp8266id;
     }
 
-    public function dbExists() {
+    public function dbExists($esp8266id) {
         return true;
     }
 
-    public function createDb() {
+    public function createDb($esp8266id) {
         // do nothing
     }
 
-    public function update($timestamp, $pm25, $pm10, $temp, $press, $hum, $heaterTemp, $heaterHum) {
+    public function update($esp8266id, $timestamp, $pm25, $pm10, $temp, $press, $hum, $heaterTemp, $heaterHum) {
         $recordTimestamp = floor($timestamp / 180) * 180;
 
         $stmt = $this->mysqli->prepare("SELECT `timestamp` FROM `records` WHERE `esp8266id` = ? ORDER BY `timestamp` DESC LIMIT 1");
-        $stmt->bind_param('i', $this->esp8266id);
+        $stmt->bind_param('i', $esp8266id);
         $stmt->execute();
         $result = $stmt->get_result();
         if ($row = $result->fetch_row()) {
@@ -35,7 +32,7 @@ class MysqlDao implements Dao {
         }
         $insertStmt = $this->mysqli->prepare("INSERT INTO `records` (`timestamp`, `esp8266id`) VALUES (?, ?)");
         for ($ts = $lastTimestamp + 180; $ts <= $recordTimestamp; $ts += 180) {
-            $insertStmt->bind_param('ii', $ts, $this->esp8266id);
+            $insertStmt->bind_param('ii', $ts, $esp8266id);
             $insertStmt->execute();
         }
         $insertStmt->close();
@@ -68,7 +65,7 @@ class MysqlDao implements Dao {
         $updateSql .= "WHERE `timestamp` in (?, ?) AND `esp8266id` = ?";
         $params[] = $recordTimestamp;
         $params[] = $recordTimestamp - 180;
-        $params[] = $this->esp8266id;
+        $params[] = $esp8266id;
 
         $updateStmt = $this->mysqli->prepare($updateSql);
         $pattern = str_repeat('s', count($record));
@@ -78,9 +75,9 @@ class MysqlDao implements Dao {
         $updateStmt->close();
     }
 
-    public function getLastData() {
+    public function getLastData($esp8266id) {
         $stmt = $this->mysqli->prepare("SELECT * FROM `records` WHERE `esp8266id` = ? AND `pm10` IS NOT NULL ORDER BY `timestamp` DESC LIMIT 1");
-        $stmt->bind_param('i', $this->esp8266id);
+        $stmt->bind_param('i', $esp8266id);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
@@ -93,7 +90,7 @@ class MysqlDao implements Dao {
         return $data;
     }
 
-    public function getLastAvg($avgType) {
+    public function getLastAvg($esp8266id, $avgType) {
         $fields = array();
         foreach (MysqlDao::FIELDS as $f) {
             $fields[] = "AVG($f)";
@@ -102,7 +99,7 @@ class MysqlDao implements Dao {
 
         $stmt = $this->mysqli->prepare("SELECT $fields FROM `records` WHERE `esp8266id` = ? AND `timestamp` >= ?");
         $since = time() - $avgType * 60 * 60;
-        $stmt->bind_param('ii', $this->esp8266id, $since);
+        $stmt->bind_param('ii', $esp8266id, $since);
         $stmt->execute();
         $result = $stmt->get_result();
         $row = $result->fetch_row();
@@ -115,7 +112,7 @@ class MysqlDao implements Dao {
         return $data;
     }
 
-    public function getHistoricData($type = 'pm', $range = 'day', $avgType = null) {
+    public function getHistoricData($esp8266id, $type = 'pm', $range = 'day', $avgType = null) {
         switch ($type) {
             case 'temperature':
             $fields = array('temperature', 'heater_temperature');
@@ -174,7 +171,7 @@ class MysqlDao implements Dao {
         }
 
         $stmt = $this->mysqli->prepare("SELECT CEILING(`timestamp` / $step) * $step AS `ts`, $sql_fields FROM `records` WHERE `esp8266id` = ? AND `timestamp` >= ? GROUP BY `ts` ORDER BY `ts` ASC");
-        $stmt->bind_param('ii', $this->esp8266id, $since);
+        $stmt->bind_param('ii', $esp8266id, $since);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -201,31 +198,31 @@ class MysqlDao implements Dao {
         return $table_exists;
     }
 
-    public function logJsonUpdate($time, $json) {
+    public function logJsonUpdate($esp8266id, $time, $json) {
         if (!$this->jsonUpdateTableExists()) {
             return;
         }
 
         $insertStmt = $this->mysqli->prepare("INSERT INTO `json_updates` (`timestamp`, `esp8266id`, `data`) VALUES (?, ?, ?)");
-        $insertStmt->bind_param('iis', $time, $this->esp8266id, $json);
+        $insertStmt->bind_param('iis', $time, $esp8266id, $json);
         $insertStmt->execute();
         $insertStmt->close();
 
         $before = $time - 24 * 60 * 60;
         $deleteStmt = $this->mysqli->prepare("DELETE FROM `json_updates` WHERE `timestamp` < ? AND `esp8266id` = ?");
-        $deleteStmt->bind_param('ii', $before, $this->esp8266id);
+        $deleteStmt->bind_param('ii', $before, $esp8266id);
         $deleteStmt->execute();
         $deleteStmt->close();
     }
 
-    public function getJsonUpdates() {
+    public function getJsonUpdates($esp8266id) {
         $result = array();
         if (!$this->jsonUpdateTableExists()) {
             return $result;
         }
 
         $stmt = $this->mysqli->prepare("SELECT `timestamp`, `data` FROM `json_updates` WHERE `esp8266id` = ? ORDER BY `timestamp` DESC");
-        $stmt->bind_param('i', $this->esp8266id);
+        $stmt->bind_param('i', $esp8266id);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = array();
@@ -236,13 +233,13 @@ class MysqlDao implements Dao {
         return $data;
     }
 
-    public function getJsonUpdate($ts) {
+    public function getJsonUpdate($esp8266id, $ts) {
         if (!$this->jsonUpdateTableExists()) {
             return null;
         }
 
         $stmt = $this->mysqli->prepare("SELECT `data` FROM `json_updates` WHERE `esp8266id` = ? AND `timestamp` = ?");
-        $stmt->bind_param('ii', $this->esp8266id, $ts);
+        $stmt->bind_param('ii', $esp8266id, $ts);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = null;

@@ -1,20 +1,11 @@
 <?php
 class RRRDao implements Dao {
 
-    private $rrd_file;
-
-    private $json_file;
-
-    public function __construct($esp8266id) {
-        $this->rrd_file = __DIR__ . "/../data/${esp8266id}.rrd";
-        $this->json_file = __DIR__ . "/../data/${esp8266id}.json";
+    function dbExists($esp8266id) {
+        return file_exists($this->getRrdFile($esp8266id));
     }
 
-    function dbExists() {
-        return file_exists($this->rrd_file);
-    }
-      
-    function createDb() {
+    function createDb($esp8266id) {
         $options = array(
             '--step=3m',
             'DS:PM25:GAUGE:5m:0:1000',
@@ -29,17 +20,17 @@ class RRRDao implements Dao {
             'RRA:AVERAGE:0.5:90m:62d',
             'RRA:AVERAGE:0.5:12h:2y'
         );
-        if (file_exists($this->rrd_file)) {
-            array_push($options, '--source='.$this->rrd_file);
+        if (file_exists($this->getRrdFile($esp8266id))) {
+            array_push($options, '--source='.$this->getRrdFile($esp8266id));
         }
-        if (!rrd_create($this->rrd_file, $options)) {
+        if (!rrd_create($this->getRrdFile($esp8266id), $options)) {
             error_log(rrd_error());
         }
     }
 
-    function update($time, $pm25, $pm10, $temp, $press, $hum, $heater_temp, $heater_hum) {
-        if (!$this->dbExists()) {
-            $this->createDb();
+    function update($esp8266id, $time, $pm25, $pm10, $temp, $press, $hum, $heater_temp, $heater_hum) {
+        if (!$this->dbExists($esp8266id)) {
+            $this->createDb($esp8266id);
         }
 
         $data = array($time, $pm25, $pm10, $temp, $press, $hum, $heater_temp, $heater_hum);
@@ -49,15 +40,15 @@ class RRRDao implements Dao {
             }
         }
         $data = implode(':', $data);
-        rrd_update($this->rrd_file, array($data));
+        rrd_update($this->getRrdFile($esp8266id), array($data));
         return $data;
     }
 
-    public function getLastData() {
-        if (!$this->dbExists()) {
+    public function getLastData($esp8266id) {
+        if (!$this->dbExists($esp8266id)) {
             return array();
         }
-        $data = rrd_lastupdate($this->rrd_file);
+        $data = rrd_lastupdate($this->getRrdFile($esp8266id));
         $sensors = array('last_update' => $data['last_update']);
         for ($i = 0; $i < $data['ds_cnt']; $i++) {
             $sensors[$data['ds_navm'][$i]] = $data['data'][$i];
@@ -65,8 +56,8 @@ class RRRDao implements Dao {
         return RRRDao::keysToLower($sensors);
     }
       
-    public function getLastAvg($hours) {
-        if (!$this->dbExists()) {
+    public function getLastAvg($esp8266id, $hours) {
+        if (!$this->dbExists($esp8266id)) {
             return array();
         }
         $options = array(
@@ -74,7 +65,7 @@ class RRRDao implements Dao {
             '--start=now-'.$hours.'h',
             '--resolution=3m',
             '--end=now');
-        $result = rrd_fetch($this->rrd_file, $options);
+        $result = rrd_fetch($this->getRrdFile($esp8266id), $options);
         $data = $result['data'];
         foreach ($data as $name => $values) {
             $sum = 0;
@@ -92,7 +83,7 @@ class RRRDao implements Dao {
             }
         }
         $data = RRRDao::keysToLower($data);
-        $last_update = $this->getLastData();
+        $last_update = $this->getLastData($esp8266id);
         foreach ($data as $k => $v) {
             if ($v === null) {
                 $data[$k] = $last_update[$k];
@@ -101,8 +92,8 @@ class RRRDao implements Dao {
         return $data;
     }
 
-    function getHistoricData($type = 'pm', $range = 'day', $walking_average_hours = null) {
-        if (!$this->dbExists()) {
+    function getHistoricData($esp8266id, $type = 'pm', $range = 'day', $walking_average_hours = null) {
+        if (!$this->dbExists($esp8266id)) {
             return array();
         }
         $options = array('AVERAGE');
@@ -134,7 +125,7 @@ class RRRDao implements Dao {
         }
         array_push($options, "--end=now");
       
-        $result = rrd_fetch($this->rrd_file, $options);
+        $result = rrd_fetch($this->getRrdFile($esp8266id), $options);
         $data = $result['data'];
         
         switch ($type) {
@@ -187,26 +178,34 @@ class RRRDao implements Dao {
         return $result;
     }
 
-    public function logJsonUpdate($time, $json) {
-        file_put_contents($this->json_file, $json);
+    public function logJsonUpdate($esp8266id, $time, $json) {
+        file_put_contents($this->getJsonFile($esp8266id), $json);
     }
 
-    public function getJsonUpdates() {
+    public function getJsonUpdates($esp8266id) {
         $result = array();
-        if (file_exists($this->json_file)) {
-            $ts = filemtime($this->json_file);
-            $result[$ts] = file_get_contents($this->json_file);
+        if (file_exists($this->getJsonFile($esp8266id))) {
+            $ts = filemtime($this->getJsonFile($esp8266id));
+            $result[$ts] = file_get_contents($this->getJsonFile($esp8266id));
         }
         return $result;
     }
 
-    public function getJsonUpdate($ts) {
-        $data = $this->getJsonUpdates();
+    public function getJsonUpdate($esp8266id, $ts) {
+        $data = $this->getJsonUpdates($esp8266id);
         if (isset($data[$ts])) {
             return $data[$ts];
         } else {
             return null;
         }
+    }
+
+    private function getJsonFile($esp8266id) {
+        return __DIR__ . "/../data/${esp8266id}.json";
+    }
+
+    private function getRrdFile($esp8266id) {
+        return __DIR__ . "/../data/${esp8266id}.rrd";
     }
 }
 ?>

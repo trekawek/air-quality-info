@@ -1,14 +1,9 @@
-<?php
-$sensors = $dao->getLastData();
-$last_update = $sensors['last_update'];
-unset($sensors['last_update']);
-?><?php include('partials/head.php'); ?>
 <dl class="row">
   <dt class="col-md-3 offset-md-2"><?php echo __('Sensor ID') ?></dt>
-  <dd class="col-md-5"><?php echo $device['esp8266id'] ?></dd>
+  <dd class="col-md-5"><?php echo $currentDevice['esp8266id'] ?></dd>
 
   <dt class="col-md-3 offset-md-2"><?php echo __('Last update') ?></dt>
-  <dd class="col-md-5"><?php echo date("Y-m-d H:i:s", $last_update); ?></dd>
+  <dd class="col-md-5"><?php echo date("Y-m-d H:i:s", $lastUpdate); ?></dd>
 
   <dt class="col-md-3 offset-md-2"><?php echo __('Values') ?></dt>
   <dd class="col-md-5">
@@ -20,4 +15,3 @@ unset($sensors['last_update']);
     </dl>
   </dd>
 </dl>
-<?php include('partials/tail.php'); ?>
