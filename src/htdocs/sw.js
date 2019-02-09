@@ -2,11 +2,11 @@ importScripts('/public/js/cache-polyfill.js');
 
 var staticFiles = [
   "/public/js/cache-polyfill.js",
-  "/public/js/main.js?v=15",
-  "/public/js/graph.js?v=15",
+  "/public/js/main.js?v=16",
+  "/public/js/graph.js?v=16",
   "/public/js/vendor.min.js",
   "/public/css/critical.css",
-  "/public/css/style.css?v=15",
+  "/public/css/style.css?v=16",
   "/public/css/vendor.min.css",
   "/public/css/themes/darkly.min.css",
   "/public/css/themes/default.min.css",
@@ -38,9 +38,11 @@ var unavailableOffline = [
   "/offline"
 ];
 
+var cacheName = 'airqualityinfo-r2';
+
 self.addEventListener('install', function(e) {
   e.waitUntil(
-    caches.open('airqualityinfo').then(function(cache) {
+    caches.open(cacheName).then(function(cache) {
       return cache.addAll(staticFiles);
     })
   );
@@ -57,7 +59,7 @@ self.addEventListener('fetch', function(event) {
     var response;
     if (dynamicResources.includes(url.pathname)) { // fetch it from network and update the cache. in offline - get from the cache.
       response = fetch(event.request).then(function(response) {
-          return caches.open('airqualityinfo').then(function(cache) {
+          return caches.open(cacheName).then(function(cache) {
               cache.put(event.request, response.clone());
               return response;
           });
