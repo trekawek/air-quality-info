@@ -8,6 +8,7 @@ class DebugController extends AbstractController {
     }
 
     public function index($device) {
+        $this->authenticate($device);
         $sensors = $this->dao->getLastData($device['esp8266id']);
         $lastUpdate = $sensors['last_update'];
         unset($sensors['last_update']);

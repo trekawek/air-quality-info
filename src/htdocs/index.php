@@ -9,8 +9,11 @@ require_once('lib/math.php');
 require_once('lib/pollution_levels.php');
 require_once('lib/themes.php');
 require_once('lib/router.php');
-require_once('db/dao.php');
-require_once('db/dao_factory.php');
+require_once('model/dao.php');
+require_once('model/dao_factory.php');
+require_once('model/updater.php');
+require_once('model/migration/madavi_migrator.php');
+require_once('model/migration/rrd_to_mysql_migrator.php');
 
 require_once('controllers/abstract_controller.php');
 require_once('controllers/main_controller.php');
@@ -20,35 +23,38 @@ require_once('controllers/update_controller.php');
 require_once('controllers/tool_controller.php');
 require_once('controllers/static_controller.php');
 
-$dao = create_dao($device);
-$controllers = array(
-  'main' => new MainController($dao, $currentLocale),
-  'graph' => new GraphController($dao),
-  'debug' => new DebugController($dao),
-  'update' => new UpdateController($dao),
-  'tool' => new ToolController($dao),
-  'static' => new StaticController($currentLocale),
-);
+$dao = create_dao();
+$updater = new Updater($dao);
+$controllers = array();
+$controllers['main'] = new MainController($dao, $currentLocale);
+$controllers['graph'] = new GraphController($dao);
+$controllers['debug'] = new DebugController($dao);
+$controllers['update'] = new UpdateController($dao, $updater);
+$controllers['tool'] = new ToolController($dao, $updater);
+$controllers['static'] = new StaticController($currentLocale);
+
 
 $routes = array(
-  '/[:device]'               => array('main', 'index'),
-  '/[:device]/main_inner'    => array('main', 'index_inner'),
-  '/all/:groupId'            => array('main', 'all'),
-  '/:device/about'           => array('static', 'about'),
-  '/offline'                 => array('static', 'offline'),
-  '/:device/update'          => array('update', 'update'),
-  '/:device/graphs'          => array('graph', 'index'),
-  '/[:device]/graph_data.json' => array('graph', 'get_data'),
-  '/:device/debug'                 => array('debug', 'index'),
-  '/:device/debug/json'            => array('debug', 'index_json'),
-  '/:device/debug/json/:timestamp' => array('debug', 'get_json'),
-  '/:device/tools/update_rrd_schema' => array('tool', 'update_rrd_schema'),
-  '/:device/tools/rrd_to_mysql'      => array('tool', 'rrd_to_mysql')
+  'GET /[:device]'               => array('main', 'index'),
+  'GET /[:device]/main_inner'    => array('main', 'index_inner'),
+  'GET /all/:groupId'            => array('main', 'all'),
+  'GET /:device/about'           => array('static', 'about'),
+  'GET /offline'                 => array('static', 'offline'),
+  'POST /:device/update'         => array('update', 'update'),
+  'GET /:device/graphs'          => array('graph', 'index'),
+  'GET /[:device]/graph_data.json' => array('graph', 'get_data'),
+  'GET /:device/debug'                 => array('debug', 'index'),
+  'GET /:device/debug/json'            => array('debug', 'index_json'),
+  'GET /:device/debug/json/:timestamp' => array('debug', 'get_json'),
+  'GET /:device/tools'                 => array('tool', 'index'),
+  'POST /:device/tools/update_rrd_schema' => array('tool', 'update_rrd_schema'),
+  'POST /:device/tools/rrd_to_mysql'      => array('tool', 'migrate_rrd_to_mysql'),
+  'POST /:device/tools/migrate_madavi'    => array('tool', 'migrate_madavi'),
 );
 
 $router = new Router($routes);
-list($path, $route, $args) = $router->findRoute(explode("?", $_SERVER['REQUEST_URI'])[0]);
-if ($path === null) {
+list($route, $args) = $router->findRoute(explode("?", $_SERVER['REQUEST_URI'])[0]);
+if ($route === null) {
   header("Location: /");
   die();
 }

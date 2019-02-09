@@ -40,7 +40,10 @@ class RRRDao implements Dao {
             }
         }
         $data = implode(':', $data);
-        rrd_update($this->getRrdFile($esp8266id), array($data));
+        if (!rrd_update($this->getRrdFile($esp8266id), array($data))) {
+            echo "$data\n";
+            echo rrd_error()."\n";
+        }
         return $data;
     }
 

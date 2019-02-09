@@ -33,7 +33,7 @@ class Locale {
             return $this->locale[$msg];
         } else {
             if ($this->currentLang != 'en') {
-                error_log("Unknown msg: [$msg] for locale [$currentLang]");
+                error_log("Unknown msg: [$msg] for locale [".$this->currentLang."]");
             }
             return $msg;
         }

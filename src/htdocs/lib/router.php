@@ -10,12 +10,16 @@ class Router {
     function findRoute($uri) {
         $uri = array_values(array_filter(explode('/', $uri)));
         foreach ($this->routes as $path => $route) {
-            $arguments = Router::tryParse($path, $uri);
+            $path = explode(' ', $path);
+            if ($path[0] !== $_SERVER['REQUEST_METHOD']) {
+                continue;
+            }
+            $arguments = Router::tryParse($path[1], $uri);
             if ($arguments !== null) {
-                return array($path, $route, $arguments);
+                return array($route, $arguments);
             }
         }
-        return array(null, null, null);
+        return array(null, null);
     }
 
     private static function tryParse($path, $uri) {
@@ -71,6 +75,9 @@ class Router {
     private static function arrayStartsWith($needle, $haystack) {
         $needle = array_values($needle);
         $haystack = array_values($haystack);
+        if (count($needle) > count($haystack)) {
+            return false;
+        }
         foreach ($needle as $i => $e) {
             if ($haystack[$i] != $e) {
                 return false;
@@ -93,6 +100,7 @@ class Router {
         if ($path === null) {
             return $link;
         }
+        $path = explode(' ', $path)[1];
         $path = array_values(array_filter(explode('/', $path)));
         foreach ($path as $segment) {
             $optional = false;

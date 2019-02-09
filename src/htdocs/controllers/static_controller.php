@@ -5,7 +5,6 @@ class StaticController extends AbstractController {
 
     public function __construct($currentLocale) {
         parent::__construct();
-        $this->dao = $dao;
         $this->currentLocale = $currentLocale;
     }
 

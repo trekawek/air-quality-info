@@ -16,6 +16,7 @@
   </div>
 </div>
 <?php
+$i = 0;
 foreach($graphs as $type => $name):
 ?>
 <?php if ($i % 2 == 0): ?>

@@ -22,6 +22,7 @@ See the README in <a href="README-pl.md">Polish</a>.
 
 * PHP 7
 * php-rrd extension or MySQL access
+* php-zip for importing data from Madavi.de
 
 ## Resources
 

@@ -20,6 +20,7 @@ Air Quality Info to panel informacyjny oparty o PHP, wyświetlający dane nt. cz
 
 * PHP 7
 * Zainstalowane rozszerzenie php-rrd lub dostęp do bazy MySQL
+* Rozszerzenie php-zip w celu importu danych z Madavi.de
 
 ## Zasoby
 

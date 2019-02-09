@@ -4,7 +4,6 @@
         <h4>Informacje</h4>
         <p>Strona oparta jest o aplikację <a href="https://github.com/trekawek/air-quality-info">Air Quality Info</a>.</p>
         <ul>
-            <li><a href="<?php echo l('debug', 'index'); ?>">Diagnostyka detektora</a></li>
             <?php if (isset($currentDevice['contact_email'])): ?>
             <li><?php echo __('Contact info') ?>:
                 <a href="mailto:<?php echo $currentDevice['contact_email'] ?>">
@@ -12,6 +11,7 @@
                 </a>
             </li>
             <?php endif ?>
+            <li><a href="<?php echo l('tool', 'index'); ?>">Narzędzia serwisowe</a></li>
         </ul>
     </div>
 </div>

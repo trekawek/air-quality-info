@@ -4,7 +4,7 @@ function create_dao() {
 
     switch (CONFIG['db']['type']) {
         case 'mysql':
-        require_once('db/mysql.php');
+        require_once('model/mysql.php');
         if ($mysqli === null) {
             $mysqli = new mysqli(CONFIG['db']['host'], CONFIG['db']['user'], CONFIG['db']['password'], CONFIG['db']['name']);
         }
@@ -13,7 +13,7 @@ function create_dao() {
     
         default:
         case 'rrd':
-        require_once('db/rrd.php');
+        require_once('model/rrd.php');
         $dao = new RRRDao();
         break;
     }
