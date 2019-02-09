@@ -12,6 +12,9 @@ class Navigation {
         $i = 0;
         $nodeById = array();
         foreach ($this->config['devices'] as $d) {
+            if (isset($d['hidden']) && $d['hidden']) {
+                continue;
+            }
             $name = array_map('trim', explode('/', $d['name']));
             $desc = array_map('trim', explode('/', $d['description']));
             $node = &$tree;

@@ -9,6 +9,7 @@ define('CONFIG', array(
         'description' => 'Main location', # user-friendly location name, will be used in navbar,
         #'contact_name' => 'John Doe',   # this name and e-mail will be displayed in the "about" page
         #'contact_email' => 'john.doe@example.com',
+        #'hidden'     => true            # uncomment to hide this device in the navigation
       ),
 #    array(
 #        'user'        => '...',
