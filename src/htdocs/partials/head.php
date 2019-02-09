@@ -18,7 +18,7 @@
     <link rel="apple-touch-icon" sizes="512x512" href="/public/img/dragon-512.png">
     <link rel="manifest" href="/manifest.json">
 
-    <title><?php echo __('Air quality') ?> - <?php echo $device['description']; ?></title>
+    <title><?php echo __('Air quality') ?> - <?php echo $currentDevice['description']; ?></title>
 
     <style><?php echo file_get_contents('public/css/critical.css') ?></style>
 
