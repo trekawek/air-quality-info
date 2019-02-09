@@ -37,11 +37,16 @@ class UpdateController extends AbstractController {
             error_log('esp8266id mismatch. Expected: '.$device['esp8266id'].' but got '.$data['esp8266id']);
             exit;
         }
-        
+    
+        $mapping = UpdateController::VALUE_MAPPING;
+        if (isset($device['mapping'])) {
+            $mapping = array_merge($mapping, $device['mapping']);
+        }
+
         $time = time();
         
-        $gps_date = UpdateController::readValue($device, 'gps_date', $map, null);
-        $gps_time = UpdateController::readValue($device, 'gps_time', $map, null);
+        $gps_date = UpdateController::readValue($mapping, $device, 'gps_date', $map, null);
+        $gps_time = UpdateController::readValue($mapping, $device, 'gps_time', $map, null);
         if ($gps_date && $gps_time) {
             $time = DateTime::createFromFormat('m/d/Y H:i:s.u', $gps_date.' '.$gps_time, new DateTimeZone('UTC'))->getTimestamp();
         }
@@ -50,7 +55,7 @@ class UpdateController extends AbstractController {
             $this->dao->logJsonUpdate($device['esp8266id'], $time, $payload);
         }
         
-        $pressure = UpdateController::readValue($device, 'pressure', $map);
+        $pressure = UpdateController::readValue($mapping, $device, 'pressure', $map);
         if ($pressure !== null) {
             $pressure /= 100;
         }
@@ -58,22 +63,25 @@ class UpdateController extends AbstractController {
         echo $this->dao->update(
             $device['esp8266id'],
             $time,
-            UpdateController::readValue($device, 'pm25', $map),
-            UpdateController::readValue($device,  'pm10', $map),
-            UpdateController::readValue($device, 'temperature', $map),
+            UpdateController::readValue($mapping, $device, 'pm25', $map),
+            UpdateController::readValue($mapping, $device,  'pm10', $map),
+            UpdateController::readValue($mapping, $device, 'temperature', $map),
             $pressure,
-            UpdateController::readValue($device, 'humidity', $map),
-            UpdateController::readValue($device, 'heater_temperature', $map),
-            UpdateController::readValue($device, 'heater_humidity', $map)
+            UpdateController::readValue($mapping, $device, 'humidity', $map),
+            UpdateController::readValue($mapping, $device, 'heater_temperature', $map),
+            UpdateController::readValue($mapping, $device, 'heater_humidity', $map)
         );
     }
 
-    private static function readValue($device, $valueName, $sensorValues, $undefinedValue = null) {
+    private static function readValue($mapping, $device, $valueName, $sensorValues, $undefinedValue = null) {
         $value = null;
-        if (!isset(UpdateController::VALUE_MAPPING[$valueName])) {
+        if (!isset($mapping[$valueName])) {
             return $undefinedValue;
         }
-        $mappedNames = UpdateController::VALUE_MAPPING[$valueName];
+        $mappedNames = $mapping[$valueName];
+        if ($mappedNames === null) {
+            $mappedNames = array();
+        }
         if (!is_array($mappedNames)) {
             $mappedNames = array($mappedNames);
         }
