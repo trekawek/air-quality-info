@@ -26,6 +26,7 @@ var staticFiles = [
 ];
 
 var dynamicResources = [
+  "/",
   "/main_inner",
   "/graph_data.json"
 ];
