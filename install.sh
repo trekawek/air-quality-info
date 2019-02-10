@@ -4,10 +4,13 @@ export DEBIAN_FRONTEND="noninteractive"
 
 echo "Installing packages..."
 apt-get update -qq
-apt-get install -qq nginx php-fpm php-rrd curl zip net-tools > /dev/null
+apt-get install -qq nginx php-fpm php-mysql php-zip curl zip net-tools mysql-server > /dev/null
 
 echo "Starting PHP..."
 /etc/init.d/php7.*-fpm start
+
+echo "Starting MySQL..."
+/etc/init.d/mysql start
 
 echo "Discovering server IP..."
 server_ip="$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')"
@@ -76,7 +79,6 @@ echo "Unpacking the htdocs"
 unzip -q /tmp/air-quality-info.zip -d /tmp
 rm /tmp/air-quality-info.zip
 mv /tmp/air-quality-info-master/src/htdocs /var/www/air-quality-info
-rm -rf /tmp/air-quality-info-master
 
 if [ -d /tmp/air-quality-info.old ]; then
     echo "Restoring config and data"
@@ -86,9 +88,26 @@ if [ -d /tmp/air-quality-info.old ]; then
     rm -rf /tmp/air-quality-info.old
 fi
 
+mysql_database="air_quality_info"
+if mysqlshow -u root | grep "${mysql_database}"; then
+    echo "Database ${mysql_database} already exists; skipping"
+else
+    echo "Creating database ${mysql_database}"
+    mysql_user="air_quality_info"
+    mysql_password="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
+
+    echo "CREATE DATABASE ${mysql_database};" | mysql -u root
+    echo "GRANT ALL PRIVILEGES ON ${mysql_database}.* TO '${mysql_user}'@'localhost' IDENTIFIED BY '${mysql_password}';" | mysql -u root
+    mysql -u root "${mysql_database}" < /tmp/air-quality-info-master/src/mysql-schema.sql
+fi
+
 if [ -e /var/www/air-quality-info/config.php ]; then
     echo "Air Quality Info config already exists, skipping..."
     username=$(php -r 'include("/var/www/air-quality-info/config.php"); echo CONFIG["devices"][0]["user"];')
+
+    if [ -n "${mysql_password}" ]; then
+        manual_config_update="true"
+    fi
 else
     echo "Configuring Air Quality Info..."
     read -e -p    'Enter username: ' username
@@ -97,6 +116,11 @@ else
     read -e -p    'Enter sensor id: ' sensor_id
     read -e -p    'Enter contact name (will be displayed on page, eg. John Doe): ' contact_name
     read -e -p    'Enter contact email (will be displayed on page, eg. john.doe@example.com): ' contact_email
+
+    if [ -z "${mysql_user}" ]; then
+        read -e -p    'Enter MySQL username: ' mysql_user
+        read -e -s -p 'Enter MySQL password: ' mysql_password
+    fi
 
     cat <<EOF > /var/www/air-quality-info/config.php
 <?php
@@ -117,7 +141,11 @@ define('CONFIG', array(
 # Google Analytics ID
 'ga_id' => '',
 'db' => array(
-  'type' => 'rrd'
+    'type' => 'mysql',
+    'host' => 'localhost',
+    'user' => '${mysql_user}',
+    'password' => '${mysql_password}',
+    'name' => '${mysql_database}'
 )
 ));
 ?>
@@ -127,6 +155,7 @@ fi
 location_name="$(php -r 'include("/var/www/air-quality-info/config.php"); echo CONFIG["devices"][0]["name"];')"
 
 chown -R www-data:www-data /var/www/air-quality-info
+rm -rf /tmp/air-quality-info-master
 
 echo "Starting nginx..."
 /etc/init.d/nginx start
@@ -142,3 +171,18 @@ echo "Path: /${location_name}/update"
 echo "Port: 80"
 echo "User: ${username}"
 echo "Password: [redacted]"
+
+if [ -n "${manual_config_update}" ]; then
+    echo ""
+    echo "MySQL database has been initialized, but config.php file can't be created."
+    echo "Please add/update following section manually in /var/www/air-quality-info/config.php:"
+    cat <<EOF
+'db' => array(
+    'type' => 'mysql',
+    'host' => 'localhost',
+    'user' => '${mysql_user}',
+    'password' => '${mysql_password}',
+    'name' => '${mysql_database}'
+)
+EOF
+fi
