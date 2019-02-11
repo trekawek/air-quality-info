@@ -67,7 +67,7 @@ class Updater {
             $mappedNames = array($mappedNames);
         }
         foreach ($mappedNames as $mappedName) {
-            if (isset($sensorValues[$mappedName])) {
+            if (isset($sensorValues[$mappedName]) && $sensorValues[$mappedName] !== null) {
                 $value = $sensorValues[$mappedName];
                 break;
             }
