@@ -4,7 +4,7 @@ export DEBIAN_FRONTEND="noninteractive"
 
 echo "Installing packages..."
 apt-get update -qq
-apt-get install -qq nginx php-fpm php-mysql php-zip curl zip net-tools mysql-server > /dev/null
+apt-get install -qq nginx php-fpm php-mysql php-rrd php-zip curl zip net-tools mysql-server > /dev/null
 
 echo "Starting PHP..."
 /etc/init.d/php7.*-fpm start
