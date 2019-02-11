@@ -76,7 +76,10 @@ class MadaviMigrator {
             $line = explode(';', trim($line));
             $row = array();
             for ($i = 0; $i < count($header); $i++) {
-                $row[$header[$i]] = isset($line[$i]) ? $line[$i] : null;
+                $val = isset($line[$i]) ? $line[$i] : null;
+                if ($val !== null && $val !== '') {
+                    $row[$header[$i]] = $val;
+                }
             }
             $time = DateTime::createFromFormat('Y/m/d H:i:s', $row['Time'], $utc)->getTimestamp();
             foreach (MadaviMigrator::MAPPING as $csvKey => $jsonKey) {
