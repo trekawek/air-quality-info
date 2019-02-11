@@ -11,8 +11,14 @@ define('POLLUTION_LEVELS', array(
 define('PM10_THRESHOLDS_1H',  array(0, 25, 50, 90, 180));
 define('PM10_THRESHOLDS_24H', array(0, 15, 30, 50, 100));
 
+define('PM10_THRESHOLD_1Y', 40);
+define('PM10_DAILY_THRESHOLD_1Y', 50);
+define('PM10_DAYS_ABOVE_THRESHOLD', 31);
+
 define('PM25_THRESHOLDS_1H',  array(0, 15, 30, 55, 110));
 define('PM25_THRESHOLDS_24H', array(0, 10, 20, 30, 60));
+
+define('PM25_DAILY_THRESHOLD_1Y', 30);
 
 define('PM10_LIMIT_1H', 50);
 define('PM25_LIMIT_1H', 25);

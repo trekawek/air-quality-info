@@ -12,6 +12,8 @@ window.chartColors = {
 	grey: 'rgb(201, 203, 207)'
 };
 
+(function() {
+
 function mapToTimeSeries(data) {
     var result = new Array();
     for(var timeStamp in data) {
@@ -301,3 +303,5 @@ document.querySelectorAll('.graph-avg-type button').forEach(element => {
         });
     };
 });
+
+})();

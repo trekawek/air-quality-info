@@ -19,5 +19,6 @@ interface Dao {
 
     public function getJsonUpdate($esp8266id, $ts);
 
+    public function getDailyAverages($esp8266id);
 }
 ?>
