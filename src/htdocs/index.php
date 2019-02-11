@@ -3,6 +3,16 @@ session_start();
 date_default_timezone_set('Europe/Warsaw');
 
 require_once('lib/locale.php');
+$currentLocale = new AirQualityInfo\Locale();
+if (isset($_GET['lang'])) {
+  $currentLocale->setLang($_GET['lang']);
+}
+
+function __($msg) {
+  global $currentLocale;
+  return $currentLocale->getMessage($msg);
+}
+
 require_once('config.php');
 require_once('lib/navigation.php');
 require_once('lib/math.php');

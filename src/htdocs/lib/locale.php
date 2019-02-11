@@ -1,4 +1,6 @@
 <?php
+namespace AirQualityInfo;
+
 class Locale {
 
     const SUPPORTED_LANGUAGES = array('en' => 'English', 'pl' => 'Polski');
@@ -58,15 +60,5 @@ class Locale {
         }
         return $currentLang;  
     }
-}
-
-$currentLocale = new Locale();
-if (isset($_GET['lang'])) {
-  $currentLocale->setLang($_GET['lang']);
-}
-
-function __($msg) {
-  global $currentLocale;
-  return $currentLocale->getMessage($msg);
 }
 ?>

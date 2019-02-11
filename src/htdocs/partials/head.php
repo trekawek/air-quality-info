@@ -60,7 +60,7 @@
                     <i class="fa fa-globe" aria-hidden="true"></i>
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <?php foreach(Locale::SUPPORTED_LANGUAGES as $lang => $desc): ?>
+                  <?php foreach(AirQualityInfo\Locale::SUPPORTED_LANGUAGES as $lang => $desc): ?>
                   <li>
                     <a class="dropdown-item <?php echo ($lang == $currentLocale->getCurrentLang()) ? 'active' : ''; ?>" href="<?php echo l($currentController, $currentAction, null, array(), array('lang' => $lang)); ?>"><img src="/public/img/flags/<?php echo $lang ?>.png"/> <?php echo $desc ?></a>
                   </li>
