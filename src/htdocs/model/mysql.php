@@ -90,7 +90,7 @@ class MysqlDao implements Dao {
         return $data;
     }
 
-    public function getLastAvg($esp8266id, $avgType) {
+    public function getLastAvg($esp8266id, $hours) {
         $fields = array();
         foreach (MysqlDao::FIELDS as $f) {
             $fields[] = "AVG($f)";
@@ -98,9 +98,11 @@ class MysqlDao implements Dao {
         $fields = implode(",", $fields);
 
         $stmt = $this->mysqli->prepare("SELECT $fields FROM `records` WHERE `esp8266id` = ? AND `timestamp` >= ?");
-        $since = time() - $avgType * 60 * 60;
+        $since = time() - $hours * 60 * 60;
         $stmt->bind_param('ii', $esp8266id, $since);
+
         $stmt->execute();
+
         $result = $stmt->get_result();
         $row = $result->fetch_row();
         $result->close();
@@ -250,5 +252,29 @@ class MysqlDao implements Dao {
         return $data;
     }
 
+    public function getDailyAverages($esp8266id) {
+        $stmt = $this->mysqli->prepare(
+            "SELECT
+                AVG(`pm10`) AS `pm10_avg`,
+                AVG(`pm25`) AS `pm25_avg`,
+                DATE(FROM_UNIXTIME(`timestamp`)) AS `date`
+            FROM `records`
+            WHERE
+                `esp8266id` = ?
+                AND `timestamp` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 YEAR))
+            GROUP BY DATE(FROM_UNIXTIME(`timestamp`))
+            ORDER BY `date`");
+        $stmt->bind_param('i', $esp8266id);
+
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        $result->close();
+        return $data;
+    }
 }
 ?>

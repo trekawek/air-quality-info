@@ -32,6 +32,7 @@ require_once('controllers/debug_controller.php');
 require_once('controllers/update_controller.php');
 require_once('controllers/tool_controller.php');
 require_once('controllers/static_controller.php');
+require_once('controllers/annual_stats_controller.php');
 
 $dao = create_dao();
 $updater = new Updater($dao);
@@ -42,11 +43,14 @@ $controllers['debug'] = new DebugController($dao);
 $controllers['update'] = new UpdateController($dao, $updater);
 $controllers['tool'] = new ToolController($dao, $updater);
 $controllers['static'] = new StaticController($currentLocale);
+$controllers['annual_stats'] = new AnnualStatsController($dao);
 
 
 $routes = array(
   'GET /[:device]'               => array('main', 'index'),
   'GET /[:device]/main_inner'    => array('main', 'index_inner'),
+  'GET /:device/annual_stats'                  => array('annual_stats', 'index'),
+  'GET /:device/annual_stats/graph_data.json'  => array('annual_stats', 'get_data'),
   'GET /all/:groupId'            => array('main', 'all'),
   'GET /:device/about'           => array('static', 'about'),
   'GET /offline'                 => array('static', 'offline'),

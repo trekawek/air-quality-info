@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+<?php
+namespace AirQualityInfo\head;
+
+function navItem($action, $desc) {
+  global $currentAction, $currentController;
+  require('partials/navbar/nav_item.php');
+}
+?><!DOCTYPE html>
 <html lang="en">
   <head>
 <?php if (CONFIG['ga_id']): ?>
@@ -23,8 +30,9 @@
     <style><?php echo file_get_contents('public/css/critical.css') ?></style>
 
     <script defer src="/public/js/vendor.min.js"></script>
-    <script defer src="/public/js/main.js?v=16"></script>
-    <script defer src="/public/js/graph.js?v=16"></script>
+    <script defer src="/public/js/main.js?v=17"></script>
+    <script defer src="/public/js/graph.js?v=17"></script>
+    <script defer src="/public/js/annual_graph.js?v=17"></script>
   </head>
   <body data-pm10-limit1h="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo PM25_LIMIT_24H ?>" data-current-lang='<?php echo $currentLocale->getCurrentLang() ?>' data-locale='<?php echo json_encode($currentLocale->getMessages()) ?>'>
     <div class="container">
@@ -37,11 +45,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
-                <?php foreach(array('Home' => array('main', 'index'), 'Graphs' => array('graph', 'index'), 'About' => array('static', 'about')) as $desc => $action): ?>
-                <li class="nav-item">
-                  <a class="nav-link <?php echo ($action == array($currentController, $currentAction)) ? 'active' : ''; ?>" href="<?php echo l(...$action) ?>"><?php echo __($desc) ?></a>
+                <?php navItem(array('main', 'index'), 'Home'); ?>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <?php echo __('Graphs') ?>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <?php navItem(array('graph', 'index'), 'Graphs'); ?>
+                    <?php navItem(array('annual_stats', 'index'), 'Annual stats'); ?>
+                  </ul>
                 </li>
-                <?php endforeach ?>
+                <?php navItem(array('static', 'about'), 'About'); ?>
                 <?php require('partials/navbar/locations.php') ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -49,7 +63,7 @@
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <li>
-                  <?php foreach(Theme::THEMES as $name => $desc): ?>
+                  <?php foreach(\Theme::THEMES as $name => $desc): ?>
                     <a class="dropdown-item <?php echo ($name == $currentTheme->getTheme()) ? 'active' : ''; ?>" href="<?php echo l($currentController, $currentAction, null, array(), array('theme' => $name)); ?>"><?php echo __($desc) ?></a>
                   <?php endforeach ?>
                   </li>
@@ -60,7 +74,7 @@
                     <i class="fa fa-globe" aria-hidden="true"></i>
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <?php foreach(AirQualityInfo\Locale::SUPPORTED_LANGUAGES as $lang => $desc): ?>
+                  <?php foreach(\AirQualityInfo\Locale::SUPPORTED_LANGUAGES as $lang => $desc): ?>
                   <li>
                     <a class="dropdown-item <?php echo ($lang == $currentLocale->getCurrentLang()) ? 'active' : ''; ?>" href="<?php echo l($currentController, $currentAction, null, array(), array('lang' => $lang)); ?>"><img src="/public/img/flags/<?php echo $lang ?>.png"/> <?php echo $desc ?></a>
                   </li>

@@ -12,6 +12,8 @@ window.chartColors = {
 	grey: 'rgb(201, 203, 207)'
 };
 
+(function() {
+
 function mapToTimeSeries(data) {
     var result = new Array();
     for(var timeStamp in data) {
@@ -243,6 +245,8 @@ function updateGraph(graphContainer) {
     request.send();
 }
 
+window.updateGraph = updateGraph;
+
 function selectAvgType(avgType) {
     var oldPrimary = document.querySelector('.graph-avg-type button.btn-primary');
     oldPrimary.classList.remove('btn-primary');
@@ -301,3 +305,5 @@ document.querySelectorAll('.graph-avg-type button').forEach(element => {
         });
     };
 });
+
+})();

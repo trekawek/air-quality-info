@@ -2,11 +2,12 @@ importScripts('/public/js/cache-polyfill.js');
 
 var staticFiles = [
   "/public/js/cache-polyfill.js",
-  "/public/js/main.js?v=16",
-  "/public/js/graph.js?v=16",
+  "/public/js/main.js?v=17",
+  "/public/js/graph.js?v=17",
+  "/public/js/annual_graph.js?v=17",
   "/public/js/vendor.min.js",
   "/public/css/critical.css",
-  "/public/css/style.css?v=16",
+  "/public/css/style.css?v=17",
   "/public/css/vendor.min.css",
   "/public/css/themes/darkly.min.css",
   "/public/css/themes/default.min.css",
@@ -36,7 +37,8 @@ var unavailableOffline = [
   "/graphs",
   "/about",
   "/debug",
-  "/offline"
+  "/offline",
+  "/annual_stats"
 ];
 
 var cacheName = 'airqualityinfo-r2';
