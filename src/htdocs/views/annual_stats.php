@@ -8,15 +8,6 @@
   </div>
 </div>
 
-<div class="row annual-graphs" data-json-uri="<?php echo l('annual_stats', 'get_data') ?>">
-  <div class="col-md-8 offset-md-2">
-    <h5><?php echo __('Pollution levels by days') ?></h5>
-    <div class="annual-graph-container">
-      <canvas class="graph"></canvas>
-    </div>
-  </div>
-</div>
-
 <div class="row">
   <div class="col-md-8 offset-md-2">
     <h5><?php echo __('Annual averages') ?></h5>
@@ -38,5 +29,14 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div class="row annual-graphs" data-json-uri="<?php echo l('annual_stats', 'get_data') ?>">
+  <div class="col-md-8 offset-md-2">
+    <h5><?php echo __('Pollution levels by days') ?></h5>
+    <div class="annual-graph-container">
+      <canvas class="graph"></canvas>
+    </div>
   </div>
 </div>
