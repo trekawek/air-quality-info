@@ -17,26 +17,47 @@ class MysqlDao implements Dao {
         // do nothing
     }
 
-    public function update($esp8266id, $timestamp, $pm25, $pm10, $temp, $press, $hum, $heaterTemp, $heaterHum) {
-        $recordTimestamp = floor($timestamp / 180) * 180;
-
-        $stmt = $this->mysqli->prepare("SELECT `timestamp` FROM `records` WHERE `esp8266id` = ? ORDER BY `timestamp` DESC LIMIT 1");
+    private function getTimestampRange($esp8266id) {
+        $stmt = $this->mysqli->prepare("SELECT MIN(`timestamp`), MAX(`timestamp`) FROM `records` WHERE `esp8266id` = ?");
         $stmt->bind_param('i', $esp8266id);
         $stmt->execute();
         $result = $stmt->get_result();
+        $data = array(null, null);
         if ($row = $result->fetch_row()) {
-            $lastTimestamp = $row[0];
-        } else {
-            // first row
-            $lastTimestamp = $recordTimestamp - 180;
+            $data = $row;
         }
-        $insertStmt = $this->mysqli->prepare("INSERT INTO `records` (`timestamp`, `esp8266id`) VALUES (?, ?)");
-        for ($ts = $lastTimestamp + 180; $ts <= $recordTimestamp; $ts += 180) {
-            $insertStmt->bind_param('ii', $ts, $esp8266id);
-            $insertStmt->execute();
-        }
-        $insertStmt->close();
         $stmt->close();
+        return $data;
+    }
+
+    private function insertEmptyRows($esp8266id, $recordTimestamp) {
+        list($firstTs, $lastTs) = $this->getTimestampRange($esp8266id);
+        $rangeFrom = null;
+        $rangeTo = null;
+        if ($firstTs !== null && $recordTimestamp < $firstTimestamp) { // before first timestamp
+            $rangeFrom = $recordTimestamp;
+            $rangeTo = $firstTs - 180;
+        } else if ($lastTs !== null && $recordTimestamp > $lastTs) { // after last timestamp
+            $rangeFrom = $lastTs + 180;
+            $rangeTo = $recordTimestamp;
+        } else if ($firstTs === null && $lastTs === null) { // first entry
+            $rangeFrom = $recordTimestamp;
+            $rangeTo = $recordTimestamp;
+        }
+        
+        if ($rangeFrom !== null && $rangeTo !== null) {
+            $insertStmt = $this->mysqli->prepare("INSERT INTO `records` (`timestamp`, `esp8266id`) VALUES (?, ?)");
+            for ($ts = $rangeFrom; $ts <= $rangeTo; $ts += 180) {
+                $insertStmt->bind_param('ii', $ts, $esp8266id);
+                $insertStmt->execute();
+            }
+            $insertStmt->close();
+        }
+    }
+
+    public function update($esp8266id, $timestamp, $pm25, $pm10, $temp, $press, $hum, $heaterTemp, $heaterHum) {
+        $recordTimestamp = floor($timestamp / 180) * 180;
+        $this->insertEmptyRows($esp8266id, $recordTimestamp);
 
         $record = array (
             'pm25' => $pm25,
