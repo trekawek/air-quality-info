@@ -34,7 +34,7 @@ class MysqlDao implements Dao {
         list($firstTs, $lastTs) = $this->getTimestampRange($esp8266id);
         $rangeFrom = null;
         $rangeTo = null;
-        if ($firstTs !== null && $recordTimestamp < $firstTimestamp) { // before first timestamp
+        if ($firstTs !== null && $recordTimestamp < $firstTs) { // before first timestamp
             $rangeFrom = $recordTimestamp;
             $rangeTo = $firstTs - 180;
         } else if ($lastTs !== null && $recordTimestamp > $lastTs) { // after last timestamp
