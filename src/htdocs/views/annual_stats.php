@@ -28,11 +28,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="index-cat-<?php echo $averages['pm25_level'] ?>">
+        <tr>
           <th scope="row">PM<sub>2.5</sub></th>
           <td><?php echo round($averages['pm25'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
         </tr>
-        <tr class="index-cat-<?php echo $averages['pm10_level'] ?>">
+        <tr>
           <th scope="row">PM<sub>10</sub></th>
           <td><?php echo round($averages['pm10'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
         </tr>
