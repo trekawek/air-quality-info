@@ -17,35 +17,31 @@ class RrdToMysqlMigrator {
         $esp8266id = basename($rrd_file, '.rrd');
     
         $data = array();
-        $end = RrdToMysqlMigrator::appendToData(rrd_fetch($rrd_file, array("AVERAGE", '--start=now-2d', '--end=now')), $data)[1];
-        RrdToMysqlMigrator::appendToData(rrd_fetch($rrd_file, array("AVERAGE", '--start=now-2w', '--end=now-2d')), $data);
-        RrdToMysqlMigrator::appendToData(rrd_fetch($rrd_file, array("AVERAGE", '--start=now-62d', '--end=now-2w')), $data);
-        $start = RrdToMysqlMigrator::appendToData(rrd_fetch($rrd_file, array("AVERAGE", '--start=now-2y', '--end=now-62d')), $data)[0];
+        $end =   RrdToMysqlMigrator::appendToData($rrd_file, array('AVERAGE', '--start=now-2d', '--end=now'),     $data)[1];
+                 RrdToMysqlMigrator::appendToData($rrd_file, array('AVERAGE', '--start=now-2w', '--end=now-2d'),  $data);
+                 RrdToMysqlMigrator::appendToData($rrd_file, array('AVERAGE', '--start=now-62d', '--end=now-2w'), $data);
+        $start = RrdToMysqlMigrator::appendToData($rrd_file, array('AVERAGE', '--start=now-2y', '--end=now-62d'), $data)[0];
     
-        $previous_row = null;
         for ($ts = $start; $ts <= $end; $ts += 180) {
             $row = (isset($data[$ts]) ? $data[$ts] : array());
-            if (RrdToMysqlMigrator::rowIsEmpty($row) && $previous_row === null) {
+            if (RrdToMysqlMigrator::rowIsEmpty($row)) {
                 continue;
             }
-            foreach ($row as $i => $v) {
-                if ($v === null && $previous_row !== null) {
-                    $row[$i] = $previous_row[$i];
-                }
-            }
-            $previous_row = $row;
             $this->dao->update($esp8266id, $ts, $row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6]);
         }
         echo "Done.\n";
         flush();
     }
 
-    private static function appendToData($result, &$data) {
+    private static function appendToData($rrd_file, $rrdOptions, &$data) {
+        $result = rrd_fetch($rrd_file, $rrdOptions);
+
         $field_names = array('PM25', 'PM10', 'TEMPERATURE', 'PRESSURE', 'HUMIDITY', 'HEATER_TEMPERATURE', 'HEATER_HUMIDITY');
         $timestamps = array_keys($result['data'][$field_names[0]]);
-        $start = $timestamps[0];
-        $end = $timestamps[count($timestamps) - 1];
-        for ($ts = $start; $ts <= $end; $ts += 180) {
+        $start = $result['start'];
+        $end = $result['end'];
+        $step = $result['step'];
+        for ($ts = $start; $ts <= $end; $ts += $step) {
             $row = array();
             foreach ($field_names as $f) {
                 if (isset($result['data'][$f][$ts])) {
@@ -55,7 +51,9 @@ class RrdToMysqlMigrator {
                     array_push($row, null);
                 }
             }
-            $data[$ts] = $row;
+            for ($i = $ts; $i < ($ts + $step); $i += 180) {
+                $data[$ts] = $row;
+            }
         }
         return array($start, $end);
     }
