@@ -210,5 +210,9 @@ class RRRDao implements Dao {
     private function getRrdFile($esp8266id) {
         return __DIR__ . "/../data/${esp8266id}.rrd";
     }
+
+    public function getDailyAverages($esp8266id) {
+        return array();
+    }
 }
 ?>
