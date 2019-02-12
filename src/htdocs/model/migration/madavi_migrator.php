@@ -83,8 +83,10 @@ class MadaviMigrator {
             }
             $time = DateTime::createFromFormat('Y/m/d H:i:s', $row['Time'], $utc)->getTimestamp();
             foreach (MadaviMigrator::MAPPING as $csvKey => $jsonKey) {
-                $row[$jsonKey] = $row[$csvKey];
-                unset($row[$csvKey]);
+                if (isset($row[$csvKey])) {
+                    $row[$jsonKey] = $row[$csvKey];
+                    unset($row[$csvKey]);
+                }
             }
             $this->updater->insert($device, $time, $row);
             $i++;

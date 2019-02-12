@@ -23,27 +23,31 @@ class ToolController extends AbstractController {
 
     public function migrate_madavi($device) {
         $this->authenticate($device);
-        header('Content-Type: text/event-stream');
-        
+        ToolController::chunkedContent();
         $this->madaviMigrator->migrate($device);
         echo "Madavi records has been imported";
     }
 
     public function migrate_rrd_to_mysql($device) {
         $this->authenticate($device);
-        header('Content-Type: text/event-stream');
-        
+        ToolController::chunkedContent();
         $this->rrdToMysqlMigrator->migrate($device);
         echo "RRD database has been migrated to MySQL";
     }
 
     public function update_rrd_schema($device) {
         $this->authenticate($device);
-        header('Content-Type: text/event-stream');
-
+        ToolController::chunkedContent();
         $this->dao->createDb($device['esp8266id']);
         echo "RRD schema updated";
     }
 
+    private static function chunkedContent() {
+        set_time_limit(60 * 60);
+        header('Content-Type: text/event-stream');
+        header('X-Accel-Buffering: no');
+        flush();
+        ob_end_flush();
+    }
 }
 ?>
