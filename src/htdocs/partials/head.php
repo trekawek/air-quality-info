@@ -46,6 +46,7 @@ function navItem($action, $desc) {
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
                 <?php navItem(array('main', 'index'), 'Home'); ?>
+                <?php if (CONFIG['db']['type'] === 'mysql'): ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo __('Graphs') ?>
@@ -55,6 +56,9 @@ function navItem($action, $desc) {
                     <?php navItem(array('annual_stats', 'index'), 'Annual stats'); ?>
                   </ul>
                 </li>
+                <?php else: ?>
+                <?php navItem(array('graph', 'index'), 'Graphs'); ?>
+                <?php endif ?>
                 <?php navItem(array('static', 'about'), 'About'); ?>
                 <?php require('partials/navbar/locations.php') ?>
                 <li class="nav-item dropdown">

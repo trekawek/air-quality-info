@@ -41,7 +41,7 @@ var unavailableOffline = [
   "/annual_stats"
 ];
 
-var cacheName = 'airqualityinfo-r2';
+var cacheName = 'airqualityinfo-r3';
 
 self.addEventListener('install', function(e) {
   e.waitUntil(
