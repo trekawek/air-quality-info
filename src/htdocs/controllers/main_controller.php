@@ -19,10 +19,12 @@ class MainController extends AbstractController {
         $currentAvgType = $_GET['avgType'];
         $lastData = $this->dao->getLastData($device['esp8266id']);
         $averages = $this->getAverages($device['esp8266id'], $currentAvgType);
+        $desc = array_map('trim', explode('/', $device['description']));
         $this->render(array('view' => 'views/index_inner.php', 'layout' => false), array(
             'averages' => $averages,
             'currentAvgType' => $currentAvgType,
-            'sensors' => $lastData
+            'sensors' => $lastData,
+            'desc' => $desc
         ));
     }
 
