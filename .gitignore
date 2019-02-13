@@ -5,3 +5,4 @@ src/htdocs/data/*.json
 mysql-data
 node_modules
 yarn-error.log
+dev-scripts
