@@ -22,10 +22,15 @@ class AnnualStatsController extends AbstractController {
         $pm25_days_by_levels = array(0, 0, 0, 0, 0);
 
         foreach ($averages as $day) {
-            $pm10_level = find_level(PM10_THRESHOLDS_24H, $day['pm10_avg']);
-            $pm25_level = find_level(PM25_THRESHOLDS_24H, $day['pm25_avg']);
-            $pm10_days_by_levels[$pm10_level]++;
-            $pm25_days_by_levels[$pm25_level]++;
+            if ($day['pm10_avg'] !== null) {
+                $pm10_level = find_level(PM10_THRESHOLDS_24H, $day['pm10_avg']);
+                $pm10_days_by_levels[$pm10_level]++;
+            }
+
+            if ($day['pm25_avg'] !== null) {
+                $pm25_level = find_level(PM25_THRESHOLDS_24H, $day['pm25_avg']);
+                $pm25_days_by_levels[$pm25_level]++;
+            }
         }
 
         $data = array();
