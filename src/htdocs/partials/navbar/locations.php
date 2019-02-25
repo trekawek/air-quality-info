@@ -5,6 +5,6 @@ require_once('partials/navbar/children.php');
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <?php echo __('Locations') ?>
     </a>
-    <?php renderChildren($deviceTree['tree'], $deviceGroupId) ?>
+    <?php renderChildren($deviceTree['tree'], isset($deviceGroupId) ? $deviceGroupId : null) ?>
 </li>
 <?php } ?>
