@@ -55,6 +55,7 @@ $routes = array(
   'GET /:device/about'           => array('static', 'about'),
   'GET /offline'                 => array('static', 'offline'),
   'POST /:device/update'         => array('update', 'update'),
+  'POST /:device/update/:id'     => array('update', 'update_raw'),
   'GET /:device/graphs'          => array('graph', 'index'),
   'GET /[:device]/graph_data.json' => array('graph', 'get_data'),
   'GET /:device/debug'                 => array('debug', 'index'),

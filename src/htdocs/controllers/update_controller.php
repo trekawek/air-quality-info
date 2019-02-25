@@ -32,6 +32,14 @@ class UpdateController extends AbstractController {
 
         $this->updater->update($device, $map);
     }
+
+    public function update_raw($device, $id) {
+        $payload = file_get_contents("php://input");
+        error_log ("[update_raw] payload: [$payload]");
+        error_log ("[update_raw] REQUEST: " . var_export($_REQUEST, true));
+        error_log ("[update_raw] POST: " . var_export($_POST, true));
+        error_log ("[update_raw] SERVER: " . var_export($_SERVER, true));
+    }
 }
 
 ?>
