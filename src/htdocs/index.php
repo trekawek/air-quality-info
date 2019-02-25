@@ -45,7 +45,6 @@ $controllers['tool'] = new ToolController($dao, $updater);
 $controllers['static'] = new StaticController($currentLocale);
 $controllers['annual_stats'] = new AnnualStatsController($dao);
 
-
 $routes = array(
   'GET /[:device]'               => array('main', 'index'),
   'GET /[:device]/main_inner'    => array('main', 'index_inner'),
@@ -55,7 +54,6 @@ $routes = array(
   'GET /:device/about'           => array('static', 'about'),
   'GET /offline'                 => array('static', 'offline'),
   'POST /:device/update'         => array('update', 'update'),
-  'POST /:device/update/:id'     => array('update', 'update_raw'),
   'GET /:device/graphs'          => array('graph', 'index'),
   'GET /[:device]/graph_data.json' => array('graph', 'get_data'),
   'GET /:device/debug'                 => array('debug', 'index'),
@@ -66,6 +64,12 @@ $routes = array(
   'POST /:device/tools/rrd_to_mysql'      => array('tool', 'migrate_rrd_to_mysql'),
   'POST /:device/tools/migrate_madavi'    => array('tool', 'migrate_madavi'),
 );
+
+if (isset(CONFIG['plugins'])) {
+  foreach (CONFIG['plugins'] as $plugin) {
+    require($plugin);
+  }
+}
 
 $router = new Router($routes);
 list($route, $args) = $router->findRoute(explode("?", $_SERVER['REQUEST_URI'])[0]);
