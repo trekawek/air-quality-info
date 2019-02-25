@@ -9,13 +9,18 @@ class UpdateEspEasyController extends AbstractController {
         $this->dao = $dao;
     }
 
-    public function update($device, $uuid) {
-        $payload = file_get_contents("php://input");
-        error_log ("[update_raw] payload: [$payload] [$uuid]");
-        error_log ("[update_raw] REQUEST: " . var_export($_REQUEST, true));
-        error_log ("[update_raw] POST: " . var_export($_POST, true));
-        error_log ("[update_raw] SERVER: " . var_export($_SERVER, true));
-        echo "Data recieved";
+    public function update($device, $uuid) {        
+        if ($device['uuid'] != $uuid) {
+            error_log('uuid mismatch. Expected: '.$device['uuid'].' but got '.$uuid);
+            exit;
+        }
+    
+        $this->updater->update($device, array(
+            'pm10' => $_REQUEST['pm10'],
+            'pm25' => $_REQUEST['pm2_5']
+        ));
+
+        echo 'Update accepted';
     }
 }
 
