@@ -39,6 +39,7 @@ class UpdateController extends AbstractController {
         error_log ("[update_raw] REQUEST: " . var_export($_REQUEST, true));
         error_log ("[update_raw] POST: " . var_export($_POST, true));
         error_log ("[update_raw] SERVER: " . var_export($_SERVER, true));
+        echo "Data recieved";
     }
 }
 
