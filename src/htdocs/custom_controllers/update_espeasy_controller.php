@@ -16,8 +16,9 @@ class UpdateEspEasyController extends AbstractController {
         }
     
         $this->updater->update($device, array(
-            'pm10' => $_REQUEST['pm10'],
-            'pm25' => $_REQUEST['pm2_5']
+            'PMS_P0' => $_REQUEST['pm1_0'],
+            'PMS_P1' => $_REQUEST['pm10'],
+            'PMS_P2' => $_REQUEST['pm2_5']
         ));
 
         echo 'Update accepted';
