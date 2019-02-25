@@ -24,7 +24,7 @@ class UpdateEspEasyController extends AbstractController {
     }
 }
 
-$controllers['update'] = new UpdateEspEasyController($dao, $updater);
-$routes['GET /:device/update/:id'] = array('update', 'update');
+$controllers['update_esp'] = new UpdateEspEasyController($dao, $updater);
+$routes['GET /:device/update/:uuid'] = array('update_esp', 'update');
 
 ?>
