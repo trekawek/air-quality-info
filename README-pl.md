@@ -97,8 +97,8 @@ Serwer WWW powinien przekierować wszystkie żądania do nieznanych ścieżek do
 
 1. Sklonuj lub ściągnij to repozytorium.
 2. Skopiuj plik [htdocs/config-empty.php](src/htdocs/config-empty.php) do `config.php`. Wpisz nazwę użytkownika, hasło i ID sensora.
-3. Skopiuj katalog [htdocs](src/htdocs) do serwera web.
-4. Upewnij się, że serwer ma prawo zapisu w katalogu [htdocs/data](src/htdocs/data).
+3. Zainstaluj i skonfiguruj bazę danych MySQL, jak w sekcji poniżej.
+4. Skopiuj katalog [htdocs](src/htdocs) do serwera web.
 5. Skonfiguruj detektor, aby wysyłał dane *własnego API*. Nazwa użytkownika i hasło powinny być takie jak w pliku `config.php`. Ścieżka to: `/main/update`, gdzie `main` odnosi się do nazwy urządzenia w pliku `config.php`.
 
 ### Użycie bazy MySQL
