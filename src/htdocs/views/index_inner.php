@@ -2,10 +2,8 @@
 
 <div class="row">
     <div class="col-md-3 offset-md-2">
-        <?php if (count(CONFIG['devices']) > 1): ?>
         <small><?php echo implode(' / ', array_slice($desc, 0, -1)) ?></small>
         <h4><?php echo end($desc) ?></h4>
-        <?php endif ?>
     </div>
     <div class="col-md-2 text-center">
         <?php include('partials/sensors/badge.php') ?>
