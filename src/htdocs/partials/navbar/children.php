@@ -7,7 +7,14 @@ function renderChildren($node, $deviceGroupId) {
     <li class="dropdown">
         <?php if (isset($n['name'])): ?>
         <a class="dropdown-item <?php echo ($n['name'] == $currentDevice['name'] && $deviceGroupId === null) ? 'active' : '' ?>"
-           href="<?php echo l($currentController, $currentAction, array('name' => $n['name'])) ?>">
+           href="<?php 
+           if ($currentController == 'main' && $currentAction == 'all') {
+               echo l('main', 'index', array('name' => $n['name']));
+           } else {
+               echo l($currentController, $currentAction, array('name' => $n['name']));
+
+           }
+           ?>">
             <?php echo $d ?>
         </a>
         <?php else: ?>
