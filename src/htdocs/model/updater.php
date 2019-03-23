@@ -8,8 +8,8 @@ class Updater {
         'temperature' => array('BME280_temperature', 'BMP_temperature'),
         'humidity'    => 'BME280_humidity',
         'pressure'    => array('BME280_pressure', 'BMP_pressure'),
-        'heater_temperature' => 'temperature',
-        'heater_humidity'    => 'humidity',
+        'heater_temperature' => array('temperature', 'HECA_temperature'),
+        'heater_humidity'    => array('humidity', 'HECA_humidity'),
         'gps_time'    => 'GPS_time',
         'gps_date'    => 'GPS_date',
     );
