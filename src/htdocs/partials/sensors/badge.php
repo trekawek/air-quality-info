@@ -1,7 +1,7 @@
 <h2>
     <?php if ($averages['max_level'] !== null): ?>
     <span class="badge index-cat-<?php echo $averages['max_level']; ?>">
-        <?php echo POLLUTION_LEVELS[$averages['max_level']]['name']; ?>
+        <?php echo __(\AirQualityInfo\Lib\PollutionLevel::POLLUTION_LEVELS[$averages['max_level']]['name']); ?>
     </span>
     <?php else: ?>
     <span class="badge badge-dark">

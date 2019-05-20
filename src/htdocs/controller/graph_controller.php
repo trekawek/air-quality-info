@@ -1,15 +1,16 @@
 <?php
+namespace AirQualityInfo\Controller;
+
 class GraphController extends AbstractController {
 
-    private $dao;
+    private $recordModel;
 
-    public function __construct($dao) {
-        parent::__construct();
-        $this->dao = $dao;
+    public function __construct(\AirQualityInfo\Model\RecordModel $recordModel) {
+        $this->recordModel = $recordModel;
     }
 
     public function index($device) {
-        $sensors = $this->dao->getLastData($device['esp8266id']);
+        $sensors = $this->recordModel->getLastData($device['id']);
         $graphs = array();
         if ($sensors['pm10'] !== null || $sensors['pm25'] !== null) {
             $graphs['pm'] = __('PM');
@@ -30,8 +31,8 @@ class GraphController extends AbstractController {
     }
 
     public function get_data($device) {
-        $data = $this->dao->getHistoricData(
-            $device['esp8266id'],
+        $data = $this->recordModel->getHistoricData(
+            $device['id'],
             isset($_GET['type']) ? $_GET['type'] : 'pm',
             isset($_GET['range']) ? $_GET['range'] : 'day',
             isset($_GET['ma_h']) ? $_GET['ma_h'] : null

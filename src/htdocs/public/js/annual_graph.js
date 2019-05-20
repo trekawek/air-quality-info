@@ -33,6 +33,10 @@ function renderGraph(ctx, data) {
     tooltips.push(generateTooltips('PM₂₅', data['pm25']['levels']));
     tooltips.push(generateTooltips('PM₁₀', data['pm10']['levels']));
 
+    for (var i = 0; i < data.level_names.length; i++) {
+        data.level_names[i] = __(data.level_names[i]);
+    }
+
     var config = {
         type: 'bar',
         options: {

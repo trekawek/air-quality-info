@@ -1,5 +1,7 @@
 <?php
-class MysqlDao implements Dao {
+namespace AirQualityInfo\Model;
+
+class RecordModel {
 
     const FIELDS = array('pm25','pm10','temperature','pressure','humidity','heater_temperature','heater_humidity');
 
@@ -9,17 +11,9 @@ class MysqlDao implements Dao {
         $this->mysqli = $mysqli;
     }
 
-    public function dbExists($esp8266id) {
-        return true;
-    }
-
-    public function createDb($esp8266id) {
-        // do nothing
-    }
-
-    private function getTimestampRange($esp8266id) {
-        $stmt = $this->mysqli->prepare("SELECT MIN(`timestamp`), MAX(`timestamp`) FROM `records` WHERE `esp8266id` = ?");
-        $stmt->bind_param('i', $esp8266id);
+    private function getTimestampRange($deviceId) {
+        $stmt = $this->mysqli->prepare("SELECT MIN(`timestamp`), MAX(`timestamp`) FROM `records` WHERE `device_id` = ?");
+        $stmt->bind_param('i', $deviceId);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = array(null, null);
@@ -30,8 +24,8 @@ class MysqlDao implements Dao {
         return $data;
     }
 
-    private function insertEmptyRows($esp8266id, $recordTimestamp) {
-        list($firstTs, $lastTs) = $this->getTimestampRange($esp8266id);
+    private function insertEmptyRows($deviceId, $recordTimestamp) {
+        list($firstTs, $lastTs) = $this->getTimestampRange($deviceId);
         $rangeFrom = null;
         $rangeTo = null;
         if ($firstTs !== null && $recordTimestamp < $firstTs) { // before first timestamp
@@ -46,18 +40,18 @@ class MysqlDao implements Dao {
         }
         
         if ($rangeFrom !== null && $rangeTo !== null) {
-            $insertStmt = $this->mysqli->prepare("INSERT INTO `records` (`timestamp`, `esp8266id`) VALUES (?, ?)");
+            $insertStmt = $this->mysqli->prepare("INSERT INTO `records` (`timestamp`, `device_id`) VALUES (?, ?)");
             for ($ts = $rangeFrom; $ts <= $rangeTo; $ts += 180) {
-                $insertStmt->bind_param('ii', $ts, $esp8266id);
+                $insertStmt->bind_param('ii', $ts, $deviceId);
                 $insertStmt->execute();
             }
             $insertStmt->close();
         }
     }
 
-    public function update($esp8266id, $timestamp, $pm25, $pm10, $temp, $press, $hum, $heaterTemp, $heaterHum) {
+    public function update($deviceId, $timestamp, $pm25, $pm10, $temp, $press, $hum, $heaterTemp, $heaterHum) {
         $recordTimestamp = floor($timestamp / 180) * 180;
-        $this->insertEmptyRows($esp8266id, $recordTimestamp);
+        $this->insertEmptyRows($deviceId, $recordTimestamp);
 
         $record = array (
             'pm25' => $pm25,
@@ -83,10 +77,10 @@ class MysqlDao implements Dao {
             $params[] = $v;
         }
         $updateSql .= implode(", ", $updates);
-        $updateSql .= "WHERE `timestamp` in (?, ?) AND `esp8266id` = ?";
+        $updateSql .= "WHERE `timestamp` in (?, ?) AND `device_id` = ?";
         $params[] = $recordTimestamp;
         $params[] = $recordTimestamp - 180;
-        $params[] = $esp8266id;
+        $params[] = $deviceId;
 
         $updateStmt = $this->mysqli->prepare($updateSql);
         $pattern = str_repeat('s', count($record));
@@ -96,32 +90,32 @@ class MysqlDao implements Dao {
         $updateStmt->close();
     }
 
-    public function getLastData($esp8266id) {
-        $stmt = $this->mysqli->prepare("SELECT * FROM `records` WHERE `esp8266id` = ? AND `pm10` IS NOT NULL ORDER BY `timestamp` DESC LIMIT 1");
-        $stmt->bind_param('i', $esp8266id);
+    public function getLastData($deviceId) {
+        $stmt = $this->mysqli->prepare("SELECT * FROM `records` WHERE `device_id` = ? AND `pm10` IS NOT NULL ORDER BY `timestamp` DESC LIMIT 1");
+        $stmt->bind_param('i', $deviceId);
         $stmt->execute();
+
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
         $result->close();
 
         $data = array('last_update' => $row['timestamp']);
-        foreach (MysqlDao::FIELDS as $f) {
+        foreach (RecordModel::FIELDS as $f) {
             $data[$f] = $row[$f];
         }
         return $data;
     }
 
-    public function getLastAvg($esp8266id, $hours) {
+    public function getLastAvg($deviceId, $hours) {
         $fields = array();
-        foreach (MysqlDao::FIELDS as $f) {
+        foreach (RecordModel::FIELDS as $f) {
             $fields[] = "AVG($f)";
         }
         $fields = implode(",", $fields);
 
-        $stmt = $this->mysqli->prepare("SELECT $fields FROM `records` WHERE `esp8266id` = ? AND `timestamp` >= ?");
+        $stmt = $this->mysqli->prepare("SELECT $fields FROM `records` WHERE `device_id` = ? AND `timestamp` >= ?");
         $since = time() - $hours * 60 * 60;
-        $stmt->bind_param('ii', $esp8266id, $since);
-
+        $stmt->bind_param('ii', $deviceId, $since);
         $stmt->execute();
 
         $result = $stmt->get_result();
@@ -129,13 +123,13 @@ class MysqlDao implements Dao {
         $result->close();
 
         $data = array();
-        foreach (MysqlDao::FIELDS as $i => $f) {
+        foreach (RecordModel::FIELDS as $i => $f) {
             $data[$f] = $row[$i];
         }
         return $data;
     }
 
-    public function getHistoricData($esp8266id, $type = 'pm', $range = 'day', $avgType = null) {
+    public function getHistoricData($deviceId, $type = 'pm', $range = 'day', $avgType = null) {
         switch ($type) {
             case 'temperature':
             $fields = array('temperature', 'heater_temperature');
@@ -193,8 +187,8 @@ class MysqlDao implements Dao {
             }
         }
 
-        $stmt = $this->mysqli->prepare("SELECT CEILING(`timestamp` / $step) * $step AS `ts`, $sql_fields FROM `records` WHERE `esp8266id` = ? AND `timestamp` >= ? GROUP BY `ts` ORDER BY `ts` ASC");
-        $stmt->bind_param('ii', $esp8266id, $since);
+        $stmt = $this->mysqli->prepare("SELECT CEILING(`timestamp` / $step) * $step AS `ts`, $sql_fields FROM `records` WHERE `device_id` = ? AND `timestamp` >= ? GROUP BY `ts` ORDER BY `ts` ASC");
+        $stmt->bind_param('ii', $deviceId, $since);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -206,7 +200,7 @@ class MysqlDao implements Dao {
 
         if ($avgType !== null) {
             foreach ($data as $k => $values) {
-                $data[$k] = transform_to_walking_average($values, $avgType);
+                $data[$k] = RecordModel::transformToWalkingAverage($values, $avgType);
             }
             $since += 60 * 60 * $avgType;
         }
@@ -214,66 +208,7 @@ class MysqlDao implements Dao {
         return array('start' => $since, 'end' => $now, 'data' => $data);
     }
 
-    private function jsonUpdateTableExists() {
-        $result = $this->mysqli->query("SHOW TABLES LIKE 'json_updates'");
-        $table_exists = $result->num_rows > 0;
-        $result->close();
-        return $table_exists;
-    }
-
-    public function logJsonUpdate($esp8266id, $time, $json) {
-        if (!$this->jsonUpdateTableExists()) {
-            return;
-        }
-
-        $insertStmt = $this->mysqli->prepare("INSERT INTO `json_updates` (`timestamp`, `esp8266id`, `data`) VALUES (?, ?, ?)");
-        $insertStmt->bind_param('iis', $time, $esp8266id, $json);
-        $insertStmt->execute();
-        $insertStmt->close();
-
-        $before = $time - 24 * 60 * 60;
-        $deleteStmt = $this->mysqli->prepare("DELETE FROM `json_updates` WHERE `timestamp` < ? AND `esp8266id` = ?");
-        $deleteStmt->bind_param('ii', $before, $esp8266id);
-        $deleteStmt->execute();
-        $deleteStmt->close();
-    }
-
-    public function getJsonUpdates($esp8266id) {
-        $result = array();
-        if (!$this->jsonUpdateTableExists()) {
-            return $result;
-        }
-
-        $stmt = $this->mysqli->prepare("SELECT `timestamp`, `data` FROM `json_updates` WHERE `esp8266id` = ? ORDER BY `timestamp` DESC");
-        $stmt->bind_param('i', $esp8266id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = array();
-        while ($row = $result->fetch_row()) {
-            $data[$row[0]] = $row[1];
-        }
-        $stmt->close();
-        return $data;
-    }
-
-    public function getJsonUpdate($esp8266id, $ts) {
-        if (!$this->jsonUpdateTableExists()) {
-            return null;
-        }
-
-        $stmt = $this->mysqli->prepare("SELECT `data` FROM `json_updates` WHERE `esp8266id` = ? AND `timestamp` = ?");
-        $stmt->bind_param('ii', $esp8266id, $ts);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = null;
-        if ($row = $result->fetch_row()) {
-            $data = $row[0];
-        }
-        $stmt->close();
-        return $data;
-    }
-
-    public function getDailyAverages($esp8266id) {
+    public function getDailyAverages($deviceId) {
         $stmt = $this->mysqli->prepare(
             "SELECT
                 AVG(`pm10`) AS `pm10_avg`,
@@ -281,11 +216,11 @@ class MysqlDao implements Dao {
                 DATE(FROM_UNIXTIME(`timestamp`)) AS `date`
             FROM `records`
             WHERE
-                `esp8266id` = ?
+                `device_id` = ?
                 AND `timestamp` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 YEAR))
             GROUP BY DATE(FROM_UNIXTIME(`timestamp`))
             ORDER BY `date`");
-        $stmt->bind_param('i', $esp8266id);
+        $stmt->bind_param('i', $deviceId);
 
         $stmt->execute();
 
@@ -297,5 +232,46 @@ class MysqlDao implements Dao {
         $result->close();
         return $data;
     }
+
+    private static function transformToWalkingAverage($data, $walkingAverageHours) {
+        $data_array = array();
+        foreach ($data as $ts => $v) {
+            $data_array[] = array('ts' => $ts, 'v' => $v);
+        }
+        $data = $data_array;
+        $result = array();
+        $data_size = count($data);
+
+        $j = null;
+        $sum = 0;
+        $count = 0;
+        for ($j = 0; $j < $data_size; $j++) {
+            if (($data[$j]['ts'] - $data[0]['ts']) >= $walkingAverageHours * 60 * 60) {
+                break;
+            }
+            if ($data[$j]['v'] != null) {
+                $sum += $data[$j]['v'];
+                $count++;
+            }
+        }
+
+        $i = 0;
+        for ($j--; $j < $data_size; $j++) {
+            if ($data[$j]['v'] == null) {
+                $result[$data[$j]['ts']] = null;
+            } else {
+                $sum += $data[$j]['v'];
+                $count++;
+                $result[$data[$j]['ts']] = $sum / $count;
+            }
+            if ($data[$i]['v'] != null) {
+                $sum -= $data[$i]['v'];
+                $count--;
+            }
+            $i++;
+        }
+        return $result;
+    }
+
 }
 ?>

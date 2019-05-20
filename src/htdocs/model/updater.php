@@ -1,4 +1,6 @@
 <?php
+namespace AirQualityInfo\Model;
+
 class Updater {
 
     const VALUE_MAPPING = array(
@@ -14,15 +16,15 @@ class Updater {
         'gps_date'    => 'GPS_date',
     );
 
-    private $dao;
+    private $record_model;
 
-    public function __construct($dao) {
-        $this->dao = $dao;
+    public function __construct(RecordModel $record_model) {
+        $this->record_model = $record_model;
     }
 
     public function update($device, $map) {
         $time = time();
-        
+
         $mapping = $this->getMapping($device);
         $gps_date = Updater::readValue($mapping, $device, 'gps_date', $map, null);
         $gps_time = Updater::readValue($mapping, $device, 'gps_time', $map, null);
@@ -41,8 +43,8 @@ class Updater {
             $pressure /= 100;
         }
         
-        echo $this->dao->update(
-            $device['esp8266id'],
+        echo $this->record_model->update(
+            $device['id'],
             $time,
             Updater::readValue($mapping, $device, 'pm25', $map),
             Updater::readValue($mapping, $device, 'pm10', $map),

@@ -1,4 +1,6 @@
 <?php
+namespace AirQualityInfo\Model\Migration;
+
 class MadaviMigrator {
 
     const SENSOR_URL = 'https://www.madavi.de/sensor';

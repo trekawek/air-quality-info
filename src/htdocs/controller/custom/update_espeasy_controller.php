@@ -1,4 +1,6 @@
 <?php
+namespace AirQualityInfo\Controller\Custom;
+
 class UpdateEspEasyController extends AbstractController {
 
     private $updater;

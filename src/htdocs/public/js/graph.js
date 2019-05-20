@@ -16,7 +16,7 @@ window.chartColors = {
 
 function mapToTimeSeries(data) {
     var result = new Array();
-    for(var timeStamp in data) {
+    for (var timeStamp in data) {
         if (data.hasOwnProperty(timeStamp)) {
             result.push({
                 t: new Date(timeStamp * 1000),
@@ -42,7 +42,7 @@ function renderGraph(ctx, data, type, avgType) {
     var config = {
         type: 'line',
         options: {
-            spanGaps: true,
+            spanGaps: false,
             responsive: true,
             aspectRatio: 2,
             tooltips: {
@@ -74,6 +74,7 @@ function renderGraph(ctx, data, type, avgType) {
             }
         }
     };
+
     switch (type) {
         case 'pm':
         config.data = {

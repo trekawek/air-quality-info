@@ -14,13 +14,13 @@
           <th scope="row">PM<sub>2.5</sub></th>
           <td><?php echo round($averages['values']['pm25'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
           <td><?php echo round($averages['rel_pm25'], 0); ?>%</td>
-          <td><?php echo POLLUTION_LEVELS[$averages['pm25_level']]['name']; ?></td>
+          <td><?php echo __(\AirQualityInfo\Lib\PollutionLevel::POLLUTION_LEVELS[$averages['pm25_level']]['name']); ?></td>
         </tr>
         <tr class="index-cat-<?php echo $averages['pm10_level'] ?>">
           <th scope="row">PM<sub>10</sub></th>
           <td><?php echo round($averages['values']['pm10'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
           <td><?php echo round($averages['rel_pm10'], 0); ?>%</td>
-          <td><?php echo POLLUTION_LEVELS[$averages['pm10_level']]['name']; ?></td>
+          <td><?php echo __(\AirQualityInfo\Lib\PollutionLevel::POLLUTION_LEVELS[$averages['pm10_level']]['name']); ?></td>
         </tr>
         <tr>
           <td colspan="4" class="weather-measurements">

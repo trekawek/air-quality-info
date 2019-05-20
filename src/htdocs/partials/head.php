@@ -25,7 +25,11 @@ function navItem($action, $desc) {
     <link rel="apple-touch-icon" sizes="512x512" href="/public/img/dragon-512.png">
     <link rel="manifest" href="/manifest.json">
 
+    <?php if (isset($currentDevice)): ?>
     <title><?php echo __('Air quality') ?> - <?php echo $currentDevice['description']; ?></title>
+    <?php else: ?>
+    <title><?php echo __('Air quality') ?></title>
+    <?php endif ?>
 
     <style><?php echo file_get_contents('public/css/critical.css') ?></style>
 
@@ -34,7 +38,7 @@ function navItem($action, $desc) {
     <script defer src="/public/js/graph.js?v=17"></script>
     <script defer src="/public/js/annual_graph.js?v=17"></script>
   </head>
-  <body data-pm10-limit1h="<?php echo PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo PM25_LIMIT_24H ?>" data-current-lang='<?php echo $currentLocale->getCurrentLang() ?>' data-locale='<?php echo json_encode($currentLocale->getMessages()) ?>'>
+  <body data-pm10-limit1h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_24H ?>" data-current-lang='<?php echo $currentLocale->getCurrentLang() ?>' data-locale='<?php echo json_encode($currentLocale->getMessages()) ?>'>
     <div class="container">
       <div class="row">
         <div class="col-md-8 offset-md-2">
@@ -46,7 +50,6 @@ function navItem($action, $desc) {
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
                 <?php navItem(array('main', 'index'), 'Home'); ?>
-                <?php if (CONFIG['db']['type'] === 'mysql'): ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo __('Graphs') ?>
@@ -56,9 +59,6 @@ function navItem($action, $desc) {
                     <?php navItem(array('annual_stats', 'index'), 'Annual stats'); ?>
                   </ul>
                 </li>
-                <?php else: ?>
-                <?php navItem(array('graph', 'index'), 'Graphs'); ?>
-                <?php endif ?>
                 <?php navItem(array('static', 'about'), 'About'); ?>
                 <?php require('partials/navbar/locations.php') ?>
                 <li class="nav-item dropdown">
@@ -67,7 +67,7 @@ function navItem($action, $desc) {
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <li>
-                  <?php foreach(\Theme::THEMES as $name => $desc): ?>
+                  <?php foreach(\AirQualityInfo\Lib\Theme::THEMES as $name => $desc): ?>
                     <a class="dropdown-item <?php echo ($name == $currentTheme->getTheme()) ? 'active' : ''; ?>" href="<?php echo l($currentController, $currentAction, null, array(), array('theme' => $name)); ?>"><?php echo __($desc) ?></a>
                   <?php endforeach ?>
                   </li>
@@ -78,7 +78,7 @@ function navItem($action, $desc) {
                     <i class="fa fa-globe" aria-hidden="true"></i>
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <?php foreach(\AirQualityInfo\Locale::SUPPORTED_LANGUAGES as $lang => $desc): ?>
+                  <?php foreach(\AirQualityInfo\Lib\Locale::SUPPORTED_LANGUAGES as $lang => $desc): ?>
                   <li>
                     <a class="dropdown-item <?php echo ($lang == $currentLocale->getCurrentLang()) ? 'active' : ''; ?>" href="<?php echo l($currentController, $currentAction, null, array(), array('lang' => $lang)); ?>"><img src="/public/img/flags/<?php echo $lang ?>.png"/> <?php echo $desc ?></a>
                   </li>

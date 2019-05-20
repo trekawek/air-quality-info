@@ -1,4 +1,6 @@
 <?php
+namespace AirQualityInfo\Lib;
+
 class Theme {
 
   const THEMES = array('default' => 'Default theme', 'darkly' => 'Darkly theme');
@@ -26,10 +28,5 @@ class Theme {
       $this->theme = $theme;
     }
   }
-}
-
-$currentTheme = new Theme();
-if (isset($_GET['theme'])) {
-  $currentTheme->setTheme($_GET['theme']);
 }
 ?>
