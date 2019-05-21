@@ -5,11 +5,21 @@ class AbstractController {
 
     private $templateVariables;
 
+    protected $userModel;
+
+    protected $authorizationRequired = true;
+
+    protected $user;
+
+    protected $title = null;
+
     public function render($args, $data = array()) {
         $args = array_merge(array(
             'layout' => true
         ), $args);
 
+        $currentUser = $this->user;
+        $title = $this->title;
         extract($this->templateVariables);
         extract($data);
 
@@ -29,5 +39,26 @@ class AbstractController {
         $this->templateVariables = $templateVariables;
     }
 
+    // @Inject
+    public function setUserModel(\AirQualityInfo\Model\UserModel $userModel) {
+        $this->userModel = $userModel;
+    }
+
+    public function beforeAction() {
+        if ($this->authorizationRequired) {
+            $this->authorize();
+        }
+    }
+
+    protected function authorize() {
+        if (isset($_SESSION['user_id'])) {
+            $this->user = $this->userModel->getUserById($_SESSION['user_id']);
+            if ($this->user != null) {
+                return;
+            }
+        }
+        header('Location: ' . l('user', 'login'));
+        die();
+    }
 }
 ?>

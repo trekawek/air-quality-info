@@ -2,7 +2,12 @@
 namespace AirQualityInfo;
 
 $routes = array(
-    'GET /' => array('main', 'index'),
+    'GET /' => array('device', 'index'),
+    'GET /login' => array('user', 'login'),
+    'POST /login' => array('user', 'doLogin'),
+    'GET /logout' => array('user', 'logout'),
+    'GET /register' => array('user', 'register'),
+    'POST /register' => array('user', 'doRegister'),
 );
 
 $router = new Lib\Router($routes, $devices);
@@ -27,6 +32,8 @@ $diContainer->addBindings($templateVariables);
 $diContainer->setBinding('templateVariables', $templateVariables);
 $diContainer->setBinding('mysqli', $mysqli);
 
-$diContainer->injectClass('\\AirQualityInfo\\Admin\\Controller\\'.Lib\StringUtils::camelize($currentController).'Controller')->$currentAction(...array_values($args));
+$controller = $diContainer->injectClass('\\AirQualityInfo\\Admin\\Controller\\'.Lib\StringUtils::camelize($currentController).'Controller');
+$controller->beforeAction();
+$controller->$currentAction(...array_values($args));
 
 ?>

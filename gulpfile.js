@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
+var terser = require('gulp-terser');
 var rename = require('gulp-rename');
 var replace = require('gulp-replace');
 var cleanCSS = require('gulp-clean-css');
@@ -17,6 +17,16 @@ var paths = {
     ],
     dest: 'src/htdocs/public/css/'
   },
+  adminStyles: {
+    src: [
+      'node_modules/bootstrap/dist/css/bootstrap.css',
+      'node_modules/bootstrap/dist/css/bootstrap-reboot.css',
+      'node_modules/font-awesome/css/font-awesome.css',
+      'src/vendor/flatlab_admin_v40/css/style.css',
+      'src/vendor/flatlab_admin_v40/css/style-responsive.css',
+    ],
+    dest: 'src/htdocs/admin/public/css/'
+  },
   scripts: {
     src: [
       'node_modules/jquery/dist/jquery.slim.js',
@@ -29,6 +39,14 @@ var paths = {
       'node_modules/smartmenus/dist/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.js'
     ],
     dest: 'src/htdocs/public/js/'
+  },
+  adminScripts: {
+    src: [
+      'node_modules/jquery/dist/jquery.slim.js',
+      'node_modules/popper.js/dist/umd/popper.js',
+      'node_modules/bootstrap/dist/js/bootstrap.js',
+    ],
+    dest: 'src/htdocs/admin/public/js/'
   },
   themes: [
     {
@@ -50,6 +68,14 @@ function styles() {
     .pipe(gulp.dest(paths.styles.dest));
 }
 
+function adminStyles() {
+  return gulp.src(paths.adminStyles.src)
+    .pipe(cleanCSS())
+    .pipe(replace('font-awesome/fonts/', 'admin/public/fonts/'))
+    .pipe(concat('vendor.min.css'))
+    .pipe(gulp.dest(paths.adminStyles.dest));
+}
+
 function bootstrapThemes() {
   var tasks = paths.themes.map(function(obj) {
     return gulp.src(obj.src)
@@ -65,9 +91,16 @@ function bootstrapThemes() {
 
 function scripts() {
   return gulp.src(paths.scripts.src, { sourcemaps: true })
-    .pipe(uglify())
+    .pipe(terser())
     .pipe(concat('vendor.min.js'))
     .pipe(gulp.dest(paths.scripts.dest));
+}
+
+function adminScripts() {
+  return gulp.src(paths.adminScripts.src, { sourcemaps: true })
+    .pipe(terser())
+    .pipe(concat('vendor.min.js'))
+    .pipe(gulp.dest(paths.adminScripts.dest));
 }
 
 function createCriticalCss() {
@@ -97,14 +130,16 @@ function watch() {
 /*
  * Specify if tasks run in series or parallel using `gulp.series` and `gulp.parallel`
  */
-var build = gulp.series(gulp.parallel(styles, bootstrapThemes, scripts));
+var build = gulp.series(gulp.parallel(styles, adminStyles, bootstrapThemes, scripts, adminScripts));
 
 /*
  * You can use CommonJS `exports` module notation to declare tasks
  */
 exports.styles = styles;
+exports.adminStyles = adminStyles;
 exports.themes = bootstrapThemes;
 exports.scripts = scripts;
+exports.adminScripts = adminScripts;
 exports.watch = watch;
 exports.build = build;
 exports.createCriticalCss = createCriticalCss;

@@ -1,1 +1,1 @@
-hello
+hello authenticated user
