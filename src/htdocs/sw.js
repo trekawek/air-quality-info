@@ -36,7 +36,6 @@ var unavailableOffline = [
   "/",
   "/graphs",
   "/about",
-  "/debug",
   "/offline",
   "/annual_stats"
 ];

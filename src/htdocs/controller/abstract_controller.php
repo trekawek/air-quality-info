@@ -3,8 +3,6 @@ namespace AirQualityInfo\Controller;
 
 class AbstractController {
 
-    private $deviceTree;
-
     private $templateVariables;
 
     public function render($args, $data = array()) {

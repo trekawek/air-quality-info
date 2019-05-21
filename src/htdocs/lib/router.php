@@ -7,12 +7,12 @@ namespace AirQualityInfo\Lib {
 
         private $devices;
 
-        function __construct($routes, $devices) {
+        public function __construct($routes, $devices) {
             $this->routes = $routes;
             $this->devices = $devices;
         }
 
-        function findRoute($method, $uri) {
+        public function findRoute($method, $uri) {
             $userDomain = explode('.', $host)[0];
             $uri = array_values(array_filter(explode('/', $uri)));
             foreach ($this->routes as $path => $route) {
@@ -43,7 +43,12 @@ namespace AirQualityInfo\Lib {
                     if ($argName === 'device') {
                         list($device, $segmentCount) = $this->tryParseDevice(array_slice($uri, $i));
                         if ($device === null) {
-                            return null;
+                            if ($optional) {
+                                $device = $this->devices[0];
+                                $segmentCount = 0;
+                            } else {
+                                return null;
+                            }
                         }
                         $arguments['device'] = $device;
                         $i += $segmentCount;
@@ -141,8 +146,11 @@ namespace AirQualityInfo\Lib {
             return $link;    
         }
 
+        public static function send404() {
+            http_response_code(404);
+            die();
+        }
     }
-
 }
 
 namespace {
