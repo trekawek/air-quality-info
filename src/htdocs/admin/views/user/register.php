@@ -11,39 +11,62 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
         </script>
         <?php endif; ?>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="apple-touch-icon" sizes="512x512" href="/public/img/dragon-512.png">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <title>aqi.eco - <?php echo __('register'); ?></title>
         <link rel="stylesheet" href="/admin/public/css/vendor.min.css"/>
         <link rel="stylesheet" href="/admin/public/css/style.css"/>
     </head>
 
-    <body class="login-body">
+    <body class="app flex-row align-items-center">
         <div class="container">
-            <form class="form-signin" action="<?php echo l('user', 'register') ?>" method="POST">
-                <h2 class="form-signin-heading"><?php echo __('register'); ?></h2>
-                <div class="login-wrap">
-                    <?php if (isset($message)): ?>
-                    <div class="alert alert-danger" role="alert">
-                        <?php echo $message ?>
-                    </div>
-                    <?php endif ?>
-
-                    <p><?php echo __('Please enter your account details below'); ?></p>
-                    <input type="email" name="email" class="form-control" placeholder="<?php echo __('E-mail'); ?>" value="<?php echo $email ?>" autofocus>
-                    <input type="password" name="password" class="form-control" placeholder="<?php echo __('Password'); ?>" value="<?php echo $password ?>">
-                    <input type="password" name="password2" class="form-control" placeholder="<?php echo __('Re-type password'); ?>" value="<?php echo $password2 ?>">
-                    
-                    <div class="input-group">
-                        <input type="text" name="domain" class="form-control" placeholder="Domain name" value="<?php echo $domain ?>">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><?php echo CONFIG['user_domain_suffixes'][0] ?></span>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card mx-4">
+                        <div class="card-body p-4">
+                            <?php if (isset($message)): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo $message ?>
+                            </div>
+                            <?php endif ?>
+                            <form class="form-signin" action="<?php echo l('user', 'register') ?>" method="POST">
+                                <h1><?php echo __('Register') ?></h1>
+                                <p class="text-muted"><?php echo __('Create your account') ?></p>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">@</span>
+                                    </div>
+                                    <input class="form-control" name="email" type="email" placeholder="<?php echo __('E-mail'); ?>" value="<?php echo $email ?>">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="icon-lock"></i>
+                                        </span>
+                                    </div>
+                                    <input class="form-control" name="password" type="password" placeholder="<?php echo __('Password'); ?>"  value="<?php echo $password ?>">
+                                </div>
+                                <div class="input-group mb-4">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="icon-lock"></i>
+                                        </span>
+                                    </div>
+                                    <input class="form-control" name="password2" type="password" placeholder="<?php echo __('Repeat password'); ?>"  value="<?php echo $password2 ?>">
+                                </div>
+                                <div class="input-group mb-4">
+                                    <input class="form-control" name="domain" type="text" placeholder="<?php echo __('Domain name'); ?>" value="<?php echo $domain ?>">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><?php echo CONFIG['user_domain_suffixes'][0] ?></span>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="csrf_token" value="<?php echo \AirQualityInfo\Lib\CsrfToken::getToken() ?>"/>
+                                <button class="btn btn-block btn-success" type="submit">Create Account</button>
+                            </form>
                         </div>
                     </div>
-
-                    <button class="btn btn-lg btn-login btn-block" type="submit"><?php echo __('Submit'); ?></button>
                 </div>
-            </form>
+            </div>
         </div>
         <script src="/admin/public/js/vendor.min.js"></script>
     </body>

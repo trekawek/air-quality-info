@@ -19,11 +19,11 @@ var paths = {
   },
   adminStyles: {
     src: [
-      'node_modules/bootstrap/dist/css/bootstrap.css',
-      'node_modules/bootstrap/dist/css/bootstrap-reboot.css',
+      'node_modules/@coreui/icons/css/coreui-icons.css',
+      'node_modules/flag-icon-css/css/flag-icon.css',
       'node_modules/font-awesome/css/font-awesome.css',
-      'src/vendor/flatlab_admin_v40/css/style.css',
-      'src/vendor/flatlab_admin_v40/css/style-responsive.css',
+      'node_modules/simple-line-icons/css/simple-line-icons.css',
+      'node_modules/@coreui/coreui/dist/css/coreui.css',
     ],
     dest: 'src/htdocs/admin/public/css/'
   },
@@ -42,9 +42,10 @@ var paths = {
   },
   adminScripts: {
     src: [
-      'node_modules/jquery/dist/jquery.slim.js',
+      'node_modules/jquery/dist/jquery.js',
       'node_modules/popper.js/dist/umd/popper.js',
       'node_modules/bootstrap/dist/js/bootstrap.js',
+      'node_modules/@coreui/coreui/dist/js/coreui.js',
     ],
     dest: 'src/htdocs/admin/public/js/'
   },
@@ -72,6 +73,7 @@ function adminStyles() {
   return gulp.src(paths.adminStyles.src)
     .pipe(cleanCSS())
     .pipe(replace('font-awesome/fonts/', 'admin/public/fonts/'))
+    .pipe(replace('simple-line-icons/fonts/', 'admin/public/fonts/'))
     .pipe(concat('vendor.min.css'))
     .pipe(gulp.dest(paths.adminStyles.dest));
 }

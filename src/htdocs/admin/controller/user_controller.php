@@ -20,7 +20,7 @@ class UserController extends AbstractController {
         $user = $this->userModel->getUserByEmail($_POST['email']);
         if ($user != null && password_verify($_POST['password'], $user['password_hash'])) {
             $_SESSION['user_id'] = $user['id'];
-            generateCsrfToken();
+            \AirQualityInfo\Lib\CsrfToken::generateToken();
             header('Location: /');
         } else {
             $this->render(array('view' => 'admin/views/user/login.php', 'layout' => false), array('message' => __('Invalid email or password')));

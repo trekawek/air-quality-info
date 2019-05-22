@@ -11,74 +11,47 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
         </script>
         <?php endif; ?>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="apple-touch-icon" sizes="512x512" href="/public/img/dragon-512.png">
-
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <title>aqi.eco<?php echo $title ? (' - ' . $title) : '' ?></title>
         <link rel="stylesheet" href="/admin/public/css/vendor.min.css"/>
         <link rel="stylesheet" href="/admin/public/css/style.css"/>
     </head>
 
-    <body class="boxed-page">
-        <div class="container">
-            <section id="container">
-                <header class="header white-bg">
-                    <div class="container">
-                        <!--logo start-->
-                        <a href="index.html" class="logo">aqi.<span>eco</span></a>
-                        <!--logo end-->
-                        <div class="nav notify-row" id="top_menu">
-                            <!--  notification start -->
-                            <ul class="nav top-menu">
-                                <?php if ($notifications): ?>
-                                <!-- notification dropdown start-->
-                                <li id="header_notification_bar" class="dropdown">
-                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                        <i class="fa fa-bell-o"></i>
-                                        <span class="badge badge-warning"><?php echo count($notifications) ?></span>
-                                    </a>
-                                    <ul class="dropdown-menu extended notification">
-                                        <div class="notify-arrow notify-arrow-yellow"></div>
-                                        <li>
-                                            <p class="yellow"><?php printf(__("You have %d new notifications"), count($notifications)) ?></p>
-                                        </li>
-                                        <?php foreach($notifications as $n): ?>
-                                        <li>
-                                            <a href="#">
-                                                <span class="label label-<?php echo $n['type'] ?>"><i class="fa fa-bolt"></i></span>
-                                                <?php echo $n['text'] ?>
-                                            </a>
-                                        </li>
-                                        <?php endforeach ?>
-                                    </ul>
-                                </li>
-                                <?php endif ?>
-                            </ul>
-                        </div>
-                    </div>
-                </header>
+    <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+        <header class="app-header navbar">
+            <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                aqi.eco
+            </a>
+        </header>
 
-                <aside>
-                    <div id="sidebar">
-                        <!-- sidebar menu start-->
-                        <ul class="sidebar-menu">
-                            <li>
-                                <a href="<?php echo l('device', 'index') ?>">
-                                    <i class="fa fa-dashboard"></i>
-                                    <span><?php echo __('Devices') ?></span>
-                                </a>
-                            </li>
+        <div class="app-body">
+            <div class="sidebar">
+                <nav class="sidebar-nav">
+                    <ul class="nav">
+                        <li class="nav-title">
+                            <?php echo __('Dashboard') ?>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo l('devices', 'index') ?>">
+                            <i class="nav-icon fa fa-tachometer"></i> <?php echo __('Devices') ?></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo l('user', 'logout') ?>">
+                            <i class="nav-icon fa fa-sign-out"></i> <?php echo __('Logout') ?></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
 
-
-                            <li>
-                                <a href="<?php echo l('user', 'logout') ?>">
-                                    <i class="fa fa-sign-out"></i>
-                                    <span><?php echo __('Logout') ?></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </aside>
-
-                <section id="main-content">
-                    <section class="wrapper">
+            <main class="main">
+                <div class="container-fluid">
+                    <div id="ui-view">
+                        <p></p>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
