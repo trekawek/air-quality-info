@@ -1,0 +1,41 @@
+<?php
+namespace AirQualityInfo\Lib\Form;
+
+class Form {
+
+    private $elements = array();
+
+    public function addElement($name, $type, $label, $attributes = array(), $description = null) {
+        $element = new FormElement($name, $type, $label, $attributes, $description);
+        $this->elements[$name] = $element;
+        return $element;
+    }
+
+    public function validate($data) {
+        $ok = true;
+        foreach ($this->elements as $name => $e) {
+            $ok = $e->validate(isset($data[$name]) ? $data[$name] : null) && $ok;
+        }
+        return $ok;
+    }
+
+    public function render() {
+        foreach ($this->elements as $e) {
+            $e->render();
+        }
+    }
+
+    public function setDefaultValues($values) {
+        foreach ($this->elements as $name => $e) {
+            if (isset($values[$name])) {
+                $e->setValue($values[$name]);
+            }
+        }
+    }
+
+    public function isSubmitted() {
+        return $_SERVER['REQUEST_METHOD'] === 'POST';
+    }
+}
+
+?>

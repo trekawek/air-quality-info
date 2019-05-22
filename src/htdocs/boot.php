@@ -29,4 +29,5 @@ if (isset($_GET['lang'])) {
     $currentLocale->setLang($_GET['lang']);
 }
 
+Lib\CsrfToken::generateTokenIfNotExists();
 ?>

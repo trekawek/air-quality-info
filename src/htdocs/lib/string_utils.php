@@ -11,6 +11,9 @@ class StringUtils {
         return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
     }
 
+    public static function escapeHtmlAttribute($string) {
+        return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+    }
 }
 
 ?>

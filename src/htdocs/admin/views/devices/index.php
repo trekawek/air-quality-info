@@ -24,7 +24,7 @@
             <?php endif ?>
             </td>
             <td>
-                <a href="#" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+                <a href="<?php echo l('device', 'edit', null, array('device_id' => $d['id'])) ?>" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
                 <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-trash-o "></i></a>
             </td>
         </tr>

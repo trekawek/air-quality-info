@@ -31,10 +31,7 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
 
                     <input type="email" name="email" class="form-control" placeholder="<?php echo __('E-mail'); ?>" autofocus>
                     <input type="password" name="password" class="form-control" placeholder="<?php echo __('Password'); ?>">
-                    <label class="checkbox">
-                        <input type="checkbox" name="remember" value="true"> <?php echo __('Remember me'); ?><br/>
-                        <span class="pull-right"><a data-toggle="modal" href="#myModal"> <?php echo __('Forgot password?'); ?></a></span>
-                    </label>
+                    
                     <button class="btn btn-lg btn-login btn-block" type="submit"><?php echo __('Sign in'); ?></button>
                     <div class="registration">
                         <?php echo __("Doesn't have an account yet?"); ?>
@@ -44,28 +41,6 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
                     </div>
                 </div>
             </form>
-
-            <!-- Modal -->
-            <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title"><?php echo __('Forgot password?'); ?></h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p><?php echo __('Enter you e-mail below to reset your password'); ?></p>
-                            <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
-                        </div>
-                        <div class="modal-footer">
-                            <button data-dismiss="modal" class="btn btn-default" type="button"><?php echo __('Cancel'); ?></button>
-                            <button class="btn btn-success" type="button"><?php echo __('Submit'); ?></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <script src="/admin/public/js/vendor.min.js"></script>
     </body>

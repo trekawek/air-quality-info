@@ -1,6 +1,8 @@
 <?php
 namespace AirQualityInfo;
 
+Lib\CsrfToken::verifyToken($_POST['_csrf_token']);
+
 $routes = array(
     'GET /' => array('device', 'index'),
     'GET /login' => array('user', 'login'),
@@ -8,6 +10,8 @@ $routes = array(
     'GET /logout' => array('user', 'logout'),
     'GET /register' => array('user', 'register'),
     'POST /register' => array('user', 'doRegister'),
+    'GET /device/:device_id' => array('device', 'edit'),
+    'POST /device/:device_id' => array('device', 'edit'),
 );
 
 $router = new Lib\Router($routes, $devices);
