@@ -10,19 +10,14 @@ class MadaviMigrator {
         'Humidity' => 'humidity'
     );
 
-    private $dao;
-
-    private $currentLocale;
-
     private $updater;
 
-    public function __construct($dao, $updater) {
-        $this->dao = $dao;
+    public function __construct(\AirQualityInfo\Model\Updater $updater) {
         $this->updater = $updater;
     }
 
     public function migrate($device) {
-        $index = file_get_contents(MadaviMigrator::SENSOR_URL.'/csvfiles.php?sensor=esp8266-'.$device['esp8266id']);
+        $index = file_get_contents(MadaviMigrator::SENSOR_URL.'/csvfiles.php?sensor=esp8266-'.$device['esp8266_id']);
         $files = array();
         foreach (explode("\n", $index) as $line) {
             $line = explode("'", $line);
@@ -47,7 +42,7 @@ class MadaviMigrator {
         fclose($dst);
         fclose($src);
 
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
         if ($zip->open($localZip) == TRUE) {
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $filename = $zip->getNameIndex($i);
@@ -67,7 +62,7 @@ class MadaviMigrator {
     }
 
     private function processCsv($device, $url, $fp) {
-        $utc = new DateTimeZone('UTC');
+        $utc = new \DateTimeZone('UTC');
 
         echo "Processing file $url\n";
         flush();
@@ -83,7 +78,7 @@ class MadaviMigrator {
                     $row[$header[$i]] = $val;
                 }
             }
-            $time = DateTime::createFromFormat('Y/m/d H:i:s', $row['Time'], $utc)->getTimestamp();
+            $time = \DateTime::createFromFormat('Y/m/d H:i:s', $row['Time'], $utc)->getTimestamp();
             foreach (MadaviMigrator::MAPPING as $csvKey => $jsonKey) {
                 if (isset($row[$csvKey])) {
                     $row[$jsonKey] = $row[$csvKey];

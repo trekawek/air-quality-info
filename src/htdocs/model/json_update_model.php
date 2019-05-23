@@ -22,10 +22,10 @@ class JsonUpdateModel {
         $deleteStmt->close();
     }
 
-    public function getJsonUpdates($deviceId) {
+    public function getJsonUpdates($deviceId, $limit = PHP_INT_MAX) {
         $result = array();
-        $stmt = $this->mysqli->prepare("SELECT `timestamp`, `data` FROM `json_updates` WHERE `device_id` = ? ORDER BY `timestamp` DESC");
-        $stmt->bind_param('i', $deviceId);
+        $stmt = $this->mysqli->prepare("SELECT `timestamp`, `data` FROM `json_updates` WHERE `device_id` = ? ORDER BY `timestamp` DESC LIMIT ?");
+        $stmt->bind_param('ii', $deviceId, $limit);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = array();
@@ -38,7 +38,7 @@ class JsonUpdateModel {
 
     public function getJsonUpdate($deviceId, $ts) {
         $stmt = $this->mysqli->prepare("SELECT `data` FROM `json_updates` WHERE `device_id` = ? AND `timestamp` = ?");
-        $stmt->bind_param('ii', $device_id, $ts);
+        $stmt->bind_param('ii', $deviceId, $ts);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = null;

@@ -9,10 +9,10 @@
     <?php echo $this->getAttributesString() ?>>
 
 <?php if ($this->label): ?>
-<label class="form-check-label" for="<?php echo $this->name ?>Input"><?php echo $this->label ?></label>
+<label class="form-check-label" for="<?php echo $this->name ?>Input"><?php echo __($this->label) ?></label>
 <?php endif ?>
 
-<?php if ($this->description): ?><span class="help-block"><?php echo $this->description ?></span><?php endif ?>
+<?php if ($this->description): ?><span class="help-block"><?php echo __($this->description) ?></span><?php endif ?>
 
-<?php if ($this->validationMessage): ?><div class="invalid-feedback"><?php echo $this->validationMessage ?></div><?php endif ?>
+<?php if ($this->validationMessage): ?><div class="alert alert-danger" role="alert"><?php echo $this->validationMessage ?></div><?php endif ?>
 </div>

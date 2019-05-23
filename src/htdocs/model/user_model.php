@@ -56,5 +56,13 @@ class UserModel {
         $insertStmt->close();
         return $this->mysqli->insert_id;
     }
+
+    public function updatePassword($userId, $password) {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $insertStmt = $this->mysqli->prepare("UPDATE `users` SET `password_hash` = ? WHERE `id` = ?");
+        $insertStmt->bind_param('si', $hash, $userId);
+        $insertStmt->execute();
+        $insertStmt->close();
+    }
 }
 ?>

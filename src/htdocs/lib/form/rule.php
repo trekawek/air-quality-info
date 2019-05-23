@@ -13,11 +13,11 @@ class Rule {
     }
 
     public function validate($value, $options = null) {
-        return $this->validateFunction($value, $options);
+        return ($this->validateFunction)($value, $options);
     }
 
     public function getMessage() {
-        return $message;
+        return $this->message;
     }
 }
 ?>

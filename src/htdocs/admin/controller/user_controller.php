@@ -68,6 +68,32 @@ class UserController extends AbstractController {
         }
         $this->render(array('view' => 'admin/views/user/register.php', 'layout' => false), $data);
     }
+
+    public function edit() {
+        $this->authorize();
+
+        $userForm = new \AirQualityInfo\Lib\Form\Form("userForm");
+        $userForm->addElement('email', 'text', 'E-mail', array('disabled' => 1));
+        $userForm->addElement('domain', 'text', 'Domain', array('disabled' => 1));
+        $userForm->addElement('password', 'password', 'Password')
+            ->addRule('required')
+            ->addRule('minLength', 8)
+            ->addRule('sameAs', 'password2');
+        $userForm->addElement('password2', 'password', 'Repeat password')->addRule('required');
+        $userForm->setDefaultValues($this->user);
+
+        if ($userForm->isSubmitted() && $userForm->validate($_POST)) {
+            $this->userModel->updatePassword($this->user['id'], $_POST['password']);
+            $this->alert(__('Updated the password', 'success'));
+            $userForm->setDefaultValues(array('password' => '', 'password2' => ''));
+        }
+
+        $this->render(array(
+            'view' => 'admin/views/user/edit.php'
+        ), array(
+            'userForm' => $userForm
+        ));
+    }
 }
 
 ?>

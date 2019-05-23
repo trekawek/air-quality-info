@@ -60,5 +60,19 @@ class AbstractController {
         header('Location: ' . l('user', 'login'));
         die();
     }
+
+    protected function alert($message, $type = 'primary') {
+        $_SESSION['alert'] = array('type' => $type, 'message' => $message);
+    }
+
+    private function getAlert() {
+        if (isset($_SESSION['alert'])) {
+            $alert = $_SESSION['alert'];
+            unset($_SESSION['alert']);
+            return $alert;
+        } else {
+            return null;
+        }
+    }
 }
 ?>

@@ -28,6 +28,31 @@ class DeviceModel {
         return $this->mysqli->insert_id;
     }
 
+    public function move($deviceId, $direction) {
+        $device = $this->getDeviceById($deviceId);
+        if ($direction == 'up' && $device['position'] > 0) {
+            $updateStmt = $this->mysqli->prepare('UPDATE `devices` SET `position` = `position` + 1 WHERE `position` = ? - 1 AND `user_id` = ?');
+            $updateStmt->bind_param('ii', $device['position'], $device['user_id']);
+            $updateStmt->execute();
+            $updateStmt->close();
+
+            $updateStmt = $this->mysqli->prepare('UPDATE `devices` SET `position` = `position` - 1 WHERE `id` = ?');
+            $updateStmt->bind_param('i', $device['id']);
+            $updateStmt->execute();
+            $updateStmt->close();
+        } else if ($direction == 'down' && $device['position'] < $this->getMaxPosition($device['user_id'])) {
+            $updateStmt = $this->mysqli->prepare('UPDATE `devices` SET `position` = `position` - 1 WHERE `position` = ? + 1 AND `user_id` = ?');
+            $updateStmt->bind_param('ii', $device['position'], $device['user_id']);
+            $updateStmt->execute();
+            $updateStmt->close();
+
+            $updateStmt = $this->mysqli->prepare('UPDATE `devices` SET `position` = `position` + 1 WHERE `id` = ?');
+            $updateStmt->bind_param('i', $device['id']);
+            $updateStmt->execute();
+            $updateStmt->close();
+        }
+    }
+
     public function getMaxPosition($userId) {
         $stmt = $this->mysqli->prepare("SELECT MAX(position) FROM `devices` WHERE `user_id` = ?");
         $stmt->bind_param('i', $userId);
@@ -68,9 +93,29 @@ class DeviceModel {
     }
 
     public function deleteDevice($deviceId) {
+        $userId = $this->getDeviceById($deviceId)['user_id'];
         $stmt = $this->mysqli->prepare("DELETE FROM `devices` WHERE `id` = ?");
         $stmt->bind_param('i', $deviceId);
         $stmt->execute();
+        $this->reorderDevices($userId);
+    }
+
+    private function reorderDevices($userId) {
+        $stmt = $this->mysqli->prepare("SELECT `id` FROM `devices` WHERE `user_id` = ? ORDER BY `position`");
+        $stmt->bind_param('i', $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $position = 0;
+        $updateStmt = $this->mysqli->prepare('UPDATE `devices` SET `position` = ? WHERE `id` = ?');
+        while ($row = $result->fetch_row()) {
+            $updateStmt->bind_param('ii', $position, $row[0]);
+            $updateStmt->execute();
+            $position++;
+        }
+        $updateStmt->close();
+
+        $stmt->close();
     }
 
     public function addMapping($deviceId, $dbName, $jsonName) {

@@ -18,7 +18,7 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
         <link rel="stylesheet" href="/admin/public/css/style.css"/>
     </head>
 
-    <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
+    <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show" data-locale='<?php echo json_encode($currentLocale->getMessages()) ?>'>
         <header class="app-header navbar">
             <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
                 <span class="navbar-toggler-icon"></span>
@@ -42,6 +42,10 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
                             <i class="nav-icon fa fa-tachometer"></i> <?php echo __('Devices') ?></a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="<?php echo l('user', 'edit') ?>">
+                            <i class="nav-icon fa fa-user"></i> <?php echo __('Account') ?></a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="<?php echo l('user', 'logout') ?>">
                             <i class="nav-icon fa fa-sign-out"></i> <?php echo __('Logout') ?></a>
                         </li>
@@ -52,4 +56,12 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
             <main class="main">
                 <div class="container-fluid">
                     <div id="ui-view">
+                    <p></p>
+
+                    <?php $alert = $this->getAlert(); if ($alert): ?>
+                    <div class="alert alert-<?php echo $alert['type'] ?>" role="alert">
+                        <?php echo $alert['message'] ?>
+                    </div>
+                    <?php endif ?>
+
                     <p></p>

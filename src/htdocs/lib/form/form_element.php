@@ -37,7 +37,7 @@ class FormElement {
         if ($type === 'required') {
             $this->required = true;
         }
-        $rules[] = array('type' => $type, 'options' => $options);
+        $this->rules[] = array('type' => $type, 'options' => $options);
         return $this;
     }
 
@@ -65,7 +65,9 @@ class FormElement {
     }
 
     public function validate($value) {
-        $this->value = $value;
+        if ($value !== null) {
+            $this->value = $value;
+        }
         foreach ($this->rules as $rule) {
             if (!$this->validateRule($rule['type'], $rule['options'], $value)) {
                 return false;
@@ -88,7 +90,7 @@ class FormElement {
         if (isset($ruleOptions['message'])) {
             $msg = $ruleOptions['message'];
         }
-        $this->validationMessage = sprintf($msg, $this->label);
+        $this->validationMessage = sprintf($msg, $this->label, $ruleOptions);
         return false;
     }
 
