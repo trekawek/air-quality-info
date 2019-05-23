@@ -15,6 +15,8 @@ class FormElement {
 
     private $attributes;
 
+    private $options;
+
     private $rules = array();
 
     private $validationMessage;
@@ -37,6 +39,10 @@ class FormElement {
         }
         $rules[] = array('type' => $type, 'options' => $options);
         return $this;
+    }
+
+    public function setOptions($options) {
+        $this->options = $options;
     }
 
     public function setValue($value) {

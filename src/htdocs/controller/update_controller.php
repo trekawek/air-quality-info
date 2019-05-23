@@ -34,7 +34,14 @@ class UpdateController extends AbstractController {
         if ($device === null) {
             $this->authError();
         }
-        $device['mapping'] = $this->deviceModel->getMappingForDevice($device['id']);
+        $mapping = array();
+        foreach ($this->deviceModel->getMappingForDevice($device['id']) as $m) {
+            if (!isset($mapping[$m['db_name']])) {
+                $mapping[$m['db_name']] = array();
+            }
+            $mapping[$m['db_name']][] = $mapping[$m['json_name']];
+        }
+        $device['mapping'] = $mapping;
 
         $sensors = $data['sensordatavalues'];
         $map = array();

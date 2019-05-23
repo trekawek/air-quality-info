@@ -5,6 +5,12 @@ class Form {
 
     private $elements = array();
 
+    private $formName;
+
+    public function __construct($formName = null) {
+        $this->formName = $formName;
+    }
+
     public function addElement($name, $type, $label, $attributes = array(), $description = null) {
         $element = new FormElement($name, $type, $label, $attributes, $description);
         $this->elements[$name] = $element;
@@ -23,6 +29,7 @@ class Form {
         foreach ($this->elements as $e) {
             $e->render();
         }
+        (new FormElement($this->formName, 'metadata', null))->render();
     }
 
     public function setDefaultValues($values) {
@@ -34,7 +41,7 @@ class Form {
     }
 
     public function isSubmitted() {
-        return $_SERVER['REQUEST_METHOD'] === 'POST';
+        return $_SERVER['REQUEST_METHOD'] === 'POST' && ($this->formName === $_POST['_form_name']);
     }
 }
 

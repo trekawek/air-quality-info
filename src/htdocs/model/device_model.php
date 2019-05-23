@@ -9,6 +9,38 @@ class DeviceModel {
         $this->mysqli = $mysqli;
     }
 
+    public function createDevice($data) {
+        $data['position'] = $this->getMaxPosition($data['user_id']) + 1;
+
+        $sql = "INSERT INTO `devices` ( ";
+        foreach ($data as $k => $v) {
+            $sql .= "`$k`, ";
+        }
+        $sql = substr($sql, 0, -2);
+        $sql .= ") VALUES (";
+        $sql .= str_repeat('?, ', count($data));
+        $sql = substr($sql, 0, -2);
+        $sql .= ")";
+
+        $stmt = $this->mysqli->prepare($sql);
+        $stmt->bind_param(str_repeat('s', count($data)), ...array_values($data));    
+        $stmt->execute();
+        return $this->mysqli->insert_id;
+    }
+
+    public function getMaxPosition($userId) {
+        $stmt = $this->mysqli->prepare("SELECT MAX(position) FROM `devices` WHERE `user_id` = ?");
+        $stmt->bind_param('i', $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $pos = -1;
+        if ($row = $result->fetch_row()) {
+            $pos = $row[0];
+        }
+        $stmt->close();
+        return $pos;
+    }
+
     public function getDeviceById($deviceId) {
         $stmt = $this->mysqli->prepare("SELECT * FROM `devices` WHERE `id` = ?");
         $stmt->bind_param('i', $deviceId);
@@ -35,19 +67,32 @@ class DeviceModel {
         return $data;
     }
 
+    public function deleteDevice($deviceId) {
+        $stmt = $this->mysqli->prepare("DELETE FROM `devices` WHERE `id` = ?");
+        $stmt->bind_param('i', $deviceId);
+        $stmt->execute();
+    }
+
+    public function addMapping($deviceId, $dbName, $jsonName) {
+        $stmt = $this->mysqli->prepare("INSERT INTO `device_mapping` (`device_id`, `db_name`, `json_name`) VALUES (?, ?, ?)");
+        $stmt->bind_param('iss', $deviceId, $dbName, $jsonName);
+        $stmt->execute();
+    }
+
+    public function deleteMapping($deviceId, $mappingId) {
+        $stmt = $this->mysqli->prepare("DELETE FROM `device_mapping` WHERE `device_id` = ? AND `id` = ?");
+        $stmt->bind_param('ii', $deviceId, $mappingId);
+        $stmt->execute();
+    }
+
     public function getMappingForDevice($deviceId) {
-        $stmt = $this->mysqli->prepare("SELECT `db_name`, `json_name` FROM `device_mapping` WHERE `device_id` = ?");
+        $stmt = $this->mysqli->prepare("SELECT `id`, `db_name`, `json_name` FROM `device_mapping` WHERE `device_id` = ?");
         $stmt->bind_param('i', $deviceId);
         $stmt->execute();
         $result = $stmt->get_result();
         $data = array();
         while ($row = $result->fetch_assoc()) {
-            $dbName = $row['db_name'];
-            $jsonName = $row['json_name'];
-            if (!isset($data[$dbName])) {
-                $data[$dbName] = array();
-            }
-            $data[$dbName][] = $jsonName;
+            $data[] = $row;
         }
         $stmt->close();
         return $data;

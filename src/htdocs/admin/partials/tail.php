@@ -1,7 +1,3 @@
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </main>
@@ -12,5 +8,6 @@
             </div>
         </footer>
         <script src="/admin/public/js/vendor.min.js"></script>
+        <script src="/admin/public/js/main.js"></script>
     </body>
 </html>

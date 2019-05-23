@@ -23,9 +23,11 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
             <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="#">
-                aqi.eco
-            </a>
+            <div class="navbar-brand">
+                <img src="/public/img/dragon.png">
+                Air Quality Info
+                <sup>&beta;</sup>
+            </div>
         </header>
 
         <div class="app-body">
@@ -36,7 +38,7 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
                             <?php echo __('Dashboard') ?>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?php echo l('devices', 'index') ?>">
+                            <a class="nav-link" href="<?php echo l('device', 'index') ?>">
                             <i class="nav-icon fa fa-tachometer"></i> <?php echo __('Devices') ?></a>
                         </li>
                         <li class="nav-item">
@@ -50,8 +52,4 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
             <main class="main">
                 <div class="container-fluid">
                     <div id="ui-view">
-                        <p></p>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
+                    <p></p>
