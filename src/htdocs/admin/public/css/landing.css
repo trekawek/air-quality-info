@@ -1,0 +1,9 @@
+.navbar-brand img {
+  height: 3rem;
+  margin-right: 0.5rem;
+}
+
+.logo {
+  font-family: 'Ubuntu Mono', monospace;
+  color: #2b302a;
+}
