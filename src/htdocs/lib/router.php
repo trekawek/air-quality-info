@@ -7,20 +7,19 @@ namespace AirQualityInfo\Lib {
 
         private $devices;
 
-        public function __construct($routes, $devices) {
+        public function __construct($routes, $devices = array()) {
             $this->routes = $routes;
             $this->devices = $devices;
         }
 
         public function findRoute($method, $uri) {
-            $userDomain = explode('.', $host)[0];
             $uri = array_values(array_filter(explode('/', $uri)));
             foreach ($this->routes as $path => $route) {
                 $path = explode(' ', $path);
                 if ($path[0] !== $method) {
                     continue;
                 }
-                $arguments = $this->tryParse($firstHostSegment, $path[1], $uri);
+                $arguments = $this->tryParse($path[1], $uri);
                 if ($arguments !== null) {
                     return array($route, $arguments);
                 }
@@ -28,7 +27,7 @@ namespace AirQualityInfo\Lib {
             return array(null, null);
         }
 
-        private function tryParse($userDomain, $path, $uri) {
+        private function tryParse($path, $uri) {
             $path = array_values(array_filter(explode('/', $path)));
             $arguments = array();
             $i = 0;

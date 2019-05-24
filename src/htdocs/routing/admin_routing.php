@@ -1,7 +1,7 @@
 <?php
 namespace AirQualityInfo;
 
-Lib\CsrfToken::verifyToken($_POST['_csrf_token']);
+Lib\CsrfToken::verifyToken(isset($_POST['_csrf_token']) ? $_POST['_csrf_token'] : null);
 
 $routes = array(
     'GET /login' => array('user', 'login'),
@@ -29,7 +29,7 @@ $routes = array(
     'GET /device/:device_id/json/:timestamp' => array('device_json', 'get'),
 );
 
-$router = new Lib\Router($routes, $devices);
+$router = new Lib\Router($routes);
 list($route, $args) = $router->findRoute(
     $_SERVER['REQUEST_METHOD'],
     explode("?", $_SERVER['REQUEST_URI'])[0]
