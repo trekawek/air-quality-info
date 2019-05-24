@@ -131,8 +131,6 @@ class DeviceController extends AbstractController {
         $deviceForm->addElement('esp8266_id', 'text', 'ESP 8266 id', array('disabled' => true));
         $deviceForm->addElement('name', 'text', 'Name')->addRule('required');
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
-        $deviceForm->addElement('http_username', 'text', 'HTTP username', array('disabled' => true));
-        $deviceForm->addElement('http_password', 'text', 'HTTP password', array('disabled' => true));
         $deviceForm->addElement('hidden', 'checkbox', 'Hidden');
         return $deviceForm;
     }

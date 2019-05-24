@@ -11,6 +11,35 @@
                 </form>
             </div>
         </div>
+
+        <div class="card">
+            <div class="card-header">
+                <?php echo __('Sensor configuration') ?>
+            </div>
+            <div class="card-body">
+                <p><?php echo __('Please use following data to configure your sensor') ?>:</p>
+                <dl class="row">
+                    <dt class="col-lg-6"><?php echo __('Send data to own API') ?></dt>
+                    <dd class="col-lg-6"><input type="checkbox" class="form-control" checked /></dd>
+
+                    <dt class="col-lg-6"><?php echo __('Server') ?></dt>
+                    <dd class="col-lg-6"><?php echo $this->user['domain'] . CONFIG['user_domain_suffixes'][0] ?></dd>
+
+                    <dt class="col-lg-6"><?php echo __('Path') ?></dt>
+                    <dd class="col-lg-6">/update</dd>
+
+                    <dt class="col-lg-6"><?php echo __('Port') ?></dt>
+                    <dd class="col-lg-6">443</dd>
+
+                    <dt class="col-lg-6"><?php echo __('User') ?></dt>
+                    <dd class="col-lg-6"><?php echo $device['http_username'] ?></dd>
+
+                    <dt class="col-lg-6"><?php echo __('Password') ?></dt>
+                    <dd class="col-lg-6"><?php echo $device['http_password'] ?></dd>
+                </dl>
+            </div>
+        </div>
+
     </div>
 
     <div class="col-lg-4">
