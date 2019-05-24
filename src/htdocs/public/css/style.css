@@ -11,8 +11,15 @@ body {
   text-align: justify;
 }
 
-.navbar img {
-  height: 2rem;
+.navbar-brand {
+  font-family: 'Ubuntu Mono', monospace;
+  font-size: 1.09375rem;
+  color: #2b302a;
+}
+
+.navbar-brand img {
+  height: 3rem;
+  margin-right: 0.5rem;
 }
 
 .index-cat-0 {

@@ -11,13 +11,13 @@ var staticFiles = [
   "/public/css/vendor.min.css",
   "/public/css/themes/darkly.min.css",
   "/public/css/themes/default.min.css",
-  "/public/img/dragon-192.png",
-  "/public/img/dragon-512.png",
-  "/public/img/dragon.png",
+  "/public/img/aqi.png",
+  "/public/img/aqi-512.png",
   "/public/img/flags/en.png",
   "/public/img/flags/pl.png",
   "/public/fonts/fontawesome-webfont.woff2?v=4.7.0",
   "/public/fonts/weathericons-regular-webfont.woff",
+  "/public/fonts/ubuntu-mono-bold-webfont.woff2",
   "/offline",
   "/",
   "/main_inner?avgType=1",
@@ -39,7 +39,7 @@ var unavailableOffline = [
   "/annual_stats"
 ];
 
-var cacheName = 'airqualityinfo-r4';
+var cacheName = 'airqualityinfo-r5';
 
 self.addEventListener('install', function(e) {
   e.waitUntil(

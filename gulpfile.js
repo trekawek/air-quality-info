@@ -11,6 +11,7 @@ const fs = require('fs');
 var paths = {
   styles: {
     src: [
+      'src/vendor/css/ubuntu-mono-font.css',
       'node_modules/font-awesome/css/font-awesome.css',
       'node_modules/weathericons/css/weather-icons.css',
       'node_modules/smartmenus/dist/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.css'
@@ -19,6 +20,7 @@ var paths = {
   },
   adminStyles: {
     src: [
+      'src/vendor/css/ubuntu-mono-font.css',
       'node_modules/@coreui/icons/css/coreui-icons.css',
       'node_modules/flag-icon-css/css/flag-icon.css',
       'node_modules/font-awesome/css/font-awesome.css',
@@ -65,6 +67,7 @@ function styles() {
   return gulp.src(paths.styles.src)
     .pipe(cleanCSS())
     .pipe(concat('vendor.min.css'))
+    .pipe(replace('node_modules/font-awesome/fonts/', 'public/fonts/'))
     .pipe(replace('../weathericons/font/', 'fonts/'))
     .pipe(gulp.dest(paths.styles.dest));
 }
@@ -72,7 +75,7 @@ function styles() {
 function adminStyles() {
   return gulp.src(paths.adminStyles.src)
     .pipe(cleanCSS())
-    .pipe(replace('font-awesome/fonts/', 'admin/public/fonts/'))
+    .pipe(replace('node_modules/font-awesome/fonts/', 'public/fonts/'))
     .pipe(replace('simple-line-icons/fonts/', 'admin/public/fonts/'))
     .pipe(concat('vendor.min.css'))
     .pipe(gulp.dest(paths.adminStyles.dest));

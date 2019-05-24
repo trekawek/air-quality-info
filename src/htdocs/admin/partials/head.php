@@ -24,8 +24,8 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-brand">
-                <img src="/public/img/dragon.png">
-                Air Quality Info
+                <img src="/public/img/aqi.png">
+                aqi.eco
                 <sup>&beta;</sup>
             </div>
         </header>

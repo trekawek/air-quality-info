@@ -1,5 +1,13 @@
+.app-header .navbar-brand {
+    font-family: 'Ubuntu Mono', monospace;
+    justify-content: left;
+    padding-left: 0.75rem;
+    color: #2b302a;
+}
+
 .navbar-brand img {
-    height: 2rem;
+    height: 3rem;
+    margin-right: 0.5rem;
 }
 
 .app-header .navbar-brand {

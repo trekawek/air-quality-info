@@ -22,7 +22,7 @@ function navItem($action, $desc) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="apple-touch-icon" sizes="512x512" href="/public/img/dragon-512.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/public/img/aqi-512.png">
     <link rel="manifest" href="/manifest.json">
 
     <?php if (isset($currentDevice)): ?>
@@ -43,7 +43,9 @@ function navItem($action, $desc) {
       <div class="row">
         <div class="col-md-8 offset-md-2">
           <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <a href="<?php echo l('main', 'index'); ?>" class="navbar-left navbar-brand"><img src="/public/img/dragon.png"/> Air Quality Info</a>
+            <a href="<?php echo l('main', 'index'); ?>" class="navbar-left navbar-brand">
+                <img src="/public/img/aqi.png">aqi.eco
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Nawigacja">
               <span class="navbar-toggler-icon"></span>
             </button>

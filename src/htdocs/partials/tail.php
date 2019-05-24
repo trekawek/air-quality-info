@@ -11,7 +11,7 @@
 
   <link rel="stylesheet" href="/public/css/themes/<?php echo $currentTheme->getTheme() ?>.min.css"/>
   <link rel="stylesheet" href="/public/css/vendor.min.css"/>
-  <link rel="stylesheet" href="/public/css/style.css?v=17"/>
+  <link rel="stylesheet" href="/public/css/style.css?v=19"/>
 <?php if (!isset(CONFIG['enable_pwa']) || CONFIG['enable_pwa'] === true): ?>
   <script>
 if ('serviceWorker' in navigator) {
