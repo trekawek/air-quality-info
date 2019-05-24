@@ -9,10 +9,6 @@ class StaticController extends AbstractController {
         $this->currentLocale = $currentLocale;
     }
 
-    public function about($device) {
-        $this->render(array('view' => 'views/about_'.$this->currentLocale->getCurrentLang().'.php'));
-    }
-
     public function offline() {
         $this->render(array('view' => 'views/offline.php'));
     }

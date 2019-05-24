@@ -59,7 +59,6 @@ function navItem($action, $desc) {
                     <?php navItem(array('annual_stats', 'index'), 'Annual stats'); ?>
                   </ul>
                 </li>
-                <?php navItem(array('static', 'about'), 'About'); ?>
                 <?php require('partials/navbar/locations.php') ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

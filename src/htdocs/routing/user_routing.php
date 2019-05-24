@@ -24,7 +24,6 @@ $routes = array(
     'GET /:device/annual_stats'      => array('annual_stats', 'index'),
     'GET /:device/annual_stats/graph_data.json'  => array('annual_stats', 'get_data'),
     'GET /all'                       => array('main', 'all'),
-    'GET /:device/about'             => array('static', 'about'),
     'GET /offline'                   => array('static', 'offline'),
     'POST /update'                   => array('update', 'update'),
     'GET /:device/graphs'            => array('graph', 'index'),
