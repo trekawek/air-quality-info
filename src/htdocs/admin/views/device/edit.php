@@ -23,19 +23,19 @@
                     <dd class="col-lg-6"><input type="checkbox" class="form-control" checked /></dd>
 
                     <dt class="col-lg-6"><?php echo __('Server') ?></dt>
-                    <dd class="col-lg-6"><?php echo $this->user['domain'] . CONFIG['user_domain_suffixes'][0] ?></dd>
+                    <dd class="col-lg-6"><pre><?php echo $this->user['domain'] . CONFIG['user_domain_suffixes'][0] ?></pre></dd>
 
                     <dt class="col-lg-6"><?php echo __('Path') ?></dt>
-                    <dd class="col-lg-6">/update</dd>
+                    <dd class="col-lg-6"><pre>/update</pre></dd>
 
                     <dt class="col-lg-6"><?php echo __('Port') ?></dt>
-                    <dd class="col-lg-6">443</dd>
+                    <dd class="col-lg-6"><pre>443</pre></dd>
 
                     <dt class="col-lg-6"><?php echo __('User') ?></dt>
-                    <dd class="col-lg-6"><?php echo $device['http_username'] ?></dd>
+                    <dd class="col-lg-6"><pre><?php echo $device['http_username'] ?></pre></dd>
 
                     <dt class="col-lg-6"><?php echo __('Password') ?></dt>
-                    <dd class="col-lg-6"><?php echo $device['http_password'] ?></dd>
+                    <dd class="col-lg-6"><pre><?php echo $device['http_password'] ?></pre></dd>
                 </dl>
             </div>
         </div>

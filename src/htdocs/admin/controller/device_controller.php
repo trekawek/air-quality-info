@@ -82,6 +82,7 @@ class DeviceController extends AbstractController {
         $this->render(array(
             'view' => 'admin/views/device/edit.php'
         ), array(
+            'device' => $device,
             'deviceId' => $deviceId,
             'deviceForm' => $deviceForm,
             'mappingForm' => $mappingForm,
