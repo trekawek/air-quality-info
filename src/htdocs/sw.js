@@ -35,12 +35,11 @@ var dynamicResources = [
 var unavailableOffline = [
   "/",
   "/graphs",
-  "/about",
   "/offline",
   "/annual_stats"
 ];
 
-var cacheName = 'airqualityinfo-r3';
+var cacheName = 'airqualityinfo-r4';
 
 self.addEventListener('install', function(e) {
   e.waitUntil(
