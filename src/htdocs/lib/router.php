@@ -54,7 +54,8 @@ namespace AirQualityInfo\Lib {
                     } else {
                         $arguments[$argName] = $uri[$i++];
                     }
-                } else if ($uri[$i++] === $segment) {
+                } else if (isset($uri[$i]) && $uri[$i] === $segment) {
+                    $i++;
                     continue;
                 } else {
                     return null;
@@ -92,7 +93,7 @@ namespace AirQualityInfo\Lib {
         }
 
         function createLink($controller, $action, $device = null, $args = array(), $queryArgs = array()) {
-            $isDefaultDevice = $this->devices[0]['id'] == $device['id'];
+            $isDefaultDevice = count($this->devices) > 0 && $this->devices[0]['id'] == $device['id'];
 
             $link = '';
             $path = null;
