@@ -3,11 +3,17 @@ namespace AirQualityInfo;
 
 $userModel = new model\UserModel($mysqli);
 $userId = null;
+$isStandardDomain = false;
 foreach (CONFIG['user_domain_suffixes'] as $suffix) {
     if (substr($host, -strlen($suffix)) === $suffix) {
-        $host = substr($host, 0, -strlen($suffix));
-        $userId = $userModel->getIdByDomain($host);
+        $isStandardDomain = true;
+        $subdomain = substr($host, 0, -strlen($suffix));
+        $userId = $userModel->getIdByDomain($subdomain);
     }
+}
+
+if (!$isStandardDomain) {
+    $userId = $userModel->getIdByCustomFqdn($host);
 }
 
 if ($userId === null) {

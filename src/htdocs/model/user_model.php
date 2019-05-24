@@ -22,6 +22,19 @@ class UserModel {
         return $id;
     }
 
+    public function getIdByCustomFqdn($fqdn) {
+        $stmt = $this->mysqli->prepare("SELECT `user_id` FROM `custom_domains` WHERE `fqdn` = ?");
+        $stmt->bind_param('s', $fqdn);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $id = null;
+        if ($row = $result->fetch_row()) {
+            $id = $row[0];
+        }
+        $stmt->close();
+        return $id;
+    }
+
     public function getUserById($userId) {
         $stmt = $this->mysqli->prepare("SELECT * FROM `users` WHERE `id` = ?");
         $stmt->bind_param('i', $userId);
