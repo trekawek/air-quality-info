@@ -68,7 +68,7 @@ function styles() {
     .pipe(cleanCSS())
     .pipe(concat('vendor.min.css'))
     .pipe(replace('node_modules/font-awesome/fonts/', 'public/fonts/'))
-    .pipe(replace('../weathericons/font/', 'fonts/'))
+    .pipe(replace('node_modules/weathericons/font/', 'public/fonts/'))
     .pipe(gulp.dest(paths.styles.dest));
 }
 
@@ -76,7 +76,7 @@ function adminStyles() {
   return gulp.src(paths.adminStyles.src)
     .pipe(cleanCSS())
     .pipe(replace('node_modules/font-awesome/fonts/', 'public/fonts/'))
-    .pipe(replace('simple-line-icons/fonts/', 'admin/public/fonts/'))
+    .pipe(replace('node_modules/simple-line-icons/fonts/', 'admin/public/fonts/'))
     .pipe(concat('vendor.min.css'))
     .pipe(gulp.dest(paths.adminStyles.dest));
 }
