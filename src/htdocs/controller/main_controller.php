@@ -20,7 +20,7 @@ class MainController extends AbstractController {
         $currentAvgType = $_GET['avgType'];
         $lastData = $this->recordModel->getLastData($device['id']);
         $averages = $this->getAverages($device['id'], $currentAvgType);
-        $desc = array_map('trim', explode('/', $device['description_path']));
+        $desc = array_map('trim', explode('/', $device['description']));
         $this->render(array('view' => 'views/index_inner.php', 'layout' => false), array(
             'averages' => $averages,
             'currentAvgType' => $currentAvgType,

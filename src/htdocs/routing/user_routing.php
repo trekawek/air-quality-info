@@ -2,6 +2,7 @@
 namespace AirQualityInfo;
 
 $userModel = new model\UserModel($mysqli);
+$userId = null;
 foreach (CONFIG['user_domain_suffixes'] as $suffix) {
     if (substr($host, -strlen($suffix)) === $suffix) {
         $host = substr($host, 0, -strlen($suffix));
