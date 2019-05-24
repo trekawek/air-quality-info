@@ -3,12 +3,12 @@
     "short_name": "Air Quality",
     "icons": [
       {
-        "src": "/public/img/dragon-192.png",
+        "src": "/public/img/aqi-192.png",
         "type": "image/png",
         "sizes": "192x192"
       },
       {
-        "src": "/public/img/dragon-512.png",
+        "src": "/public/img/aqi-512.png",
         "type": "image/png",
         "sizes": "512x512"
       }

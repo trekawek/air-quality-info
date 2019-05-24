@@ -12,6 +12,7 @@ var staticFiles = [
   "/public/css/themes/darkly.min.css",
   "/public/css/themes/default.min.css",
   "/public/img/aqi.png",
+  "/public/img/aqi-192.png",
   "/public/img/aqi-512.png",
   "/public/img/flags/en.png",
   "/public/img/flags/pl.png",
