@@ -8,10 +8,13 @@ namespace AirQualityInfo\Lib {
 
         private $locale;
 
+        private $jsLocale;
+
         function __construct() {
             $this->currentLang = Locale::resolveCurrentLang();
             require_once("locale/".$this->currentLang.".php");
             $this->locale = $locale;
+            $this->jsLocale = $jsLocale;
         }
 
         function getCurrentLang() {
@@ -25,8 +28,8 @@ namespace AirQualityInfo\Lib {
             }
         }
 
-        function getMessages() {
-            return $this->locale;
+        function getJsMessages() {
+            return $this->jsLocale;
         }
 
         function getMessage($msg) {

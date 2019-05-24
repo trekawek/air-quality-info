@@ -18,7 +18,7 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
         <link rel="stylesheet" href="/admin/public/css/style.css"/>
     </head>
 
-    <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show" data-locale='<?php echo json_encode($currentLocale->getMessages()) ?>'>
+    <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show" data-locale='<?php echo json_encode($currentLocale->getJsMessages()) ?>'>
         <header class="app-header navbar">
             <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
                 <span class="navbar-toggler-icon"></span>
