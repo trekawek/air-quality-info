@@ -16,7 +16,7 @@ class RuleRegistry {
             return $value === $_POST[$options];
         }, "%s should be the same as %s");
         $this->rules['numeric'] = new Rule(function($value, $options) {
-            return is_int($value) && $value >= 0;
+            return is_numeric($value) && $value >= 0;
         }, "%s should be a number");
     }
 
