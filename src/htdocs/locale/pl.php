@@ -104,6 +104,7 @@ $locale['Show all'] = 'Pokaż wszystkie';
 $locale['Sign in to your account'] = 'Zaloguj się';
 $locale['Sign up'] = 'Zarejestruj się';
 $locale['Stats'] = 'Statystyka';
+$locale['The name should consist of alphanumeric characters and dashes'] = 'Znaki dopuszczalne w nazwie to małe litery, cyfry i "-"';
 $locale['Theme'] = 'Motyw';
 $locale['There are no data'] = 'Brak danych';
 $locale['Time'] = 'Czas';

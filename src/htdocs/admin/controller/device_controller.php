@@ -31,7 +31,7 @@ class DeviceController extends AbstractController {
     public function create() {
         $deviceForm = new \AirQualityInfo\Lib\Form\Form("deviceForm");
         $deviceForm->addElement('esp8266_id', 'number', 'ESP 8266 id')->addRule('required')->addRule('numeric');
-        $deviceForm->addElement('name', 'text', 'Name')->addRule('required');
+        $this->addNameField($deviceForm);
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
         $deviceForm->addElement('hidden', 'checkbox', 'Hidden');
         if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
@@ -130,7 +130,7 @@ class DeviceController extends AbstractController {
     private function getDeviceForm() {
         $deviceForm = new \AirQualityInfo\Lib\Form\Form("deviceForm");
         $deviceForm->addElement('esp8266_id', 'text', 'ESP 8266 id', array('disabled' => true));
-        $deviceForm->addElement('name', 'text', 'Name')->addRule('required');
+        $this->addNameField($deviceForm);
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
         $deviceForm->addElement('hidden', 'checkbox', 'Hidden');
         return $deviceForm;
@@ -163,6 +163,13 @@ class DeviceController extends AbstractController {
         header('X-Accel-Buffering: no');
         flush();
         ob_end_flush();
+    }
+
+    private function addNameField($deviceForm) {
+        $deviceForm->addElement('name', 'text', 'Name')
+            ->addRule('required')
+            ->addRule('regexp', array('pattern' => '/^[a-z0-9][a-z0-9-]*[a-z0-9]$/', 'message' => __('The name should consist of alphanumeric characters and dashes')))
+            ->setOptions(array('prepend' => 'https://' . $this->user['domain'] . CONFIG['user_domain_suffixes'][0] . '/'));
     }
 }
 

@@ -18,6 +18,9 @@ class RuleRegistry {
         $this->rules['numeric'] = new Rule(function($value, $options) {
             return is_numeric($value) && $value >= 0;
         }, "%s should be a number");
+        $this->rules['regexp'] = new Rule(function($value, $options) {
+            return preg_match($options['pattern'], $value);
+        }, "%s contains invalid characters");
     }
 
     public function getRule($type) {

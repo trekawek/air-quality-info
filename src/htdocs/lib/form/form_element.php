@@ -43,6 +43,7 @@ class FormElement {
 
     public function setOptions($options) {
         $this->options = $options;
+        return $this;
     }
 
     public function setValue($value) {
