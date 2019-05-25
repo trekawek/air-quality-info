@@ -11,83 +11,94 @@ class RecordModel {
         $this->mysqli = $mysqli;
     }
 
-    private function getTimestampRange($deviceId) {
-        $stmt = $this->mysqli->prepare("SELECT MIN(`timestamp`), MAX(`timestamp`) FROM `records` WHERE `device_id` = ?");
+    private function getLastTimestamp($deviceId) {
+        $stmt = $this->mysqli->prepare("SELECT MAX(`timestamp`) FROM `records` WHERE `device_id` = ?");
         $stmt->bind_param('i', $deviceId);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = array(null, null);
+        $lastTs = null;
         if ($row = $result->fetch_row()) {
-            $data = $row;
+            $data = $row[0];
         }
         $stmt->close();
-        return $data;
+        return $lastTs;
     }
 
-    private function insertEmptyRows($deviceId, $recordTimestamp) {
-        list($firstTs, $lastTs) = $this->getTimestampRange($deviceId);
-        $rangeFrom = null;
-        $rangeTo = null;
-        if ($firstTs !== null && $recordTimestamp < $firstTs) { // before first timestamp
-            $rangeFrom = $recordTimestamp;
-            $rangeTo = $firstTs - 180;
-        } else if ($lastTs !== null && $recordTimestamp > $lastTs) { // after last timestamp
-            $rangeFrom = $lastTs + 180;
-            $rangeTo = $recordTimestamp;
-        } else if ($firstTs === null && $lastTs === null) { // first entry
-            $rangeFrom = $recordTimestamp;
-            $rangeTo = $recordTimestamp;
+    //public function update($deviceId, ) {
+    public function update($deviceId, $records) {
+        if (empty($records)) {
+            return;
         }
+        usort($records, function($v1, $v2) {
+            $t1 = $v1['timestamp'];
+            $t2 = $v2['timestamp'];
+            if ($t1 == $t2) {
+                return 0;
+            }
+            return ($t1 < $t2) ? -1 : 1;
+        });
+        $lastTs = $this->getLastTimestamp($deviceId);
+
+        $sql = 'INSERT INTO `records` (`device_id`, `timestamp`, ';
+        foreach (RecordModel::FIELDS as $f) {
+            $sql .= "`$f`, ";
+        }
+        $sql = substr($sql, 0, -2);
+        $sql .= ') VALUES (?, ?, ';
+        $sql .= str_repeat('?, ', count(RecordModel::FIELDS));
+        $sql = substr($sql, 0, -2);
+        $sql .= ')';
+
+        $insertStmt = $this->mysqli->prepare($sql);
+        $typedef = 'ii'.str_repeat('s', count(RecordModel::FIELDS));
         
-        if ($rangeFrom !== null && $rangeTo !== null) {
-            $insertStmt = $this->mysqli->prepare("INSERT INTO `records` (`timestamp`, `device_id`) VALUES (?, ?)");
-            for ($ts = $rangeFrom; $ts <= $rangeTo; $ts += 180) {
-                $insertStmt->bind_param('ii', $ts, $deviceId);
-                $insertStmt->execute();
+        $previousRecord = null;
+        foreach ($records as $i => $record) {
+            $record['timestamp'] = floor($record['timestamp'] / 180) * 180;
+
+            foreach ($record as $k => $v) {
+                if (is_nan($v)) {
+                    $record[$k] = null;
+                }
             }
-            $insertStmt->close();
-        }
-    }
-
-    public function update($deviceId, $timestamp, $pm25, $pm10, $temp, $press, $hum, $heaterTemp, $heaterHum) {
-        $recordTimestamp = floor($timestamp / 180) * 180;
-        $this->insertEmptyRows($deviceId, $recordTimestamp);
-
-        $record = array (
-            'pm25' => $pm25,
-            'pm10' => $pm10,
-            'temperature' => $temp,
-            'pressure' => $press,
-            'humidity' => $hum,
-            'heater_temperature' => $heaterTemp,
-            'heater_humidity' => $heaterHum
-        );
-        foreach ($record as $k => $v) {
-            if (is_nan($v)) {
-                $record[$k] = null;
+            if ($record['pressure'] !== null) {
+                $record['pressure'] /= 100;
             }
-        }
 
-        // fill empty properties for the last 6 minutes
-        $updateSql = "UPDATE `records` SET ";
-        $updates = array();
-        $params = array();
-        foreach ($record as $k => $v) {
-            $updates[] = "`$k` = IFNULL(`$k`, ?)";
-            $params[] = $v;
-        }
-        $updateSql .= implode(", ", $updates);
-        $updateSql .= "WHERE `timestamp` in (?, ?) AND `device_id` = ?";
-        $params[] = $recordTimestamp;
-        $params[] = $recordTimestamp - 180;
-        $params[] = $deviceId;
+            // fill the gaps from the previous record
+            $origRecord = $record;
+            if ($previousRecord !== null && ($previousRecord['timestamp'] === ($record['timestamp'] - 180))) {
+                foreach ($previousRecord as $k => $v) {
+                    if ($record[$k] === null) {
+                        $record[$k] = $v;
+                    }
+                }
+            }
+            $previousRecord = $origRecord;
 
-        $updateStmt = $this->mysqli->prepare($updateSql);
-        $pattern = str_repeat('s', count($record));
-        $pattern .= 'iii';
-        $updateStmt->bind_param($pattern, ...$params);
-        $updateStmt->execute();
-        $updateStmt->close();
+            $param = array($deviceId, $record['timestamp']);
+            foreach (RecordModel::FIELDS as $f) {
+                $param[] = $record[$f];
+            }
+            $insertStmt->bind_param($typedef, ...$param);
+            $insertStmt->execute();
+
+            // fill the gaps with nulls
+            if ($lastTs !== null) {
+                for ($i = $lastTs + 180; $i < ($record['timestamp'] - 180); $i += 180) {
+                    $param = array($deviceId, $i);
+                    foreach (RecordModel::FIELDS as $f) {
+                        $param[] = null;
+                    }
+                    $insertStmt->bind_param($typedef, ...$param);
+                    $insertStmt->execute();
+                }
+            }
+
+            $lastTs = $record['timestamp'];
+            
+        }
+        $insertStmt->close();
     }
 
     public function getLastData($deviceId) {

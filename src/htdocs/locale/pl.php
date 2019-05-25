@@ -53,6 +53,7 @@ $locale['Devices'] = 'Urządzenia';
 $locale['Domain'] = 'Domena';
 $locale['Domain name'] = 'Nazwa domeny';
 $locale['E-mail'] = 'E-mail';
+$locale['ESP 8266 id'] = 'ESP 8266 ID';
 $locale['ESP8266 ID'] = 'ESP8266 ID';
 $locale['Edit device'] = 'Edycja urządzenia';
 $locale['Graphs'] = 'Wykresy';

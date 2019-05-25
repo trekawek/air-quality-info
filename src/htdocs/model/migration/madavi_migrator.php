@@ -3,6 +3,8 @@ namespace AirQualityInfo\Model\Migration;
 
 class MadaviMigrator {
 
+    const BATCH_SIZE = 1024;
+
     const SENSOR_URL = 'https://www.madavi.de/sensor';
 
     const MAPPING = array(
@@ -12,11 +14,16 @@ class MadaviMigrator {
 
     private $updater;
 
+    private $batch = array();
+
+    private $device;
+
     public function __construct(\AirQualityInfo\Model\Updater $updater) {
         $this->updater = $updater;
     }
 
     public function migrate($device) {
+        $this->device = $device;
         $index = file_get_contents(MadaviMigrator::SENSOR_URL.'/csvfiles.php?sensor=esp8266-'.$device['esp8266_id']);
         $files = array();
         foreach (explode("\n", $index) as $line) {
@@ -27,14 +34,15 @@ class MadaviMigrator {
             $file = $line[3];
             $ext = substr($file, -4, 4);
             if ($ext === '.zip') {
-                $this->processZipUrl($device, MadaviMigrator::SENSOR_URL.'/'.$file);
+                $this->processZipUrl(MadaviMigrator::SENSOR_URL.'/'.$file);
             } else {
-                $this->processCsvUrl($device, MadaviMigrator::SENSOR_URL.'/'.$file);
+                $this->processCsvUrl(MadaviMigrator::SENSOR_URL.'/'.$file);
             }
         }
+        $this->flushBatch();
     }
 
-    private function processZipUrl($device, $url) {
+    private function processZipUrl($url) {
         $src = fopen($url, 'r');
         $localZip = tempnam("/tmp", "madavi_zip");
         $dst = fopen($localZip, 'w');
@@ -47,7 +55,7 @@ class MadaviMigrator {
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $filename = $zip->getNameIndex($i);
                 $fp = $zip->getStream($filename);
-                $this->processCsv($device, $url.'#'.$filename, $fp);
+                $this->processCsv($url.'#'.$filename, $fp);
                 fclose($fp);
             }
         }
@@ -55,13 +63,13 @@ class MadaviMigrator {
         unlink($localZip);
     }
 
-    private function processCsvUrl($device, $url) {
+    private function processCsvUrl($url) {
         $fp = fopen($url, 'r');
-        $this->processCsv($device, $url, $fp);
+        $this->processCsv($url, $fp);
         fclose($fp);
     }
 
-    private function processCsv($device, $url, $fp) {
+    private function processCsv($url, $fp) {
         $utc = new \DateTimeZone('UTC');
 
         echo "Processing file $url\n";
@@ -85,11 +93,29 @@ class MadaviMigrator {
                     unset($row[$csvKey]);
                 }
             }
-            $this->updater->insert($device, $time, $row);
+            $this->addToBatch($time, $row);
             $i++;
         }
-        echo "Added $i entries.\n";
+        echo "Read $i entries.\n";
         flush();
+    }
+
+    private function addToBatch($time, $data) {
+        $this->batch[] = array('time' => $time, 'data' => $data);
+        if (count($this->batch) >= MadaviMigrator::BATCH_SIZE) {
+            $this->flushBatch();
+        }
+    }
+
+    private function flushBatch() {
+        if (!empty($this->batch)) {
+            echo "Writing to database ".count($this->batch)." entries...\n";
+            flush();
+            $this->updater->insertBatch($this->device, $this->batch);
+            $this->batch = array();
+            echo "Done\n";
+            flush();
+        }
     }
 
 }

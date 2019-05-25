@@ -35,25 +35,27 @@ class Updater {
         $this->insert($device, $time, $map);
     }
 
-    public function insert($device, $time, $map) {
-        $mapping = $this->getMapping($device);
+    public function insert($device, $time, $data) {
+        return $this->insertBatch($device, array(array('time' => $time, 'data' => $data)));
+    }
 
-        $pressure = Updater::readValue($mapping, $device, 'pressure', $map);
-        if ($pressure !== null) {
-            $pressure /= 100;
+    public function insertBatch($device, $batch) {
+        $mapping = $this->getMapping($device);
+        $records = array();
+        foreach ($batch as $row) {
+            $data = $row['data'];
+            $records[] = array(
+                'timestamp'   => $row['time'],
+                'pm25'        => Updater::readValue($mapping, $device, 'pm25', $data),
+                'pm10'        => Updater::readValue($mapping, $device, 'pm10', $data),
+                'temperature' => Updater::readValue($mapping, $device, 'temperature', $data),
+                'pressure'    => Updater::readValue($mapping, $device, 'pressure', $data),
+                'humidity'    => Updater::readValue($mapping, $device, 'humidity', $data),
+                'heater_temperature' => Updater::readValue($mapping, $device, 'heater_temperature', $data),
+                'heater_humidity'    => Updater::readValue($mapping, $device, 'heater_humidity', $data)
+            );
         }
-        
-        echo $this->record_model->update(
-            $device['id'],
-            $time,
-            Updater::readValue($mapping, $device, 'pm25', $map),
-            Updater::readValue($mapping, $device, 'pm10', $map),
-            Updater::readValue($mapping, $device, 'temperature', $map),
-            $pressure,
-            Updater::readValue($mapping, $device, 'humidity', $map),
-            Updater::readValue($mapping, $device, 'heater_temperature', $map),
-            Updater::readValue($mapping, $device, 'heater_humidity', $map)
-        );
+        $this->record_model->update($device['id'], $records);
     }
 
     private static function readValue($mapping, $device, $valueName, $sensorValues, $undefinedValue = null) {
