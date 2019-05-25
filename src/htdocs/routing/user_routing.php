@@ -40,7 +40,7 @@ $routes = array(
 $router = new Lib\Router($routes, $devices);
 list($route, $args) = $router->findRoute(
     $_SERVER['REQUEST_METHOD'],
-    explode("?", $_SERVER['REQUEST_URI'])[0]
+    urldecode(explode("?", $_SERVER['REQUEST_URI'])[0])
 );
 
 // the domain is correct, but the path is not

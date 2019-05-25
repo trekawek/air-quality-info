@@ -34,7 +34,7 @@ $routes = array(
 $router = new Lib\Router($routes);
 list($route, $args) = $router->findRoute(
     $_SERVER['REQUEST_METHOD'],
-    explode("?", $_SERVER['REQUEST_URI'])[0]
+    urldecode(explode("?", $_SERVER['REQUEST_URI'])[0])
 );
 
 if ($route === null) {
