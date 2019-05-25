@@ -1,7 +1,38 @@
+-- phpMyAdmin SQL Dump
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
+--
+-- Host: db
+-- Generation Time: May 25, 2019 at 09:09 PM
+-- Server version: 5.7.26
+-- PHP Version: 7.2.14
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
+
+--
+-- Database: `air_quality_info`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `custom_domains`
+--
+
+CREATE TABLE `custom_domains` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `fqdn` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `devices`
+--
 
 CREATE TABLE `devices` (
   `id` int(11) NOT NULL,
@@ -15,6 +46,12 @@ CREATE TABLE `devices` (
   `hidden` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `device_mapping`
+--
+
 CREATE TABLE `device_mapping` (
   `id` int(11) NOT NULL,
   `device_id` int(11) NOT NULL,
@@ -22,11 +59,23 @@ CREATE TABLE `device_mapping` (
   `json_name` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `json_updates`
+--
+
 CREATE TABLE `json_updates` (
   `device_id` int(11) NOT NULL,
   `timestamp` int(11) NOT NULL,
   `data` varchar(2048) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `records`
+--
 
 CREATE TABLE `records` (
   `device_id` int(11) NOT NULL,
@@ -40,6 +89,12 @@ CREATE TABLE `records` (
   `heater_humidity` decimal(5,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `email` varchar(254) NOT NULL,
@@ -47,49 +102,113 @@ CREATE TABLE `users` (
   `domain` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Indexes for dumped tables
+--
 
+--
+-- Indexes for table `custom_domains`
+--
+ALTER TABLE `custom_domains`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `custom_domains_user_id` (`user_id`);
+
+--
+-- Indexes for table `devices`
+--
 ALTER TABLE `devices`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `esp8266_id` (`esp8266_id`);
 
+--
+-- Indexes for table `device_mapping`
+--
 ALTER TABLE `device_mapping`
   ADD PRIMARY KEY (`id`),
   ADD KEY `device_id` (`device_id`);
 
+--
+-- Indexes for table `json_updates`
+--
 ALTER TABLE `json_updates`
   ADD PRIMARY KEY (`device_id`,`timestamp`),
   ADD KEY `timestamp` (`timestamp`),
   ADD KEY `device_id` (`device_id`);
 
+--
+-- Indexes for table `records`
+--
 ALTER TABLE `records`
   ADD PRIMARY KEY (`device_id`,`timestamp`),
   ADD KEY `timestamp` (`timestamp`),
   ADD KEY `device_id` (`device_id`);
 
+--
+-- Indexes for table `users`
+--
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
 
+--
+-- AUTO_INCREMENT for table `custom_domains`
+--
+ALTER TABLE `custom_domains`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `devices`
+--
 ALTER TABLE `devices`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `device_mapping`
+--
 ALTER TABLE `device_mapping`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `users`
+--
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- Constraints for dumped tables
+--
 
+--
+-- Constraints for table `custom_domains`
+--
+ALTER TABLE `custom_domains`
+  ADD CONSTRAINT `custom_domains_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `devices`
+--
 ALTER TABLE `devices`
   ADD CONSTRAINT `devices_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
+--
+-- Constraints for table `device_mapping`
+--
 ALTER TABLE `device_mapping`
   ADD CONSTRAINT `device_mapping_device_id_fkey` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE;
 
+--
+-- Constraints for table `json_updates`
+--
 ALTER TABLE `json_updates`
   ADD CONSTRAINT `json_updates_device_id_fkey` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE;
 
+--
+-- Constraints for table `records`
+--
 ALTER TABLE `records`
   ADD CONSTRAINT `records_device_id_fkey` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE;
 COMMIT;
