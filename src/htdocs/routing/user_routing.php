@@ -27,6 +27,7 @@ if (count($devices) === 0) {
 
 $routes = array(
     'GET /[:device]'                 => array('main', 'index'),
+    'GET /:device/data.json'         => array('main', 'data_json'),
     'GET /[:device]/main_inner'      => array('main', 'index_inner'),
     'GET /:device/annual_stats'      => array('annual_stats', 'index'),
     'GET /:device/annual_stats/graph_data.json'  => array('annual_stats', 'get_data'),

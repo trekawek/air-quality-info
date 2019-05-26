@@ -5,10 +5,16 @@ class MainController extends AbstractController {
 
     private $recordModel;
 
+    private $jsonUpdateModel;
+
     private $devices;
 
-    public function __construct(\AirQualityInfo\Model\RecordModel $recordModel, $devices) {
+    public function __construct(
+            \AirQualityInfo\Model\RecordModel $recordModel,
+            \AirQualityInfo\Model\JsonUpdateModel $jsonUpdateModel,
+            $devices) {
         $this->recordModel = $recordModel;
+        $this->jsonUpdateModel = $jsonUpdateModel;
         $this->devices = $devices;
     }
 
@@ -27,6 +33,22 @@ class MainController extends AbstractController {
             'sensors' => $lastData,
             'desc' => $desc
         ));
+    }
+
+    public function data_json($device) {
+        $r = $this->jsonUpdateModel->getLastJsonUpdate($device['id']);
+        if ($r === null) {
+            http_response_code(404);
+            die();
+        } else {
+            $data = json_decode($r['data'], true);
+            unset($data['esp8266id']);
+            unset($data['software_version']);
+            $data['timestamp'] = $r['timestamp'];
+
+            header('Content-type: application/json');
+            echo json_encode($data);
+        }
     }
 
     public function all() {

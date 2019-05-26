@@ -48,5 +48,19 @@ class JsonUpdateModel {
         $stmt->close();
         return $data;
     }
+
+    public function getLastJsonUpdate($deviceId) {
+        $stmt = $this->mysqli->prepare("SELECT `data`, `timestamp` FROM `json_updates` WHERE `device_id` = ? ORDER by `timestamp` DESC");
+        $stmt->bind_param('i', $deviceId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = null;
+        if ($row = $result->fetch_assoc()) {
+            $data = $row;
+        }
+        $stmt->close();
+        return $data;
+    }
+
 }
 ?>
