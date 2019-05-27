@@ -102,6 +102,16 @@ class DeviceController extends AbstractController {
         $this->alert(__('Deleted the mapping'));
     }
 
+    public function importMadaviWrapper($deviceId) {
+        $device = $this->getDevice($deviceId);
+        $this->render(array(
+            'view' => 'admin/views/device/import_madavi.php'
+        ), array(
+            'post' => l('device', 'importMadavi', null, array('device_id' => $deviceId)),
+            'deviceId' => $deviceId
+        ));
+    }
+
     public function importMadavi($deviceId) {
         $device = $this->getDevice($deviceId);
         DeviceController::chunkedContent();
@@ -150,7 +160,7 @@ class DeviceController extends AbstractController {
 
     private static function chunkedContent() {
         set_time_limit(60 * 60);
-        header('Content-Type: text/event-stream');
+        header('Content-Type: text/event-stream; charset=utf-8');
         header('X-Accel-Buffering: no');
         flush();
         ob_end_flush();

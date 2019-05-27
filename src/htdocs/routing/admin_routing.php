@@ -32,6 +32,7 @@ $routes = array(
     'GET /device/:device_id' => array('device', 'edit'),
     'POST /device/:device_id' => array('device', 'edit'),
     'DELETE /device/:device_id' => array('device', 'deleteDevice'),
+    'GET /device/:device_id/import_madavi' => array('device', 'importMadaviWrapper'),
     'POST /device/:device_id/import_madavi' => array('device', 'importMadavi'),
     'POST /device/:device_id/reset_password' => array('device', 'resetHttpPassword'),
 

@@ -61,6 +61,7 @@ $locale['Hidden'] = 'Ukryte';
 $locale['Home'] = 'Strona główna';
 $locale['Import data from Madavi.de'] = 'Importuj dane z Madavi.de';
 $locale['Imports data from'] = 'Importuje dane z';
+$locale['Import finished'] = 'Import zakończony';
 $locale['Index'] = 'Indeks';
 $locale['Instantaneous'] = 'Dane chwilowe';
 $locale['Invalid email or password'] = 'Nieprawidłowy email lub hasło';

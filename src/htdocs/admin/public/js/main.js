@@ -28,3 +28,31 @@ document.querySelectorAll('.delete-link').forEach(link => {
 		return false;
 	})
 });
+
+document.querySelectorAll('.post-with-output').forEach(link => {
+	link.onclick = (e => {
+        var logs = document.querySelector(link.dataset.output);
+        var finishedBadge = document.querySelector(link.dataset.onSuccess);
+
+        var data = 'csrf_token=' + link.dataset.csrfToken;
+
+        var request = new XMLHttpRequest();
+        request.seenBytes = 0;
+        request.open('POST', link.href, true);
+        request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        request.onreadystatechange = function() { 
+            if (request.readyState > 2) {
+                var newData = request.responseText.substr(request.seenBytes); 
+                logs.innerHTML += newData;
+                logs.scrollTop = logs.scrollHeight;
+                request.seenBytes = request.responseText.length;
+            }
+            if (request.readyState == 4) {
+                finishedBadge.classList.remove('d-none');
+            }
+        };
+        logs.innerHTML += "Sending request...\n";
+		request.send(data);
+		return false;
+	})
+});

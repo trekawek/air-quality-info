@@ -92,10 +92,9 @@
             </div>
             <div class="card-body">
                 <p>
-                    <form action="<?php echo l('device', 'importMadavi', null, array('device_id' => $deviceId)) ?>" method="post">
-                        <input type="hidden" name="csrf_token" value="<?php echo \AirQualityInfo\Lib\CsrfToken::getToken() ?>"/>
-                        <button type="submit" class="btn btn-primary"><?php echo __('Import data from Madavi.de') ?></button>
-                    </form>
+                    <a class="btn btn-primary" href="<?php echo l('device', 'importMadaviWrapper', null, array('device_id' => $deviceId)) ?>">
+                        <?php echo __('Import data from Madavi.de') ?>
+                    </a>
                 </p>
 
                 <p>
