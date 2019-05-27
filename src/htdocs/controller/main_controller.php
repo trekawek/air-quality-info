@@ -51,9 +51,11 @@ class MainController extends AbstractController {
         }
     }
 
-    public function all() {
+    public function all($nodeId) {
+        $tree = $this->deviceHierarchyModel->getTree($this->userId, $nodeId);
+        $devices = $this->flatTree($tree);
         $data = array();
-        foreach ($this->devices as $device) {
+        foreach ($devices as $device) {
             $sensors = $this->recordModel->getLastData($device['id']);
             $currentAvgType = '1';
             if (isset($_GET['avgType']) && $_GET['avgType'] == '24') {
@@ -63,11 +65,23 @@ class MainController extends AbstractController {
             $desc = array_map('trim', explode('/', $device['description']));
             $data[] = array('sensors' => $sensors, 'averages' => $averages, 'desc' => $desc, 'device' => $device);
         }
-        
         $this->render(array('view' => 'views/all_sensors.php'), array(
             'data' => $data,
-            'currentAvgType' => $currentAvgType
+            'currentAvgType' => $currentAvgType,
+            'nodeId' => $nodeId
         ));
+    }
+
+    private function flatTree($tree) {
+        $devices = array();
+        if ($tree['device_id']) {
+            $devices[] = $this->deviceById[$tree['device_id']];
+        } else if (isset($tree['children'])) {
+            foreach ($tree['children'] as $c) {
+                $devices = array_merge($devices, $this->flatTree($c));
+            }
+        }
+        return $devices;
     }
 
     private function getAverages($deviceId, $currentAvgType = '1') {

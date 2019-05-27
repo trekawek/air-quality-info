@@ -1,3 +1,4 @@
+<?php if(isset($breadcrumbs) && $breadcrumbs !== null): ?>
 <ol class="breadcrumb">
 <?php foreach($breadcrumbs as $node): ?>
     <?php $lastItem = (end($breadcrumbs) === $node) ?>
@@ -16,3 +17,4 @@
     </li>
 <?php endforeach ?>
 </ol>
+<?php endif ?>

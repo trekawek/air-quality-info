@@ -40,7 +40,7 @@ class DeviceModel {
     }
 
     public function getDevicesForUser($userId) {
-        $stmt = $this->mysqli->prepare("SELECT * FROM `devices` WHERE `user_id` = ? ORDER BY `id`");
+        $stmt = $this->mysqli->prepare("SELECT * FROM `devices` WHERE `user_id` = ? ORDER BY `default_device` DESC, `id` ASC");
         $stmt->bind_param('i', $userId);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -94,9 +94,14 @@ class DeviceModel {
         $stmt = $this->mysqli->prepare($sql);
         $params = array_values($data);
         $params[] = $deviceId;
-        $stmt->bind_param(str_repeat('s', count($data)).'i', ...$params);    
+        $stmt->bind_param(str_repeat('s', count($data)).'i', ...$params);
         $stmt->execute();
     }
 
+    public function makeDefault($userId, $deviceId) {
+        $stmt = $this->mysqli->prepare("UPDATE `devices` SET `default_device` = IF (`id` = ?, 1, 0) WHERE `user_id` = ?");
+        $stmt->bind_param('ii', $deviceId, $userId);
+        $stmt->execute();
+    }
 }
 ?>

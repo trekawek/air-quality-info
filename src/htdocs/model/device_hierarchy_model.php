@@ -9,7 +9,7 @@ class DeviceHierarchyModel {
         $this->mysqli = $mysqli;
     }
 
-    public function createRoot($userId) {
+    private function createRoot($userId) {
         $insertStmt = $this->mysqli->prepare("INSERT INTO `device_hierarchy` (`user_id`, `position`) VALUES (?, 0)");
         $insertStmt->bind_param('i', $userId);
         $insertStmt->execute();
@@ -25,6 +25,8 @@ class DeviceHierarchyModel {
         $rootId = null;
         if ($row = $result->fetch_row()) {
             $rootId = $row[0];
+        } else {
+            $rootId = $this->createRoot($userId);
         }
         $stmt->close();
         return $rootId;
@@ -48,16 +50,6 @@ class DeviceHierarchyModel {
         $position = $this->getMaxPosition($userId, $parentId) + 1;
         $insertStmt = $this->mysqli->prepare("INSERT INTO `device_hierarchy` (`user_id`, `parent_id`, `position`, `name`, `description`, `device_id`) VALUES (?, ?, ?, ?, ?, ?)");
         $insertStmt->bind_param('iiissi', $userId, $parentId, $position, $name, $description, $deviceId);
-        $insertStmt->execute();
-        $insertStmt->close();
-        return $this->mysqli->insert_id;
-    }
-
-    public function addDevice($userId, $parentId, $deviceId) {
-        $this->validateOwnership($userId, $parentId);
-        $position = $this->getMaxPosition($userId, $parentId) + 1;
-        $insertStmt = $this->mysqli->prepare("INSERT INTO `device_hierarchy` (`user_id`, `parent_id`, `position`, `device_id`) VALUES (?, ?, ?, ?)");
-        $insertStmt->bind_param('iiii', $userId, $parentId, $position, $name, $deviceId);
         $insertStmt->execute();
         $insertStmt->close();
         return $this->mysqli->insert_id;
@@ -127,6 +119,19 @@ class DeviceHierarchyModel {
         $stmt->close();
     }
 
+    public function getDeviceNodes($userId, $deviceId) {
+        $stmt = $this->mysqli->prepare("SELECT id FROM device_hierarchy WHERE user_id = ? AND device_id = ?");
+        $stmt->bind_param('ii', $userId, $deviceId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $nodes = array();
+        while ($r = $result->fetch_row()) {
+            $nodes[] = $r[0];
+        }
+        $stmt->close();
+        return $nodes;
+    }
+
     public function getDirectChildren($userId, $parentId) {
         $stmt = $this->mysqli->prepare("
         SELECT `dh`.`id`,
@@ -173,17 +178,44 @@ class DeviceHierarchyModel {
         return $nodes;
     }
 
-    public function getTree($userId, $parentId) {
+    public function getTree($userId, $rootId = null) {
+        if ($rootId === null) {
+            $rootId = $this->getRootId($userId);
+        }
         $nodeById = array();
         $nodeByParentId = array();
-        foreach (getAllNodes($userId) as $node) {
+        foreach ($this->getAllNodes($userId) as $node) {
             $nodeById[$node['id']] = $node;
             $parentId = $node['parent_id'];
             if (!isset($nodeByParentId[$parentId])) {
                 $nodeByParentId[$parentId] = array();
             }
             $nodeByParentId[$parentId][] = $node;
-        }        
+        }
+        $root = $nodeById[$rootId];
+        DeviceHierarchyModel::addChildren($root, $nodeByParentId);
+        return $root;
+    }
+
+    private static function addChildren(&$node, &$nodeByParentId) {
+        $nodeId = $node['id'];
+        if (!isset($nodeByParentId[$nodeId])) {
+            return;
+        }
+        $node['children'] = $nodeByParentId[$node['id']];
+        foreach ($node['children'] as $i => $c) {
+            DeviceHierarchyModel::addChildren($c, $nodeByParentId);
+            $node['children'][$i] = $c;
+        }
+    }
+
+    public function getDevicePaths($userId, $deviceId) {
+        $paths = array();
+        foreach ($this->getDeviceNodes($userId, $deviceId) as $nodeId) {
+            $path = $this->getPath($userId, $nodeId);
+            $paths[] = DeviceHierarchyModel::getTextPath($path);
+        }
+        return $paths;
     }
 
     public function getPath($userId, $nodeId) {

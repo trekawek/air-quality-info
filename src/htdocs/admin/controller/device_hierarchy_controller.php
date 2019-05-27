@@ -18,9 +18,6 @@ class DeviceHierarchyController extends AbstractController {
     public function index($nodeId = null) {
         if ($nodeId === null) {
             $nodeId = $this->deviceHierarchyModel->getRootId($this->user['id']);
-            if ($nodeId === null) {
-                $nodeId = $this->deviceHierarchyModel->createRoot($this->user['id']);
-            }
         }
         $breadcrumbs = $this->deviceHierarchyModel->getPath($this->user['id'], $nodeId);
         $nodes = $this->deviceHierarchyModel->getDirectChildren($this->user['id'], $nodeId);
@@ -120,41 +117,6 @@ class DeviceHierarchyController extends AbstractController {
                 'nodeId' => $nodeId,
                 'breadcrumbs' => $breadcrumbs,
                 'lastItemLink' => true
-            ));
-        }
-    }
-
-    public function editDevice($nodeId) {
-        $breadcrumbs = $this->deviceHierarchyModel->getPath($this->user['id'], $nodeId);
-        $node = end($breadcrumbs);
-        $devices = array();
-        foreach ($this->deviceModel->getDevicesForUser($this->user['id']) as $d) {
-            $devices[$d['id']] = $d['description'];
-        }
-        $nodeForm = new \AirQualityInfo\Lib\Form\Form("nodeForm");
-        $nodeForm->addElement('device_id', 'select', 'Device')
-            ->addRule('required')
-            ->setOptions($devices);
-        $nodeForm->setDefaultValues($node);
-
-        if ($nodeForm->isSubmitted() && $nodeForm->validate($_POST)) {
-            $id = $this->deviceHierarchyModel->updateNode(
-                $this->user['id'],
-                $nodeId,
-                null,
-                null,
-                $_POST['device_id']
-            );
-            $this->alert(__('Updated device link', 'success'));
-            header('Location: '.l('device_hierarchy', 'index', null, array('node_id' => $node['parent_id'])));
-        } else {
-            $this->render(array(
-                'view' => 'admin/views/device_hierarchy/edit_device.php'
-            ), array(
-                'nodeForm' => $nodeForm,
-                'nodeId' => $nodeId,
-                'breadcrumbs' => $breadcrumbs,
-                'lastItemLink' => false
             ));
         }
     }

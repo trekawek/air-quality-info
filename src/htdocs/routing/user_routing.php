@@ -24,6 +24,15 @@ $devices = (new model\DeviceModel($mysqli))->getDevicesForUser($userId);
 if (count($devices) === 0) {
     Lib\Router::send404();
 }
+$deviceHierarchyModel = new model\DeviceHierarchyModel($mysqli);
+foreach ($devices as $i => $d) {
+    $paths = $deviceHierarchyModel->getDevicePaths($userId, $d['id']);
+    if (!empty($paths)) {
+        $devices[$i]['path'] = $paths[0];
+    } else {
+        $devices[$i]['path'] = null;
+    }
+}
 
 $routes = array(
     'GET /[:device]'                 => array('main', 'index'),
@@ -31,7 +40,7 @@ $routes = array(
     'GET /[:device]/main_inner'      => array('main', 'index_inner'),
     'GET /:device/annual_stats'      => array('annual_stats', 'index'),
     'GET /:device/annual_stats/graph_data.json'  => array('annual_stats', 'get_data'),
-    'GET /all'                       => array('main', 'all'),
+    'GET /all/:node_id'              => array('main', 'all'),
     'GET /offline'                   => array('static', 'offline'),
     'POST /update'                   => array('update', 'update'),
     'GET /:device/graphs'            => array('graph', 'index'),
@@ -75,6 +84,7 @@ $templateVariables = array(
 $diContainer->addBindings($templateVariables);
 $diContainer->setBinding('templateVariables', $templateVariables);
 $diContainer->setBinding('mysqli', $mysqli);
+$diContainer->setBinding('userId', $userId);
 
 $diContainer->injectClass('\\AirQualityInfo\\Controller\\'.Lib\StringUtils::camelize($currentController).'Controller')->$currentAction(...array_values($args));
 

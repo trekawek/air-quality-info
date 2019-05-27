@@ -1,3 +1,5 @@
+<?php include(__DIR__ . '/../device_hierarchy/breadcrumbs.php') ?>
+
 <div class="row">
     <div class="col-lg-4">
         <div class="card">
@@ -102,6 +104,17 @@
                         <input type="hidden" name="csrf_token" value="<?php echo \AirQualityInfo\Lib\CsrfToken::getToken() ?>"/>
                         <button type="submit" class="btn btn-danger"><?php echo __('Reset HTTP password') ?></button>
                     </form>
+                </p>
+
+                <p>
+                    <?php if ($device['default_device']): ?>
+                    <?php echo __('This is default device') ?>
+                    <?php else: ?>
+                    <form action="<?php echo l('device', 'makeDefault', null, array('device_id' => $deviceId)) ?>" method="post">
+                        <input type="hidden" name="csrf_token" value="<?php echo \AirQualityInfo\Lib\CsrfToken::getToken() ?>"/>
+                        <button type="submit" class="btn btn-danger"><?php echo __('Make device default') ?></button>
+                    </form>
+                    <?php endif ?>
                 </p>
             </div>
         </div>

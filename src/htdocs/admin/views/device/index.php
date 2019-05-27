@@ -24,7 +24,9 @@
                             <td><?php echo htmlspecialchars($d['description']) ?></td>
                             <td>
                                 <form action="<?php echo l('device', 'move', null, array('device_id' => $d['id'])) ?>" method="post">
-                                    <a href="//<?php printf("%s%s/%s", $this->user['domain'], CONFIG['user_domain_suffixes'][0], $d['name']) ?>" class="btn btn-warning"><i class="fa fa-globe"></i></a>
+                                    <?php if ($d['path'] !== null): ?>
+                                    <a href="//<?php printf("%s%s%s", $this->user['domain'], CONFIG['user_domain_suffixes'][0], $d['path']) ?>" class="btn btn-warning"><i class="fa fa-globe"></i></a>
+                                    <?php endif ?>
                                     <input type="hidden" name="csrf_token" value="<?php echo \AirQualityInfo\Lib\CsrfToken::getToken() ?>"/>
                                     <a href="<?php echo l('device', 'edit', null, array('device_id' => $d['id'])) ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                                     <a href="<?php echo l('device', 'deleteDevice', null, array('device_id' => $d['id'])) ?>" class="delete-link btn btn-danger"><i class="fa fa-trash-o "></i></a>

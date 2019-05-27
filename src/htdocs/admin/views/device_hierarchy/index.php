@@ -36,7 +36,7 @@
                                     <?php if ($d['device_id'] === null): ?>
                                     <a href="<?php echo l('device_hierarchy', 'editDirectory', null, array('node_id' => $d['id'])) ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                                     <?php else: ?>
-                                    <a href="<?php echo l('device_hierarchy', 'editDevice', null, array('node_id' => $d['id'])) ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                    <a href="<?php echo l('device', 'edit', null, array('device_id' => $d['device_id'])) ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                                     <?php endif ?>
                                     <a href="<?php echo l('device_hierarchy', 'deleteNode', null, array('node_id' => $d['id'])) ?>" class="delete-link btn btn-danger"><i class="fa fa-trash-o "></i></a>
                                 </form>

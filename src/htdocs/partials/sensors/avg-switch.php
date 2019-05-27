@@ -6,7 +6,7 @@
           if ($currentAvgType == $value) {
             echo "<strong>$name</strong>";
           } else if ($currentController == 'main' && $currentAction == 'all') {
-            echo "<a href=\"".l('main', 'all', null, array('groupId' => $deviceGroupId), array('avgType' => $value))."\">$name</a>";
+            echo "<a href=\"".l('main', 'all', null, array('node_id' => $nodeId), array('avgType' => $value))."\">$name</a>";
           } else {
             echo "<a href=\"#\" class=\"switch-avg-type\" data-avg-type=\"$value\">$name</a>";
           }

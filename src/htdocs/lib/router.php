@@ -72,9 +72,9 @@ namespace AirQualityInfo\Lib {
 
         private function tryParseDevice($uri) {
             foreach ($this->devices as $device) {
-                $deviceName = array_values(array_filter(explode('/', $device['name'])));
-                if (Router::arrayStartsWith($deviceName, $uri)) {
-                    return array($device, count($deviceName));
+                $devicePath = array_values(array_filter(explode('/', $device['path'])));
+                if (Router::arrayStartsWith($devicePath, $uri)) {
+                    return array($device, count($devicePath));
                 }
             }
             return array(null, 0);
@@ -120,7 +120,7 @@ namespace AirQualityInfo\Lib {
                     $argName = substr($segment, 1);
                     if ($argName === 'device') {
                         if (!$optional || !$isDefaultDevice) {
-                            $link .= '/'.$device['name'];
+                            $link .= $device['path'];
                         }
                     } else if (isset($args[$argName])) {
                         $link .= '/'.$args[$argName];

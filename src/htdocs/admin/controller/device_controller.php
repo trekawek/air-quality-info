@@ -5,6 +5,8 @@ class DeviceController extends AbstractController {
 
     private $deviceModel;
 
+    private $deviceHierarchyModel;
+
     private $recordModel;
 
     private $jsonUpdateModel;
@@ -13,10 +15,12 @@ class DeviceController extends AbstractController {
 
     public function __construct(
             \AirQualityInfo\Model\DeviceModel $deviceModel,
+            \AirQualityInfo\Model\DeviceHierarchyModel $deviceHierarchyModel,
             \AirQualityInfo\Model\RecordModel $recordModel,
             \AirQualityInfo\Model\JsonUpdateModel $jsonUpdateModel,
             \AirQualityInfo\Model\Migration\MadaviMigrator $madaviMigrator) {
         $this->deviceModel = $deviceModel;
+        $this->deviceHierarchyModel = $deviceHierarchyModel;
         $this->recordModel = $recordModel;
         $this->jsonUpdateModel = $jsonUpdateModel;
         $this->madaviMigrator = $madaviMigrator;
@@ -25,16 +29,25 @@ class DeviceController extends AbstractController {
 
     public function index() {
         $devices = $this->deviceModel->getDevicesForUser($this->user['id']);
+        foreach ($devices as $i => $d) {
+            $paths = $this->deviceHierarchyModel->getDevicePaths($this->user['id'], $d['id']);
+            $path = null;
+            if (!empty($paths)) {
+                $path = $paths[0];
+            }
+            $devices[$i]['path'] = $path;
+        }
         $this->render(array('view' => 'admin/views/device/index.php'), array('devices' => $devices));
     }
 
     public function create() {
         $deviceForm = new \AirQualityInfo\Lib\Form\Form("deviceForm");
         $deviceForm->addElement('esp8266_id', 'number', 'ESP 8266 id')->addRule('required')->addRule('numeric');
-        $this->addNameField($deviceForm);
+        $this->addNameField($deviceForm)
+            ->setOptions(array('prepend' => 'https://' . $this->user['domain'] . CONFIG['user_domain_suffixes'][0] . '/'));
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
         if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
-            $id = $this->deviceModel->createDevice(array(
+            $deviceId = $this->deviceModel->createDevice(array(
                 'user_id' => $this->user['id'],
                 'esp8266_id' => $_POST['esp8266_id'],
                 'name' => $_POST['name'],
@@ -42,8 +55,12 @@ class DeviceController extends AbstractController {
                 'http_username' => $this->user['email'],
                 'http_password' => bin2hex(random_bytes(16))
             ));
+
+            $rootId = $this->deviceHierarchyModel->getRootId($this->user['id']);
+            $this->deviceHierarchyModel->addChild($this->user['id'], $rootId, null, null, $deviceId);
+            
             $this->alert(__('Created a new device', 'success'));
-            header('Location: '.l('device', 'edit', null, array('device_id' => $id)));
+            header('Location: '.l('device', 'edit', null, array('device_id' => $deviceId)));
         } else {
             $this->render(array(
                 'view' => 'admin/views/device/create.php'
@@ -55,6 +72,11 @@ class DeviceController extends AbstractController {
 
     public function edit($deviceId) {
         $device = $this->getDevice($deviceId);
+        $nodes = $this->deviceHierarchyModel->getDeviceNodes($this->user['id'], $device['id']);
+        $breadcrumbs = null;
+        if (!empty($nodes)) {
+            $breadcrumbs = $this->deviceHierarchyModel->getPath($this->user['id'], $nodes[0]);
+        }
 
         $deviceForm = $this->getDeviceForm();
         $deviceForm->setDefaultValues($device);
@@ -87,7 +109,16 @@ class DeviceController extends AbstractController {
             'mapping' => $mapping,
             'lastRecord' => $this->recordModel->getLastData($deviceId),
             'jsonUpdates' => $this->jsonUpdateModel->getJsonUpdates($deviceId, 5),
+            'breadcrumbs' => $breadcrumbs,
+            'lastItemLink' => false
         ));
+    }
+
+    public function makeDefault($deviceId) {
+        $this->getDevice($deviceId); // validate the device ownership
+        $this->deviceModel->makeDefault($this->user['id'], $deviceId);
+        $this->alert(__('Updated the default device'));
+        header('Location: '.l('device', 'edit', null, array('device_id' => $deviceId)));
     }
 
     public function deleteDevice($deviceId) {
@@ -167,10 +198,9 @@ class DeviceController extends AbstractController {
     }
 
     private function addNameField($deviceForm) {
-        $deviceForm->addElement('name', 'text', 'Name')
+        return $deviceForm->addElement('name', 'text', 'Name')
             ->addRule('required')
-            ->addRule('regexp', array('pattern' => '/^[a-z0-9][a-z0-9-]*[a-z0-9]$/', 'message' => __('The name should consist of alphanumeric characters and dashes')))
-            ->setOptions(array('prepend' => 'https://' . $this->user['domain'] . CONFIG['user_domain_suffixes'][0] . '/.../'));
+            ->addRule('regexp', array('pattern' => '/^[a-z0-9][a-z0-9-]*[a-z0-9]$/', 'message' => __('The name should consist of alphanumeric characters and dashes')));
     }
 }
 
