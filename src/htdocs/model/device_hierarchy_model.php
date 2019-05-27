@@ -72,6 +72,8 @@ class DeviceHierarchyModel {
 
     public function move($userId, $id, $direction) {
         $node = $this->getNode($userId, $id);
+        $this->reorderDevices($node['parent_id']); // make sure the positions are consistent
+
         if ($direction == 'up' && $node['position'] > 0) {
             $updateStmt = $this->mysqli->prepare('UPDATE `device_hierarchy` SET `position` = `position` + 1 WHERE `position` = ? - 1 AND `parent_id` = ?');
             $updateStmt->bind_param('ii', $node['position'], $node['parent_id']);

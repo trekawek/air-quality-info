@@ -46,7 +46,7 @@
                     <?php endforeach ?>
                 </table>
                 <a href="<?php echo l('device_hierarchy', 'createDir', null, array('node_id' => $nodeId)) ?>" class="btn btn-warning"><i class="fa fa-plus"></i> <?php echo __('Create directory') ?></a>
-                <a href="<?php echo l('device_hierarchy', 'createDevice', null, array('node_id' => $nodeId)) ?>" class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo __('Create device') ?></a>
+                <a href="<?php echo l('device_hierarchy', 'createDevice', null, array('node_id' => $nodeId)) ?>" class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo __('Link device') ?></a>
             </div>            
         </div>
     </div>
