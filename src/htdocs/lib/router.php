@@ -72,6 +72,9 @@ namespace AirQualityInfo\Lib {
 
         private function tryParseDevice($uri) {
             foreach ($this->devices as $device) {
+                if ($device['path'] === null) {
+                    continue;
+                }
                 $devicePath = array_values(array_filter(explode('/', $device['path'])));
                 if (Router::arrayStartsWith($devicePath, $uri)) {
                     return array($device, count($devicePath));
