@@ -14,6 +14,14 @@ $routes = array(
     'GET /user/edit' => array('user', 'edit'),
     'POST /user/edit' => array('user', 'edit'),
 
+    'GET /device_hierarchy/[:node_id]' => array('device_hierarchy', 'index'),
+    'GET /device_hierarchy/[:node_id]/edit' => array('device_hierarchy', 'edit'),
+    'POST /device_hierarchy/[:node_id]/edit' => array('device_hierarchy', 'edit'),
+    'GET /device_hierarchy/[:node_id]/create_dir' => array('device_hierarchy', 'createDir'),
+    'POST /device_hierarchy/[:node_id]/create_dir' => array('device_hierarchy', 'createDir'),
+    'POST /device_hierarchy/[:node_id]/move' => array('device_hierarchy', 'move'),
+    'DELETE /device_hierarchy/[:node_id]' => array('device_hierarchy', 'deleteNode'),
+
     'GET /device' => array('device', 'index'),
     'GET /device/create' => array('device', 'create'),
     'POST /device/create' => array('device', 'create'),

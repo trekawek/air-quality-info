@@ -51,8 +51,10 @@ namespace AirQualityInfo\Lib {
                         }
                         $arguments['device'] = $device;
                         $i += $segmentCount;
-                    } else {
+                    } else if (count($uri) > $i) {
                         $arguments[$argName] = $uri[$i++];
+                    } else if (!$optional) {
+                        return null;
                     }
                 } else if (isset($uri[$i]) && $uri[$i] === $segment) {
                     $i++;
@@ -120,8 +122,10 @@ namespace AirQualityInfo\Lib {
                         if (!$optional || !$isDefaultDevice) {
                             $link .= '/'.$device['name'];
                         }
-                    } else {
+                    } else if (isset($args[$argName])) {
                         $link .= '/'.$args[$argName];
+                    } else if (!$optional) {
+                        throw new \Exception("The argument $argName is not set.");
                     }
                 } else {
                     $link .= '/'.$segment;

@@ -42,6 +42,10 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
                             <i class="nav-icon fa fa-tachometer"></i> <?php echo __('Devices') ?></a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="<?php echo l('device_hierarchy', 'index') ?>">
+                            <i class="nav-icon fa fa-sitemap"></i> <?php echo __('Device hierarchy') ?></a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="<?php echo l('user', 'edit') ?>">
                             <i class="nav-icon fa fa-user"></i> <?php echo __('Account') ?></a>
                         </li>
