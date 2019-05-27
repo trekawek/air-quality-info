@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: May 25, 2019 at 09:09 PM
+-- Generation Time: May 27, 2019 at 09:44 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.2.14
 
@@ -38,12 +38,27 @@ CREATE TABLE `devices` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `esp8266_id` int(11) NOT NULL,
-  `position` int(11) NOT NULL,
   `http_username` varchar(256) NOT NULL,
   `http_password` varchar(256) NOT NULL,
   `name` varchar(256) NOT NULL,
   `description` varchar(256) NOT NULL,
-  `hidden` tinyint(1) NOT NULL
+  `default_device` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `device_hierarchy`
+--
+
+CREATE TABLE `device_hierarchy` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `position` int(11) NOT NULL,
+  `name` varchar(256) DEFAULT NULL,
+  `description` varchar(256) DEFAULT NULL,
+  `device_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -122,6 +137,15 @@ ALTER TABLE `devices`
   ADD KEY `esp8266_id` (`esp8266_id`);
 
 --
+-- Indexes for table `device_hierarchy`
+--
+ALTER TABLE `device_hierarchy`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `device_id` (`device_id`),
+  ADD KEY `parent_id` (`parent_id`);
+
+--
 -- Indexes for table `device_mapping`
 --
 ALTER TABLE `device_mapping`
@@ -167,6 +191,12 @@ ALTER TABLE `devices`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `device_hierarchy`
+--
+ALTER TABLE `device_hierarchy`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `device_mapping`
 --
 ALTER TABLE `device_mapping`
@@ -193,6 +223,14 @@ ALTER TABLE `custom_domains`
 --
 ALTER TABLE `devices`
   ADD CONSTRAINT `devices_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `device_hierarchy`
+--
+ALTER TABLE `device_hierarchy`
+  ADD CONSTRAINT `device_hierarchy_device_id` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `device_hierarchy_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `device_hierarchy` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `device_hierarchy_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `device_mapping`
