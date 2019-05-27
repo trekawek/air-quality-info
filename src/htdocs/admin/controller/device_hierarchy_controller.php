@@ -61,7 +61,39 @@ class DeviceHierarchyController extends AbstractController {
         }
     }
 
-    public function edit($nodeId) {
+    public function createDevice($parentId) {
+        $breadcrumbs = $this->deviceHierarchyModel->getPath($this->user['id'], $parentId);
+        $devices = array();
+        foreach ($this->deviceModel->getDevicesForUser($this->user['id']) as $d) {
+            $devices[$d['id']] = $d['description'];
+        }
+        $nodeForm = new \AirQualityInfo\Lib\Form\Form("nodeForm");
+        $nodeForm->addElement('device_id', 'select', 'Device')
+            ->addRule('required')
+            ->setOptions($devices);
+        if ($nodeForm->isSubmitted() && $nodeForm->validate($_POST)) {
+            $id = $this->deviceHierarchyModel->addChild(
+                $this->user['id'],
+                $parentId,
+                null,
+                null,
+                $_POST['device_id']
+            );
+            $this->alert(__('Linked device', 'success'));
+            header('Location: '.l('device_hierarchy', 'index', null, array('node_id' => $parentId)));
+        } else {
+            $this->render(array(
+                'view' => 'admin/views/device_hierarchy/create_device.php'
+            ), array(
+                'nodeForm' => $nodeForm,
+                'parentId' => $parentId,
+                'breadcrumbs' => $breadcrumbs,
+                'lastItemLink' => true
+            ));
+        }
+    }
+
+    public function editDirectory($nodeId) {
         $breadcrumbs = $this->deviceHierarchyModel->getPath($this->user['id'], $nodeId);
         $node = end($breadcrumbs);
 
@@ -88,6 +120,41 @@ class DeviceHierarchyController extends AbstractController {
                 'nodeId' => $nodeId,
                 'breadcrumbs' => $breadcrumbs,
                 'lastItemLink' => true
+            ));
+        }
+    }
+
+    public function editDevice($nodeId) {
+        $breadcrumbs = $this->deviceHierarchyModel->getPath($this->user['id'], $nodeId);
+        $node = end($breadcrumbs);
+        $devices = array();
+        foreach ($this->deviceModel->getDevicesForUser($this->user['id']) as $d) {
+            $devices[$d['id']] = $d['description'];
+        }
+        $nodeForm = new \AirQualityInfo\Lib\Form\Form("nodeForm");
+        $nodeForm->addElement('device_id', 'select', 'Device')
+            ->addRule('required')
+            ->setOptions($devices);
+        $nodeForm->setDefaultValues($node);
+
+        if ($nodeForm->isSubmitted() && $nodeForm->validate($_POST)) {
+            $id = $this->deviceHierarchyModel->updateNode(
+                $this->user['id'],
+                $nodeId,
+                null,
+                null,
+                $_POST['device_id']
+            );
+            $this->alert(__('Updated device link', 'success'));
+            header('Location: '.l('device_hierarchy', 'index', null, array('node_id' => $node['parent_id'])));
+        } else {
+            $this->render(array(
+                'view' => 'admin/views/device_hierarchy/edit_device.php'
+            ), array(
+                'nodeForm' => $nodeForm,
+                'nodeId' => $nodeId,
+                'breadcrumbs' => $breadcrumbs,
+                'lastItemLink' => false
             ));
         }
     }

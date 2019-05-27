@@ -43,11 +43,11 @@ class DeviceHierarchyModel {
         return $node;
     }
 
-    public function addChild($userId, $parentId, $name, $description) {
+    public function addChild($userId, $parentId, $name, $description, $deviceId = null) {
         $this->validateOwnership($userId, $parentId);
         $position = $this->getMaxPosition($userId, $parentId) + 1;
-        $insertStmt = $this->mysqli->prepare("INSERT INTO `device_hierarchy` (`user_id`, `parent_id`, `position`, `name`, `description`) VALUES (?, ?, ?, ?, ?)");
-        $insertStmt->bind_param('iiiss', $userId, $parentId, $position, $name, $description);
+        $insertStmt = $this->mysqli->prepare("INSERT INTO `device_hierarchy` (`user_id`, `parent_id`, `position`, `name`, `description`, `device_id`) VALUES (?, ?, ?, ?, ?, ?)");
+        $insertStmt->bind_param('iiissi', $userId, $parentId, $position, $name, $description, $deviceId);
         $insertStmt->execute();
         $insertStmt->close();
         return $this->mysqli->insert_id;
@@ -97,14 +97,46 @@ class DeviceHierarchyModel {
     }
 
     public function deleteNode($userId, $id) {
+        $node = $this->getNode($userId, $id);
+
         $stmt = $this->mysqli->prepare('DELETE FROM `device_hierarchy` WHERE `user_id` = ? AND `id` = ?');
         $stmt->bind_param('ii', $userId, $id);
         $stmt->execute();
         $stmt->close();
+
+        $this->reorderDevices($node['parent_id']);
+    }
+
+    private function reorderDevices($parentId) {
+        $stmt = $this->mysqli->prepare("SELECT `id` FROM `device_hierarchy` WHERE `parent_id` = ? ORDER BY `position`");
+        $stmt->bind_param('i', $parentId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $position = 0;
+        $updateStmt = $this->mysqli->prepare('UPDATE `device_hierarchy` SET `position` = ? WHERE `id` = ?');
+        while ($row = $result->fetch_row()) {
+            $updateStmt->bind_param('ii', $position, $row[0]);
+            $updateStmt->execute();
+            $position++;
+        }
+        $updateStmt->close();
+
+        $stmt->close();
     }
 
     public function getDirectChildren($userId, $parentId) {
-        $stmt = $this->mysqli->prepare("SELECT `id`, `user_id`, `parent_id`, `name`, `description`, `device_id`, `position` FROM `device_hierarchy` WHERE `user_id` = ? AND `parent_id` = ? ORDER BY `position`");
+        $stmt = $this->mysqli->prepare("
+        SELECT `dh`.`id`,
+            `dh`.`user_id`,
+            `dh`.`parent_id`,
+            `dh`.`device_id`,
+            `dh`.`position`,
+            IFNULL(`d`.`name`, `dh`.`name`) AS `name`,
+            IFNULL(`d`.`description`, `dh`.`description`) AS `description`
+        FROM `device_hierarchy` `dh`
+        LEFT JOIN `devices` `d` ON `d`.`id` = `dh`.`device_id`
+        WHERE `dh`.`user_id` = ? AND `parent_id` = ? ORDER BY `position`");
         $stmt->bind_param('ii', $userId, $parentId);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -117,7 +149,17 @@ class DeviceHierarchyModel {
     }
 
     public function getAllNodes($userId) {
-        $stmt = $this->mysqli->prepare("SELECT `id`, `user_id`, `parent_id`, `name`, `description`, `device_id` FROM `device_hierarchy` WHERE `user_id` = ? ORDER BY `position`");
+        $stmt = $this->mysqli->prepare("
+        SELECT `dh`.`id`,
+            `dh`.`user_id`,
+            `dh`.`parent_id`,
+            `dh`.`device_id`,
+            `dh`.`position`,
+            IFNULL(`d`.`name`, `dh`.`name`) AS `name`,
+            IFNULL(`d`.`description`, `dh`.`description`) AS `description`
+        FROM `device_hierarchy` `dh`
+        LEFT JOIN `devices` `d` ON `d`.`id` = `dh`.`device_id`
+        WHERE `dh`.`user_id` = ? ORDER BY `position`");
         $stmt->bind_param('i', $userId);
         $stmt->execute();
         $result = $stmt->get_result();

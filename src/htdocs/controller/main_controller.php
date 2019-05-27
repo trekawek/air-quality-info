@@ -54,9 +54,6 @@ class MainController extends AbstractController {
     public function all() {
         $data = array();
         foreach ($this->devices as $device) {
-            if ($device['hidden']) {
-                continue;
-            }
             $sensors = $this->recordModel->getLastData($device['id']);
             $currentAvgType = '1';
             if (isset($_GET['avgType']) && $_GET['avgType'] == '24') {

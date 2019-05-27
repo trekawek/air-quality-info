@@ -11,7 +11,7 @@
     id="<?php echo $this->name ?>Input"
     <?php echo $this->getAttributesString() ?>>
 <?php foreach($this->options as $k => $v): ?>
-    <option><?php echo $v ?></option>
+    <option value="<?php echo $k ?>" <?php echo $k === $this->value ? 'selected' : '' ?>><?php echo $v ?></option>
 <?php endforeach ?>
 </select>
 

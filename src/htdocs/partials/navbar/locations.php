@@ -5,7 +5,6 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
     <?php foreach ($devices as $d): ?>
-        <?php if ($d['hidden']) { continue; } ?>
         <li class="dropdown">
             <a class="dropdown-item <?php echo ($d['id'] == $currentDevice['id']) ? 'active' : '' ?>"
             href="<?php 
