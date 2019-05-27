@@ -53,7 +53,8 @@ class DeviceController extends AbstractController {
                 'name' => $_POST['name'],
                 'description' => $_POST['description'],
                 'http_username' => $this->user['email'],
-                'http_password' => bin2hex(random_bytes(16))
+                'http_password' => bin2hex(random_bytes(16)),
+                'default_device' => 0
             ));
 
             $rootId = $this->deviceHierarchyModel->getRootId($this->user['id']);
