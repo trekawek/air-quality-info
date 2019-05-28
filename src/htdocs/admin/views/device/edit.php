@@ -112,7 +112,7 @@
                     <?php else: ?>
                     <form action="<?php echo l('device', 'makeDefault', null, array('device_id' => $deviceId)) ?>" method="post">
                         <input type="hidden" name="csrf_token" value="<?php echo \AirQualityInfo\Lib\CsrfToken::getToken() ?>"/>
-                        <button type="submit" class="btn btn-danger"><?php echo __('Make device default') ?></button>
+                        <button type="submit" class="btn btn-success"><?php echo __('Make device default') ?></button>
                     </form>
                     <?php endif ?>
                 </p>
