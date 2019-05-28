@@ -1,5 +1,9 @@
 <p class="lead">
-<span class="logo">aqi.eco</span> jest projektem niekomercyjnym, rozwijanym w wolnym czasie i utrzymywanym ze środków prywatnych. Środki przekazane za pomocą przycisku będą wykorzystane do utrzymania serwera i domeny.
+<span class="logo">aqi.eco</span> jest projektem niekomercyjnym, rozwijanym w wolnym czasie i utrzymywanym ze środków prywatnych. Kod źródłowy aqi.eco jest publicznie dostępny w serwisie <a href="https://github.com/trekawek/air-quality-info">GitHub</a>.
+</p>
+
+<p>
+Środki przekazane za pomocą przycisku będą wykorzystane do utrzymania serwera i domeny.
 </p>
 <?php if (isset(CONFIG['paypal_donate_id'])): ?>
 <div class="text-center">

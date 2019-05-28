@@ -1,5 +1,9 @@
 <p class="lead">
-<span class="logo">aqi.eco</span> is a non-profit project, developed in the spare time and run from the private funds. Please use the donate button below to support the infrastructure - server and domain name.
+<span class="logo">aqi.eco</span> is a non-profit project, developed in the spare time and run from the private funds. It's an open-source, with its code is available on <a href="https://github.com/trekawek/air-quality-info">GitHub</a>.
+</p>
+
+</p>
+Please use the donate button below to support the infrastructure - server and domain name.
 </p>
 <?php if (isset(CONFIG['paypal_donate_id'])): ?>
 <div class="text-center">
