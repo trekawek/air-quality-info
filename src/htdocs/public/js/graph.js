@@ -73,12 +73,7 @@ function renderGraph(ctx, data, type, avgType) {
                             minute: 'HH:mm',
                             hour: 'HH',
                         },
-                        tooltipFormat: {
-                            millisecond: 'HH:mm:ss.SSS',
-                            second: 'HH:mm:ss',
-                            minute: 'HH:mm',
-                            hour: 'HH',
-                        }
+                        tooltipFormat: "HH:mm"
                     }    
                 }]
             },

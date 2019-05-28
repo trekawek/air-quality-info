@@ -34,9 +34,9 @@ function navItem($action, $desc) {
     <style><?php echo file_get_contents('public/css/critical.css') ?></style>
 
     <script defer src="/public/js/vendor.min.js"></script>
-    <script defer src="/public/js/main.js?v=19"></script>
-    <script defer src="/public/js/graph.js?v=19"></script>
-    <script defer src="/public/js/annual_graph.js?v=19"></script>
+    <script defer src="/public/js/main.js?v=20"></script>
+    <script defer src="/public/js/graph.js?v=20"></script>
+    <script defer src="/public/js/annual_graph.js?v=20"></script>
   </head>
   <body data-pm10-limit1h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_24H ?>" data-current-lang='<?php echo $currentLocale->getCurrentLang() ?>' data-locale='<?php echo json_encode($currentLocale->getJsMessages()) ?>'>
     <div class="container">
