@@ -5,6 +5,7 @@ x-mysql-variables: &mysql-variables
     MYSQL_USER: air_quality_info
     MYSQL_PASSWORD: test
     MYSQL_ROOT_PASSWORD: test
+    AQI_CONFIG: /etc/aqi/config.php
 
 services:
   web:
@@ -14,6 +15,7 @@ services:
     - "8080:80"
     volumes:
     - ./src:/opt/air-quality-info
+    - ./config.php:/etc/aqi/config.php
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

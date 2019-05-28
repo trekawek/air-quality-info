@@ -3,7 +3,12 @@ namespace AirQualityInfo;
 
 session_start();
 date_default_timezone_set('Europe/Warsaw');
-require_once('config.php');
+
+$configFile = getenv('AQI_CONFIG');
+if ($configFile === null) {
+    $configFile = 'config.php';
+}
+require_once($configFile);
 
 spl_autoload_register(function($className) {
     $classPath = explode('\\', $className);

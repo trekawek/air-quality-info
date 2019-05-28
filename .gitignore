@@ -1,7 +1,4 @@
-src/htdocs/data.rrd
-src/htdocs/config.php
-src/htdocs/data/*.rrd
-src/htdocs/data/*.json
+config.php
 mysql-data
 node_modules
 yarn-error.log
