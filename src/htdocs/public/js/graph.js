@@ -21,7 +21,7 @@ function mapToTimeSeries(data) {
     for (var timeStamp in data) {
         if (data.hasOwnProperty(timeStamp)) {
             if (data[timeStamp] == null) {
-                if ((timestamp - lastValidT) < 60 * 60) {
+                if ((timeStamp - lastValidT) < 60 * 10) {
                     y = lastValidY;
                 } else {
                     y = null;
