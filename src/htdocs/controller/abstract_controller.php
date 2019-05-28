@@ -17,6 +17,7 @@ class AbstractController {
         ), $args);
 
         $deviceTree = $this->deviceHierarchyModel->getTree($this->userId);
+        $displayLocations = $this->isDisplayLocations($deviceTree);
         $this->addDevices($deviceTree);
 
         extract($this->templateVariables);
@@ -61,6 +62,18 @@ class AbstractController {
                 $this->addDevices($n);
                 $node['children'][$i] = $n;
             }
+        }
+    }
+
+    private function isDisplayLocations($deviceTree) {
+        $children = $deviceTree['children'];
+        $count = count($children);
+        if ($count == 1) {
+            return $children[0]['device_id'] === null;
+        } else if ($count > 1) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
