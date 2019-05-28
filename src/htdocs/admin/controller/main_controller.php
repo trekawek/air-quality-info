@@ -17,7 +17,16 @@ class MainController extends AbstractController {
         }
         $this->render(array(
             'view' => 'admin/views/index-'.$this->currentLocale->getCurrentLang().'.php',
-            'layout' => false
+            'head' => 'admin/partials/about/head.php',
+            'tail' => 'admin/partials/about/tail.php'
+        ));
+    }
+
+    public function support() {
+        $this->render(array(
+            'view' => 'admin/views/static/support-'.$this->currentLocale->getCurrentLang().'.php',
+            'head' => 'admin/partials/about/head.php',
+            'tail' => 'admin/partials/about/tail.php'
         ));
     }
 }

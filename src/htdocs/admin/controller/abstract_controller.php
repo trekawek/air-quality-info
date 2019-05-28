@@ -15,7 +15,9 @@ class AbstractController {
 
     public function render($args, $data = array()) {
         $args = array_merge(array(
-            'layout' => true
+            'layout' => true,
+            'head' => 'admin/partials/head.php',
+            'tail' => 'admin/partials/tail.php',
         ), $args);
 
         $currentUser = $this->user;
@@ -24,13 +26,13 @@ class AbstractController {
         extract($data);
 
         if ($args['layout']) {
-            include('admin/partials/head.php');
+            include($args['head']);
         }
 
         include($args['view']);
 
         if ($args['layout']) {
-            include('admin/partials/tail.php');
+            include($args['tail']);
         }
     }
 

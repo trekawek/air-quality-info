@@ -5,6 +5,7 @@ Lib\CsrfToken::verifyToken(isset($_POST['_csrf_token']) ? $_POST['_csrf_token'] 
 
 $routes = array(
     'GET /' => array('main', 'index'),
+    'GET /support' => array('main', 'support'),
 
     'GET /login' => array('user', 'login'),
     'POST /login' => array('user', 'doLogin'),
