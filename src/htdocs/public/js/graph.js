@@ -16,11 +16,24 @@ window.chartColors = {
 
 function mapToTimeSeries(data) {
     var result = new Array();
+    var lastValidT, lastValidY;
+    var y;
     for (var timeStamp in data) {
         if (data.hasOwnProperty(timeStamp)) {
+            if (data[timeStamp] == null) {
+                if ((timestamp - lastValidT) < 60 * 60) {
+                    y = lastValidY;
+                } else {
+                    y = null;
+                }
+            } else {
+                y = data[timeStamp];
+                lastValidT = timeStamp;
+                lastValidY = y;
+            }
             result.push({
                 t: new Date(timeStamp * 1000),
-                y: data[timeStamp] == null ? null : Math.round(data[timeStamp] * 100) / 100
+                y: y == null ? null : Math.round(y * 100) / 100
             });
         }
     }
