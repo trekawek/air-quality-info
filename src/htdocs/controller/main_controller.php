@@ -51,7 +51,10 @@ class MainController extends AbstractController {
         }
     }
 
-    public function all($nodeId) {
+    public function all($nodeId = null) {
+        if ($nodeId === null) {
+            $nodeId = $this->deviceHierarchyModel->getRootId($this->userId);
+        }
         $tree = $this->deviceHierarchyModel->getTree($this->userId, $nodeId);
         $devices = $this->flatTree($tree);
         $data = array();
