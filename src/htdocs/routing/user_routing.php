@@ -55,7 +55,7 @@ list($route, $args) = $router->findRoute(
 
 // the domain is correct, but the path is not
 if ($route === null) {
-    header("Location: /" . $devices[0]['name']);
+    header("Location: /");
     die();
 }
 
