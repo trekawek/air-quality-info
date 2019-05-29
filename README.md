@@ -18,6 +18,14 @@ This is the code of the SaaS product now, available live on https://aqi.eco.
 * Locale support
 * Progressive Web App
 
+## Setup
+
+```
+docker-compose up
+```
+
+is enough to start the project. The admin dashboard will be available under: http://aqi.eco.localhost:8080/, while the actual Air Quality Info pages will use http://NAME.aqi.eco.localhost:8080 naming schema.
+
 ## Resources
 
 * [Nettigo Air Monitor](https://air.nettigo.pl/)
