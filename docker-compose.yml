@@ -8,25 +8,30 @@ x-mysql-variables: &mysql-variables
     AQI_CONFIG: /etc/aqi/config.php
 
 services:
-  web:
+  fpm:
     build: .
     environment: *mysql-variables
-    ports:
-    - "8080:80"
     volumes:
-    - ./src:/opt/air-quality-info
+    - ./src/htdocs:/var/www/html
     - ./config.php:/etc/aqi/config.php
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment: *mysql-variables
     ports:
-    - "8081:80"
+    - "127.0.0.1:8081:80"
 
   db:
     image: mysql:5
     environment: *mysql-variables
-    ports:
-    - "3306:3306"
     volumes:
     - ./mysql-data:/var/lib/mysql
+    - ./src/mysql-schema.sql:/docker-entrypoint-initdb.d/mysql-schema.sql
+
+  nginx:
+    image: nginx:1.16-alpine
+    ports:
+    - "127.0.0.1:8080:80"
+    volumes:
+    - ./src/htdocs:/var/www/html
+    - ./nginx.conf:/etc/nginx/conf.d/default.conf
