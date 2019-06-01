@@ -6,6 +6,7 @@ x-mysql-variables: &mysql-variables
     MYSQL_PASSWORD: test
     MYSQL_ROOT_PASSWORD: test
     AQI_CONFIG: /etc/aqi/config.php
+    AQI_PATH: /var/www/html
 
 services:
   fpm:
@@ -13,6 +14,7 @@ services:
     environment: *mysql-variables
     volumes:
     - ./src/htdocs:/var/www/html
+    - ./src/cli:/usr/local/bin/aqi
     - ./config.php:/etc/aqi/config.php
 
   phpmyadmin:

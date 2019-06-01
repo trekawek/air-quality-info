@@ -1,8 +1,9 @@
 #!/usr/bin/env php
 <?php
 include('boot-cli.php');
-$stmt = $this->mysqli->prepare("SELECT `fqdn` FROM `custom_domains`");
+$stmt = $mysqli->prepare("SELECT `fqdn` FROM `custom_domains`");
 $stmt->execute();
+$result = $stmt->get_result();
 $domains = array();
 while ($row = $result->fetch_row()) {
     $domains[] = $row[0];

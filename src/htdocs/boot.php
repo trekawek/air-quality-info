@@ -11,6 +11,7 @@ if ($configFile === null) {
 require_once($configFile);
 
 spl_autoload_register(function($className) {
+    $rootPath = getenv('AQI_PATH');
     $classPath = explode('\\', $className);
     if (array_shift ($classPath) != 'AirQualityInfo') {
         return;
@@ -18,7 +19,7 @@ spl_autoload_register(function($className) {
     $classPath = array_map (function($string) {
         return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
     }, $classPath);
-    $path = implode('/', $classPath).".php";
+    $path = $rootPath."/".implode('/', $classPath).".php";
     if (file_exists($path)) {
         require_once($path);
     } else {
