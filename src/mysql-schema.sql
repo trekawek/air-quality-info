@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: May 27, 2019 at 09:44 PM
+-- Generation Time: Jun 01, 2019 at 08:17 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.2.14
 
@@ -15,6 +15,25 @@ SET time_zone = "+00:00";
 --
 -- Database: `air_quality_info`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `aggregates`
+--
+
+CREATE TABLE `aggregates` (
+  `device_id` int(11) NOT NULL,
+  `timestamp` int(11) NOT NULL,
+  `resolution` int(11) NOT NULL,
+  `pm25` decimal(6,2) DEFAULT NULL,
+  `pm10` decimal(6,2) DEFAULT NULL,
+  `temperature` decimal(5,2) DEFAULT NULL,
+  `humidity` decimal(5,2) DEFAULT NULL,
+  `pressure` decimal(6,2) DEFAULT NULL,
+  `heater_temperature` decimal(5,2) DEFAULT NULL,
+  `heater_humidity` decimal(5,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -120,6 +139,15 @@ CREATE TABLE `users` (
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `aggregates`
+--
+ALTER TABLE `aggregates`
+  ADD PRIMARY KEY (`device_id`,`timestamp`,`resolution`),
+  ADD KEY `timestamp` (`timestamp`),
+  ADD KEY `device_id` (`device_id`),
+  ADD KEY `resolution` (`resolution`);
 
 --
 -- Indexes for table `custom_domains`
