@@ -60,12 +60,8 @@ class RecordModel {
         $insertStmt = $this->mysqli->prepare($sql);
         $typedef = 'ii'.str_repeat('s', count(RecordModel::FIELDS));
         
-        $minTimestamp = null;
         foreach ($records as $i => $record) {
             $record['timestamp'] = floor($record['timestamp'] / 180) * 180;
-            if ($minTimestamp === null || $minTimestamp > $record['timestamp']) {
-                $minTimestamp = $record['timestamp'];
-            }
 
             foreach ($record as $k => $v) {
                 if (is_nan($v)) {
@@ -100,7 +96,7 @@ class RecordModel {
         }
         $insertStmt->close();
 
-        $this->createAggregates($deviceId, $minTimestamp);
+        $this->createAggregates($deviceId, $records[0]['timestamp']);
     }
 
     public function getLastData($deviceId) {
