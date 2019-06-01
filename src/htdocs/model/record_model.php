@@ -5,6 +5,14 @@ class RecordModel {
 
     const FIELDS = array('pm25','pm10','temperature','pressure','humidity','heater_temperature','heater_humidity');
 
+    const AGGREGATES = array(
+        array('resolution' => 1 * 180,      'ttl' => 24 * 60 * 60),
+        array('resolution' => 7 * 180,      'ttl' => 7 * 24 * 60 * 60),
+        array('resolution' => 30 * 180,     'ttl' => null),
+        array('resolution' => 365 * 180,    'ttl' => null),
+        array('resolution' => 24 * 60 * 60, 'ttl' => null)
+    );
+
     private $mysqli;
 
     public function __construct($mysqli) {
@@ -53,8 +61,12 @@ class RecordModel {
         $typedef = 'ii'.str_repeat('s', count(RecordModel::FIELDS));
         
         $previousRecord = null;
+        $minTimestamp = null;
         foreach ($records as $i => $record) {
             $record['timestamp'] = floor($record['timestamp'] / 180) * 180;
+            if ($minTimestamp === null || $minTimestamp > $record['timestamp']) {
+                $minTimestamp = $record['timestamp'];
+            }
 
             foreach ($record as $k => $v) {
                 if (is_nan($v)) {
@@ -99,6 +111,8 @@ class RecordModel {
             
         }
         $insertStmt->close();
+
+        $this->createAggregates($deviceId, $minTimestamp);
     }
 
     public function getLastData($deviceId) {
@@ -138,6 +152,49 @@ class RecordModel {
             $data[$f] = $row[$i];
         }
         return $data;
+    }
+
+    public function createAggregates($deviceId, $fromTs) {
+        foreach (RecordModel::AGGREGATES as $aggregate) {
+            $this->updateAggregate($deviceId, $aggregate['resolution'], $fromTs);
+            if ($aggregate['ttl'] !== null) {
+                $stmt = $this->mysqli->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` < ? AND `resolution` = ?");
+                $minTimestamp = time() - $aggregate['ttl'];
+                $stmt->bind_param('iii', $deviceId, $minTimestamp, $aggregate['resolution']);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+    }
+
+    private function updateAggregate($deviceId, $resolution, $fromTs) {
+        error_log("Updating aggregate for device $deviceId with resolution $resolution from timestamp $fromTs");
+        $avgFields = array();
+        $fields = array();
+        foreach (RecordModel::FIELDS as $f) {
+            $avgFields[] = "AVG(`$f`)";
+            $fields[] = "`$f`";
+        }
+        $avgFields = implode(",", $avgFields);
+        $fields = implode(",", $fields);
+    
+        $roundedTimestamp = ceil($fromTs / $resolution) * $resolution;
+
+        $stmt = $this->mysqli->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` >= ? AND `resolution` = ?");
+        $stmt->bind_param('iii', $deviceId, $roundedTimestamp, $resolution);
+        $stmt->execute();
+        $stmt->close();
+        
+        $sql = "INSERT INTO `aggregates` (`device_id`, `timestamp`, `resolution`, $fields)        
+        SELECT ?, CEILING(`timestamp` / ?) * ? AS `ts`, ?, $avgFields
+        FROM `records`
+        WHERE `device_id` = ? AND `timestamp` >= ?
+        GROUP BY `ts`";
+
+        $stmt = $this->mysqli->prepare($sql);
+        $stmt->bind_param('iiiiii', $deviceId, $resolution, $resolution, $resolution, $deviceId, $roundedTimestamp);
+        $stmt->execute();
+        $stmt->close();
     }
 
     public function getHistoricData($deviceId, $type = 'pm', $range = 'day', $avgType = null) {
