@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
-include('boot-cli.php');
+include(getenv('AQI_PATH').'/boot.php');
+
 $stmt = $mysqli->prepare("SELECT `fqdn` FROM `custom_domains`");
 $stmt->execute();
 $result = $stmt->get_result();
