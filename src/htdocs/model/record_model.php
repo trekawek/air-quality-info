@@ -8,8 +8,8 @@ class RecordModel {
     const AGGREGATES = array(
         array('resolution' => 1 * 180,      'ttl' => 24 * 60 * 60),
         array('resolution' => 7 * 180,      'ttl' => 7 * 24 * 60 * 60),
-        array('resolution' => 30 * 180,     'ttl' => null),
-        array('resolution' => 365 * 180,    'ttl' => null),
+        array('resolution' => 30 * 180,     'ttl' => 30 * 24 * 60 * 60),
+        array('resolution' => 365 * 180,    'ttl' => 365 * 24 * 60 * 60),
         array('resolution' => 24 * 60 * 60, 'ttl' => null)
     );
 
