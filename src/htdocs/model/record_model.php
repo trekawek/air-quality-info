@@ -165,6 +165,11 @@ class RecordModel {
                 $stmt->close();
             }
         }
+        /*$stmt = $this->mysqli->prepare("DELETE FROM `records` WHERE `device_id` = ? AND `timestamp` < ?");
+        $minTimestamp = time() - end(RecordModel::AGGREGATES['resolution']);
+        $stmt->bind_param('ii', $minTimestamp);
+        $stmt->execute();
+        $stmt->close();*/
     }
 
     private function updateAggregate($deviceId, $resolution, $fromTs) {
@@ -219,7 +224,7 @@ class RecordModel {
 
         $sql_fields = array();
         foreach ($fields as $f) {
-            $sql_fields[] = "AVG($f) AS $f";
+            $sql_fields[] = "`$f`";
         }
         $sql_fields = implode(',', $sql_fields);
 
@@ -227,36 +232,36 @@ class RecordModel {
         switch ($range) {
             case 'week':
             $since = $now - (7 * 24 + $avgType) * 60 * 60;
-            $step = 180 * 7;
+            $resolution = 180 * 7;
             break;
         
             case 'month':
             $since = $now - 30 * 24 * 60 * 60;
-            $step = 180 * 30;
+            $resolution = 180 * 30;
             break;
         
             case 'year':
             $since = $now - 365 * 24 * 60 * 60;
-            $step = 180 * 365;
+            $resolution = 180 * 365;
             break;
 
             default:
             case 'day':
             $since = $now - (24 + $avgType) * 60 * 60;
-            $step = 180;
+            $resolution = 180;
             break;
         }
-        $since = ceil($since / $step) * $step;
+        $since = ceil($since / $resolution) * $resolution;
 
         $data = array();
-        for ($i = $since; $i <= $now; $i += $step) {
+        for ($i = $since; $i <= $now; $i += $resolution) {
             foreach ($fields as $f) {
                 $data[$f][$i] = null;
             }
         }
 
-        $stmt = $this->mysqli->prepare("SELECT CEILING(`timestamp` / $step) * $step AS `ts`, $sql_fields FROM `records` WHERE `device_id` = ? AND `timestamp` >= ? GROUP BY `ts` ORDER BY `ts` ASC");
-        $stmt->bind_param('ii', $deviceId, $since);
+        $stmt = $this->mysqli->prepare("SELECT `timestamp` AS `ts`, $sql_fields FROM `aggregates` WHERE `device_id` = ? AND `timestamp` >= ? AND `resolution` = ? ORDER BY `ts` ASC");
+        $stmt->bind_param('iii', $deviceId, $since, $resolution);
         $stmt->execute();
         $result = $stmt->get_result();
         while ($row = $result->fetch_assoc()) {
@@ -279,16 +284,16 @@ class RecordModel {
     public function getDailyAverages($deviceId) {
         $stmt = $this->mysqli->prepare(
             "SELECT
-                AVG(`pm10`) AS `pm10_avg`,
-                AVG(`pm25`) AS `pm25_avg`,
-                DATE(FROM_UNIXTIME(`timestamp`)) AS `date`
-            FROM `records`
+                `pm10` AS `pm10_avg`,
+                `pm25` AS `pm25_avg`
+            FROM `aggregates`
             WHERE
-                `device_id` = ?
+                `device_id` = ? AND
+                `resolution` = ?
                 AND `timestamp` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 YEAR))
-            GROUP BY DATE(FROM_UNIXTIME(`timestamp`))
-            ORDER BY `date`");
-        $stmt->bind_param('i', $deviceId);
+            ORDER BY `timestamp`");
+        $resolution = 24 * 60 * 60;
+        $stmt->bind_param('ii', $deviceId, $resolution);
 
         $stmt->execute();
 
