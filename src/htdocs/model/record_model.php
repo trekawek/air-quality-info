@@ -60,7 +60,6 @@ class RecordModel {
         $insertStmt = $this->mysqli->prepare($sql);
         $typedef = 'ii'.str_repeat('s', count(RecordModel::FIELDS));
         
-        $previousRecord = null;
         $minTimestamp = null;
         foreach ($records as $i => $record) {
             $record['timestamp'] = floor($record['timestamp'] / 180) * 180;
@@ -76,17 +75,6 @@ class RecordModel {
             if ($record['pressure'] !== null) {
                 $record['pressure'] /= 100;
             }
-
-            // fill the gaps from the previous record
-            $origRecord = $record;
-            if ($previousRecord !== null && ($previousRecord['timestamp'] === ($record['timestamp'] - 180))) {
-                foreach ($previousRecord as $k => $v) {
-                    if ($record[$k] === null) {
-                        $record[$k] = $v;
-                    }
-                }
-            }
-            $previousRecord = $origRecord;
 
             $param = array($deviceId, $record['timestamp']);
             foreach (RecordModel::FIELDS as $f) {
