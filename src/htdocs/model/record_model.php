@@ -83,7 +83,7 @@ class RecordModel {
         }
         $insertStmt->close();
 
-        $this->createAggregates($deviceId, $records[0]['timestamp']);
+        $this->createAggregates($deviceId, $records[0]['timestamp'], $records[count($records) - 1]['timestamp']);
         $this->csvModel->storeRecords($deviceId, $records);
     }
 
@@ -126,22 +126,27 @@ class RecordModel {
         return $data;
     }
 
-    public function createAggregates($deviceId, $fromTs) {
+    public function createAggregates($deviceId, $fromTs, $toTs) {
+        $maxResolution = 0;
+        $deleteStmt = $this->mysqli->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` < ? AND `resolution` = ?");
         foreach (RecordModel::AGGREGATES as $aggregate) {
+            if ($aggregate['resolution'] > $maxResolution) {
+                $maxResolution = $aggregate['resolution'];
+            }
             $this->updateAggregate($deviceId, $aggregate['resolution'], $fromTs);
             if ($aggregate['ttl'] !== null) {
-                $stmt = $this->mysqli->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` < ? AND `resolution` = ?");
-                $minTimestamp = time() - $aggregate['ttl'];
-                $stmt->bind_param('iii', $deviceId, $minTimestamp, $aggregate['resolution']);
-                $stmt->execute();
-                $stmt->close();
+                $minTimestamp = $toTs - $aggregate['ttl'];
+                $deleteStmt->bind_param('iii', $deviceId, $minTimestamp, $aggregate['resolution']);
+                $deleteStmt->execute();
             }
         }
-        /*$stmt = $this->mysqli->prepare("DELETE FROM `records` WHERE `device_id` = ? AND `timestamp` < ?");
-        $minTimestamp = time() - end(RecordModel::AGGREGATES['resolution']);
+        $deleteStmt->close();
+
+        $stmt = $this->mysqli->prepare("DELETE FROM `records` WHERE `device_id` = ? AND `timestamp` < ?");
+        $minTimestamp = $toTs - $maxResolution;
         $stmt->bind_param('ii', $deviceId, $minTimestamp);
         $stmt->execute();
-        $stmt->close();*/
+        $stmt->close();
     }
 
     private function updateAggregate($deviceId, $resolution, $fromTs) {

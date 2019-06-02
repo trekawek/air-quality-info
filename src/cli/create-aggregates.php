@@ -14,7 +14,7 @@ $result = $stmt->get_result();
 while ($row = $result->fetch_row()) {
     $deviceId = $row[0];
     echo "Creating aggregates for device $deviceId\n";
-    $recordModel->createAggregates($deviceId, 0);
+    $recordModel->createAggregates($deviceId, 0, time());
 }
 $stmt->close();
 
