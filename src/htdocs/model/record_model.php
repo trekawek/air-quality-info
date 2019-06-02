@@ -92,7 +92,7 @@ class RecordModel {
             }
 
             $lastTs = $record['timestamp'];
-            
+            $records[$i] = $record;
         }
         $insertStmt->close();
 
