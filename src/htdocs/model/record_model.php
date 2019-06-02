@@ -61,8 +61,6 @@ class RecordModel {
         $typedef = 'ii'.str_repeat('s', count(RecordModel::FIELDS));
         
         foreach ($records as $i => $record) {
-            $record['timestamp'] = floor($record['timestamp'] / 180) * 180;
-
             foreach ($record as $k => $v) {
                 if (is_nan($v)) {
                     $record[$k] = null;
@@ -78,20 +76,6 @@ class RecordModel {
             }
             $insertStmt->bind_param($typedef, ...$param);
             $insertStmt->execute();
-
-            // fill the gaps with nulls
-            if ($lastTs !== null) {
-                for ($i = $lastTs + 180; $i < ($record['timestamp'] - 180); $i += 180) {
-                    $param = array($deviceId, $i);
-                    foreach (RecordModel::FIELDS as $f) {
-                        $param[] = null;
-                    }
-                    $insertStmt->bind_param($typedef, ...$param);
-                    $insertStmt->execute();
-                }
-            }
-
-            $lastTs = $record['timestamp'];
             $records[$i] = $record;
         }
         $insertStmt->close();
@@ -181,7 +165,8 @@ class RecordModel {
         GROUP BY `ts`";
 
         $stmt = $this->mysqli->prepare($sql);
-        $stmt->bind_param('iiiiii', $deviceId, $resolution, $resolution, $resolution, $deviceId, $roundedTimestamp);
+        $minRecordTimestamp = $roundedTimestamp - $resolution;
+        $stmt->bind_param('iiiiii', $deviceId, $resolution, $resolution, $resolution, $deviceId, $minRecordTimestamp);
         $stmt->execute();
         $stmt->close();
     }
