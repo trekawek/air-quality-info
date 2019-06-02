@@ -35,5 +35,8 @@ if (isset($_GET['lang'])) {
     $currentLocale->setLang($_GET['lang']);
 }
 
+$diContainer->setBinding('mysqli', $mysqli);
+$diContainer->setBinding('currentLocale', $currentLocale);
+
 Lib\CsrfToken::generateTokenIfNotExists();
 ?>

@@ -12,7 +12,7 @@ namespace AirQualityInfo\Lib {
 
         function __construct() {
             $this->currentLang = Locale::resolveCurrentLang();
-            require_once("locale/".$this->currentLang.".php");
+            include_once(__DIR__."/../locale/".$this->currentLang.".php");
             $this->locale = $locale;
             $this->jsLocale = $jsLocale;
         }

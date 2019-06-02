@@ -76,14 +76,12 @@ if (isset($_GET['theme'])) {
 $templateVariables = array(
     'currentController' => $currentController,
     'currentAction' => $currentAction,
-    'currentLocale' => $currentLocale,
     'currentTheme' => $currentTheme,
     'currentDevice' => $currentDevice,
     'devices' => $devices
 );
 $diContainer->addBindings($templateVariables);
 $diContainer->setBinding('templateVariables', $templateVariables);
-$diContainer->setBinding('mysqli', $mysqli);
 $diContainer->setBinding('userId', $userId);
 
 $diContainer->injectClass('\\AirQualityInfo\\Controller\\'.Lib\StringUtils::camelize($currentController).'Controller')->$currentAction(...array_values($args));

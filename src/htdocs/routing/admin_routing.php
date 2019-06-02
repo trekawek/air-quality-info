@@ -61,11 +61,9 @@ $currentAction = $route[1];
 $templateVariables = array(
     'currentController' => $currentController,
     'currentAction' => $currentAction,
-    'currentLocale' => $currentLocale
 );
 $diContainer->addBindings($templateVariables);
 $diContainer->setBinding('templateVariables', $templateVariables);
-$diContainer->setBinding('mysqli', $mysqli);
 
 $controller = $diContainer->injectClass('\\AirQualityInfo\\Admin\\Controller\\'.Lib\StringUtils::camelize($currentController).'Controller');
 $controller->beforeAction();

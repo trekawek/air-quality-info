@@ -16,6 +16,7 @@ services:
     - ./src/htdocs:/var/www/html
     - ./src/cli:/usr/local/bin/aqi
     - ./config.php:/etc/aqi/config.php
+    - ./var-data:/var/lib/aqi
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

@@ -15,8 +15,11 @@ class RecordModel {
 
     private $mysqli;
 
-    public function __construct($mysqli) {
+    private $csvModel;
+
+    public function __construct($mysqli, CsvModel $csvModel) {
         $this->mysqli = $mysqli;
+        $this->csvModel = $csvModel;
     }
 
     private function getLastTimestamp($deviceId) {
@@ -81,6 +84,7 @@ class RecordModel {
         $insertStmt->close();
 
         $this->createAggregates($deviceId, $records[0]['timestamp']);
+        $this->csvModel->storeRecords($deviceId, $records);
     }
 
     public function getLastData($deviceId) {
@@ -135,7 +139,7 @@ class RecordModel {
         }
         /*$stmt = $this->mysqli->prepare("DELETE FROM `records` WHERE `device_id` = ? AND `timestamp` < ?");
         $minTimestamp = time() - end(RecordModel::AGGREGATES['resolution']);
-        $stmt->bind_param('ii', $minTimestamp);
+        $stmt->bind_param('ii', $deviceId, $minTimestamp);
         $stmt->execute();
         $stmt->close();*/
     }
