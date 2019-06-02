@@ -78,6 +78,7 @@ $templateVariables = array(
     'currentAction' => $currentAction,
     'currentTheme' => $currentTheme,
     'currentDevice' => $currentDevice,
+    'currentLocale' => $currentLocale,
     'devices' => $devices
 );
 $diContainer->addBindings($templateVariables);

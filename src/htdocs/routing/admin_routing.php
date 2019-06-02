@@ -61,6 +61,7 @@ $currentAction = $route[1];
 $templateVariables = array(
     'currentController' => $currentController,
     'currentAction' => $currentAction,
+    'currentLocale' => $currentLocale,
 );
 $diContainer->addBindings($templateVariables);
 $diContainer->setBinding('templateVariables', $templateVariables);
