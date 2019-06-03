@@ -2,13 +2,16 @@
 
 window.chartColors = {
 	red: 'rgb(255, 99, 132)',
-	lightRed: 'rgb(255, 160, 181)',
+	lightRed: 'rgba(255, 99, 132, 0.5)',
 	orange: 'rgb(255, 159, 64)',
+	lightOrange: 'rgba(255, 159, 64, 0.5)',
 	yellow: 'rgb(255, 205, 86)',
 	green: 'rgb(75, 192, 192)',
+	lightGreen: 'rgba(75, 192, 192, 0.5)',
 	blue: 'rgb(54, 162, 235)',
-	lightBlue: 'rgb(120, 187, 232)',
+	lightBlue: 'rgba(54, 162, 235, 0.5)',
 	purple: 'rgb(153, 102, 255)',
+	lightPurple: 'rgba(153, 102, 255, 0.5)',
 	grey: 'rgb(201, 203, 207)'
 };
 
@@ -16,19 +19,19 @@ window.chartColors = {
 
 function mapToTimeSeries(data) {
     var result = new Array();
-    var lastValidT, lastValidY;
+    var nullCounter, lastValidY;
     var y;
     for (var timeStamp in data) {
         if (data.hasOwnProperty(timeStamp)) {
             if (data[timeStamp] == null) {
-                if ((timeStamp - lastValidT) < 60 * 10) {
+                if (nullCounter++ < 10) {
                     y = lastValidY;
                 } else {
                     y = null;
                 }
             } else {
                 y = data[timeStamp];
-                lastValidT = timeStamp;
+                nullCounter = 0;
                 lastValidY = y;
             }
             result.push({
@@ -38,6 +41,65 @@ function mapToTimeSeries(data) {
         }
     }
     return result;
+}
+
+function emptyTimeSeries(data) {
+    var ranges = new Array();
+    var currentNullRange = null;
+    for (var i in data) {
+        if (data[i].y == null) {
+            if (currentNullRange == null) {
+                currentNullRange = {
+                    from: {
+                        t: data[i].t,
+                        y: null
+                    },
+                    to: {
+                        t: null,
+                        y: null
+                    },
+                    steps: 0
+                };
+                if (i > 0) {
+                    currentNullRange.from.y = data[i - 1].y;
+                }
+            } else {
+                currentNullRange.steps++;
+            }
+        } else {
+            if (currentNullRange != null) {
+                currentNullRange.to.t = data[i - 1].t;
+                currentNullRange.to.y = data[i].y;
+                ranges.push(currentNullRange);
+                currentNullRange = null;
+            }
+        }
+    }
+    
+    var result = new Array();
+    for (var i in ranges) {
+        var range = ranges[i];
+        if (range.from.y == null || range.to.y == null) {
+            continue;
+        }
+
+        var minTime = range.from.t.getTime();
+        var maxTime = range.to.t.getTime();
+        var stepT = (range.to.t.getTime() - range.from.t.getTime()) / range.steps;
+        var stepY = (range.to.y - range.from.y) / range.steps;
+        for (var j = 0; j <= range.steps; j++) {
+            var mu = j / range.steps;
+            result.push({
+                t: new Date(interpolate(minTime, maxTime, mu)),
+                y: interpolate(range.from.y, range.to.y, mu)
+            });
+        }
+    }
+    return result;
+}
+
+function interpolate(y1, y2, mu) {
+    return (y1 * (1 - mu) + y2 * mu);
 }
 
 function isEmptyData(data) {
@@ -91,18 +153,32 @@ function renderGraph(ctx, data, type, avgType) {
 
     switch (type) {
         case 'pm':
+        var pm25data = mapToTimeSeries(data.data.pm25);
+        var pm10data = mapToTimeSeries(data.data.pm10);
+        var emptyPm25Data = emptyTimeSeries(pm25data);
+        var emptyPm10Data = emptyTimeSeries(pm10data);
         config.data = {
             datasets: [{
                 backgroundColor: window.chartColors.purple,
                 borderColor: window.chartColors.red,
                 label: 'PM₂₅ (µg/m³)',
-                data: mapToTimeSeries(data.data.pm25),
+                data: pm25data,
                 borderWidth: 1
             }, {
                 backgroundColor: window.chartColors.orange,
                 borderColor: window.chartColors.red,
                 label: 'PM₁₀ (µg/m³)',
-                data: mapToTimeSeries(data.data.pm10),
+                data: pm10data,
+                borderWidth: 1
+            }, {
+                backgroundColor: window.chartColors.lightPurple,
+                borderColor: window.chartColors.lightRed,
+                data: emptyPm25Data,
+                borderWidth: 1
+            }, {
+                backgroundColor: window.chartColors.lightOrange,
+                borderColor: window.chartColors.lightRed,
+                data: emptyPm10Data,
                 borderWidth: 1
             }]
         };
@@ -159,19 +235,30 @@ function renderGraph(ctx, data, type, avgType) {
         break;
 
         case 'temperature':
+        var tempData = mapToTimeSeries(data.data.temperature);
+        var detectorTempData = mapToTimeSeries(data.data.heater_temperature);
+
+        var emptyTempData = emptyTimeSeries(tempData);
+
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.red,
                 label: __('Temperature') + ' (°C)',
-                data: mapToTimeSeries(data.data.temperature),
+                data: tempData,
                 borderWidth: 2,
                 fill: false
-            }]};
+            }, {
+                borderColor: window.chartColors.lightRed,
+                data: emptyTempData,
+                borderWidth: 2,
+                fill: false
+            }
+        ]};
         if (!isEmptyData(data.data.heater_temperature)) {
             config.data.datasets.push({
                 borderColor: window.chartColors.lightRed,
                 label: __('Detector temperature') + '(°C)',
-                data: mapToTimeSeries(data.data.heater_temperature),
+                data: detectorTempData,
                 borderWidth: 2,
                 fill: false,
                 hidden: true
@@ -186,11 +273,18 @@ function renderGraph(ctx, data, type, avgType) {
         break;
 
         case 'pressure':
+        var pressureData = mapToTimeSeries(data.data.pressure);
+        var emptyPressureData = emptyTimeSeries(pressureData);
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.green,
                 label: __('Pressure') + ' (hPa)',
-                data: mapToTimeSeries(data.data.pressure),
+                data: pressureData,
+                borderWidth: 2,
+                fill: false
+            },{
+                borderColor: window.chartColors.lightGreen,
+                data: emptyPressureData,
                 borderWidth: 2,
                 fill: false
             }]
@@ -204,11 +298,19 @@ function renderGraph(ctx, data, type, avgType) {
         break;
 
         case 'humidity':
+        var humidityData = mapToTimeSeries(data.data.humidity);
+        var detectorHumidityData = mapToTimeSeries(data.data.heater_humidity);
+        var emptyHumidityData = emptyTimeSeries(humidityData);
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.blue,
                 label: __('Humidity') + ' (%)',
-                data: mapToTimeSeries(data.data.humidity),
+                data: humidityData,
+                borderWidth: 2,
+                fill: false
+            },{
+                borderColor: window.chartColors.lightBlue,
+                data: emptyHumidityData,
                 borderWidth: 2,
                 fill: false
             }]};
@@ -216,7 +318,7 @@ function renderGraph(ctx, data, type, avgType) {
             config.data.datasets.push({
                 borderColor: window.chartColors.lightBlue,
                 label: __('Detector humidity') + ' (%)',
-                data: mapToTimeSeries(data.data.heater_humidity),
+                data: detectorHumidityData,
                 borderWidth: 2,
                 fill: false,
                 hidden: true
@@ -235,6 +337,15 @@ function renderGraph(ctx, data, type, avgType) {
         ctx.chart.destroy();
         ctx.chart = null;
     } 
+
+    config.options.legend = {
+        labels: {
+            filter: function(item, chart) {
+                return typeof item.text != 'undefined';
+            }
+        }
+    };
+
     ctx.chart = new Chart(ctx, config);
 }
 
