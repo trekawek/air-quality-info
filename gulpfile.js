@@ -48,6 +48,8 @@ var paths = {
       'node_modules/popper.js/dist/umd/popper.js',
       'node_modules/bootstrap/dist/js/bootstrap.js',
       'node_modules/@coreui/coreui/dist/js/coreui.js',
+      'node_modules/@coreui/coreui/dist/js/coreui.js',
+      'node_modules/location-picker/dist/location-picker.umd.js',
     ],
     dest: 'src/htdocs/admin/public/js/'
   },

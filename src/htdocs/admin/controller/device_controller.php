@@ -62,7 +62,8 @@ class DeviceController extends AbstractController {
                 'description' => $_POST['description'],
                 'http_username' => $this->user['email'],
                 'http_password' => bin2hex(random_bytes(8)),
-                'default_device' => 0
+                'default_device' => 0,
+                'location_provided' => 0
             ));
 
             $rootId = $this->deviceHierarchyModel->getRootId($this->user['id']);
@@ -95,10 +96,15 @@ class DeviceController extends AbstractController {
         if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
             $data = array(
                 'name' => $_POST['name'],
-                'description' => $_POST['description']
+                'description' => $_POST['description'],
+                'location_provided' => isset($_POST['location_provided']) ? 1 : 0,
+                'lat' => $_POST['lat'],
+                'lng' => $_POST['lng']
             );
             $this->deviceModel->updateDevice($deviceId, $data);
             $this->alert(__('Updated the device', 'success'));
+            $device = $this->getDevice($deviceId);
+            $deviceForm->setDefaultValues($device);
         }
 
         if ($mappingForm->isSubmitted() && $mappingForm->validate($_POST)) {
@@ -174,6 +180,9 @@ class DeviceController extends AbstractController {
         $deviceForm->addElement('esp8266_id', 'text', 'ESP 8266 id', array('disabled' => true));
         $this->addNameField($deviceForm);
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
+        $deviceForm->addElement('location_provided', 'checkbox', 'Choose location', array('data-toggle'=>'collapse', 'data-target'=>'.map-group'), null);
+        $deviceForm->addElement('lat', 'hidden');
+        $deviceForm->addElement('lng', 'hidden');
         return $deviceForm;
     }
 

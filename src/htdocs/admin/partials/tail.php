@@ -7,7 +7,8 @@
                 <?php echo date('Y') ?> &copy; aqi.eco
             </div>
         </footer>
-        <script src="/admin/public/js/vendor.min.js"></script>
-        <script src="/admin/public/js/main.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo CONFIG['google_maps_key'] ?>"></script>
+        <script src="/admin/public/js/vendor.min.js?v=30"></script>
+        <script src="/admin/public/js/main.js?v=30"></script>
     </body>
 </html>

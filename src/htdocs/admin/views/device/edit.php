@@ -9,11 +9,16 @@
             <div class="card-body">
                 <form action="<?php echo l('device', 'edit', null, array('device_id' => $deviceId)) ?>" method="post">
                     <?php $deviceForm->render() ?>
+                    <div class="form-group collapse map-group <?php echo $device['location_provided'] ? 'show' : '' ?>" data-input-lat="#latInput" data-input-lng="#lngInput">
+                        <div class="map"></div>
+                    </div>
                     <button type="submit" class="btn btn-primary"><?php echo __('Update') ?></button>
                 </form>
             </div>
         </div>
+    </div>
 
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
                 <?php echo __('Sensor configuration') ?>
@@ -42,9 +47,6 @@
             </div>
         </div>
 
-    </div>
-
-    <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
                 <?php echo __('Custom field mappings') ?>

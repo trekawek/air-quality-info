@@ -2,15 +2,18 @@
 
 <div class="row">
     <div class="col-md-3 offset-md-2">
-        <small><?php echo implode(' / ', array_slice($desc, 0, -1)) ?></small>
-        <h4><?php echo end($desc) ?></h4>
+        <h4><?php echo $desc ?></h4>
     </div>
     <div class="col-md-2 text-center">
         <?php include('partials/sensors/badge.php') ?>
     </div>
 </div>
 
-<?php include('partials/sensors/table.php') ?>
+<div class="row">
+    <div class="col-md-8 offset-md-2 text-center">
+        <?php include('partials/sensors/table.php') ?>
+    </div>
+</div>
 
 <div class="row">
   <div class="col-md-8 offset-md-2 text-center">

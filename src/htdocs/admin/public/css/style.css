@@ -13,3 +13,8 @@
 .app-header .navbar-brand {
     width: 15rem;
 }
+
+.map {
+    width: 100%;
+    height: 360px;
+}

@@ -140,7 +140,8 @@ class DeviceHierarchyModel {
             `dh`.`device_id`,
             `dh`.`position`,
             IFNULL(`d`.`name`, `dh`.`name`) AS `name`,
-            IFNULL(`d`.`description`, `dh`.`description`) AS `description`
+            IFNULL(`d`.`description`, `dh`.`description`) AS `description`,
+            `d`.`location_provided`
         FROM `device_hierarchy` `dh`
         LEFT JOIN `devices` `d` ON `d`.`id` = `dh`.`device_id`
         WHERE `dh`.`user_id` = ? AND `parent_id` = ? ORDER BY `position`");
@@ -163,7 +164,8 @@ class DeviceHierarchyModel {
             `dh`.`device_id`,
             `dh`.`position`,
             IFNULL(`d`.`name`, `dh`.`name`) AS `name`,
-            IFNULL(`d`.`description`, `dh`.`description`) AS `description`
+            IFNULL(`d`.`description`, `dh`.`description`) AS `description`,
+            `d`.`location_provided`
         FROM `device_hierarchy` `dh`
         LEFT JOIN `devices` `d` ON `d`.`id` = `dh`.`device_id`
         WHERE `dh`.`user_id` = ? ORDER BY `position`");

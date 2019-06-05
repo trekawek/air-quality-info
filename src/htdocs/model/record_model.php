@@ -324,5 +324,52 @@ class RecordModel {
         return $result;
     }
 
+    public function getAverages($deviceId, $currentAvgType = '1') {
+        if ($currentAvgType == '1') {
+            $averages = $this->getLastAvg($deviceId, 1);
+            $pm10_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM10_THRESHOLDS_1H;
+            $pm25_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM25_THRESHOLDS_1H;
+            $pm10_limit = \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_1H;
+            $pm25_limit = \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_1H;
+        } else {
+            $averages = $this->getLastAvg($deviceId, 24);
+            $pm10_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM10_THRESHOLDS_24H;
+            $pm25_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM25_THRESHOLDS_24H;
+            $pm10_limit = \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_24H;
+            $pm25_limit = \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_24H;
+        }
+    
+        if ($averages['pm10'] === null) {
+            $pm10_level = null;
+            $rel_pm10 = null;
+        } else {
+            $pm10_level = \AirQualityInfo\Lib\PollutionLevel::findLevel($pm10_thresholds, $averages['pm10']);
+            $rel_pm10 = 100 * $averages['pm10'] / $pm10_limit;
+        }
+    
+        if ($averages['pm25'] === null) {
+            $pm25_level = null;
+            $rel_pm25 = null;
+        } else {
+            $pm25_level = \AirQualityInfo\Lib\PollutionLevel::findLevel($pm25_thresholds, $averages['pm25']);
+            $rel_pm25 = 100 * $averages['pm25'] / $pm25_limit;
+        }
+    
+        if ($pm10_level === null && $pm25_level === null) {
+            $max_level = null;
+        } else {
+            $max_level = max($pm10_level, $pm25_level);
+        }
+    
+        return array(
+            'values' => $averages,
+            'pm25_level' => $pm25_level,
+            'pm10_level' => $pm10_level,
+            'max_level' => $max_level,
+            'rel_pm25' => $rel_pm25,
+            'rel_pm10' => $rel_pm10,
+        );
+    }
+
 }
 ?>

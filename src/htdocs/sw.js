@@ -37,7 +37,8 @@ var unavailableOffline = [
   "/",
   "/graphs",
   "/offline",
-  "/annual_stats"
+  "/annual_stats",
+  "/map"
 ];
 
 var cacheName = 'airqualityinfo-r6';

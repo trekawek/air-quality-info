@@ -44,7 +44,10 @@ $routes = array(
     'GET /offline'                   => array('static', 'offline'),
     'POST /update'                   => array('update', 'update'),
     'GET /:device/graphs'            => array('graph', 'index'),
-    'GET /[:device]/graph_data.json' => array('graph', 'get_data')
+    'GET /[:device]/graph_data.json' => array('graph', 'get_data'),
+    'GET /map'                       => array('map', 'index'),
+    'GET /map/data.json'             => array('map', 'data'),
+    'GET /map/:device'               => array('map', 'sensorInfo'),
 );
 
 $router = new Lib\Router($routes, $devices);

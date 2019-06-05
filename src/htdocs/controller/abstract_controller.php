@@ -18,6 +18,7 @@ class AbstractController {
 
         $deviceTree = $this->deviceHierarchyModel->getTree($this->userId);
         $displayLocations = $this->isDisplayLocations($deviceTree);
+        $displayMap = $this->isDisplayMap($deviceTree);
         $this->addDevices($deviceTree);
 
         extract($this->templateVariables);
@@ -32,6 +33,18 @@ class AbstractController {
         if ($args['layout']) {
             include('partials/tail.php');
         }
+    }
+
+    protected function flatTree($tree) {
+        $devices = array();
+        if ($tree['device_id']) {
+            $devices[] = $this->deviceById[$tree['device_id']];
+        } else if (isset($tree['children'])) {
+            foreach ($tree['children'] as $c) {
+                $devices = array_merge($devices, $this->flatTree($c));
+            }
+        }
+        return $devices;
     }
 
     // @Inject
@@ -75,6 +88,19 @@ class AbstractController {
         } else {
             return false;
         }
+    }
+
+    private function isDisplayMap($node) {
+        if ($node['location_provided']) {
+            return true;
+        } else {
+            foreach ($node['children'] as $c) {
+                if ($this->isDisplayMap($c)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
 ?>
