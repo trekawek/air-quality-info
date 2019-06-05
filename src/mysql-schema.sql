@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jun 01, 2019 at 08:17 PM
+-- Generation Time: Jun 05, 2019 at 09:19 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.2.14
 
@@ -61,7 +61,10 @@ CREATE TABLE `devices` (
   `http_password` varchar(256) NOT NULL,
   `name` varchar(256) NOT NULL,
   `description` varchar(256) NOT NULL,
-  `default_device` tinyint(1) NOT NULL
+  `default_device` tinyint(1) NOT NULL,
+  `location_provided` tinyint(1) NOT NULL DEFAULT '0',
+  `lat` decimal(17,14) DEFAULT NULL,
+  `lng` decimal(17,14) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
