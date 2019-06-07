@@ -21,6 +21,7 @@ This is the code of the SaaS product now, available live on https://aqi.eco.
 ## Setup
 
 ```
+mv config-DEFAULT.php config.php
 docker-compose up
 ```
 
