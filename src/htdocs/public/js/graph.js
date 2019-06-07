@@ -79,7 +79,7 @@ function emptyTimeSeries(data) {
     var result = new Array();
     for (var i in ranges) {
         var range = ranges[i];
-        if (range.from.y == null || range.to.y == null) {
+        if (range.from.y == null || range.to.y == null || range.steps == 0) {
             continue;
         }
 
