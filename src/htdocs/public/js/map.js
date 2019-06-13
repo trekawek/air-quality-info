@@ -53,6 +53,9 @@ function addMarker(sensor, position, map) {
 }
 
 function addCircle(sensor, position, map) {
+    if (sensor.averages.max_level === null) {
+        return;
+    }
     new google.maps.Circle({
         strokeColor: COLORS[sensor.averages.max_level],
         strokeOpacity: 0.8,
