@@ -11,9 +11,8 @@ This is the code of the SaaS product now, available live on https://aqi.eco.
 ## Features
 
 * Nice and clean interface
-* Records stored in the RRD or MySQL
+* Records stored in MySQL
 * Graphs rendered with ChartJS
-* No external database required
 * Support for multiple devices
 * Locale support
 * Progressive Web App
