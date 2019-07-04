@@ -150,7 +150,6 @@ class RecordModel {
     }
 
     private function updateAggregate($deviceId, $resolution, $fromTs) {
-        error_log("Updating aggregate for device $deviceId with resolution $resolution from timestamp $fromTs");
         $avgFields = array();
         $fields = array();
         foreach (RecordModel::FIELDS as $f) {
