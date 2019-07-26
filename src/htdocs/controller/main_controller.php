@@ -1,6 +1,8 @@
 <?php
 namespace AirQualityInfo\Controller;
 
+use \AirQualityInfo\Lib\PollutionLevel;
+
 class MainController extends AbstractController {
 
     private $recordModel;
@@ -35,14 +37,33 @@ class MainController extends AbstractController {
     }
 
     public function data_json($device) {
-        $data = $this->recordModel->getLastData($device['id']);
-        if ($data === null) {
+        $data = array();
+
+        $last = $this->recordModel->getLastData($device['id']);
+        $avg1h = $this->recordModel->getAverages($device['id'], 1);
+        $avg24h = $this->recordModel->getAverages($device['id'], 24);
+
+        $data['last_data'] = MainController::arr_values_to_float($last);
+
+        $data['average_1h'] = MainController::arr_values_to_float($avg1h['values']);
+        $data['average_1h']['label'] = __(PollutionLevel::POLLUTION_LEVELS[$avg1h['max_level']]['name']);
+
+        $data['average_24h'] = MainController::arr_values_to_float($avg24h['values']);
+        $data['average_24h']['label'] = __(PollutionLevel::POLLUTION_LEVELS[$avg24h['max_level']]['name']);
+
+        if ($data['last_data'] === null) {
             http_response_code(404);
             die();
         } else {
             header('Content-type: application/json');
-            echo json_encode($data);
+            echo json_encode($data, JSON_PRETTY_PRINT);
         }
+    }
+
+    private static function arr_values_to_float($values) {
+        return array_map (function($v) {
+            return is_numeric($v) ? round($v, 2) : $v;
+        }, $values);
     }
 
     public function all($nodeId = null) {
