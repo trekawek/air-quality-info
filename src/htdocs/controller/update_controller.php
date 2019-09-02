@@ -39,7 +39,7 @@ class UpdateController extends AbstractController {
             if (!isset($mapping[$m['db_name']])) {
                 $mapping[$m['db_name']] = array();
             }
-            $mapping[$m['db_name']][] = $mapping[$m['json_name']];
+            $mapping[$m['db_name']][] = $m['json_name'];
         }
         $device['mapping'] = $mapping;
 
