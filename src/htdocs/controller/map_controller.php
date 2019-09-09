@@ -24,9 +24,11 @@ class MapController extends AbstractController {
             foreach ($deviceFields as $f) {
                 $deviceFiltered[$f] = $device[$f];
             }
-            if ($device['location_provided']) {
+            if ($device['location_provided'] && $device['lat'] && $device['lng']) {
                 $deviceFiltered['lat'] = $device['lat'];
                 $deviceFiltered['lng'] = $device['lng'];
+            } else {
+                continue;
             }
             $deviceFiltered['data'] = $this->recordModel->getLastData($device['id']);
             $deviceFiltered['averages'] = $this->recordModel->getAverages($device['id'], 1);
