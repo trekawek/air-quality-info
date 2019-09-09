@@ -17,7 +17,7 @@ extract($r);
     <div class="col-md-8 offset-md-2 text-center">
         <?php
         include('partials/sensors/table.php');
-        endforeach
         ?>
     </div>
 </div>
+<?php endforeach ?>
