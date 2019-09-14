@@ -7,12 +7,18 @@ namespace AirQualityInfo\Lib {
 
         private $devices;
 
-        public function __construct($routes, $devices = array()) {
+        private $user;
+
+        public function __construct($routes, $devices = array(), $user = null) {
             $this->routes = $routes;
             $this->devices = $devices;
+            $this->user = $user;
         }
 
         public function findRoute($method, $uri) {
+            if ($uri == '/' && $this->user && $this->user['redirect_root']) {
+                $uri = $this->user['redirect_root'];
+            }
             $uri = array_values(array_filter(explode('/', $uri)));
             foreach ($this->routes as $path => $route) {
                 $path = explode(' ', $path);
@@ -122,7 +128,7 @@ namespace AirQualityInfo\Lib {
                 if (substr($segment, 0, 1) === ':') {
                     $argName = substr($segment, 1);
                     if ($argName === 'device') {
-                        if (!$optional || !$isDefaultDevice) {
+                        if (!$optional || !$isDefaultDevice || ($this->user && $this->user['redirect_root'])) {
                             $link .= $device['path'];
                         }
                     } else if (isset($args[$argName])) {

@@ -20,6 +20,7 @@ if ($userId === null) {
     Lib\Router::send404();
 }
 
+$user = $userModel->getUserById($userId);
 $devices = (new model\DeviceModel($mysqli))->getDevicesForUser($userId);
 if (count($devices) === 0) {
     Lib\Router::send404();
@@ -50,10 +51,12 @@ $routes = array(
     'GET /map/:device'               => array('map', 'sensorInfo'),
 );
 
-$router = new Lib\Router($routes, $devices);
+$router = new Lib\Router($routes, $devices, $user);
+
+$uri = urldecode(explode("?", $_SERVER['REQUEST_URI'])[0]);
 list($route, $args) = $router->findRoute(
     $_SERVER['REQUEST_METHOD'],
-    urldecode(explode("?", $_SERVER['REQUEST_URI'])[0])
+    $uri
 );
 
 // the domain is correct, but the path is not
@@ -87,6 +90,7 @@ $templateVariables = array(
 $diContainer->addBindings($templateVariables);
 $diContainer->setBinding('templateVariables', $templateVariables);
 $diContainer->setBinding('userId', $userId);
+$diContainer->setBinding('user', $user);
 
 $diContainer->injectClass('\\AirQualityInfo\\Controller\\'.Lib\StringUtils::camelize($currentController).'Controller')->$currentAction(...array_values($args));
 
