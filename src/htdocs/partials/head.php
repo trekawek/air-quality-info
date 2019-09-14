@@ -2,7 +2,7 @@
 namespace AirQualityInfo\head;
 
 function navItem($action, $desc) {
-  global $currentAction, $currentController;
+  global $currentAction, $currentController, $uri;
   require('partials/navbar/nav_item.php');
 }
 ?><!DOCTYPE html>
@@ -43,7 +43,7 @@ function navItem($action, $desc) {
       <div class="row">
         <div class="col-md-8 offset-md-2">
           <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <a href="<?php echo l('main', 'index'); ?>" class="navbar-left navbar-brand">
+            <a href="/" class="navbar-left navbar-brand">
                 <img src="/public/img/aqi.png">aqi.eco
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Nawigacja">
@@ -51,7 +51,7 @@ function navItem($action, $desc) {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
-                <?php navItem(array('main', 'index'), 'Home'); ?>
+                <?php navItem("/", 'Home'); ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo __('Graphs') ?>
