@@ -46,6 +46,10 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
                             <i class="nav-icon fa fa-sitemap"></i> <?php echo __('Locations') ?></a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="<?php echo l('user', 'settings') ?>">
+                            <i class="nav-icon fa fa-cog"></i> <?php echo __('Settings') ?></a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="<?php echo l('user', 'edit') ?>">
                             <i class="nav-icon fa fa-user"></i> <?php echo __('Account') ?></a>
                         </li>

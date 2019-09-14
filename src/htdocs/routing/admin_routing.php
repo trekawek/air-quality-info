@@ -14,6 +14,8 @@ $routes = array(
     'POST /register' => array('user', 'doRegister'),
     'GET /user/edit' => array('user', 'edit'),
     'POST /user/edit' => array('user', 'edit'),
+    'GET /user/settings' => array('user', 'settings'),
+    'POST /user/settings' => array('user', 'settings'),
 
     'GET /device_hierarchy/[:node_id]' => array('device_hierarchy', 'index'),
     'GET /device_hierarchy/[:node_id]/edit_dir' => array('device_hierarchy', 'editDirectory'),

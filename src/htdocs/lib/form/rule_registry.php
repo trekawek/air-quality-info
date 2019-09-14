@@ -19,7 +19,7 @@ class RuleRegistry {
             return is_numeric($value) && $value >= 0;
         }, "%s should be a number");
         $this->rules['regexp'] = new Rule(function($value, $options) {
-            return preg_match($options['pattern'], $value);
+            return empty($value) || preg_match($options['pattern'], $value);
         }, "%s contains invalid characters");
     }
 

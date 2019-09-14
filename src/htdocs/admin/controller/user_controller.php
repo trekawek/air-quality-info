@@ -94,6 +94,34 @@ class UserController extends AbstractController {
             'userForm' => $userForm
         ));
     }
+
+    public function settings() {
+        $this->authorize();
+
+        $userForm = new \AirQualityInfo\Lib\Form\Form("userForm");
+        $urlPrefix = 'https://'
+            .$this->user['domain']
+            .CONFIG['user_domain_suffixes'][0];
+        $userForm->addElement('redirect_root', 'text', 'Redirect home page')
+            ->addRule('regexp', array('pattern' => '/^\/[a-z0-9\/-]+$/', 'message' => __('The path should consist of alphanumeric characters, dashes and slashes')))
+            ->setOptions(array('prepend' => $urlPrefix));
+
+        $userForm->setDefaultValues($this->user);
+
+        if ($userForm->isSubmitted() && $userForm->validate($_POST)) {
+            $data = array(
+                'redirect_root' => $_POST['redirect_root']
+            );
+            $this->userModel->updateUser($this->user['id'], $data);
+            $this->alert(__('Updated settings', 'success'));
+        }
+
+        $this->render(array(
+            'view' => 'admin/views/user/settings.php'
+        ), array(
+            'userForm' => $userForm
+        ));
+    }
 }
 
 ?>

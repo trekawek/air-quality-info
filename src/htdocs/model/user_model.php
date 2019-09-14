@@ -77,5 +77,20 @@ class UserModel {
         $insertStmt->execute();
         $insertStmt->close();
     }
+
+    public function updateUser($userId, $data) {
+        $sql = "UPDATE `users` SET ";
+        foreach ($data as $k => $v) {
+            $sql .= "`$k` = ?, ";
+        }
+        $sql = substr($sql, 0, -2);
+        $sql .= " WHERE `id` = ?";
+
+        $stmt = $this->mysqli->prepare($sql);
+        $params = array_values($data);
+        $params[] = $userId;
+        $stmt->bind_param(str_repeat('s', count($data)).'i', ...$params);
+        $stmt->execute();
+    }
 }
 ?>

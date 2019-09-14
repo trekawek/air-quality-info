@@ -17,8 +17,15 @@ namespace AirQualityInfo\Lib {
 
         public function findRoute($method, $uri) {
             if ($uri == '/' && $this->user && $this->user['redirect_root']) {
-                $uri = $this->user['redirect_root'];
+                $route = $this->doFindRoute($method, $this->user['redirect_root']);
+                if ($route[0] != null) {
+                    return $route;
+                }
             }
+            return $this->doFindRoute($method, $uri);
+        }
+
+        private function doFindRoute($method, $uri) {
             $uri = array_values(array_filter(explode('/', $uri)));
             foreach ($this->routes as $path => $route) {
                 $path = explode(' ', $path);
