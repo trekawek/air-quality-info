@@ -31,3 +31,7 @@ foreach($graphs as $type => $name):
 </div>
 <?php endif ?>
 <?php endforeach; ?>
+
+<?php if (count($graphs) == 1): ?>
+</div>
+<?php endif ?>
