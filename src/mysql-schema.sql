@@ -136,7 +136,8 @@ CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `email` varchar(254) NOT NULL,
   `password_hash` varchar(128) NOT NULL,
-  `domain` varchar(256) NOT NULL
+  `domain` varchar(256) NOT NULL,
+  `redirect_root` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
