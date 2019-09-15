@@ -76,5 +76,17 @@ class AbstractController {
             return null;
         }
     }
+
+    protected function getUriPrefix() {
+        $uri_prefix = '//' . $this->user['domain'] . CONFIG['user_domain_suffixes'][0];
+        $host = explode(':', $_SERVER['HTTP_HOST']);
+        if (isset($host[1])) {
+            $port = $host[1];
+        }
+        if (isset($port) && $port != 80 && $port != 443) {
+            $uri_prefix .= ":$port";
+        }
+        return $uri_prefix;
+    }
 }
 ?>

@@ -26,6 +26,8 @@ $routes = array(
     'POST /device_hierarchy/[:node_id]/create_dir' => array('device_hierarchy', 'createDir'),
     'GET /device_hierarchy/[:node_id]/create_device' => array('device_hierarchy', 'createDevice'),
     'POST /device_hierarchy/[:node_id]/create_device' => array('device_hierarchy', 'createDevice'),
+    'GET /device_hierarchy/[:node_id]/create_external_device' => array('device_hierarchy', 'createExternalDevice'),
+    'POST /device_hierarchy/[:node_id]/create_external_device' => array('device_hierarchy', 'createExternalDevice'),
     'POST /device_hierarchy/[:node_id]/move' => array('device_hierarchy', 'move'),
     'DELETE /device_hierarchy/[:node_id]' => array('device_hierarchy', 'deleteNode'),
 

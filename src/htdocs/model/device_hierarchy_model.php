@@ -141,6 +141,7 @@ class DeviceHierarchyModel {
             `dh`.`position`,
             IFNULL(`d`.`name`, `dh`.`name`) AS `name`,
             IFNULL(`d`.`description`, `dh`.`description`) AS `description`,
+            `d`.`user_id` AS `device_user_id`,
             `d`.`location_provided`
         FROM `device_hierarchy` `dh`
         LEFT JOIN `devices` `d` ON `d`.`id` = `dh`.`device_id`

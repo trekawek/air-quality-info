@@ -2,26 +2,13 @@
 namespace AirQualityInfo;
 
 $userModel = new model\UserModel($mysqli);
-$userId = null;
-$isStandardDomain = false;
-foreach (CONFIG['user_domain_suffixes'] as $suffix) {
-    if (substr($host, -strlen($suffix)) === $suffix) {
-        $isStandardDomain = true;
-        $subdomain = substr($host, 0, -strlen($suffix));
-        $userId = $userModel->getIdByDomain($subdomain);
-    }
-}
-
-if (!$isStandardDomain) {
-    $userId = $userModel->getIdByCustomFqdn($host);
-}
-
+$userId = $userModel->parseFqdn($host);
 if ($userId === null) {
     Lib\Router::send404();
 }
 
 $user = $userModel->getUserById($userId);
-$devices = (new model\DeviceModel($mysqli))->getDevicesForUser($userId);
+$devices = (new model\DeviceModel($mysqli))->getAllUserDevices($userId);
 if (count($devices) === 0) {
     Lib\Router::send404();
 }

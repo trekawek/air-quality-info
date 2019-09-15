@@ -29,14 +29,6 @@ class DeviceController extends AbstractController {
 
     public function index() {
         $devices = $this->deviceModel->getDevicesForUser($this->user['id']);
-        $uri_prefix = '//' . $this->user['domain'] . CONFIG['user_domain_suffixes'][0];
-        $host = explode(':', $_SERVER['HTTP_HOST']);
-        if (isset($host[1])) {
-            $port = $host[1];
-        }
-        if (isset($port) && $port != 80 && $port != 443) {
-            $uri_prefix .= ":$port";
-        }
         foreach ($devices as $i => $d) {
             $paths = $this->deviceHierarchyModel->getDevicePaths($this->user['id'], $d['id']);
             $path = null;
@@ -45,7 +37,7 @@ class DeviceController extends AbstractController {
             }
             $devices[$i]['path'] = $path;
         }
-        $this->render(array('view' => 'admin/views/device/index.php'), array('devices' => $devices, 'uriPrefix' => $uri_prefix));
+        $this->render(array('view' => 'admin/views/device/index.php'), array('devices' => $devices, 'uriPrefix' => $this->getUriPrefix()));
     }
 
     public function create() {

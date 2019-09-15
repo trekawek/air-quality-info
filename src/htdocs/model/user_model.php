@@ -9,6 +9,22 @@ class UserModel {
         $this->mysqli = $mysqli;
     }
 
+    public function parseFqdn($fqdn) {
+        $userId = null;
+        $isStandardDomain = false;
+        foreach (CONFIG['user_domain_suffixes'] as $suffix) {
+            if (substr($fqdn, -strlen($suffix)) === $suffix) {
+                $isStandardDomain = true;
+                $subdomain = substr($fqdn, 0, -strlen($suffix));
+                $userId = $this->getIdByDomain($subdomain);
+            }
+        }
+        if (!$isStandardDomain) {
+            $userId = $this->getIdByCustomFqdn($fqdn);
+        }
+        return $userId;
+    }
+
     public function getIdByDomain($domainName) {
         $stmt = $this->mysqli->prepare("SELECT id FROM `users` WHERE `domain` = ?");
         $stmt->bind_param('s', $domainName);

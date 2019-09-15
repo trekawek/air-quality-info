@@ -21,13 +21,20 @@ class DeviceHierarchyController extends AbstractController {
         }
         $breadcrumbs = $this->deviceHierarchyModel->getPath($this->user['id'], $nodeId);
         $nodes = $this->deviceHierarchyModel->getDirectChildren($this->user['id'], $nodeId);
+        foreach ($nodes as $i => $node) {
+            $path = $this->deviceHierarchyModel->getPath($this->user['id'], $node['id']);
+            $node['path'] = $this->deviceHierarchyModel->getTextPath($path);
+            $node['external'] = ($node['device_user_id'] != $this->user['id']);
+            $nodes[$i] = $node;
+        }
         $this->render(array(
             'view' => 'admin/views/device_hierarchy/index.php'
         ), array(
             'nodes' => $nodes,
             'nodeId' => $nodeId,
             'breadcrumbs' => $breadcrumbs,
-            'lastItemLink' => false
+            'lastItemLink' => false,
+            'uriPrefix' => $this->getUriPrefix()
         ));
     }
 
@@ -88,6 +95,58 @@ class DeviceHierarchyController extends AbstractController {
                 'lastItemLink' => true
             ));
         }
+    }
+
+    public function createExternalDevice($parentId) {
+        $breadcrumbs = $this->deviceHierarchyModel->getPath($this->user['id'], $parentId);
+        $nodeForm = new \AirQualityInfo\Lib\Form\Form("nodeForm");
+        $nodeForm->addElement('uri', 'text', 'URI', array(), 'Please paste the URL address of the device you want to link. It must be a link within aqi.eco domain, eg.: https://smolna.aqi.eco/13b')
+            ->addRule('required');
+        if ($nodeForm->isSubmitted() && $nodeForm->validate($_POST)) {
+            $deviceId = $this->getDeviceIdFromUrl($_POST['uri']);
+            if ($deviceId != null) {
+                $id = $this->deviceHierarchyModel->addChild(
+                    $this->user['id'],
+                    $parentId,
+                    null,
+                    null,
+                    $deviceId
+                );
+                $this->alert(__('Linked device', 'success'));
+                header('Location: '.l('device_hierarchy', 'index', null, array('node_id' => $parentId)));
+                return;
+            }
+        }
+        $this->render(array(
+            'view' => 'admin/views/device_hierarchy/create_external_device.php'
+        ), array(
+            'nodeForm' => $nodeForm,
+            'parentId' => $parentId,
+            'breadcrumbs' => $breadcrumbs,
+            'lastItemLink' => true
+        ));
+    }
+
+    private function getDeviceIdFromUrl($uri) {
+        $parsed = parse_url($uri);
+        $host = $parsed['host'];
+        $path = $parsed['path'];
+        $userId = $this->userModel->parseFqdn($host);
+        if ($userId == null) {
+            $this->alert(__('Invalid domain', 'error'));
+            return null;
+        }
+        $devices = $this->deviceModel->getDevicesForUser($userId);
+        foreach ($devices as $i => $d) {
+            $paths = $this->deviceHierarchyModel->getDevicePaths($userId, $d['id']);
+            foreach ($paths as $p) {
+                if ($path == $p) {
+                    return $d['id'];
+                }
+            }
+        }
+        $this->alert(__('Invalid path', 'error'));
+        return null;
     }
 
     public function editDirectory($nodeId) {

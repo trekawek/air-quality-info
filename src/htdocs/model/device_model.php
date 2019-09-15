@@ -52,6 +52,19 @@ class DeviceModel {
         return $data;
     }
 
+    public function getAllUserDevices($userId) {
+        $stmt = $this->mysqli->prepare("SELECT * FROM `devices` WHERE `user_id` = ? OR `id` IN (SELECT `dh`.`device_id` FROM `device_hierarchy` `dh` WHERE `dh`.`user_id` = ?) ORDER BY `default_device` DESC, `id` ASC");
+        $stmt->bind_param('ii', $userId, $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        $stmt->close();
+        return $data;
+    }
+
     public function deleteDevice($deviceId) {
         $stmt = $this->mysqli->prepare("DELETE FROM `devices` WHERE `id` = ?");
         $stmt->bind_param('i', $deviceId);
