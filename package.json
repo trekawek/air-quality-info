@@ -4,12 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@coreui/coreui": "^2.1.9",
+    "@coreui/coreui": "^2.1.12",
     "@coreui/icons": "^0.3.0",
     "bootstrap": "^4.3.1",
-    "bootswatch": "^4.2.1",
+    "bootswatch": "^4.3.1",
     "chalk": "^2.4.2",
-    "chart.js": "^2.7.3",
+    "chart.js": "^2.8.0",
     "chartjs-plugin-annotation": "^0.5.7",
     "flag-icon-css": "^3.3.0",
     "font-awesome": "^4.7.0",
@@ -22,13 +22,13 @@
     "weathericons": "^2.1.0"
   },
   "devDependencies": {
-    "gulp": "^4.0.0",
-    "gulp-clean-css": "^4.0.0",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",
     "gulp-rename": "^1.4.0",
     "gulp-replace": "^1.0.0",
     "gulp-terser": "^1.2.0",
-    "gulp-uglify": "^3.0.1",
+    "gulp-uglify": "^3.0.2",
     "merge-stream": "^1.0.1",
     "penthouse": "^2.2.0"
   }
