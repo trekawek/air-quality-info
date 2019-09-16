@@ -14,8 +14,8 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <title>aqi.eco<?php echo $title ? (' - ' . $title) : '' ?></title>
-        <link rel="stylesheet" href="/admin/public/css/vendor.min.css?v=30"/>
-        <link rel="stylesheet" href="/admin/public/css/style.css?v=30"/>
+        <link rel="stylesheet" href="/admin/public/css/vendor.min.css?v=31"/>
+        <link rel="stylesheet" href="/admin/public/css/style.css?v=31"/>
     </head>
 
     <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show" data-locale='<?php echo json_encode($currentLocale->getJsMessages()) ?>'>
