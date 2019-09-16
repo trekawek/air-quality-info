@@ -2,13 +2,13 @@ importScripts('/public/js/cache-polyfill.js');
 
 var staticFiles = [
   "/public/js/cache-polyfill.js",
-  "/public/js/main.js?v=17",
-  "/public/js/graph.js?v=17",
-  "/public/js/annual_graph.js?v=17",
-  "/public/js/vendor.min.js",
+  "/public/js/main.js?v=32",
+  "/public/js/graph.js?v=32",
+  "/public/js/annual_graph.js?v=32",
+  "/public/js/vendor.min.js?v=32",
   "/public/css/critical.css",
-  "/public/css/style.css?v=17",
-  "/public/css/vendor.min.css",
+  "/public/css/style.css?v=32",
+  "/public/css/vendor.min.css?v=32",
   "/public/css/themes/darkly.min.css",
   "/public/css/themes/default.min.css",
   "/public/img/aqi.png",
@@ -41,7 +41,7 @@ var unavailableOffline = [
   "/map"
 ];
 
-var cacheName = 'airqualityinfo-r6';
+var cacheName = 'airqualityinfo-r7';
 
 self.addEventListener('install', function(e) {
   e.waitUntil(
