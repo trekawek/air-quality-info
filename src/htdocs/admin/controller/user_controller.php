@@ -55,6 +55,10 @@ class UserController extends AbstractController {
             $this->failRegistration("The domain name has to consists of letters and digits.");
             return;
         }
+        if ($this->userModel->getIdByDomain($_POST['domain']) !== null) {
+            $this->failRegistration("This domain is already used.");
+            return;
+        }
         $userId = $this->userModel->createUser($email, $_POST['password'], $_POST['domain']);
         $_SESSION['user_id'] = $userId;
         header('Location: /');

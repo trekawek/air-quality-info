@@ -137,6 +137,7 @@ $locale['The name should consist of alphanumeric characters and dashes'] = 'Znak
 $locale['The path should consist of alphanumeric characters, dashes and slashes'] = 'Znaki dopuszczalne w ścieżce to małe litery, cyfry, "-" i "/"';
 $locale['Theme'] = 'Motyw';
 $locale['There are no data'] = 'Brak danych';
+$locale['This domain is already used.'] = 'Ta domeny jest już wykorzystana.';
 $locale['This is default device'] = 'To jest domyślne urządzenie';
 $locale['Time'] = 'Czas';
 $locale['Update'] = 'Aktualizuj';
