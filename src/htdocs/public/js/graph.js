@@ -186,6 +186,9 @@ function renderGraph(ctx, data, type, avgType) {
             display: true,
             scaleLabel: {
                 display: false
+            },
+            ticks: {
+                suggestedMax: 55
             }
         }];
 

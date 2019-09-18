@@ -3,7 +3,7 @@ importScripts('/public/js/cache-polyfill.js');
 var staticFiles = [
   "/public/js/cache-polyfill.js",
   "/public/js/main.js?v=32",
-  "/public/js/graph.js?v=32",
+  "/public/js/graph.js?v=33",
   "/public/js/annual_graph.js?v=32",
   "/public/js/vendor.min.js?v=32",
   "/public/css/critical.css",
@@ -41,7 +41,7 @@ var unavailableOffline = [
   "/map"
 ];
 
-var cacheName = 'airqualityinfo-r7';
+var cacheName = 'airqualityinfo-r8';
 
 self.addEventListener('install', function(e) {
   e.waitUntil(
