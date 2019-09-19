@@ -27,7 +27,12 @@ spl_autoload_register(function($className) {
     }
 });
 
-$mysqli = new \mysqli(CONFIG['db']['host'], CONFIG['db']['user'], CONFIG['db']['password'], CONFIG['db']['name']);
+$dsn = sprintf("mysql:host=%s;dbname=%s;charset=utf8mb4", CONFIG['db']['host'], CONFIG['db']['name']);
+$options = [
+  \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
+];
+$pdo = new \PDO($dsn, CONFIG['db']['user'], CONFIG['db']['password'], $options);
+
 $diContainer = new Lib\DiContainer();
 
 $currentLocale = new Lib\Locale();
@@ -35,7 +40,7 @@ if (isset($_GET['lang'])) {
     $currentLocale->setLang($_GET['lang']);
 }
 
-$diContainer->setBinding('mysqli', $mysqli);
+$diContainer->setBinding('pdo', $pdo);
 $diContainer->setBinding('currentLocale', $currentLocale);
 
 Lib\CsrfToken::generateTokenIfNotExists();

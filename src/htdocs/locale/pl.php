@@ -129,6 +129,7 @@ $locale['Show all'] = 'Pokaż wszystkie';
 $locale['Sign in'] = 'Zaloguj się';
 $locale['Sign in to your account'] = 'Zaloguj się';
 $locale['Sign up'] = 'Zarejestruj się';
+$locale['Start'] = 'Start';
 $locale['Stats'] = 'Statystyka';
 $locale['Support'] = 'Wsparcie';
 $locale['The domain name has to consists of letters and digits.'] = 'Nazwa domeny powinna składać się z liter i cyfr.';

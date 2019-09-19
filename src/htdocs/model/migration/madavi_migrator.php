@@ -65,8 +65,13 @@ class MadaviMigrator {
 
     private function processCsvUrl($url) {
         $fp = fopen($url, 'r');
-        $this->processCsv($url, $fp);
-        fclose($fp);
+        if ($fp) {
+            $this->processCsv($url, $fp);
+            fclose($fp);
+        } else {
+            echo "Can't open $url\n";
+            flush();
+        }
     }
 
     private function processCsv($url, $fp) {

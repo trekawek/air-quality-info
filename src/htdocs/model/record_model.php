@@ -13,29 +13,15 @@ class RecordModel {
         array('resolution' => 24 * 60 * 60, 'ttl' => null)
     );
 
-    private $mysqli;
+    private $pdo;
 
     private $csvModel;
 
-    public function __construct($mysqli, CsvModel $csvModel) {
-        $this->mysqli = $mysqli;
+    public function __construct($pdo, CsvModel $csvModel) {
+        $this->pdo = $pdo;
         $this->csvModel = $csvModel;
     }
 
-    private function getLastTimestamp($deviceId) {
-        $stmt = $this->mysqli->prepare("SELECT MAX(`timestamp`) FROM `records` WHERE `device_id` = ?");
-        $stmt->bind_param('i', $deviceId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $lastTs = null;
-        if ($row = $result->fetch_row()) {
-            $data = $row[0];
-        }
-        $stmt->close();
-        return $lastTs;
-    }
-
-    //public function update($deviceId, ) {
     public function update($deviceId, $records) {
         if (empty($records)) {
             return;
@@ -48,7 +34,6 @@ class RecordModel {
             }
             return ($t1 < $t2) ? -1 : 1;
         });
-        $lastTs = $this->getLastTimestamp($deviceId);
 
         $sql = 'INSERT INTO `records` (`device_id`, `timestamp`, ';
         foreach (RecordModel::FIELDS as $f) {
@@ -60,9 +45,8 @@ class RecordModel {
         $sql = substr($sql, 0, -2);
         $sql .= ')';
 
-        $insertStmt = $this->mysqli->prepare($sql);
-        $typedef = 'ii'.str_repeat('s', count(RecordModel::FIELDS));
-        
+        $insertStmt = $this->pdo->prepare($sql);
+
         foreach ($records as $i => $record) {
             foreach ($record as $k => $v) {
                 if (is_nan($v)) {
@@ -77,24 +61,25 @@ class RecordModel {
             foreach (RecordModel::FIELDS as $f) {
                 $param[] = $record[$f];
             }
-            $insertStmt->bind_param($typedef, ...$param);
-            $insertStmt->execute();
-            $records[$i] = $record;
+
+            try {
+                $insertStmt->execute($param);
+                $insertStmt->closeCursor();
+                $records[$i] = $record;
+            } catch (PDOException $exception) {
+                // probably the record already exists
+            }
         }
-        $insertStmt->close();
 
         $this->createAggregates($deviceId, $records[0]['timestamp'], $records[count($records) - 1]['timestamp']);
         $this->csvModel->storeRecords($deviceId, $records);
     }
 
     public function getLastData($deviceId) {
-        $stmt = $this->mysqli->prepare("SELECT * FROM `records` WHERE `device_id` = ? AND `pm10` IS NOT NULL ORDER BY `timestamp` DESC LIMIT 1");
-        $stmt->bind_param('i', $deviceId);
-        $stmt->execute();
-
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $result->close();
+        $stmt = $this->pdo->prepare("SELECT * FROM `records` WHERE `device_id` = ? AND `pm10` IS NOT NULL ORDER BY `timestamp` DESC LIMIT 1");
+        $stmt->execute([$deviceId]);
+        $row = $stmt->fetch();
+        $stmt->closeCursor();
 
         $data = array('last_update' => $row['timestamp']);
         foreach (RecordModel::FIELDS as $f) {
@@ -110,14 +95,12 @@ class RecordModel {
         }
         $fields = implode(",", $fields);
 
-        $stmt = $this->mysqli->prepare("SELECT $fields FROM `records` WHERE `device_id` = ? AND `timestamp` >= ?");
+        $stmt = $this->pdo->prepare("SELECT $fields FROM `records` WHERE `device_id` = ? AND `timestamp` >= ?");
         $since = time() - $hours * 60 * 60;
-        $stmt->bind_param('ii', $deviceId, $since);
-        $stmt->execute();
+        $stmt->execute([$deviceId, $since]);
 
-        $result = $stmt->get_result();
-        $row = $result->fetch_row();
-        $result->close();
+        $row = $stmt->fetch();
+        $stmt->closeCursor();
 
         $data = array();
         foreach (RecordModel::FIELDS as $i => $f) {
@@ -128,7 +111,7 @@ class RecordModel {
 
     public function createAggregates($deviceId, $fromTs, $toTs) {
         $maxResolution = 0;
-        $deleteStmt = $this->mysqli->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` < ? AND `resolution` = ?");
+        $deleteStmt = $this->pdo->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` < ? AND `resolution` = ?");
         foreach (RecordModel::AGGREGATES as $aggregate) {
             if ($aggregate['resolution'] > $maxResolution) {
                 $maxResolution = $aggregate['resolution'];
@@ -136,17 +119,15 @@ class RecordModel {
             $this->updateAggregate($deviceId, $aggregate['resolution'], $fromTs);
             if ($aggregate['ttl'] !== null) {
                 $minTimestamp = $toTs - $aggregate['ttl'];
-                $deleteStmt->bind_param('iii', $deviceId, $minTimestamp, $aggregate['resolution']);
-                $deleteStmt->execute();
+                $deleteStmt->execute([$deviceId, $minTimestamp, $aggregate['resolution']]);
             }
         }
-        $deleteStmt->close();
+        $deleteStmt->closeCursor();
 
-        $stmt = $this->mysqli->prepare("DELETE FROM `records` WHERE `device_id` = ? AND `timestamp` < ?");
+        $stmt = $this->pdo->prepare("DELETE FROM `records` WHERE `device_id` = ? AND `timestamp` < ?");
         $minTimestamp = $toTs - $maxResolution;
-        $stmt->bind_param('ii', $deviceId, $minTimestamp);
-        $stmt->execute();
-        $stmt->close();
+        $stmt->execute([$deviceId, $minTimestamp]);
+        $stmt->closeCursor();
     }
 
     private function updateAggregate($deviceId, $resolution, $fromTs) {
@@ -160,11 +141,11 @@ class RecordModel {
         $fields = implode(",", $fields);
     
         $roundedTimestamp = ceil($fromTs / $resolution) * $resolution;
+        $minRecordTimestamp = $roundedTimestamp - $resolution;
 
-        $stmt = $this->mysqli->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` >= ? AND `resolution` = ?");
-        $stmt->bind_param('iii', $deviceId, $roundedTimestamp, $resolution);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $this->pdo->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` >= ? AND `resolution` = ?");
+        $stmt->execute([$deviceId, $minRecordTimestamp, $resolution]);
+        $stmt->closeCursor();
         
         $sql = "INSERT INTO `aggregates` (`device_id`, `timestamp`, `resolution`, $fields)        
         SELECT ?, CEILING(`timestamp` / ?) * ? AS `ts`, ?, $avgFields
@@ -172,11 +153,9 @@ class RecordModel {
         WHERE `device_id` = ? AND `timestamp` >= ?
         GROUP BY `ts`";
 
-        $stmt = $this->mysqli->prepare($sql);
-        $minRecordTimestamp = $roundedTimestamp - $resolution;
-        $stmt->bind_param('iiiiii', $deviceId, $resolution, $resolution, $resolution, $deviceId, $minRecordTimestamp);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$deviceId, $resolution, $resolution, $resolution, $deviceId, $minRecordTimestamp]);
+        $stmt->closeCursor();
     }
 
     public function getHistoricData($deviceId, $type = 'pm', $range = 'day', $avgType = null) {
@@ -237,16 +216,14 @@ class RecordModel {
             }
         }
 
-        $stmt = $this->mysqli->prepare("SELECT `timestamp` AS `ts`, $sql_fields FROM `aggregates` WHERE `device_id` = ? AND `timestamp` >= ? AND `resolution` = ? ORDER BY `ts` ASC");
-        $stmt->bind_param('iii', $deviceId, $since, $resolution);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        while ($row = $result->fetch_assoc()) {
+        $stmt = $this->pdo->prepare("SELECT `timestamp` AS `ts`, $sql_fields FROM `aggregates` WHERE `device_id` = ? AND `timestamp` >= ? AND `resolution` = ? ORDER BY `ts` ASC");
+        $stmt->execute([$deviceId, $since, $resolution]);
+        while ($row = $stmt->fetch()) {
             foreach ($fields as $f) {
                 $data[$f][$row['ts']] = $row[$f];
             }
         }
-        $result->close();
+        $stmt->closeCursor();
 
         if ($avgType !== null) {
             foreach ($data as $k => $values) {
@@ -259,7 +236,7 @@ class RecordModel {
     }
 
     public function getDailyAverages($deviceId) {
-        $stmt = $this->mysqli->prepare(
+        $stmt = $this->pdo->prepare(
             "SELECT
                 `pm10` AS `pm10_avg`,
                 `pm25` AS `pm25_avg`
@@ -270,16 +247,10 @@ class RecordModel {
                 AND `timestamp` >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 YEAR))
             ORDER BY `timestamp`");
         $resolution = 24 * 60 * 60;
-        $stmt->bind_param('ii', $deviceId, $resolution);
 
-        $stmt->execute();
-
-        $result = $stmt->get_result();
-        $data = array();
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        $result->close();
+        $stmt->execute([$deviceId, $resolution]);
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
         return $data;
     }
 

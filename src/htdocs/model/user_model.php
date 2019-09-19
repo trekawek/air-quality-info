@@ -3,10 +3,10 @@ namespace AirQualityInfo\Model;
 
 class UserModel {
 
-    private $mysqli;
+    private $pdo;
 
-    public function __construct($mysqli) {
-        $this->mysqli = $mysqli;
+    public function __construct($pdo) {
+        $this->pdo = $pdo;
     }
 
     public function parseFqdn($fqdn) {
@@ -26,72 +26,62 @@ class UserModel {
     }
 
     public function getIdByDomain($domainName) {
-        $stmt = $this->mysqli->prepare("SELECT id FROM `users` WHERE `domain` = ?");
-        $stmt->bind_param('s', $domainName);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $this->pdo->prepare("SELECT id FROM `users` WHERE `domain` = ?");
+        $stmt->execute([$domainName]);
         $id = null;
-        if ($row = $result->fetch_row()) {
-            $id = $row[0];
+        if ($row = $stmt->fetch()) {
+            $id = $row['id'];
         }
-        $stmt->close();
+        $stmt->closeCursor();
         return $id;
     }
 
     public function getIdByCustomFqdn($fqdn) {
-        $stmt = $this->mysqli->prepare("SELECT `user_id` FROM `custom_domains` WHERE `fqdn` = ?");
-        $stmt->bind_param('s', $fqdn);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $this->pdo->prepare("SELECT `user_id` FROM `custom_domains` WHERE `fqdn` = ?");
+        $stmt->execute([$fqdn]);
         $id = null;
-        if ($row = $result->fetch_row()) {
-            $id = $row[0];
+        if ($row = $stmt->fetch()) {
+            $id = $row['id'];
         }
-        $stmt->close();
+        $stmt->closeCursor();
         return $id;
     }
 
     public function getUserById($userId) {
-        $stmt = $this->mysqli->prepare("SELECT * FROM `users` WHERE `id` = ?");
-        $stmt->bind_param('i', $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `id` = ?");
+        $stmt->execute([$userId]);
         $user = null;
-        if ($row = $result->fetch_assoc()) {
+        if ($row = $stmt->fetch()) {
             $user = $row;
         }
-        $stmt->close();
+        $stmt->closeCursor();
         return $user;
     }
 
     public function getUserByEmail($userEmail) {
-        $stmt = $this->mysqli->prepare("SELECT * FROM `users` WHERE `email` = ?");
-        $stmt->bind_param('s', $userEmail);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `email` = ?");
+        $stmt->execute([$userEmail]);
         $user = null;
-        if ($row = $result->fetch_assoc()) {
+        if ($row = $stmt->fetch()) {
             $user = $row;
         }
-        $stmt->close();
+        $stmt->closeCursor();
         return $user;
     }
 
     public function createUser($email, $password, $domain) {
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $insertStmt = $this->mysqli->prepare("INSERT INTO `users` (`email`, `password_hash`, `domain`) VALUES (?, ?, ?)");
-        $insertStmt->bind_param('sss', $email, $hash, $domain);
-        $insertStmt->execute();
-        $insertStmt->close();
-        return $this->mysqli->insert_id;
+        $stmt = $this->pdo->prepare("INSERT INTO `users` (`email`, `password_hash`, `domain`) VALUES (?, ?, ?)");
+        $stmt->execute([$email, $hash, $domain]);
+        $stmt->closeCursor();
+        return $this->pdo->lastInsertId();
     }
 
     public function updatePassword($userId, $password) {
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $insertStmt = $this->mysqli->prepare("UPDATE `users` SET `password_hash` = ? WHERE `id` = ?");
-        $insertStmt->bind_param('si', $hash, $userId);
-        $insertStmt->execute();
-        $insertStmt->close();
+        $stmt = $this->pdo->prepare("UPDATE `users` SET `password_hash` = ? WHERE `id` = ?");
+        $stmt->execute([$hash, $userId]);
+        $stmt->closeCursor();
     }
 
     public function updateUser($userId, $data) {
@@ -102,11 +92,9 @@ class UserModel {
         $sql = substr($sql, 0, -2);
         $sql .= " WHERE `id` = ?";
 
-        $stmt = $this->mysqli->prepare($sql);
-        $params = array_values($data);
-        $params[] = $userId;
-        $stmt->bind_param(str_repeat('s', count($data)).'i', ...$params);
-        $stmt->execute();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(array_values($data));
+        $stmt->closeCursor();
     }
 }
 ?>

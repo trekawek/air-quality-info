@@ -1,18 +1,19 @@
 <?php
 namespace AirQualityInfo;
 
-$userModel = new model\UserModel($mysqli);
+$userModel = $diContainer->injectClass('\\AirQualityInfo\\Model\\UserModel');
 $userId = $userModel->parseFqdn($host);
 if ($userId === null) {
     Lib\Router::send404();
 }
 
 $user = $userModel->getUserById($userId);
-$devices = (new model\DeviceModel($mysqli))->getAllUserDevices($userId);
+$deviceModel = $diContainer->injectClass('\\AirQualityInfo\\Model\\DeviceModel');
+$devices = $deviceModel->getAllUserDevices($userId);
 if (count($devices) === 0) {
     Lib\Router::send404();
 }
-$deviceHierarchyModel = new model\DeviceHierarchyModel($mysqli);
+$deviceHierarchyModel = $diContainer->injectClass('\\AirQualityInfo\\Model\\DeviceHierarchyModel');
 foreach ($devices as $i => $d) {
     $paths = $deviceHierarchyModel->getDevicePaths($userId, $d['id']);
     if (!empty($paths)) {

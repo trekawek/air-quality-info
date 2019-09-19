@@ -3,63 +3,52 @@ namespace AirQualityInfo\Model;
 
 class DeviceHierarchyModel {
 
-    private $mysqli;
+    private $pdo;
 
-    public function __construct($mysqli) {
-        $this->mysqli = $mysqli;
+    public function __construct($pdo) {
+        $this->pdo = $pdo;
     }
 
     private function createRoot($userId) {
-        $insertStmt = $this->mysqli->prepare("INSERT INTO `device_hierarchy` (`user_id`, `position`) VALUES (?, 0)");
-        $insertStmt->bind_param('i', $userId);
-        $insertStmt->execute();
-        $insertStmt->close();
-        return $this->mysqli->insert_id;
+        $stmt = $this->pdo->prepare("INSERT INTO `device_hierarchy` (`user_id`, `position`) VALUES (?, 0)");
+        $stmt->execute([$userId]);
+        return $this->pdo->lastInsertId();
     }
 
     public function getRootId($userId) {
-        $stmt = $this->mysqli->prepare("SELECT `id` FROM `device_hierarchy` WHERE `user_id` = ? AND `parent_id` IS NULL");
-        $stmt->bind_param('i', $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $this->pdo->prepare("SELECT `id` FROM `device_hierarchy` WHERE `user_id` = ? AND `parent_id` IS NULL");
+        $stmt->execute([$userId]);
         $rootId = null;
-        if ($row = $result->fetch_row()) {
-            $rootId = $row[0];
+        if ($row = $stmt->fetch()) {
+            $rootId = $row['id'];
         } else {
             $rootId = $this->createRoot($userId);
         }
-        $stmt->close();
+        $stmt->closeCursor();
         return $rootId;
     }
 
     public function getNode($userId, $id) {
-        $stmt = $this->mysqli->prepare("SELECT `id`, `user_id`, `parent_id`, `name`, `description`, `device_id`, `position` FROM `device_hierarchy` WHERE `user_id` = ? AND `id` = ?");
-        $stmt->bind_param('ii', $userId, $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $node = null;
-        if ($row = $result->fetch_assoc()) {
-            $node = $row;
-        }
-        $stmt->close();
+        $stmt = $this->pdo->prepare("SELECT `id`, `user_id`, `parent_id`, `name`, `description`, `device_id`, `position` FROM `device_hierarchy` WHERE `user_id` = ? AND `id` = ?");
+        $stmt->execute([$userId, $id]);
+        $node = $stmt->fetch();
+        $stmt->closeCursor();
         return $node;
     }
 
     public function addChild($userId, $parentId, $name, $description, $deviceId = null) {
         $this->validateOwnership($userId, $parentId);
         $position = $this->getMaxPosition($userId, $parentId) + 1;
-        $insertStmt = $this->mysqli->prepare("INSERT INTO `device_hierarchy` (`user_id`, `parent_id`, `position`, `name`, `description`, `device_id`) VALUES (?, ?, ?, ?, ?, ?)");
-        $insertStmt->bind_param('iiissi', $userId, $parentId, $position, $name, $description, $deviceId);
-        $insertStmt->execute();
-        $insertStmt->close();
-        return $this->mysqli->insert_id;
+        $insertStmt = $this->pdo->prepare("INSERT INTO `device_hierarchy` (`user_id`, `parent_id`, `position`, `name`, `description`, `device_id`) VALUES (?, ?, ?, ?, ?, ?)");
+        $insertStmt->execute([$userId, $parentId, $position, $name, $description, $deviceId]);
+        $insertStmt->closeCursor();
+        return $this->pdo->lastInsertId();
     }
 
     public function updateNode($userId, $nodeId, $name, $description, $deviceId) {
-        $updateStmt = $this->mysqli->prepare('UPDATE `device_hierarchy` SET `name` = ?, `description` = ?, `device_id` = ? WHERE `user_id` = ? AND `id` = ?');
-        $updateStmt->bind_param('ssiii', $name, $description, $deviceId, $userId, $nodeId);
-        $updateStmt->execute();
-        $updateStmt->close();
+        $updateStmt = $this->pdo->prepare('UPDATE `device_hierarchy` SET `name` = ?, `description` = ?, `device_id` = ? WHERE `user_id` = ? AND `id` = ?');
+        $updateStmt->execute([$name, $description, $deviceId, $userId, $nodeId]);
+        $updateStmt->closeCursor();
     }
 
     public function move($userId, $id, $direction) {
@@ -67,25 +56,21 @@ class DeviceHierarchyModel {
         $this->reorderDevices($node['parent_id']); // make sure the positions are consistent
 
         if ($direction == 'up' && $node['position'] > 0) {
-            $updateStmt = $this->mysqli->prepare('UPDATE `device_hierarchy` SET `position` = `position` + 1 WHERE `position` = ? - 1 AND `parent_id` = ?');
-            $updateStmt->bind_param('ii', $node['position'], $node['parent_id']);
-            $updateStmt->execute();
-            $updateStmt->close();
+            $updateStmt = $this->pdo->prepare('UPDATE `device_hierarchy` SET `position` = `position` + 1 WHERE `position` = ? - 1 AND `parent_id` = ?');
+            $updateStmt->execute([$node['position'], $node['parent_id']]);
+            $updateStmt->closeCursor();
 
-            $updateStmt = $this->mysqli->prepare('UPDATE `device_hierarchy` SET `position` = `position` - 1 WHERE `id` = ?');
-            $updateStmt->bind_param('i', $node['id']);
-            $updateStmt->execute();
-            $updateStmt->close();
+            $updateStmt = $this->pdo->prepare('UPDATE `device_hierarchy` SET `position` = `position` - 1 WHERE `id` = ?');
+            $updateStmt->execute([$node['id']]);
+            $updateStmt->closeCursor();
         } else if ($direction == 'down' && $node['position'] < $this->getMaxPosition($userId, $node['parent_id'])) {
-            $updateStmt = $this->mysqli->prepare('UPDATE `device_hierarchy` SET `position` = `position` - 1 WHERE `position` = ? + 1 AND `parent_id` = ?');
-            $updateStmt->bind_param('ii', $node['position'], $node['parent_id']);
-            $updateStmt->execute();
-            $updateStmt->close();
+            $updateStmt = $this->pdo->prepare('UPDATE `device_hierarchy` SET `position` = `position` - 1 WHERE `position` = ? + 1 AND `parent_id` = ?');
+            $updateStmt->execute([$node['position'], $node['parent_id']]);
+            $updateStmt->closeCursor();
 
-            $updateStmt = $this->mysqli->prepare('UPDATE `device_hierarchy` SET `position` = `position` + 1 WHERE `id` = ?');
-            $updateStmt->bind_param('i', $node['id']);
-            $updateStmt->execute();
-            $updateStmt->close();
+            $updateStmt = $this->pdo->prepare('UPDATE `device_hierarchy` SET `position` = `position` + 1 WHERE `id` = ?');
+            $updateStmt->execute([$node['id']]);
+            $updateStmt->closeCursor();
         }
         return $node;
     }
@@ -93,47 +78,40 @@ class DeviceHierarchyModel {
     public function deleteNode($userId, $id) {
         $node = $this->getNode($userId, $id);
 
-        $stmt = $this->mysqli->prepare('DELETE FROM `device_hierarchy` WHERE `user_id` = ? AND `id` = ?');
-        $stmt->bind_param('ii', $userId, $id);
-        $stmt->execute();
-        $stmt->close();
+        $stmt = $this->pdo->prepare('DELETE FROM `device_hierarchy` WHERE `user_id` = ? AND `id` = ?');
+        $stmt->execute([$userId, $id]);
+        $stmt->closeCursor();
 
         $this->reorderDevices($node['parent_id']);
     }
 
     private function reorderDevices($parentId) {
-        $stmt = $this->mysqli->prepare("SELECT `id` FROM `device_hierarchy` WHERE `parent_id` = ? ORDER BY `position`");
-        $stmt->bind_param('i', $parentId);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $this->pdo->prepare("SELECT `id` FROM `device_hierarchy` WHERE `parent_id` = ? ORDER BY `position`");
+        $stmt->execute([$parentId]);
 
         $position = 0;
-        $updateStmt = $this->mysqli->prepare('UPDATE `device_hierarchy` SET `position` = ? WHERE `id` = ?');
-        while ($row = $result->fetch_row()) {
-            $updateStmt->bind_param('ii', $position, $row[0]);
-            $updateStmt->execute();
+        $updateStmt = $this->pdo->prepare('UPDATE `device_hierarchy` SET `position` = ? WHERE `id` = ?');
+        while ($row = $stmt->fetch()) {
+            $updateStmt->execute([$position, $row['id']]);
             $position++;
         }
-        $updateStmt->close();
-
-        $stmt->close();
+        $updateStmt->closeCursor();
+        $stmt->closeCursor();
     }
 
     public function getDeviceNodes($userId, $deviceId) {
-        $stmt = $this->mysqli->prepare("SELECT id FROM device_hierarchy WHERE user_id = ? AND device_id = ?");
-        $stmt->bind_param('ii', $userId, $deviceId);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $this->pdo->prepare("SELECT id FROM device_hierarchy WHERE user_id = ? AND device_id = ?");
+        $stmt->execute([$userId, $deviceId]);
         $nodes = array();
-        while ($r = $result->fetch_row()) {
-            $nodes[] = $r[0];
+        while ($r = $stmt->fetch()) {
+            $nodes[] = $r['id'];
         }
-        $stmt->close();
+        $stmt->closeCursor();
         return $nodes;
     }
 
     public function getDirectChildren($userId, $parentId) {
-        $stmt = $this->mysqli->prepare("
+        $stmt = $this->pdo->prepare("
         SELECT `dh`.`id`,
             `dh`.`user_id`,
             `dh`.`parent_id`,
@@ -146,19 +124,14 @@ class DeviceHierarchyModel {
         FROM `device_hierarchy` `dh`
         LEFT JOIN `devices` `d` ON `d`.`id` = `dh`.`device_id`
         WHERE `dh`.`user_id` = ? AND `parent_id` = ? ORDER BY `position`");
-        $stmt->bind_param('ii', $userId, $parentId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $children = array();
-        while ($r = $result->fetch_assoc()) {
-            $children[] = $r;
-        }
-        $stmt->close();
+        $stmt->execute([$userId, $parentId]);
+        $children = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
         return $children;
     }
 
     public function getAllNodes($userId) {
-        $stmt = $this->mysqli->prepare("
+        $stmt = $this->pdo->prepare("
         SELECT `dh`.`id`,
             `dh`.`user_id`,
             `dh`.`parent_id`,
@@ -170,14 +143,9 @@ class DeviceHierarchyModel {
         FROM `device_hierarchy` `dh`
         LEFT JOIN `devices` `d` ON `d`.`id` = `dh`.`device_id`
         WHERE `dh`.`user_id` = ? ORDER BY `position`");
-        $stmt->bind_param('i', $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $nodes = array();
-        while ($r = $result->fetch_assoc()) {
-            $nodes[] = $r;
-        }
-        $stmt->close();
+        $stmt->execute([$userId]);
+        $nodes = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
         return $nodes;
     }
 
@@ -253,17 +221,15 @@ class DeviceHierarchyModel {
     }
 
     private function validateOwnership($userId, $nodeId) {
-        $stmt = $this->mysqli->prepare("SELECT `user_id` FROM `device_hierarchy` WHERE `id` = ?");
-        $stmt->bind_param('i', $nodeId);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $this->pdo->prepare("SELECT `user_id` FROM `device_hierarchy` WHERE `id` = ?");
+        $stmt->execute([$nodeId]);
         $valid = false;
-        if ($row = $result->fetch_row()) {
-            if ($row[0] === $userId) {
+        if ($row = $stmt->fetch()) {
+            if ($row['user_id'] === $userId) {
                 $valid = true;
             }
         }
-        $stmt->close();
+        $stmt->closeCursor();
         if (!$valid) {
             throw new \Exception("Device hierarchy node $nodeId doesn't belong to user $userId");
         }
@@ -271,18 +237,16 @@ class DeviceHierarchyModel {
     }
 
     private function getMaxPosition($userId, $parentId) {
-        $stmt = $this->mysqli->prepare("SELECT MAX(`position`) FROM `device_hierarchy` WHERE `user_id` = ? AND `parent_id` = ?");
-        $stmt->bind_param('ii', $userId, $parentId);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $this->pdo->prepare("SELECT MAX(`position`) FROM `device_hierarchy` WHERE `user_id` = ? AND `parent_id` = ?");
+        $stmt->execute([$userId, $parentId]);
         $pos = null;
-        if ($row = $result->fetch_row()) {
+        if ($row = $stmt->fetch()) {
             $pos = $row[0];
         }
         if ($pos === null) {
             $pos = -1;
         }
-        $stmt->close();
+        $stmt->closeCursor();
         return $pos;
     }
 }

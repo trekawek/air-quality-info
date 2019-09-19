@@ -3,10 +3,10 @@ namespace AirQualityInfo\Model;
 
 class DeviceModel {
 
-    private $mysqli;
+    private $pdo;
 
-    public function __construct($mysqli) {
-        $this->mysqli = $mysqli;
+    public function __construct($pdo) {
+        $this->pdo = $pdo;
     }
 
     public function createDevice($data) {
@@ -20,79 +20,59 @@ class DeviceModel {
         $sql = substr($sql, 0, -2);
         $sql .= ")";
 
-        $stmt = $this->mysqli->prepare($sql);
-        $stmt->bind_param(str_repeat('s', count($data)), ...array_values($data));    
-        $stmt->execute();
-        return $this->mysqli->insert_id;
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(array_values($data));
+        $stmt->closeCursor();
+        return $this->pdo->lastInsertId();
     }
 
     public function getDeviceById($deviceId) {
-        $stmt = $this->mysqli->prepare("SELECT * FROM `devices` WHERE `id` = ?");
-        $stmt->bind_param('i', $deviceId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = null;
-        if ($row = $result->fetch_assoc()) {
-            $data = $row;
-        }
-        $stmt->close();
+        $stmt = $this->pdo->prepare("SELECT * FROM `devices` WHERE `id` = ?");
+        $stmt->execute([$deviceId]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
         return $data;
     }
 
     public function getDevicesForUser($userId) {
-        $stmt = $this->mysqli->prepare("SELECT * FROM `devices` WHERE `user_id` = ? ORDER BY `default_device` DESC, `id` ASC");
-        $stmt->bind_param('i', $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = array();
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        $stmt->close();
+        $stmt = $this->pdo->prepare("SELECT * FROM `devices` WHERE `user_id` = ? ORDER BY `default_device` DESC, `id` ASC");
+        $stmt->execute([$userId]);
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
         return $data;
     }
 
     public function getAllUserDevices($userId) {
-        $stmt = $this->mysqli->prepare("SELECT * FROM `devices` WHERE `user_id` = ? OR `id` IN (SELECT `dh`.`device_id` FROM `device_hierarchy` `dh` WHERE `dh`.`user_id` = ?) ORDER BY `default_device` DESC, `id` ASC");
-        $stmt->bind_param('ii', $userId, $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = array();
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        $stmt->close();
+        $stmt = $this->pdo->prepare("SELECT * FROM `devices` WHERE `user_id` = ? OR `id` IN (SELECT `dh`.`device_id` FROM `device_hierarchy` `dh` WHERE `dh`.`user_id` = ?) ORDER BY `default_device` DESC, `id` ASC");
+        $stmt->execute([$userId, $userId]);
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
         return $data;
     }
 
     public function deleteDevice($deviceId) {
-        $stmt = $this->mysqli->prepare("DELETE FROM `devices` WHERE `id` = ?");
-        $stmt->bind_param('i', $deviceId);
-        $stmt->execute();
+        $stmt = $this->pdo->prepare("DELETE FROM `devices` WHERE `id` = ?");
+        $stmt->execute([$deviceId]);
+        $stmt->closeCursor();
     }
 
     public function addMapping($deviceId, $dbName, $jsonName) {
-        $stmt = $this->mysqli->prepare("INSERT INTO `device_mapping` (`device_id`, `db_name`, `json_name`) VALUES (?, ?, ?)");
-        $stmt->bind_param('iss', $deviceId, $dbName, $jsonName);
-        $stmt->execute();
+        $stmt = $this->pdo->prepare("INSERT INTO `device_mapping` (`device_id`, `db_name`, `json_name`) VALUES (?, ?, ?)");
+        $stmt->execute([$deviceId, $dbName, $jsonName]);
+        $stmt->closeCursor();
     }
 
     public function deleteMapping($deviceId, $mappingId) {
-        $stmt = $this->mysqli->prepare("DELETE FROM `device_mapping` WHERE `device_id` = ? AND `id` = ?");
-        $stmt->bind_param('ii', $deviceId, $mappingId);
-        $stmt->execute();
+        $stmt = $this->pdo->prepare("DELETE FROM `device_mapping` WHERE `device_id` = ? AND `id` = ?");
+        $stmt->execute([$deviceId, $mappingId]);
+        $stmt->closeCursor();
     }
 
     public function getMappingForDevice($deviceId) {
-        $stmt = $this->mysqli->prepare("SELECT `id`, `db_name`, `json_name` FROM `device_mapping` WHERE `device_id` = ?");
-        $stmt->bind_param('i', $deviceId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $data = array();
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-        $stmt->close();
+        $stmt = $this->pdo->prepare("SELECT `id`, `db_name`, `json_name` FROM `device_mapping` WHERE `device_id` = ?");
+        $stmt->execute([$deviceId]);
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
         return $data;
     }
 
@@ -104,17 +84,17 @@ class DeviceModel {
         $sql = substr($sql, 0, -2);
         $sql .= " WHERE `id` = ?";
 
-        $stmt = $this->mysqli->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $params = array_values($data);
         $params[] = $deviceId;
-        $stmt->bind_param(str_repeat('s', count($data)).'i', ...$params);
-        $stmt->execute();
+        $stmt->execute($params);
+        $stmt->closeCursor();
     }
 
     public function makeDefault($userId, $deviceId) {
-        $stmt = $this->mysqli->prepare("UPDATE `devices` SET `default_device` = IF (`id` = ?, 1, 0) WHERE `user_id` = ?");
-        $stmt->bind_param('ii', $deviceId, $userId);
-        $stmt->execute();
+        $stmt = $this->pdo->prepare("UPDATE `devices` SET `default_device` = IF (`id` = ?, 1, 0) WHERE `user_id` = ?");
+        $stmt->execute([$deviceId, $userId]);
+        $stmt->closeCursor();
     }
 }
 ?>

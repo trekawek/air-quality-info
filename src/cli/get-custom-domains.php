@@ -2,13 +2,12 @@
 <?php
 include(getenv('AQI_PATH').'/boot.php');
 
-$stmt = $mysqli->prepare("SELECT `fqdn` FROM `custom_domains`");
+$stmt = $pdo->prepare("SELECT `fqdn` FROM `custom_domains`");
 $stmt->execute();
-$result = $stmt->get_result();
 $domains = array();
-while ($row = $result->fetch_row()) {
-    $domains[] = $row[0];
+while ($row = $stmt->fetch()) {
+    $domains[] = $row['fqdn'];
 }
-$stmt->close();
+$stmt->closeCursor();
 echo implode(',', $domains);
 ?>
