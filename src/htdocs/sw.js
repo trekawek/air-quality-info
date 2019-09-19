@@ -41,7 +41,7 @@ var unavailableOffline = [
   "/map"
 ];
 
-var cacheName = 'airqualityinfo-r8';
+var cacheName = 'airqualityinfo-r9';
 
 self.addEventListener('install', function(e) {
   e.waitUntil(
