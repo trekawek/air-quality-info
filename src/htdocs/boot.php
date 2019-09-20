@@ -27,7 +27,7 @@ spl_autoload_register(function($className) {
     }
 });
 
-$dsn = sprintf("mysql:host=%s;dbname=%s;charset=utf8mb4", CONFIG['db']['host'], CONFIG['db']['name']);
+$dsn = sprintf("mysql:host=%s;dbname=%s;charset=utf8", CONFIG['db']['host'], CONFIG['db']['name']);
 $options = [
   \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
 ];
