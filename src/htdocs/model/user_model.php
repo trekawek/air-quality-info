@@ -41,7 +41,7 @@ class UserModel {
         $stmt->execute([$fqdn]);
         $id = null;
         if ($row = $stmt->fetch()) {
-            $id = $row['id'];
+            $id = $row['user_id'];
         }
         $stmt->closeCursor();
         return $id;
