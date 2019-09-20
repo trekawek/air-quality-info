@@ -144,7 +144,7 @@ class RecordModel {
         $minRecordTimestamp = $roundedTimestamp - $resolution;
 
         $stmt = $this->pdo->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` >= ? AND `resolution` = ?");
-        $stmt->execute([$deviceId, $minRecordTimestamp, $resolution]);
+        $stmt->execute([$deviceId, $roundedTimestamp, $resolution]);
         $stmt->closeCursor();
         
         $sql = "INSERT INTO `aggregates` (`device_id`, `timestamp`, `resolution`, $fields)        
@@ -153,9 +153,13 @@ class RecordModel {
         WHERE `device_id` = ? AND `timestamp` >= ?
         GROUP BY `ts`";
 
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$deviceId, $resolution, $resolution, $resolution, $deviceId, $minRecordTimestamp]);
-        $stmt->closeCursor();
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$deviceId, $resolution, $resolution, $resolution, $deviceId, $minRecordTimestamp]);
+            $stmt->closeCursor();
+        } catch (PDOException $exception) {
+            // probably the record already exists
+        }
     }
 
     public function getHistoricData($deviceId, $type = 'pm', $range = 'day', $avgType = null) {
