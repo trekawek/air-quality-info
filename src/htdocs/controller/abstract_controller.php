@@ -93,7 +93,7 @@ class AbstractController {
     private function isDisplayMap($node) {
         if ($node['location_provided']) {
             return true;
-        } else {
+        } else if (isset($node['children'])) {
             foreach ($node['children'] as $c) {
                 if ($this->isDisplayMap($c)) {
                     return true;
