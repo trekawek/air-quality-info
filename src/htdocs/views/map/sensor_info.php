@@ -1,5 +1,5 @@
 <div class="text-center">
-    <a href="<?php echo l('main', 'index', $device) ?>"><?php echo $device['description'] ?></a>
+    <a href="<?php echo $deviceUrl ?>"><?php echo $device['description'] ?></a>
     <?php include('partials/sensors/badge.php') ?>
 </div>
 

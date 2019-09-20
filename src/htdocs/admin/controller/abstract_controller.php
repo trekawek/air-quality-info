@@ -77,8 +77,11 @@ class AbstractController {
         }
     }
 
-    protected function getUriPrefix() {
-        $uri_prefix = '//' . $this->user['domain'] . CONFIG['user_domain_suffixes'][0];
+    protected function getUriPrefix($domain = null) {
+        if ($domain === null) {
+            $domain = $this->user['domain'];
+        }
+        $uri_prefix = '//' . $domain . CONFIG['user_domain_suffixes'][0];
         $host = explode(':', $_SERVER['HTTP_HOST']);
         if (isset($host[1])) {
             $port = $host[1];

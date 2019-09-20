@@ -69,6 +69,14 @@ class UserModel {
         return $user;
     }
 
+    public function getAllUsers() {
+        $stmt = $this->pdo->prepare("SELECT `id`, `domain` FROM `users`");
+        $stmt->execute();
+        $data = $stmt->fetchAll();
+        $stmt->closeCursor();
+        return $data;
+    }
+
     public function createUser($email, $password, $domain) {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $this->pdo->prepare("INSERT INTO `users` (`email`, `password_hash`, `domain`) VALUES (?, ?, ?)");

@@ -36,15 +36,7 @@ class AbstractController {
     }
 
     protected function flatTree($tree) {
-        $devices = array();
-        if ($tree['device_id']) {
-            $devices[] = $this->deviceById[$tree['device_id']];
-        } else if (isset($tree['children'])) {
-            foreach ($tree['children'] as $c) {
-                $devices = array_merge($devices, $this->flatTree($c));
-            }
-        }
-        return $devices;
+        return \AirQualityInfo\Model\DeviceHierarchyModel::flatTree($tree, $this->deviceById);
     }
 
     // @Inject
@@ -101,6 +93,18 @@ class AbstractController {
             }
         }
         return false;
+    }
+
+    protected function getUriPrefix($userDomain) {
+        $uri_prefix = '//' . $userDomain . CONFIG['user_domain_suffixes'][0];
+        $host = explode(':', $_SERVER['HTTP_HOST']);
+        if (isset($host[1])) {
+            $port = $host[1];
+        }
+        if (isset($port) && $port != 80 && $port != 443) {
+            $uri_prefix .= ":$port";
+        }
+        return $uri_prefix;
     }
 }
 ?>

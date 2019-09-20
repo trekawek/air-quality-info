@@ -191,15 +191,13 @@ class DeviceHierarchyModel {
 
     public function getPath($userId, $nodeId) {
         $nodeById = array();
-        $nodeByParentId = array();
         foreach ($this->getAllNodes($userId) as $node) {
             $nodeById[$node['id']] = $node;
-            $parentId = $node['parent_id'];
-            if (!isset($nodeByParentId[$parentId])) {
-                $nodeByParentId[$parentId] = array();
-            }
-            $nodeByParentId[$parentId][] = $node;
         }
+        return DeviceHierarchyModel::calculatePath($nodeById, $nodeId);
+    }
+
+    public static function calculatePath($nodeById, $nodeId) {
         $node = $nodeById[$nodeId];
         $nodes = array();
         while ($node['parent_id'] !== null) {
@@ -248,6 +246,18 @@ class DeviceHierarchyModel {
         }
         $stmt->closeCursor();
         return $pos;
+    }
+
+    public static function flatTree($tree, $deviceById) {
+        $devices = array();
+        if ($tree['device_id']) {
+            $devices[] = $deviceById[$tree['device_id']];
+        } else if (isset($tree['children'])) {
+            foreach ($tree['children'] as $c) {
+                $devices = array_merge($devices, DeviceHierarchyModel::flatTree($c, $deviceById));
+            }
+        }
+        return $devices;
     }
 }
 ?>

@@ -12,7 +12,7 @@ function navItem($action, $desc) {
         <title>aqi.eco</title>
         <link rel="stylesheet" href="/public/css/vendor.min.css"/>
         <link rel="stylesheet" href="/public/css/themes/default.min.css"/>
-        <link rel="stylesheet" href="/admin/public/css/landing.css"/>
+        <link rel="stylesheet" href="/admin/public/css/landing.css?v=1"/>
         
     </head>
 
@@ -29,6 +29,7 @@ function navItem($action, $desc) {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <?php navItem(array('main', 'index'), 'Home'); ?>
+                <?php navItem(array('map', 'index'), 'Map'); ?>
                 <?php navItem(array('user', 'login'), 'Sign in'); ?>
                 <?php navItem(array('user', 'register'), 'Sign up'); ?>
                 <?php navItem(array('main', 'support'), 'Support'); ?>

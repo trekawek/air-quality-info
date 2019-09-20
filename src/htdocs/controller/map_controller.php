@@ -5,9 +5,13 @@ class MapController extends AbstractController {
 
     private $recordModel;
 
+    private $userModel;
+
     public function __construct(
-            \AirQualityInfo\Model\RecordModel $recordModel) {
+            \AirQualityInfo\Model\RecordModel $recordModel,
+            \AirQualityInfo\Model\UserModel $userModel) {
         $this->recordModel = $recordModel;
+        $this->userModel = $userModel;
     }
 
     public function index() {
@@ -42,11 +46,14 @@ class MapController extends AbstractController {
     public function sensorInfo($device) {
         $lastData = $this->recordModel->getLastData($device['id']);
         $averages = $this->recordModel->getAverages($device['id'], 1);
+        $user = $this->userModel->getUserById($this->userId);
+        $domain = $user['domain'];
         $this->render(array('view' => 'views/map/sensor_info.php', 'layout' => false), array(
             'averages' => $averages,
             'currentAvgType' => 1,
             'sensors' => $lastData,
-            'device' => $device
+            'device' => $device,
+            'deviceUrl' => $this->getUriPrefix($domain) . l('main', 'index', $device)
         ));
     }
 

@@ -1,6 +1,8 @@
 <?php
 namespace AirQualityInfo;
 
+\AirQualityInfo\Lib\HttpUtils::setACAOHeader();
+
 $userModel = $diContainer->injectClass('\\AirQualityInfo\\Model\\UserModel');
 $userId = $userModel->parseFqdn($host);
 if ($userId === null) {
