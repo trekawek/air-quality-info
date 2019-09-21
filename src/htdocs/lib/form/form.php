@@ -17,6 +17,10 @@ class Form {
         return $element;
     }
 
+    public function getElement($name) {
+        return $this->elements[$name];
+    }
+
     public function validate($data) {
         $ok = true;
         foreach ($this->elements as $name => $e) {

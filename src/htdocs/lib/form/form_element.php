@@ -25,6 +25,8 @@ class FormElement {
 
     private $required;
 
+    private $groupClass = array();
+
     public function __construct($name, $type, $label, $attributes = array(), $description = null) {
         $this->name = $name;
         $this->type = $type;
@@ -41,6 +43,11 @@ class FormElement {
         return $this;
     }
 
+    public function addGroupClass($class) {
+        $this->groupClass[] = $class;
+        return $this;
+    }
+
     public function setOptions($options) {
         $this->options = $options;
         return $this;
@@ -48,6 +55,12 @@ class FormElement {
 
     public function setValue($value) {
         $this->value = $value;
+    }
+
+    public function getGroupClass() {
+        if (!empty($this->groupClass)) {
+            return implode(' ', $this->groupClass);
+        }
     }
 
     public function getEscapedValue() {

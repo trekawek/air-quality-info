@@ -64,7 +64,7 @@ function addCircle(sensor, position, map) {
         fillOpacity: 0.35,
         map: map,
         center: position,
-        radius: 600
+        radius: sensor.radius
     });
 }
 

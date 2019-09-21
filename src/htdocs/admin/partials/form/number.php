@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="form-group <?php echo $this->getGroupClass() ?>">
 
 <?php if ($this->label): ?>
 <label for="<?php echo $this->name ?>Input"><?php echo __($this->label) ?>

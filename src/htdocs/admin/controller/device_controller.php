@@ -80,9 +80,7 @@ class DeviceController extends AbstractController {
             $breadcrumbs = $this->deviceHierarchyModel->getPath($this->user['id'], $nodes[0]);
         }
 
-        $deviceForm = $this->getDeviceForm();
-        $deviceForm->setDefaultValues($device);
-
+        $deviceForm = $this->getDeviceForm($device);
         $mappingForm = $this->getMappingForm($deviceId);
 
         if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
@@ -91,12 +89,17 @@ class DeviceController extends AbstractController {
                 'description' => $_POST['description'],
                 'location_provided' => isset($_POST['location_provided']) ? 1 : 0,
                 'lat' => $_POST['lat'],
-                'lng' => $_POST['lng']
+                'lng' => $_POST['lng'],
+                'radius' => $_POST['radius']
             );
             $this->deviceModel->updateDevice($deviceId, $data);
             $this->alert(__('Updated the device', 'success'));
             $device = $this->getDevice($deviceId);
             $deviceForm->setDefaultValues($device);
+        }
+
+        if ($device['location_provided']) {
+            $deviceForm->getElement('radius')->addGroupClass('show');
         }
 
         if ($mappingForm->isSubmitted() && $mappingForm->validate($_POST)) {
@@ -167,14 +170,20 @@ class DeviceController extends AbstractController {
         header('Location: '.l('device', 'edit', null, array('device_id' => $deviceId)));
     }
 
-    private function getDeviceForm() {
+    private function getDeviceForm($device) {
         $deviceForm = new \AirQualityInfo\Lib\Form\Form("deviceForm");
         $deviceForm->addElement('esp8266_id', 'text', 'ESP 8266 id', array('disabled' => true));
         $this->addNameField($deviceForm);
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
-        $deviceForm->addElement('location_provided', 'checkbox', 'Choose location', array('data-toggle'=>'collapse', 'data-target'=>'.map-group'), null);
+        $deviceForm->addElement('location_provided', 'checkbox', 'Choose location', array('data-toggle'=>'collapse', 'data-target'=>'.map-control'), null);
+        $deviceForm->addElement('radius', 'number', 'Radius (m)', array('min' => 50, 'max' => 500, 'step' => 50))
+            ->addGroupClass('map-control')
+            ->addGroupClass('collapse')
+            ->addRule('required')
+            ->addRule('range', array('min' => 50, 'max' => 500, 'message' => 'Please choose value between 50 and 500.' ));
         $deviceForm->addElement('lat', 'hidden');
         $deviceForm->addElement('lng', 'hidden');
+        $deviceForm->setDefaultValues($device);
         return $deviceForm;
     }
 

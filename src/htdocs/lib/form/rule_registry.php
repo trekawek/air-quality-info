@@ -21,6 +21,21 @@ class RuleRegistry {
         $this->rules['regexp'] = new Rule(function($value, $options) {
             return empty($value) || preg_match($options['pattern'], $value);
         }, "%s contains invalid characters");
+        $this->rules['range'] = new Rule(function($value, $options) {
+            if (empty($value)) {
+                return true;
+            }
+            if (!is_numeric($value)) {
+                return false;
+            }
+            if (isset($options['min']) && $value < $options['min']) {
+                return false;
+            }
+            if (isset($options['max']) && $value > $options['max']) {
+                return false;
+            }
+            return true;
+        }, "%s is out of range");
     }
 
     public function getRule($type) {

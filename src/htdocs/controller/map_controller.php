@@ -37,6 +37,7 @@ class MapController extends AbstractController {
             $deviceFiltered['data'] = $this->recordModel->getLastData($device['id']);
             $deviceFiltered['averages'] = $this->recordModel->getAverages($device['id'], 1);
             $deviceFiltered['info_path'] = l('map', 'sensorInfo', $device);
+            $deviceFiltered['radius'] = intval($device['radius']);
             $data[] = $deviceFiltered;
         }
         header('Content-type: application/json');

@@ -69,6 +69,7 @@ class MapController extends AbstractController {
                 }
                 $deviceFiltered['path'] = $urlPrefix . $device['path'];
                 $deviceFiltered['info_path'] = $urlPrefix . '/map' . $device['path'];
+                $deviceFiltered['radius'] = intval($device['radius']);
                 $data[] = $deviceFiltered;
             }
         }
