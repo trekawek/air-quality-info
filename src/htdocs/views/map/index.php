@@ -4,5 +4,5 @@
         <div id="map" data-url="<?php echo l('map', 'data') ?>"></div>
     </div>
 </div>
-<script src="/public/js/map.js?v=35"></script>
+<script src="/public/js/map.js?v=36"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo CONFIG['google_maps_key'] ?>&callback=mapsLoaded" async defer></script>

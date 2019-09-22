@@ -85,27 +85,28 @@ function initMap(mapDiv, data) {
     }
     google.maps.event.addListener(map, 'zoom_changed', function(event) {
         var zoom = this.getZoom();
-        var radius = {
-            0: 50_000,
-            1: 45_000,
-            2: 40_000,
-            3: 35_000,
-            4: 20_000,
-            5: 15_000,
-            6: 10_000,
-            7: 5_000,
-            8: 2_000,
-            9: 1_000,
-            10: 750
+        var factors = {
+            0: 2048,
+            1: 1024,
+            2: 512,
+            3: 256,
+            4: 128,
+            5: 64,
+            6: 32,
+            7: 16,
+            8: 8,
+            9: 4,
+            10: 2
         }
+        var factor;
         if (zoom >= 11) {
-            for (var i in circles) {
-                circles[i].setRadius(circles[i]._radius);
-            }
+            factor = 1;
         } else {
-            for (var i in circles) {
-                circles[i].setRadius(radius[zoom]);
-            }
+            factor = factors[zoom];
+        }
+        console.log(zoom, factor);
+        for (var i in circles) {
+            circles[i].setRadius(circles[i]._radius * factor);
         }
     });
     map.fitBounds(bounds);
