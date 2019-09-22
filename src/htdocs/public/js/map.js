@@ -85,26 +85,11 @@ function initMap(mapDiv, data) {
     }
     google.maps.event.addListener(map, 'zoom_changed', function(event) {
         var zoom = this.getZoom();
-        var factors = {
-            0: 2048,
-            1: 1024,
-            2: 512,
-            3: 256,
-            4: 128,
-            5: 64,
-            6: 32,
-            7: 16,
-            8: 8,
-            9: 4,
-            10: 2
-        }
-        var factor;
         if (zoom >= 11) {
             factor = 1;
         } else {
-            factor = factors[zoom];
+            factor = 2 ** (11 - zoom);
         }
-        console.log(zoom, factor);
         for (var i in circles) {
             circles[i].setRadius(circles[i]._radius * factor);
         }
