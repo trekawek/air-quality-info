@@ -83,6 +83,11 @@ function initMap(mapDiv, data) {
         circles.push(addCircle(sensor, position, map));
         bounds.extend(position);
     }
+    google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
+        if (this.getZoom() > 15) {
+            this.setZoom(15);
+        }
+    });
     google.maps.event.addListener(map, 'zoom_changed', function(event) {
         var zoom = this.getZoom();
         if (zoom >= 11) {
