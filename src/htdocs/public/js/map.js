@@ -83,12 +83,6 @@ function initMap(mapDiv, data) {
         circles.push(addCircle(sensor, position, map));
         bounds.extend(position);
     }
-    google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
-        this.setZoom(map.getZoom()-1);
-        if (this.getZoom() > 15) {
-            this.setZoom(15);
-        }
-    });
     google.maps.event.addListener(map, 'zoom_changed', function(event) {
         var zoom = this.getZoom();
         var radius = {
@@ -104,7 +98,6 @@ function initMap(mapDiv, data) {
             9: 1_000,
             10: 750
         }
-        console.log(zoom);
         if (zoom >= 11) {
             for (var i in circles) {
                 circles[i].setRadius(circles[i]._radius);
