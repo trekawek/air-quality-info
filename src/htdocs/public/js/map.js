@@ -28,35 +28,23 @@ function getPosition(sensor) {
     };
 }
 
-function createInfoWindow(sensor, map, marker) {
+function createInfoWindow(sensor, map, position) {
     var request = new XMLHttpRequest();
     request.open('GET', sensor.info_path, true);
     request.onload = function() {
         if (request.status == 200) {
             var infoWindow = new google.maps.InfoWindow({
-                content: request.responseText
+                content: request.responseText,
+                position: position
             })
-            infoWindow.open(map, marker);
+            infoWindow.open(map);
         }
     };
     request.send();
 }
 
-function addMarker(sensor, position, map) {
-    var marker = new google.maps.Marker({
-        position: position,
-        map: map
-    });
-    marker.addListener('click', function() {
-        createInfoWindow(sensor, map, marker);
-    });
-}
-
 function addCircle(sensor, position, map) {
-    if (sensor.averages.max_level === null) {
-        return;
-    }
-    new google.maps.Circle({
+    var circle = new google.maps.Circle({
         strokeColor: COLORS[sensor.averages.max_level],
         strokeOpacity: 0.8,
         strokeWeight: 2,
@@ -66,6 +54,11 @@ function addCircle(sensor, position, map) {
         center: position,
         radius: sensor.radius
     });
+    circle.addListener('click', function() {
+        createInfoWindow(sensor, map, position);
+    });
+    circle._radius = sensor.radius;
+    return circle;
 }
 
 function initMap(mapDiv, data) {
@@ -80,11 +73,14 @@ function initMap(mapDiv, data) {
         streetViewControl: false
     });
     var bounds = new google.maps.LatLngBounds();
+    var circles = [];
     for (var i in data) {
         sensor = data[i];
+        if (sensor.averages.max_level === null) {
+            continue;
+        }
         var position = getPosition(sensor);
-        addMarker(sensor, position, map);
-        addCircle(sensor, position, map);
+        circles.push(addCircle(sensor, position, map));
         bounds.extend(position);
     }
     google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
@@ -92,7 +88,33 @@ function initMap(mapDiv, data) {
         if (this.getZoom() > 15) {
             this.setZoom(15);
         }
-    });      
+    });
+    google.maps.event.addListener(map, 'zoom_changed', function(event) {
+        var zoom = this.getZoom();
+        var radius = {
+            0: 10_000,
+            1: 10_000,
+            2: 10_000,
+            3: 10_000,
+            4: 10_000,
+            5: 10_000,
+            6: 10_000,
+            7: 5_000,
+            8: 2_000,
+            9: 1_000,
+            10: 750
+        }
+        console.log(zoom);
+        if (zoom >= 11) {
+            for (var i in circles) {
+                circles[i].setRadius(circles[i]._radius);
+            }
+        } else {
+            for (var i in circles) {
+                circles[i].setRadius(radius[zoom]);
+            }
+        }
+    });
     map.fitBounds(bounds);
 }
 

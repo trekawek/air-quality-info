@@ -12,7 +12,7 @@ function navItem($action, $desc) {
         <title>aqi.eco</title>
         <link rel="stylesheet" href="/public/css/vendor.min.css"/>
         <link rel="stylesheet" href="/public/css/themes/default.min.css"/>
-        <link rel="stylesheet" href="/admin/public/css/landing.css?v=1"/>
+        <link rel="stylesheet" href="/admin/public/css/landing.css?v=2"/>
         
     </head>
 
