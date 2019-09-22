@@ -31,12 +31,26 @@ class GraphController extends AbstractController {
     }
 
     public function get_data($device) {
+        $type = isset($_GET['type']) ? $_GET['type'] : 'pm';
+        $range = isset($_GET['range']) ? $_GET['range'] : 'day';
+        $ma_h = isset($_GET['ma_h']) ? $_GET['ma_h'] : null;
+
         $data = $this->recordModel->getHistoricData(
             $device['id'],
-            isset($_GET['type']) ? $_GET['type'] : 'pm',
-            isset($_GET['range']) ? $_GET['range'] : 'day',
-            isset($_GET['ma_h']) ? $_GET['ma_h'] : null
+            $type,
+            $range,
+            $ma_h
         );
+        if ($type == 'pm' && $range == 'day' && $ma_h == 1) {
+            $instant = $this->recordModel->getHistoricData(
+                $device['id'],
+                $type,
+                $range,
+                null
+            );
+            $data['data']['pm10_instant'] = $instant['data']['pm10'];
+            $data['data']['pm25_instant'] = $instant['data']['pm25'];
+        }
         if ($data === null) {
             http_response_code(404);
             die();

@@ -5,6 +5,7 @@ window.chartColors = {
 	lightRed: 'rgba(255, 99, 132, 0.5)',
 	orange: 'rgb(255, 159, 64)',
 	lightOrange: 'rgba(255, 159, 64, 0.5)',
+	darOrange: 'rgba(255, 159, 64, 0)',
 	yellow: 'rgb(255, 205, 86)',
 	green: 'rgb(75, 192, 192)',
 	lightGreen: 'rgba(75, 192, 192, 0.5)',
@@ -12,7 +13,9 @@ window.chartColors = {
 	lightBlue: 'rgba(54, 162, 235, 0.5)',
 	purple: 'rgb(153, 102, 255)',
 	lightPurple: 'rgba(153, 102, 255, 0.5)',
-	grey: 'rgb(201, 203, 207)'
+	darkPurple: 'rgba(153, 102, 255, 0)',
+    grey: 'rgb(201, 203, 207)',
+    black: 'rgb(0, 0, 0)'
 };
 
 (function() {
@@ -157,8 +160,29 @@ function renderGraph(ctx, data, type, avgType) {
         var pm10data = mapToTimeSeries(data.data.pm10);
         var emptyPm25Data = emptyTimeSeries(pm25data);
         var emptyPm10Data = emptyTimeSeries(pm10data);
-        config.data = {
-            datasets: [{
+
+        config.data = {datasets: []};
+
+        if (typeof data.data.pm25_instant !== 'undefined') {
+            config.data.datasets.push({
+                borderColor: window.chartColors.black,
+                fill: false,
+                data: mapToTimeSeries(data.data.pm25_instant),
+                borderWidth: 0.2
+            });
+        }
+
+        if (typeof data.data.pm10_instant !== 'undefined') {
+            config.data.datasets.push({
+                borderColor: window.chartColors.black,
+                fill: false,
+                data: mapToTimeSeries(data.data.pm10_instant),
+                borderWidth: 0.2
+            });
+        }
+
+        config.data.datasets.push(
+            {
                 backgroundColor: window.chartColors.purple,
                 borderColor: window.chartColors.red,
                 label: 'PM₂₅ (µg/m³)',
@@ -180,8 +204,9 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: window.chartColors.lightRed,
                 data: emptyPm10Data,
                 borderWidth: 1
-            }]
-        };
+            }
+        );
+
         config.options.scales.yAxes = [{
             display: true,
             scaleLabel: {
@@ -235,6 +260,7 @@ function renderGraph(ctx, data, type, avgType) {
                 }
             });
         }
+        
         break;
 
         case 'temperature':

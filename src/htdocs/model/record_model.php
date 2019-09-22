@@ -229,7 +229,15 @@ class RecordModel {
         }
         $stmt->closeCursor();
 
-        if ($avgType !== null) {
+        if ($avgType === null) {
+            foreach ($data as $k => $records) {
+                foreach ($records as $ts => $v) {
+                    if ($v !== null) {
+                        $data[$k][$ts] = floatval($v);
+                    }
+                }
+            }
+        } else {
             foreach ($data as $k => $values) {
                 $data[$k] = RecordModel::transformToWalkingAverage($values, $avgType);
             }
