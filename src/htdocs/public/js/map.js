@@ -92,12 +92,12 @@ function initMap(mapDiv, data) {
     google.maps.event.addListener(map, 'zoom_changed', function(event) {
         var zoom = this.getZoom();
         var radius = {
-            0: 10_000,
-            1: 10_000,
-            2: 10_000,
-            3: 10_000,
-            4: 10_000,
-            5: 10_000,
+            0: 50_000,
+            1: 45_000,
+            2: 40_000,
+            3: 35_000,
+            4: 20_000,
+            5: 15_000,
             6: 10_000,
             7: 5_000,
             8: 2_000,
