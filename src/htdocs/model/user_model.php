@@ -101,7 +101,10 @@ class UserModel {
         $sql .= " WHERE `id` = ?";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(array_values($data));
+
+        $values = array_values($data);
+        $values[] = $userId;
+        $stmt->execute($values);
         $stmt->closeCursor();
     }
 }
