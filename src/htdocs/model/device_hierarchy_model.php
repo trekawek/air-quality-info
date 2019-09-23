@@ -149,6 +149,14 @@ class DeviceHierarchyModel {
         return $nodes;
     }
 
+    public function getAllNodesById($userId) {
+        $nodeById = array();
+        foreach ($this->getAllNodes($userId) as $n) {
+            $nodeById[$n['id']] = $n;
+        }
+        return $nodeById;
+    }
+
     public function getTree($userId, $rootId = null) {
         if ($rootId === null) {
             $rootId = $this->getRootId($userId);
@@ -197,32 +205,18 @@ class DeviceHierarchyModel {
         return DeviceHierarchyModel::calculatePath($nodeById, $nodeId);
     }
 
-    private static function createNodeByIdMapping($tree) {
-        $nodeById = array();
-        $nodeById[$tree['id']] = $tree;
-        if (isset($tree['children'])) {
-            foreach ($tree['children'] as $c) {
-                foreach (DeviceHierarchyModel::createNodeByIdMapping($c, $nodeById) as $id => $n) {
-                    $nodeById[$id] = $n;
-                }
-            }
-        }
-        return $nodeById;
-    }
-
-    public static function calculatePathFromTree($tree, $deviceId) {
-        $nodeById = DeviceHierarchyModel::createNodeByIdMapping($tree);
+    public static function calculateDevicePath($nodeById, $deviceId) {
         $nodeId = null;
-        foreach ($nodeById as $n) {
-            if ($n['device_id'] === $deviceId) {
-                $nodeId = $n['id'];
+        foreach ($nodeById as $i => $n) {
+            if ($n['device_id'] == $deviceId) {
+                $nodeId = $i;
             }
         }
         if ($nodeId === null) {
-            return null;
+            return array();
+        } else {
+            return DeviceHierarchyModel::calculatePath($nodeById, $nodeId);
         }
-        $path = DeviceHierarchyModel::calculatePath($nodeById, $nodeId);
-        return $path;        
     }
 
     public static function calculatePath($nodeById, $nodeId) {
@@ -230,7 +224,8 @@ class DeviceHierarchyModel {
         $nodes = array();
         while ($node['parent_id'] !== null) {
             $nodes[] = $node;
-            $node = $nodeById[$node['parent_id']];
+            $parentId = $node['parent_id'];
+            $node = $nodeById[$parentId];
         }
         $nodes[] = $node;
         return array_reverse($nodes);

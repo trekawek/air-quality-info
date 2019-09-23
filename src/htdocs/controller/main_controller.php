@@ -29,8 +29,8 @@ class MainController extends AbstractController {
         $lastData = $this->recordModel->getLastData($device['id']);
         $averages = $this->recordModel->getAverages($device['id'], $currentAvgType);
 
-        $tree = $this->deviceHierarchyModel->getTree($this->userId, null);
-        $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculatePathFromTree($tree, $device['id']);
+        $nodeById = $this->deviceHierarchyModel->getAllNodesById($this->userId);
+        $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculateDevicePath($nodeById, $device['id']);
         $this->render(array('view' => 'views/index_inner.php', 'layout' => false), array(
             'averages' => $averages,
             'currentAvgType' => $currentAvgType,
@@ -74,6 +74,7 @@ class MainController extends AbstractController {
         if ($nodeId === null) {
             $nodeId = $this->deviceHierarchyModel->getRootId($this->userId);
         }
+        $nodeById = $this->deviceHierarchyModel->getAllNodesById($this->userId);
         $tree = $this->deviceHierarchyModel->getTree($this->userId, $nodeId);
         $devices = $this->flatTree($tree);
         $data = array();
@@ -84,7 +85,7 @@ class MainController extends AbstractController {
                 $currentAvgType = '24';
             }
             $averages = $this->recordModel->getAverages($device['id'], $currentAvgType);
-            $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculatePathFromTree($tree, $device['id']);
+            $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculateDevicePath($nodeById, $device['id']);
             $data[] = array('sensors' => $sensors, 'averages' => $averages, 'device' => $device, 'breadcrumbs' => $path);
         }
         $this->render(array('view' => 'views/all_sensors.php'), array(
