@@ -7,6 +7,7 @@ extract($r);
         <h4>
             <a href="<?php echo l('main', 'index', $device) ?>"><?php echo $device['description'] ?></a>
         </h4>
+        <?php include('partials/sensors/breadcrumbs.php'); ?>
     </div>
     <div class="col-md-2 text-center">
         <?php include('partials/sensors/badge.php') ?>

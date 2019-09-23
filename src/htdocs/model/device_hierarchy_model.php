@@ -197,6 +197,34 @@ class DeviceHierarchyModel {
         return DeviceHierarchyModel::calculatePath($nodeById, $nodeId);
     }
 
+    private static function createNodeByIdMapping($tree) {
+        $nodeById = array();
+        $nodeById[$tree['id']] = $tree;
+        if (isset($tree['children'])) {
+            foreach ($tree['children'] as $c) {
+                foreach (DeviceHierarchyModel::createNodeByIdMapping($c, $nodeById) as $id => $n) {
+                    $nodeById[$id] = $n;
+                }
+            }
+        }
+        return $nodeById;
+    }
+
+    public static function calculatePathFromTree($tree, $deviceId) {
+        $nodeById = DeviceHierarchyModel::createNodeByIdMapping($tree);
+        $nodeId = null;
+        foreach ($nodeById as $n) {
+            if ($n['device_id'] === $deviceId) {
+                $nodeId = $n['id'];
+            }
+        }
+        if ($nodeId === null) {
+            return null;
+        }
+        $path = DeviceHierarchyModel::calculatePath($nodeById, $nodeId);
+        return $path;        
+    }
+
     public static function calculatePath($nodeById, $nodeId) {
         $node = $nodeById[$nodeId];
         $nodes = array();
