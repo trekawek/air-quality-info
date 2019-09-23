@@ -66,7 +66,7 @@ class RecordModel {
                 $insertStmt->execute($param);
                 $insertStmt->closeCursor();
                 $records[$i] = $record;
-            } catch (PDOException $exception) {
+            } catch (\PDOException $exception) {
                 // probably the record already exists
             }
         }
@@ -150,16 +150,12 @@ class RecordModel {
         $sql = "INSERT INTO `aggregates` (`device_id`, `timestamp`, `resolution`, $fields)        
         SELECT ?, CEILING(`timestamp` / ?) * ? AS `ts`, ?, $avgFields
         FROM `records`
-        WHERE `device_id` = ? AND `timestamp` >= ?
+        WHERE `device_id` = ? AND `timestamp` > ?
         GROUP BY `ts`";
 
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([$deviceId, $resolution, $resolution, $resolution, $deviceId, $minRecordTimestamp]);
-            $stmt->closeCursor();
-        } catch (PDOException $exception) {
-            // probably the record already exists
-        }
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$deviceId, $resolution, $resolution, $resolution, $deviceId, $minRecordTimestamp]);
+        $stmt->closeCursor();
     }
 
     public function getHistoricData($deviceId, $type = 'pm', $range = 'day', $avgType = null) {
