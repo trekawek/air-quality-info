@@ -26,7 +26,8 @@ class GraphController extends AbstractController {
         }
         $i = 0;
         $this->render(array('view' => 'views/graphs.php'), array(
-            'graphs' => $graphs
+            'graphs' => $graphs,
+            'device' => $device
         ));
     }
 

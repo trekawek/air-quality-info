@@ -12,7 +12,8 @@ class AnnualStatsController extends AbstractController {
     public function index($device) {
         $averages = $this->recordModel->getLastAvg($device['id'], 60 * 24 * 365);
         $this->render(array('view' => 'views/annual_stats.php'), array(
-            'averages' => $averages
+            'averages' => $averages,
+            'device' => $device
         ));
     }
 

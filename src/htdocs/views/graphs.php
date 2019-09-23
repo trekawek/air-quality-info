@@ -1,6 +1,15 @@
 <p></p>
+
 <div class="row">
-  <div class="col-md-8 offset-md-2 text-center">
+    <div class="col-md-8 offset-md-2">
+        <h4><?php echo __('Graphs') ?> - <?php echo $device['description'] ?></h4>
+    </div>
+</div>
+
+<p></p>
+
+<div class="row">
+  <div class="col-md-8 offset-md-2">
     <div class="btn-group btn-group-sm graph-range" role="group" aria-label="<?php echo __('Range') ?>">
       <button type="button" class="btn btn-primary" data-range="day"><?php echo __('Day') ?></button>
       <button type="button" class="btn btn-secondary" data-range="week"><?php echo __('Week') ?></button>
@@ -15,6 +24,9 @@
     </div>
   </div>
 </div>
+
+<p></p>
+
 <?php
 $i = 0;
 foreach($graphs as $type => $name):

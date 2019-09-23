@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="col-md-8 offset-md-2">
-    <h4><?php echo __('Annual stats') ?></h4>
+    <h4><?php echo __('Annual stats') ?> - <?php echo $device['description'] ?></h4>
   </div>
 </div>
 
