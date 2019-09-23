@@ -8,6 +8,8 @@ const COLORS = [
     "#990000"
 ];
 
+var windows = [];
+
 function mapsLoaded() {
     var mapDiv = document.getElementById('map');
     var request = new XMLHttpRequest();
@@ -28,6 +30,13 @@ function getPosition(sensor) {
     };
 }
 
+function removeWindow(infoWindow) {
+    var index = windows.indexOf(infoWindow);
+    if (index != -1) {
+        windows.splice(index, 1);
+    }
+}
+
 function createInfoWindow(sensor, map, position) {
     var request = new XMLHttpRequest();
     request.open('GET', sensor.info_path, true);
@@ -38,6 +47,10 @@ function createInfoWindow(sensor, map, position) {
                 position: position
             })
             infoWindow.open(map);
+            infoWindow.addListener('closeclick', e => removeWindow(infoWindow));
+            windows.forEach(w => w.close());
+            windows = [];
+            windows.push(infoWindow);
         }
     };
     request.send();
