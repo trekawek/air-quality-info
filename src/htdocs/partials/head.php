@@ -34,7 +34,7 @@ function navItem($action, $desc) {
       <div class="row">
         <div class="col-md-8 offset-md-2">
           <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <a href="/" class="navbar-left navbar-brand">
+            <a href="//aqi.eco" class="navbar-left navbar-brand">
                 <img src="/public/img/aqi.png">aqi.eco
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Nawigacja">
