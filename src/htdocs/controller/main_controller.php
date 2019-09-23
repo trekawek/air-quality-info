@@ -50,10 +50,18 @@ class MainController extends AbstractController {
         $data['last_data'] = MainController::arr_values_to_float($last);
 
         $data['average_1h'] = MainController::arr_values_to_float($avg1h['values']);
-        $data['average_1h']['index'] = __(PollutionLevel::POLLUTION_LEVELS[$avg1h['max_level']]['name']);
+        if ($avg1h['max_level'] === null) {
+            $data['average_1h']['index'] = null;
+        } else {
+            $data['average_1h']['index'] = __(PollutionLevel::POLLUTION_LEVELS[$avg1h['max_level']]['name']);
+        }
 
         $data['average_24h'] = MainController::arr_values_to_float($avg24h['values']);
-        $data['average_24h']['index'] = __(PollutionLevel::POLLUTION_LEVELS[$avg24h['max_level']]['name']);
+        if ($avg24h['max_level'] === null) {
+            $data['average_24h']['index'] = null;
+        } else {
+            $data['average_24h']['index'] = __(PollutionLevel::POLLUTION_LEVELS[$avg24h['max_level']]['name']);
+        }
 
         if ($data['last_data'] === null) {
             http_response_code(404);
