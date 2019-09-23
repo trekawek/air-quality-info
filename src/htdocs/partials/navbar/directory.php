@@ -1,5 +1,7 @@
-<?php function displayDirectory($node, $currentController, $currentAction, $currentDevice, $nodeId = null) { ?>
-
+<?php
+function displayDirectory($node, $currentController, $currentAction, $currentDevice, $nodeId = null) {
+    global $currentController, $currentAction;
+?>
 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 <?php if (empty($node['children'])): ?>
 <li class="dropdown">
@@ -11,12 +13,12 @@
 <?php foreach ($node['children'] as $n): ?>
     <li class="dropdown">
         <?php if (isset($n['device'])): ?>
-            <?php if ($currentController == 'main' && $currentAction == 'all'): ?>
+            <?php if (($currentController == 'main' && $currentAction == 'all') || $currentController == 'map'): ?>
             <a class="dropdown-item" href="<?php echo l('main', 'index', $n['device']) ?>">
                 <?php echo $n['description'] ?>
             </a>
             <?php else: ?>            
-            <a class="dropdown-item <?php echo ($n['device']['id'] === $currentDevice['id']) ? 'active' : '' ?>" href="<?php echo l('main', 'index', $n['device']) ?>">
+            <a class="dropdown-item <?php echo ($n['device']['id'] === $currentDevice['id']) ? 'active' : '' ?>" href="<?php echo l($currentController, $currentAction, $n['device']) ?>">
                 <?php echo $n['description'] ?>
             </a>
             <?php endif ?>
