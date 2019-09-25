@@ -1,7 +1,7 @@
 <?php
 namespace AirQualityInfo\head;
 
-function navItem($action, $desc) {
+function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
   global $currentAction, $currentController, $uri;
   require('partials/navbar/nav_item.php');
 }
@@ -48,8 +48,8 @@ function navItem($action, $desc) {
                     <?php echo __('Graphs') ?>
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <?php navItem(array('graph', 'index'), 'Graphs'); ?>
-                    <?php navItem(array('annual_stats', 'index'), 'Annual stats'); ?>
+                    <?php navItem(array('graph', 'index'), 'Graphs', '', 'dropdown-item'); ?>
+                    <?php navItem(array('annual_stats', 'index'), 'Annual stats', '', 'dropdown-item'); ?>
                   </ul>
                 </li>
                 <?php if ($displayMap): ?>
