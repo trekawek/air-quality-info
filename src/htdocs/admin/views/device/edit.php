@@ -27,22 +27,22 @@
                 <p><?php echo __('Please use following data to configure your sensor') ?>:</p>
                 <dl class="row">
                     <dt class="col-lg-6"><?php echo __('Send data to own API') ?></dt>
-                    <dd class="col-lg-6"><input type="checkbox" class="form-control" checked /></dd>
+                    <dd class="col-lg-6"><input type="checkbox" class="form-control" checked disabled/></dd>
 
                     <dt class="col-lg-6"><?php echo __('Server') ?></dt>
-                    <dd class="col-lg-6"><pre><?php echo $this->user['domain'] . CONFIG['user_domain_suffixes'][0] ?></pre></dd>
+                    <dd class="col-lg-6"><input type="text" class="form-control" value="<?php echo $this->user['domain'] . CONFIG['user_domain_suffixes'][0] ?>" disabled/></dd>
 
                     <dt class="col-lg-6"><?php echo __('Path') ?></dt>
-                    <dd class="col-lg-6"><pre>/update</pre></dd>
+                    <dd class="col-lg-6"><input type="text" class="form-control" value="/update" disabled/></dd>
 
                     <dt class="col-lg-6"><?php echo __('Port') ?></dt>
-                    <dd class="col-lg-6"><pre>443</pre></dd>
+                    <dd class="col-lg-6"><input type="text" class="form-control" value="443" disabled/></dd>
 
                     <dt class="col-lg-6"><?php echo __('User') ?></dt>
-                    <dd class="col-lg-6"><pre><?php echo $device['http_username'] ?></pre></dd>
+                    <dd class="col-lg-6"><input type="text" class="form-control" value="<?php echo $device['http_username'] ?>" disabled/></dd>
 
                     <dt class="col-lg-6"><?php echo __('Password') ?></dt>
-                    <dd class="col-lg-6"><pre><?php echo $device['http_password'] ?></pre></dd>
+                    <dd class="col-lg-6"><input type="text" class="form-control" value="<?php echo $device['http_password'] ?>" disabled/></dd>
                 </dl>
             </div>
         </div>
