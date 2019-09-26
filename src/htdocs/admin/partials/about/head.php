@@ -1,8 +1,9 @@
 <?php
-function navItem($action, $desc) {
-  global $currentAction, $currentController;
-  require('partials/navbar/nav_item.php');
-}?><!DOCTYPE html>
+function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
+    global $currentAction, $currentController, $uri;
+    require('partials/navbar/nav_item.php');
+}
+?><!DOCTYPE html>
 <html lang="en">
     <head>
         <?php require("partials/ga.php") ?>
