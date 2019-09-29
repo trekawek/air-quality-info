@@ -3,6 +3,15 @@ namespace AirQualityInfo;
 
 Lib\CsrfToken::verifyToken(isset($_POST['_csrf_token']) ? $_POST['_csrf_token'] : null);
 
+$authorizedUser = null;
+$userModel = $diContainer->injectClass('\\AirQualityInfo\\Model\\UserModel');
+if (isset($_SESSION['user_id'])) {
+    $authorizedUser = $userModel->getUserById($_SESSION['user_id']);
+    if ($authorizedUser != null) {
+        date_default_timezone_set($authorizedUser['timezone']);
+    }
+}
+
 $routes = array(
     'GET /' => array('main', 'index'),
     'GET /map' => array('map', 'index'),
@@ -71,6 +80,9 @@ $templateVariables = array(
 );
 $diContainer->addBindings($templateVariables);
 $diContainer->setBinding('templateVariables', $templateVariables);
+if ($authorizedUser !== null) {
+    $diContainer->setBinding('authorizedUser', $authorizedUser);
+}
 
 $controller = $diContainer->injectClass('\\AirQualityInfo\\Admin\\Controller\\'.Lib\StringUtils::camelize($currentController).'Controller');
 $controller->beforeAction();

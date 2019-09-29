@@ -16,6 +16,7 @@
     "jquery": "^3.4.1",
     "location-picker": "^1.1.1",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.26",
     "popper.js": "^1.15.0",
     "simple-line-icons": "^2.4.1",
     "smartmenus": "^1.1.0",

@@ -9,7 +9,7 @@ class AbstractController {
 
     protected $authorizationRequired = true;
 
-    protected $user;
+    protected $user = null;
 
     protected $title = null;
 
@@ -46,6 +46,10 @@ class AbstractController {
         $this->userModel = $userModel;
     }
 
+    public function setUser($authorizedUser) {
+        $this->user = $authorizedUser;
+    }
+
     public function beforeAction() {
         if ($this->authorizationRequired) {
             $this->authorize();
@@ -53,14 +57,10 @@ class AbstractController {
     }
 
     protected function authorize() {
-        if (isset($_SESSION['user_id'])) {
-            $this->user = $this->userModel->getUserById($_SESSION['user_id']);
-            if ($this->user != null) {
-                return;
-            }
+        if (!$this->user) {
+            header('Location: ' . l('user', 'login'));
+            die();
         }
-        header('Location: ' . l('user', 'login'));
-        die();
     }
 
     protected function alert($message, $type = 'primary') {

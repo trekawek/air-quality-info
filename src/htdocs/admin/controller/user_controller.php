@@ -102,6 +102,9 @@ class UserController extends AbstractController {
     public function settings() {
         $this->authorize();
 
+        $timezones = \DateTimeZone::listIdentifiers();
+        $timezones = array_combine($timezones, $timezones);
+
         $userForm = new \AirQualityInfo\Lib\Form\Form("userForm");
         $urlPrefix = 'https://'
             .$this->user['domain']
@@ -109,12 +112,16 @@ class UserController extends AbstractController {
         $userForm->addElement('redirect_root', 'text', 'Redirect home page')
             ->addRule('regexp', array('pattern' => '/^\/[a-z0-9\/-]+$/', 'message' => __('The path should consist of alphanumeric characters, dashes and slashes')))
             ->setOptions(array('prepend' => $urlPrefix));
+        $userForm->addElement('timezone', 'select', 'Timezone')
+            ->addRule('required')
+            ->setOptions($timezones);
 
         $userForm->setDefaultValues($this->user);
 
         if ($userForm->isSubmitted() && $userForm->validate($_POST)) {
             $data = array(
-                'redirect_root' => $_POST['redirect_root']
+                'redirect_root' => $_POST['redirect_root'],
+                'timezone' => $_POST['timezone']
             );
             $this->userModel->updateUser($this->user['id'], $data);
             $this->alert(__('Updated settings', 'success'));

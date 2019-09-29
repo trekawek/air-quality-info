@@ -4,6 +4,7 @@ const CONFIG = document.querySelector('body').dataset;
 const LOCALE = JSON.parse(CONFIG.locale);
 
 moment.locale(CONFIG.currentLang);
+moment.tz.setDefault(CONFIG.timezone);
 
 function __(msg) {
     if (typeof LOCALE[msg] != 'undefined') {

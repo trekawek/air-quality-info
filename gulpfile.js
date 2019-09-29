@@ -34,6 +34,7 @@ var paths = {
       'node_modules/jquery/dist/jquery.slim.js',
       'node_modules/bootstrap/dist/js/bootstrap.js',
       'node_modules/moment/moment.js',
+      'node_modules/moment-timezone/builds/moment-timezone-with-data.js',
       'node_modules/moment/locale/pl.js',
       'node_modules/chart.js/dist/Chart.js',
       'node_modules/chartjs-plugin-annotation/chartjs-plugin-annotation.js',
