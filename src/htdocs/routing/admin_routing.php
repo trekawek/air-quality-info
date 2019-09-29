@@ -80,9 +80,7 @@ $templateVariables = array(
 );
 $diContainer->addBindings($templateVariables);
 $diContainer->setBinding('templateVariables', $templateVariables);
-if ($authorizedUser !== null) {
-    $diContainer->setBinding('authorizedUser', $authorizedUser);
-}
+$diContainer->setBinding('authorizedUser', $authorizedUser);
 
 $controller = $diContainer->injectClass('\\AirQualityInfo\\Admin\\Controller\\'.Lib\StringUtils::camelize($currentController).'Controller');
 $controller->beforeAction();
