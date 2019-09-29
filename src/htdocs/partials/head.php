@@ -24,7 +24,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
 
     <style><?php echo file_get_contents('public/css/critical.css') ?></style>
 
-    <script defer src="/public/js/vendor.min.js?v=32"></script>
+    <script defer src="/public/js/vendor.min.js?v=33"></script>
     <script defer src="/public/js/main.js?v=33"></script>
     <script defer src="/public/js/graph.js?v=33"></script>
     <script defer src="/public/js/annual_graph.js?v=32"></script>

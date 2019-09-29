@@ -5,7 +5,7 @@ var staticFiles = [
   "/public/js/main.js?v=33",
   "/public/js/graph.js?v=33",
   "/public/js/annual_graph.js?v=32",
-  "/public/js/vendor.min.js?v=32",
+  "/public/js/vendor.min.js?v=33",
   "/public/css/critical.css",
   "/public/css/style.css?v=32",
   "/public/css/vendor.min.css?v=32",
