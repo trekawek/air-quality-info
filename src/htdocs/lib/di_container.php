@@ -48,7 +48,7 @@ class DiContainer {
                 $value = $this->injectClass($param->getType()->__toString());
                 $this->bindings[$paramName] = $value;
             } else {
-                throw new \Exception("Can't find type for the $paramName in $className");
+                //throw new \Exception("Can't find type for the $paramName in $className");
             }
         }
         return $this->bindings[$paramName];
