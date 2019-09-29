@@ -144,6 +144,7 @@ $locale['There are no data'] = 'Brak danych';
 $locale['This domain is already used.'] = 'Ta domeny jest już wykorzystana.';
 $locale['This is default device'] = 'To jest domyślne urządzenie';
 $locale['Time'] = 'Czas';
+$locale['Timezone'] = 'Strefa czasowa';
 $locale['Update'] = 'Aktualizuj';
 $locale['Updated directory'] = 'Zaktualizowano katalog';
 $locale['Updated settings'] = 'Zaktualizowano ustawienia';
