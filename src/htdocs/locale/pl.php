@@ -47,6 +47,7 @@ $locale['Darkly theme'] = 'Darkly';
 $locale['Data'] = 'Dane';
 $locale['Database field'] = 'Pole bazy danych';
 $locale['Day'] = 'Dzień';
+$locale['Days with PM₁₀ above 50µg/m³'] = 'Ilość dni z PM₁₀ powyżej 50µg/m³';
 $locale['Debug info'] = 'Informacje diagnostyczne';
 $locale['Deleted the device'] = 'Usunięto urządzenie';
 $locale['Deleted the mapping'] = 'Usunięto mapowanie';

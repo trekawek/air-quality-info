@@ -10,10 +10,19 @@ class AnnualStatsController extends AbstractController {
     }
 
     public function index($device) {
+        $dailyAvgs = $this->recordModel->getDailyAverages($device['id']);
+        $daysWithHighPm10 = 0;
+        foreach ($dailyAvgs as $dailyAvg) {
+            if ($dailyAvg['pm10_avg'] > 50) {
+                $daysWithHighPm10++;
+            }
+        }
+
         $averages = $this->recordModel->getLastAvg($device['id'], 60 * 24 * 365);
         $this->render(array('view' => 'views/annual_stats.php'), array(
             'averages' => $averages,
-            'device' => $device
+            'device' => $device,
+            'daysWithHighPm10' => $daysWithHighPm10
         ));
     }
 

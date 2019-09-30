@@ -27,6 +27,10 @@
           <th scope="row">PM<sub>10</sub></th>
           <td><?php echo round($averages['pm10'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
         </tr>
+        <tr>
+          <th scope="row"><?php echo __('Days with PM₁₀ above 50µg/m³') ?></th>
+          <td><?php echo round($daysWithHighPm10, 0); ?></td>
+        </tr>
       </tbody>
     </table>
   </div>
