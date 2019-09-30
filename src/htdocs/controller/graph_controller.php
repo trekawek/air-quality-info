@@ -13,16 +13,16 @@ class GraphController extends AbstractController {
         $sensors = $this->recordModel->getLastData($device['id']);
         $graphs = array();
         if ($sensors['pm10'] !== null || $sensors['pm25'] !== null) {
-            $graphs['pm'] = __('PM');
+            $graphs[] = 'pm';
         }
         if ($sensors['temperature'] !== null) {
-            $graphs['temperature'] = __('Temperature');
+            $graphs[] = 'temperature';
         }
         if ($sensors['humidity'] !== null) {
-            $graphs['humidity'] = __('Humidity');
+            $graphs[] = 'humidity';
         }
         if ($sensors['pressure'] !== null) {
-            $graphs['pressure'] = __('Pressure');
+            $graphs[] = 'pressure';
         }
         $i = 0;
         $this->render(array('view' => 'views/graphs.php'), array(

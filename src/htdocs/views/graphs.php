@@ -27,9 +27,17 @@
 
 <p></p>
 
+<?php if (count($graphs) === 1): ?>
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <div class="graph-container" data-range="day" data-type="<?php echo $graphs[0] ?>" data-avg-type="1" data-graph-uri="<?php echo l('graph', 'get_data')?>" >
+      <canvas class="graph"></canvas>
+    </div>
+  </div>
+</div>
+<?php else: ?>
 <?php
-$i = 0;
-foreach($graphs as $type => $name):
+foreach($graphs as $i => $type):
 ?>
 <?php if ($i % 2 == 0): ?>
 <div class="row">
@@ -39,11 +47,13 @@ foreach($graphs as $type => $name):
       <canvas class="graph"></canvas>
     </div>
   </div>
-<?php if ($i++ % 2 == 1): ?>
+<?php if ($i % 2 == 1): ?>
 </div>
 <?php endif ?>
-<?php endforeach; ?>
+<?php endforeach ?>
 
-<?php if (count($graphs) == 1): ?>
+<?php if (count($graphs) % 2 == 1): // missing div if there's an odd count of graphs ?>
 </div>
+<?php endif ?>
+
 <?php endif ?>
