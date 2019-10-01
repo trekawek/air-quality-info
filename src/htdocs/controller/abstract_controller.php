@@ -5,6 +5,10 @@ class AbstractController {
 
     private $templateVariables;
 
+    private $attachmentModel;
+
+    private $templateModel;
+
     protected $deviceHierarchyModel;
 
     protected $userId;
@@ -23,6 +27,11 @@ class AbstractController {
 
         extract($this->templateVariables);
         extract($data);
+
+        $domainTemplate = $this->templateModel->getTemplate($this->userId);
+        if ($this->attachmentModel->getFileInfo($this->userId, 'brand_icon')) {
+            $customBrandIcon = l('attachment', 'get', null, array('name' => 'brand_icon'));
+        }
 
         if ($args['layout']) {
             include('partials/head.php');
@@ -46,6 +55,14 @@ class AbstractController {
 
     public function setDeviceHierarchyModel(\AirQualityInfo\Model\DeviceHierarchyModel $deviceHierarchyModel) {
         $this->deviceHierarchyModel = $deviceHierarchyModel;
+    }
+
+    public function setAttachmentModel(\AirQualityInfo\Model\AttachmentModel $attachmentModel) {
+        $this->attachmentModel = $attachmentModel;
+    }
+
+    public function setTemplateModel(\AirQualityInfo\Model\TemplateModel $templateModel) {
+        $this->templateModel = $templateModel;
     }
 
     public function setUserId($userId) {

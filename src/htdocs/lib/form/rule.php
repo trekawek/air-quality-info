@@ -12,8 +12,8 @@ class Rule {
         $this->message = $message;
     }
 
-    public function validate($value, $options = null) {
-        return ($this->validateFunction)($value, $options);
+    public function validate($value, $options = null, $fieldName) {
+        return ($this->validateFunction)($value, $options, $fieldName);
     }
 
     public function getMessage() {

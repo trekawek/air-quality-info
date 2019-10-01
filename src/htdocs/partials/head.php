@@ -34,9 +34,16 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
       <div class="row">
         <div class="col-md-8 offset-md-2">
           <nav class="navbar navbar-expand-md navbar-light bg-light">
+<?php if (isset($domainTemplate['brand_name']) || isset($customBrandIcon)): ?>
+            <a href="/" class="navbar-left navbar-brand">
+                <img src="<?php echo isset($customBrandIcon) ? $customBrandIcon : '/public/img/aqi.png' ?>"/>
+                <?php echo isset($domainTemplate['brand_name']) ? $domainTemplate['brand_name'] : 'aqi.eco' ?>
+            </a>
+<?php else: ?>
             <a href="//aqi.eco" class="navbar-left navbar-brand">
                 <img src="/public/img/aqi.png">aqi.eco
             </a>
+<?php endif ?>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Nawigacja">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -80,6 +87,13 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
                   <?php endforeach ?>
                   </ul>
                 </li>
+<?php if (isset($domainTemplate['custom_page_name'])): ?>
+                <li class="nav-item">
+                  <a class="nav-link" href="<?php echo l('static', 'about') ?>" >
+                    <?php echo $domainTemplate['custom_page_name'] ?>
+                  </a>
+                </li>
+<?php endif ?>
               </ul>
             </div>
           </nav>
@@ -91,6 +105,14 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
           <div class="alert alert-warning">
             <?php echo $device['maintenance'] ?>
           </div>
+        </div>
+      </div>
+<?php endif ?>
+
+<?php if (isset($domainTemplate['header'])): ?>
+      <div class="row">
+        <div class="col-md-8 offset-md-2">
+          <?php echo $domainTemplate['header'] ?>
         </div>
       </div>
 <?php endif ?>

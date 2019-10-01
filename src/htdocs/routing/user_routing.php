@@ -35,12 +35,14 @@ $routes = array(
     'GET /:device/annual_stats/graph_data.json'  => array('annual_stats', 'get_data'),
     'GET /all/[:node_id]'            => array('main', 'all'),
     'GET /offline'                   => array('static', 'offline'),
+    'GET /about'                     => array('static', 'about'),
     'POST /update'                   => array('update', 'update'),
     'GET /:device/graphs'            => array('graph', 'index'),
     'GET /[:device]/graph_data.json' => array('graph', 'get_data'),
     'GET /map'                       => array('map', 'index'),
     'GET /map/data.json'             => array('map', 'data'),
     'GET /map/:device'               => array('map', 'sensorInfo'),
+    'GET /attachment/:name'          => array('attachment', 'get'),
 );
 
 $router = new Lib\Router($routes, $devices, $user);

@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <title>aqi.eco<?php echo $title ? (' - ' . $title) : '' ?></title>
         <link rel="stylesheet" href="/admin/public/css/vendor.min.css?v=31"/>
-        <link rel="stylesheet" href="/admin/public/css/style.css?v=31"/>
+        <link rel="stylesheet" href="/admin/public/css/style.css?v=32"/>
     </head>
 
     <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show" data-locale='<?php echo json_encode($currentLocale->getJsMessages()) ?>'>
@@ -40,6 +40,10 @@
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo l('user', 'settings') ?>">
                             <i class="nav-icon fa fa-cog"></i> <?php echo __('Settings') ?></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo l('template', 'edit') ?>">
+                            <i class="nav-icon fa fa-code"></i> <?php echo __('Templates') ?></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo l('user', 'edit') ?>">

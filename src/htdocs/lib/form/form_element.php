@@ -96,7 +96,7 @@ class FormElement {
 
     private function validateRule($ruleType, $ruleOptions, $value) {
         $rule = FormElement::getRuleRegistry()->getRule($ruleType);
-        if ($rule->validate($value, $ruleOptions)) {
+        if ($rule->validate($value, $ruleOptions, $this->name)) {
             return true;
         }
         

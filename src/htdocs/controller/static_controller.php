@@ -12,5 +12,9 @@ class StaticController extends AbstractController {
     public function offline() {
         $this->render(array('view' => 'views/offline.php'));
     }
+
+    public function about() {
+        $this->render(array('view' => 'views/about.php'));
+    }
 }
 ?>
