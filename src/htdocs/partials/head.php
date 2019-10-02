@@ -36,8 +36,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
           <nav class="navbar navbar-expand-md navbar-light bg-light">
 <?php if (isset($domainTemplate['brand_name']) || isset($customBrandIcon)): ?>
             <a href="/" class="navbar-left navbar-brand">
-              <img src="<?php echo isset($customBrandIcon) ? $customBrandIcon : '/public/img/aqi.png' ?>"/><?php echo isset($domainTemplate['brand_name']) ? $domainTemplate['brand_name'] : 'aqi.eco' ?>
-            </a>
+              <img src="<?php echo isset($customBrandIcon) ? $customBrandIcon : '/public/img/aqi.png' ?>"/><?php echo isset($domainTemplate['brand_name']) ? $domainTemplate['brand_name'] : 'aqi.eco' ?></a>
 <?php else: ?>
             <a href="//aqi.eco" class="navbar-left navbar-brand">
                 <img src="/public/img/aqi.png">aqi.eco
