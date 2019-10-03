@@ -19,10 +19,15 @@ class AnnualStatsController extends AbstractController {
         }
 
         $averages = $this->recordModel->getLastAvg($device['id'], 60 * 24 * 365);
+
+        $nodeById = $this->deviceHierarchyModel->getAllNodesById($this->userId);
+        $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculateDevicePath($nodeById, $device['id']);
+
         $this->render(array('view' => 'views/annual_stats.php'), array(
             'averages' => $averages,
             'device' => $device,
-            'daysWithHighPm10' => $daysWithHighPm10
+            'daysWithHighPm10' => $daysWithHighPm10,
+            'breadcrumbs' => $path
         ));
     }
 

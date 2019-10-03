@@ -2,11 +2,7 @@
 
 <div class="row device-header">
     <div class="col-md-3 offset-md-2">
-        <small><?php include('partials/sensors/breadcrumbs.php'); ?></small>
-        <h4><?php echo $desc ?></h4>
-        <?php if (!empty($extra_desc)): ?>
-        <small><?php echo $extra_desc ?></small>
-        <?php endif ?>
+        <?php include('partials/device_description.php'); ?>
     </div>
     <div class="col-md-2 text-center">
         <?php include('partials/sensors/badge.php') ?>

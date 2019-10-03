@@ -35,8 +35,7 @@ class MainController extends AbstractController {
             'averages' => $averages,
             'currentAvgType' => $currentAvgType,
             'sensors' => $lastData,
-            'desc' => $device['description'],
-            'extra_desc' => $device['extra_description'],
+            'device' => $device,
             'breadcrumbs' => $path
         ));
     }

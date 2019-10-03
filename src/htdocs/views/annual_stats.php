@@ -2,11 +2,16 @@
 <div class="row">
 </div>
 
-<div class="row">
-  <div class="col-md-8 offset-md-2">
-    <h4><?php echo __('Annual stats') ?> - <?php echo $device['description'] ?></h4>
-  </div>
+<div class="row device-header">
+    <div class="col-md-3 offset-md-2">
+        <?php include('partials/device_description.php'); ?>
+    </div>
+    <div class="col-md-3 text-center">
+      <h4><?php echo __('Annual stats') ?></h4>
+    </div>
 </div>
+
+<p></p>
 
 <div class="row">
   <div class="col-md-8 offset-md-2">
