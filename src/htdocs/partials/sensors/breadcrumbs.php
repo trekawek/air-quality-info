@@ -7,5 +7,5 @@ $bc = array_map(function($n) {
 if (count($bc) > 0) {
     echo implode(' / ', $bc);
 }
-?></p>
+?>
 <?php endif ?>

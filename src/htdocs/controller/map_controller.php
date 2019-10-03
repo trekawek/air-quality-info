@@ -45,6 +45,9 @@ class MapController extends AbstractController {
     }
 
     public function sensorInfo($device) {
+        $nodeById = $this->deviceHierarchyModel->getAllNodesById($this->userId);
+        $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculateDevicePath($nodeById, $device['id']);
+
         $lastData = $this->recordModel->getLastData($device['id']);
         $averages = $this->recordModel->getAverages($device['id'], 1);
         $user = $this->userModel->getUserById($this->userId);
@@ -54,7 +57,8 @@ class MapController extends AbstractController {
             'currentAvgType' => 1,
             'sensors' => $lastData,
             'device' => $device,
-            'deviceUrl' => $this->getUriPrefix($domain) . l('main', 'index', $device)
+            'deviceUrl' => $this->getUriPrefix($domain) . l('main', 'index', $device),
+            'breadcrumbs' => $path
         ));
     }
 

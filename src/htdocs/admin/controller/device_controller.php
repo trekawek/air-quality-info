@@ -52,6 +52,7 @@ class DeviceController extends AbstractController {
                 'esp8266_id' => $_POST['esp8266_id'],
                 'name' => $_POST['name'],
                 'description' => $_POST['description'],
+                'extra_description' => null,
                 'http_username' => $this->user['email'],
                 'http_password' => bin2hex(random_bytes(8)),
                 'default_device' => 0,
@@ -87,6 +88,7 @@ class DeviceController extends AbstractController {
             $data = array(
                 'name' => $_POST['name'],
                 'description' => $_POST['description'],
+                'extra_description' => $_POST['extra_description'],
                 'location_provided' => isset($_POST['location_provided']) ? 1 : 0,
                 'lat' => $_POST['lat'],
                 'lng' => $_POST['lng'],
@@ -175,6 +177,7 @@ class DeviceController extends AbstractController {
         $deviceForm->addElement('esp8266_id', 'text', 'ESP 8266 id', array('disabled' => true));
         $this->addNameField($deviceForm);
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
+        $deviceForm->addElement('extra_description', 'text', 'Extra description');
         $deviceForm->addElement('location_provided', 'checkbox', 'Choose location', array('data-toggle'=>'collapse', 'data-target'=>'.map-control'), null);
         $deviceForm->addElement('radius', 'number', 'Radius (m)', array('min' => 50, 'max' => 500, 'step' => 50))
             ->addGroupClass('map-control')

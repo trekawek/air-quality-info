@@ -56,3 +56,7 @@ a.disabled {
   width: 100%;
   height: 640px;
 }
+
+.device-header h4 {
+  margin-bottom: 0;
+}
