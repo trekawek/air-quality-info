@@ -72,7 +72,7 @@ class RecordModel {
         }
 
         $this->createAggregates($deviceId, $records[0]['timestamp'], $records[count($records) - 1]['timestamp']);
-        $this->csvModel->storeRecords($deviceId, $records);
+        $this->csvModel->storeRecords($deviceId, $records, count($records) > 1);
     }
 
     public function getLastData($deviceId) {

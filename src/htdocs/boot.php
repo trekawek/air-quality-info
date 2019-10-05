@@ -1,6 +1,8 @@
 <?php
 namespace AirQualityInfo;
 
+require_once("vendor/autoload.php");
+
 session_start();
 date_default_timezone_set('Europe/Warsaw');
 
@@ -33,6 +35,8 @@ $options = [
 ];
 $pdo = new \PDO($dsn, CONFIG['db']['user'], CONFIG['db']['password'], $options);
 
+$space = new \SpacesConnect(CONFIG['spaces']['key'], CONFIG['spaces']['secret'], CONFIG['spaces']['space'], CONFIG['spaces']['region']);
+
 $diContainer = new Lib\DiContainer();
 
 $currentLocale = new Lib\Locale();
@@ -41,6 +45,7 @@ if (isset($_GET['lang'])) {
 }
 
 $diContainer->setBinding('pdo', $pdo);
+$diContainer->setBinding('space', $space);
 $diContainer->setBinding('currentLocale', $currentLocale);
 
 Lib\CsrfToken::generateTokenIfNotExists();

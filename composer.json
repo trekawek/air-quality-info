@@ -1,0 +1,8 @@
+{
+    "config": {
+        "vendor-dir": "src/htdocs/vendor"
+    },
+    "require": {
+        "sociallydev/spaces-api": "dev-master"
+    }
+}
