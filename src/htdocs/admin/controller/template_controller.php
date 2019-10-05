@@ -28,7 +28,7 @@ class TemplateController extends AbstractController {
         }
         $templateForm->addElement('brand_icon', 'file', 'Update brand icon (1)', array(), 'Use PNG picture')
             ->addRule('file_max_size', array('value' => 256 * 1024 * 1024, 'message' => __('Maximum allowed size is 256 kB.')))
-            ->addRule('file_type', array('types' => array('image/png'), 'message' => __('Only PNGs are allowed')));
+            ->addRule('file_type', array('types' => array('image/png', 'image/svg+xml'), 'message' => __('Only PNGs and SVGs are allowed')));
         $templateForm->addElement('brand_name', 'text', 'Brand name (2)');
 
         $templateForm->addElement('custom_page_name', 'text', 'About page name (3)', array(), 'Fill to add a new item to the menu.');
