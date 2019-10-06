@@ -40,6 +40,7 @@ $locale['Contact info'] = 'Kontakt';
 $locale['Create'] = 'Utwórz';
 $locale['Create directory'] = 'Utwórz katalog';
 $locale['Create your account'] = 'Utwórz konto';
+$locale['Create widget'] = 'Utwórz widget';
 $locale['Created a new device'] = 'Utworzono urządzenie';
 $locale['Created a new directory'] = 'Utwórzono katalog';
 $locale['Created a new mapping'] = 'Utworzono mapowanie';
@@ -176,5 +177,7 @@ $locale['Values'] = 'Wartości';
 $locale['Visibility'] = 'Widoczność';
 $locale['Visible'] = 'Widoczny';
 $locale['Week'] = 'Tydzień';
+$locale['Widget'] = 'Widget';
+$locale['Widget source'] = 'Źródła widgetu';
 $locale['Year'] = 'Rok';
 ?>

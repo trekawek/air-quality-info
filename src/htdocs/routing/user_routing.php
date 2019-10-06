@@ -43,6 +43,7 @@ $routes = array(
     'GET /map/data.json'             => array('map', 'data'),
     'GET /map/:device'               => array('map', 'sensorInfo'),
     'GET /attachment/:name'          => array('attachment', 'get'),
+    'GET /:device/widget'            => array('widget', 'show'),
 );
 
 $router = new Lib\Router($routes, $devices, $user);

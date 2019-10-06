@@ -62,6 +62,8 @@ $routes = array(
     'GET /template/edit' => array('template', 'edit'),
     'POST /template/edit' => array('template', 'edit'),
     'GET /attachment/:name' => array('attachment', 'get'),
+
+    'GET /widget_config/:device_id' => array('widget_config', 'show'),
 );
 
 $router = new Lib\Router($routes);
