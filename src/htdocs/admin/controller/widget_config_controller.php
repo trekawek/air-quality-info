@@ -17,13 +17,7 @@ class WidgetConfigController extends AbstractController {
             $path = $paths[0];
         }
 
-        $widgetUri = '';
-        if ($_SERVER['HTTPS'] === 'off') {
-            $widgetUri = 'http:';
-        } else {
-            $widgetUri = 'https:';
-        }
-        $widgetUri .= $this->getUriPrefix().$path.'/widget';
+        $widgetUri = 'https:'.$this->getUriPrefix().$path.'/widget';
 
         $this->render(array(
             'view' => 'admin/views/widget_config/show.php'
