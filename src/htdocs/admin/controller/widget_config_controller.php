@@ -18,10 +18,10 @@ class WidgetConfigController extends AbstractController {
         }
 
         $widgetUri = '';
-        if (isset($_SERVER['HTTPS'])) {
-            $widgetUri = 'https:';
-        } else {
+        if ($_SERVER['HTTPS'] === 'off') {
             $widgetUri = 'http:';
+        } else {
+            $widgetUri = 'https:';
         }
         $widgetUri .= $this->getUriPrefix().$path.'/widget';
 

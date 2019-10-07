@@ -178,6 +178,7 @@ $locale['Visibility'] = 'Widoczność';
 $locale['Visible'] = 'Widoczny';
 $locale['Week'] = 'Tydzień';
 $locale['Widget'] = 'Widget';
+$locale['Widget footer (6)'] = 'Stopka widgetu (6)';
 $locale['Widget source'] = 'Źródła widgetu';
 $locale['Year'] = 'Rok';
 ?>

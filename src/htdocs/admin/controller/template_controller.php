@@ -36,9 +36,10 @@ class TemplateController extends AbstractController {
 
         $templateForm->addElement('header', 'textarea', 'Header (4)', array('rows'=>8));
         $templateForm->addElement('footer', 'textarea', 'Footer (5)', array('rows'=>8));
+        $templateForm->addElement('widget_footer', 'text', 'Widget footer (6)');
+
         $templateForm->addElement('css', 'textarea', 'Custom CSS style', array('rows'=>8));
 
-        
         $templateForm->setDefaultValues($template);
 
         if ($templateForm->isSubmitted() && $templateForm->validate($_POST)) {
@@ -47,6 +48,7 @@ class TemplateController extends AbstractController {
                 'brand_name' => $_POST['brand_name'],
                 'header' => $_POST['header'],
                 'footer' => $_POST['footer'],
+                'widget_footer' => $_POST['widget_footer'],
                 'css' => $_POST['css'],
                 'custom_page_name' => $_POST['custom_page_name'],
                 'custom_page' => $_POST['custom_page']

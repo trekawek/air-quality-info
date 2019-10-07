@@ -19,6 +19,8 @@
             </div>
             <div class="card-body">
                 <img style="width: 100%" src="/admin/public/img/template-guide.png" />
+                <br/>
+                <img style="width: 50%" src="/admin/public/img/template-guide-widget.png" />
             </div>
         </div>
     </div>
