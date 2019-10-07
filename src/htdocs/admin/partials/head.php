@@ -50,6 +50,10 @@
                             <i class="nav-icon fa fa-user"></i> <?php echo __('Account') ?></a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="<?php echo l('main', 'support') ?>">
+                            <i class="nav-icon fas fa-handshake"></i> <?php echo __('Support') ?></a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="<?php echo l('user', 'logout') ?>">
                             <i class="nav-icon fa fa-sign-out"></i> <?php echo __('Logout') ?></a>
                         </li>
