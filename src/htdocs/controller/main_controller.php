@@ -54,6 +54,7 @@ class MainController extends AbstractController {
             $data['average_1h']['index'] = null;
         } else {
             $data['average_1h']['index'] = __(PollutionLevel::POLLUTION_LEVELS[$avg1h['max_level']]['name']);
+            $data['average_1h']['index_num'] = $avg1h['max_level'];
         }
 
         $data['average_24h'] = MainController::arr_values_to_float($avg24h['values']);
@@ -61,6 +62,7 @@ class MainController extends AbstractController {
             $data['average_24h']['index'] = null;
         } else {
             $data['average_24h']['index'] = __(PollutionLevel::POLLUTION_LEVELS[$avg24h['max_level']]['name']);
+            $data['average_24h']['index_num'] = $avg24h['max_level'];
         }
 
         if ($data['last_data'] === null) {
