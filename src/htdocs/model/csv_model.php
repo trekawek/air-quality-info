@@ -79,7 +79,7 @@ class CsvModel {
             $this->removeDuplicates($tmpFileName);
         }
         $this->space->UploadFile($tmpFileName, 'private', $filename);
-        unlink($filename);
+        unlink($tmpFileName);
     }
 
     private function removeDuplicates($filename) {
