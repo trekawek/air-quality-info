@@ -12,7 +12,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="shortcut icon" type="image/png" href="/public/img/aqi-favicon.png"/>
     <link rel="apple-touch-icon" sizes="512x512" href="/public/img/aqi-512.png">
     <link rel="manifest" href="/manifest.json">
 

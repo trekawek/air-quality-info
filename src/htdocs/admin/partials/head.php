@@ -8,6 +8,8 @@
         <title>aqi.eco<?php echo $title ? (' - ' . $title) : '' ?></title>
         <link rel="stylesheet" href="/admin/public/css/vendor.min.css?v=31"/>
         <link rel="stylesheet" href="/admin/public/css/style.css?v=32"/>
+        <link rel="shortcut icon" type="image/png" href="/public/img/aqi-favicon.png"/>
+        <link rel="apple-touch-icon" sizes="512x512" href="/public/img/aqi-512.png">
     </head>
 
     <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show" data-locale='<?php echo json_encode($currentLocale->getJsMessages()) ?>'>

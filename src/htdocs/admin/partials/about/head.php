@@ -14,7 +14,8 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
         <link rel="stylesheet" href="/public/css/vendor.min.css"/>
         <link rel="stylesheet" href="/public/css/themes/default.min.css"/>
         <link rel="stylesheet" href="/admin/public/css/landing.css?v=2"/>
-        
+        <link rel="shortcut icon" type="image/png" href="/public/img/aqi-favicon.png"/>
+        <link rel="apple-touch-icon" sizes="512x512" href="/public/img/aqi-512.png">
     </head>
 
 <body>
