@@ -1,16 +1,22 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: db
--- Generation Time: Jun 05, 2019 at 09:19 PM
--- Server version: 5.7.26
--- PHP Version: 7.2.14
+-- Host: 10.135.14.82
+-- Generation Time: Nov 08, 2019 at 11:23 AM
+-- Server version: 8.0.17-0ubuntu2
+-- PHP Version: 7.2.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `air_quality_info`
@@ -33,6 +39,21 @@ CREATE TABLE `aggregates` (
   `pressure` decimal(6,2) DEFAULT NULL,
   `heater_temperature` decimal(5,2) DEFAULT NULL,
   `heater_humidity` decimal(5,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attachments`
+--
+
+CREATE TABLE `attachments` (
+  `user_id` int(11) NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `filename` varchar(256) NOT NULL,
+  `length` int(11) NOT NULL,
+  `mime` varchar(64) NOT NULL,
+  `data` mediumblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -61,10 +82,13 @@ CREATE TABLE `devices` (
   `http_password` varchar(256) NOT NULL,
   `name` varchar(256) NOT NULL,
   `description` varchar(256) NOT NULL,
+  `extra_description` varchar(512) DEFAULT NULL,
   `default_device` tinyint(1) NOT NULL,
   `location_provided` tinyint(1) NOT NULL DEFAULT '0',
   `lat` decimal(17,14) DEFAULT NULL,
-  `lng` decimal(17,14) DEFAULT NULL
+  `lng` decimal(17,14) DEFAULT NULL,
+  `radius` int(11) NOT NULL DEFAULT '250',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -129,6 +153,18 @@ CREATE TABLE `records` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `templates`
+--
+
+CREATE TABLE `templates` (
+  `user_id` int(11) NOT NULL,
+  `template_name` varchar(32) NOT NULL,
+  `template` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -137,7 +173,9 @@ CREATE TABLE `users` (
   `email` varchar(254) NOT NULL,
   `password_hash` varchar(128) NOT NULL,
   `domain` varchar(256) NOT NULL,
-  `redirect_root` varchar(255) DEFAULT NULL
+  `redirect_root` varchar(255) DEFAULT NULL,
+  `timezone` varchar(64) NOT NULL DEFAULT 'Europe/Warsaw',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -152,6 +190,12 @@ ALTER TABLE `aggregates`
   ADD KEY `timestamp` (`timestamp`),
   ADD KEY `device_id` (`device_id`),
   ADD KEY `resolution` (`resolution`);
+
+--
+-- Indexes for table `attachments`
+--
+ALTER TABLE `attachments`
+  ADD PRIMARY KEY (`user_id`,`name`);
 
 --
 -- Indexes for table `custom_domains`
@@ -201,6 +245,12 @@ ALTER TABLE `records`
   ADD KEY `device_id` (`device_id`);
 
 --
+-- Indexes for table `templates`
+--
+ALTER TABLE `templates`
+  ADD PRIMARY KEY (`user_id`,`template_name`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -245,40 +295,56 @@ ALTER TABLE `users`
 --
 
 --
+-- Constraints for table `attachments`
+--
+ALTER TABLE `attachments`
+  ADD CONSTRAINT `attachments_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `custom_domains`
 --
 ALTER TABLE `custom_domains`
-  ADD CONSTRAINT `custom_domains_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `custom_domains_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `devices`
 --
 ALTER TABLE `devices`
-  ADD CONSTRAINT `devices_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `devices_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `device_hierarchy`
 --
 ALTER TABLE `device_hierarchy`
-  ADD CONSTRAINT `device_hierarchy_device_id` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `device_hierarchy_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `device_hierarchy` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `device_hierarchy_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+  ADD CONSTRAINT `device_hierarchy_device_id` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `device_hierarchy_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `device_hierarchy` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `device_hierarchy_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `device_mapping`
 --
 ALTER TABLE `device_mapping`
-  ADD CONSTRAINT `device_mapping_device_id_fkey` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `device_mapping_device_id_fkey` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `json_updates`
 --
 ALTER TABLE `json_updates`
-  ADD CONSTRAINT `json_updates_device_id_fkey` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `json_updates_device_id_fkey` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `records`
 --
 ALTER TABLE `records`
-  ADD CONSTRAINT `records_device_id_fkey` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `records_device_id_fkey` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `templates`
+--
+ALTER TABLE `templates`
+  ADD CONSTRAINT `templates_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
