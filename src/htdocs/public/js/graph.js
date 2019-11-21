@@ -76,7 +76,10 @@ function emptyTimeSeries(data) {
         }
     }
     
-    var result = new Array();
+    var result = {};
+    var from = null;
+    var to = null;
+    var step = null;
     for (var i in ranges) {
         var range = ranges[i];
         if (range.from.y == null || range.to.y == null || range.steps == 0) {
@@ -87,15 +90,30 @@ function emptyTimeSeries(data) {
         var maxTime = range.to.t.getTime();
         var stepT = (range.to.t.getTime() - range.from.t.getTime()) / range.steps;
         var stepY = (range.to.y - range.from.y) / range.steps;
+        step = stepT;
         for (var j = 0; j <= range.steps; j++) {
             var mu = j / range.steps;
-            result.push({
-                t: new Date(interpolate(minTime, maxTime, mu)),
-                y: interpolate(range.from.y, range.to.y, mu)
-            });
+            var t = Math.round(interpolate(minTime, maxTime, mu));
+            var y = interpolate(range.from.y, range.to.y, mu);
+            result[t] = y;
+            if (from === null) {
+                from = t;
+            }
+            to = t;
         }
     }
-    return result;
+
+    var resultArray = [];
+    if (from !== null) {
+        for (var i = from; i < to; i += step) {
+            if (result.hasOwnProperty(i)) {
+                resultArray.push({t: new Date(i), y: result[i]});
+            } else {
+                resultArray.push({t: new Date(i), y: null});
+            }
+        }
+    }
+    return resultArray;
 }
 
 function interpolate(y1, y2, mu) {
