@@ -59,7 +59,7 @@ class DomainWidgetController extends AbstractController {
         $this->render(array('view' => 'views/widget/domain/index.php', 'layout' => false), array(
             'title' => $widget['title'],
             'level' => $maxLevel,
-            'siteUrl' => $this->getUriPrefix() . l('main', 'index')
+            'siteUrl' => $this->getUriPrefix()
         ));
     }
 
