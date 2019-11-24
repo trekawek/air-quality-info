@@ -28,7 +28,6 @@ class DomainWidgetController extends AbstractController {
         }
         
         $user = $this->userModel->getUserById($this->userId);
-        $domain = $user['domain'];
 
         $pm10 = $pm25 = null;
         $pm10count = $pm25count = 0;
@@ -60,7 +59,7 @@ class DomainWidgetController extends AbstractController {
         $this->render(array('view' => 'views/widget/domain/index.php', 'layout' => false), array(
             'title' => $widget['title'],
             'level' => $maxLevel,
-            'siteUrl' => $this->getUriPrefix($domain) . l('main', 'index')
+            'siteUrl' => $this->getUriPrefix() . l('main', 'index')
         ));
     }
 

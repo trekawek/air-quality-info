@@ -88,6 +88,7 @@ $diContainer->addBindings($templateVariables);
 $diContainer->setBinding('templateVariables', $templateVariables);
 $diContainer->setBinding('userId', $userId);
 $diContainer->setBinding('user', $user);
+$diContainer->setBinding('customFqdns', $userModel->getCustomFqdns($userId));
 
 $diContainer->injectClass('\\AirQualityInfo\\Controller\\'.Lib\StringUtils::camelize($currentController).'Controller')->$currentAction(...array_values($args));
 

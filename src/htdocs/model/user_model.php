@@ -47,6 +47,14 @@ class UserModel {
         return $id;
     }
 
+    public function getCustomFqdns($userId) {
+        $stmt = $this->pdo->prepare("SELECT * FROM `custom_domains` WHERE `user_id` = ?");
+        $stmt->execute([$userId]);
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $data;
+    }
+
     public function getUserById($userId) {
         $stmt = $this->pdo->prepare("SELECT * FROM `users` WHERE `id` = ?");
         $stmt->execute([$userId]);

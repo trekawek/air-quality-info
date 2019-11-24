@@ -9,6 +9,10 @@ class AbstractController {
 
     private $templateModel;
 
+    private $customFqdns;
+
+    private $user;
+
     protected $deviceHierarchyModel;
 
     protected $userId;
@@ -65,8 +69,13 @@ class AbstractController {
         $this->templateModel = $templateModel;
     }
 
-    public function setUserId($userId) {
-        $this->userId = $userId;
+    public function setCustomFqdns($customFqdns) {
+        $this->customFqdns = $customFqdns;
+    }
+
+    public function setUser($user) {
+        $this->userId = $user['id'];
+        $this->user = $user;
     }
 
     public function setDevices($devices) {
@@ -112,14 +121,18 @@ class AbstractController {
         return false;
     }
 
-    protected function getUriPrefix($userDomain) {
-        $uri_prefix = '//' . $userDomain . CONFIG['user_domain_suffixes'][0];
-        $host = explode(':', $_SERVER['HTTP_HOST']);
-        if (isset($host[1])) {
-            $port = $host[1];
-        }
-        if (isset($port) && $port != 80 && $port != 443) {
-            $uri_prefix .= ":$port";
+    protected function getUriPrefix() {
+        if (empty($this->customFqdns)) {
+            $uri_prefix = '//' . $userDomain . CONFIG['user_domain_suffixes'][0];
+            $host = explode(':', $_SERVER['HTTP_HOST']);
+            if (isset($host[1])) {
+                $port = $host[1];
+            }
+            if (isset($port) && $port != 80 && $port != 443) {
+                $uri_prefix .= ":$port";
+            }
+        } else {
+            $uri_prefix = '//' . $this->customFqdns[0]['fqdn'];
         }
         return $uri_prefix;
     }
