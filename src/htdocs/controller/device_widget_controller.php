@@ -1,7 +1,7 @@
 <?php
 namespace AirQualityInfo\Controller;
 
-class WidgetController extends AbstractController {
+class DeviceWidgetController extends AbstractController {
 
     private $recordModel;
 
@@ -22,7 +22,7 @@ class WidgetController extends AbstractController {
         $averages = $this->recordModel->getAverages($device['id'], 1);
         $user = $this->userModel->getUserById($this->userId);
         $domain = $user['domain'];
-        $this->render(array('view' => 'views/widget.php', 'layout' => false), array(
+        $this->render(array('view' => 'views/device_widget.php', 'layout' => false), array(
             'averages' => $averages,
             'currentAvgType' => 1,
             'sensors' => $lastData,
