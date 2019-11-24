@@ -1,0 +1,46 @@
+@font-face {
+  font-family: 'aqi';
+  src: url('../fonts/aqi.eot?35917950');
+  src: url('../fonts/aqi.eot?35917950#iefix') format('embedded-opentype'),
+       url('../fonts/aqi.woff2?35917950') format('woff2'),
+       url('../fonts/aqi.woff?35917950') format('woff'),
+       url('../fonts/aqi.ttf?35917950') format('truetype'),
+       url('../fonts/aqi.svg?35917950#aqi') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "aqi";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  margin-left: .2em;
+  text-align: center;
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  font-size: 200%;
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+}
+
+.icon-home:before { content: '\e800'; } /* '' */
+.icon-spacer:before { content: '\e801'; } /* '' */
+.icon-elderly:before { content: '\e802'; } /* '' */
+.icon-car:before { content: '\e803'; } /* '' */
+.icon-rower:before { content: '\e80a'; } /* '' */
+.icon-tree:before { content: '\e83f'; } /* '' */

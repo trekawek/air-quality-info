@@ -44,6 +44,7 @@ $routes = array(
     'GET /map/:device'               => array('map', 'sensorInfo'),
     'GET /attachment/:name'          => array('attachment', 'get'),
     'GET /:device/widget'            => array('device_widget', 'show'),
+    'GET /widget/:widgetId'          => array('domain_widget', 'show'),
 );
 
 $router = new Lib\Router($routes, $devices, $user);

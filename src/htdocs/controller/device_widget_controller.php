@@ -22,7 +22,7 @@ class DeviceWidgetController extends AbstractController {
         $averages = $this->recordModel->getAverages($device['id'], 1);
         $user = $this->userModel->getUserById($this->userId);
         $domain = $user['domain'];
-        $this->render(array('view' => 'views/device_widget.php', 'layout' => false), array(
+        $this->render(array('view' => 'views/widget/device/index.php', 'layout' => false), array(
             'averages' => $averages,
             'currentAvgType' => 1,
             'sensors' => $lastData,
