@@ -155,8 +155,8 @@
     </div>
     <footer class="text-muted text-center">
         <small>
-            <?php if ($footer): ?>
-            <?php echo $footer ?><br/>
+            <?php if (isset($domainTemplate['widget_footer'])): ?>
+            <?php echo $domainTemplate['widget_footer'] ?><br/>
             <?php endif ?>
             <?php echo __('Powered by ') ?><a href="https://aqi.eco">aqi.eco</a>.
         </small>

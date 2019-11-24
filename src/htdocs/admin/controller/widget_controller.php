@@ -33,7 +33,6 @@ class WidgetController extends AbstractController {
             $widgetId = $this->widgetModel->createWidget(
                 $this->user['id'],
                 $_POST['title'],
-                $_POST['footer'],
             );
             $this->alert(__('Created a new widget', 'success'));
             header('Location: '.l('widget', 'edit', null, array('widget_id' => $widgetId)));
@@ -49,7 +48,6 @@ class WidgetController extends AbstractController {
     private function getWidgetForm() {
         $widgetForm = new \AirQualityInfo\Lib\Form\Form("widgetForm");
         $widgetForm->addElement('title', 'text', 'Title')->addRule('required');
-        $widgetForm->addElement('footer', 'textarea', 'Footer');
         return $widgetForm;
     }
 
@@ -63,7 +61,6 @@ class WidgetController extends AbstractController {
                 $this->user['id'],
                 $widgetId,
                 $_POST['title'],
-                $_POST['footer'],
             );
             $this->alert(__('Updated widget', 'success'));
         }
