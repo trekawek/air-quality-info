@@ -123,7 +123,7 @@ class AbstractController {
 
     protected function getUriPrefix() {
         if (empty($this->customFqdns)) {
-            $uri_prefix = '//' . $userDomain . CONFIG['user_domain_suffixes'][0];
+            $uri_prefix = '//' . $this->user['domain'] . CONFIG['user_domain_suffixes'][0];
             $host = explode(':', $_SERVER['HTTP_HOST']);
             if (isset($host[1])) {
                 $port = $host[1];
