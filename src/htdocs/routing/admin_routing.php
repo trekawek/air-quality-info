@@ -63,7 +63,13 @@ $routes = array(
     'POST /template/edit' => array('template', 'edit'),
     'GET /attachment/:name' => array('attachment', 'get'),
 
-    'GET /widget_config/:device_id' => array('widget_config', 'show'),
+    'GET /widget' => array('widget', 'index'),
+    'GET /widget_device/:device_id' => array('widget', 'showDeviceWidget'),
+    'GET /widget/create' => array('widget', 'create'),
+    'POST /widget/create' => array('widget', 'create'),
+    'GET /widget/edit/:widget_id' => array('widget', 'edit'),
+    'POST /widget/edit/:widget_id' => array('widget', 'edit'),
+    'DELETE /widget/:widget_id' => array('widget', 'delete'),
 );
 
 $router = new Lib\Router($routes);

@@ -96,12 +96,6 @@
             </div>
             <div class="card-body">
                 <p>
-                    <a class="btn btn-success" href="<?php echo l('widget_config', 'show', null, array('device_id' => $deviceId)) ?>">
-                        <?php echo __('Create widget') ?>
-                    </a>
-                </p>
-
-                <p>
                     <a class="btn btn-primary" href="<?php echo l('device', 'importMadaviWrapper', null, array('device_id' => $deviceId)) ?>">
                         <?php echo __('Import data from Madavi.de') ?>
                     </a>

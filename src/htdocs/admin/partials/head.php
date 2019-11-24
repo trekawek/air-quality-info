@@ -48,6 +48,10 @@
                             <i class="nav-icon fa fa-code"></i> <?php echo __('Templates') ?></a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="<?php echo l('widget', 'index') ?>">
+                            <i class="nav-icon fa fa-window-maximize"></i> <?php echo __('Widgets') ?></a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="<?php echo l('user', 'edit') ?>">
                             <i class="nav-icon fa fa-user"></i> <?php echo __('Account') ?></a>
                         </li>
