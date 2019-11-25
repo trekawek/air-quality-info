@@ -19,6 +19,10 @@
         font-size: 95%;
       }
 
+      footer small {
+        font-size: 80%;
+      }
+
       .container a {
         text-decoration: none;
         border: none;
