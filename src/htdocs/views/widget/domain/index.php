@@ -161,6 +161,16 @@
             <?php echo __('Powered by ') ?><a href="https://aqi.eco">aqi.eco</a>.
         </small>
     </footer>
-    <script src="admin/public/js/vendor.min.js"></script>
+    <script>
+var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+var eventer = window[eventMethod];
+var messageEvent = eventMethod === "attachEvent" ? "onload" : "load";
+eventer(messageEvent, function(e) {
+  parent.postMessage({
+    'aqi-widget': <?php echo $widgetId ?>,
+    'frameHeight': document.body.scrollHeight
+  }, '*');
+});
+    </script>
 </body>
 </html>

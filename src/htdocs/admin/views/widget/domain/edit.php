@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
                 <?php echo __('Widget') ?>
@@ -14,12 +14,12 @@
                     <?php echo __('Widget source') ?>
             </div>
             <div class="card-body">
-                <textarea readonly col="80" rows="4" class="form-control" style="font-family: monospace;"><?php include('widget.php'); ?></textarea>
+                <textarea readonly col="80" rows="10" class="form-control" style="font-family: monospace;"><?php include('widget.php'); ?></textarea>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
                 <?php echo __('Edit widget') ?>
