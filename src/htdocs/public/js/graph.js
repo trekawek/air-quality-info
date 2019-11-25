@@ -206,6 +206,7 @@ function renderGraph(ctx, data, type, avgType) {
                 display: false
             },
             ticks: {
+                suggestedMin: 0,
                 suggestedMax: 55
             }
         }];
