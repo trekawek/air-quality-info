@@ -14,16 +14,22 @@ class MadaviMigrator {
 
     private $updater;
 
+    private $deviceModel;
+
     private $batch = array();
 
     private $device;
 
-    public function __construct(\AirQualityInfo\Model\Updater $updater) {
+    public function __construct(\AirQualityInfo\Model\Updater $updater,
+        \AirQualityInfo\Model\DeviceModel $deviceModel) {
         $this->updater = $updater;
+        $this->deviceModel = $deviceModel;
     }
 
     public function migrate($device) {
         $this->device = $device;
+        $this->device['mapping'] = $this->deviceModel->getMappingAsAMap($device['id']);
+
         $index = file_get_contents(MadaviMigrator::SENSOR_URL.'/csvfiles.php?sensor=esp8266-'.$device['esp8266_id']);
         $files = array();
         foreach (explode("\n", $index) as $line) {

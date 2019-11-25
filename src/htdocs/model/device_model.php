@@ -76,6 +76,17 @@ class DeviceModel {
         return $data;
     }
 
+    public function getMappingAsAMap($deviceId) {
+        $mapping = array();
+        foreach ($this->getMappingForDevice($deviceId) as $m) {
+            if (!isset($mapping[$m['db_name']])) {
+                $mapping[$m['db_name']] = array();
+            }
+            $mapping[$m['db_name']][] = $m['json_name'];
+        }
+        return $mapping;
+    }
+
     public function updateDevice($deviceId, $data) {
         $sql = "UPDATE `devices` SET ";
         foreach ($data as $k => $v) {

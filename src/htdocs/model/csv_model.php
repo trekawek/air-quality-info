@@ -99,7 +99,6 @@ class CsvModel {
         fclose($fp);
 
         ksort($records, SORT_NUMERIC);
-        var_dump($records);
 
         $fp = fopen($filename, 'w');
         $this->writeHeader($fp);
