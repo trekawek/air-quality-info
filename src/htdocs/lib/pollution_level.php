@@ -1,7 +1,8 @@
 <?php
 namespace AirQualityInfo\Lib;
 
-// http://powietrze.gios.gov.pl/pjp/current
+// https://www.airqualitynow.eu/pl/about_indices_definition.php
+// TODO: consider updating ranges to align with http://powietrze.gios.gov.pl/pjp/current
 class PollutionLevel {
 
     const POLLUTION_LEVELS = array(
