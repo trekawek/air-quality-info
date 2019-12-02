@@ -92,7 +92,8 @@ class DeviceController extends AbstractController {
                 'location_provided' => isset($_POST['location_provided']) ? 1 : 0,
                 'lat' => $_POST['lat'],
                 'lng' => $_POST['lng'],
-                'radius' => $_POST['radius']
+                'radius' => $_POST['radius'],
+                'elevation' => empty($_POST['elevation']) ? NULL : $_POST['elevation']
             );
             $this->deviceModel->updateDevice($deviceId, $data);
             $this->alert(__('Updated the device', 'success'));
@@ -102,6 +103,7 @@ class DeviceController extends AbstractController {
 
         if ($device['location_provided']) {
             $deviceForm->getElement('radius')->addGroupClass('show');
+            $deviceForm->getElement('elevation')->addGroupClass('show');
         }
 
         if ($mappingForm->isSubmitted() && $mappingForm->validate($_POST)) {
@@ -184,6 +186,10 @@ class DeviceController extends AbstractController {
             ->addGroupClass('collapse')
             ->addRule('required')
             ->addRule('range', array('min' => 50, 'max' => 500, 'message' => 'Please choose value between 50 and 500.' ));
+        $deviceForm->addElement('elevation', 'number', 'Elevation (m a.s.l.)', array('min' => -10994, 'max' => 8848))
+            ->addGroupClass('map-control')
+            ->addGroupClass('collapse')
+            ->addRule('range', array('min' => -10994, 'max' => 8848, 'message' => 'Please choose value between -10994 and 8848.' ));
         $deviceForm->addElement('lat', 'hidden');
         $deviceForm->addElement('lng', 'hidden');
         $deviceForm->setDefaultValues($device);

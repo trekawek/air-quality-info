@@ -57,26 +57,44 @@ document.querySelectorAll('.post-with-output').forEach(link => {
 	})
 });
 
-document.querySelectorAll('.map-group').forEach(element => {
-    var latInput = document.querySelector(element.dataset.inputLat);
-    var lngInput = document.querySelector(element.dataset.inputLng);
-    var pickerConfig = {
-        setCurrentPosition: true
-    };
-    var mapsConfig = {
-        zoom: 15,
-        streetViewControl: false
+(function() {
+    function updateAltitude(location, elevInput) {
+        var elevator = new google.maps.ElevationService;
+        elevator.getElevationForLocations({
+            'locations': [location]
+        }, function(results, status) {
+            if (results.length > 0 && results[0].elevation !== null) {
+                elevationInput.value = Math.round(results[0].elevation);
+            }
+        });
     }
-    if (!!latInput.value) {
-        pickerConfig.lat = latInput.value;
-    }
-    if (!!lngInput.value) {
-        pickerConfig.lng = lngInput.value;
-    }
-    var lp = new locationPicker(document.querySelector('.map'), pickerConfig, mapsConfig);
-    google.maps.event.addListener(lp.map, 'idle', function (event) {
-        var location = lp.getMarkerPosition();
-        latInput.value = location.lat;
-        lngInput.value = location.lng;
+    
+    document.querySelectorAll('.map-group').forEach(element => {
+        var latInput = document.querySelector(element.dataset.inputLat);
+        var lngInput = document.querySelector(element.dataset.inputLng);
+        var elevInput = document.querySelector(element.dataset.inputElevation);
+        var pickerConfig = {
+            setCurrentPosition: true
+        };
+        var mapsConfig = {
+            zoom: 15,
+            streetViewControl: false
+        }
+        if (!!latInput.value) {
+            pickerConfig.lat = latInput.value;
+        }
+        if (!!lngInput.value) {
+            pickerConfig.lng = lngInput.value;
+        }
+        var lp = new locationPicker(document.querySelector('.map'), pickerConfig, mapsConfig);
+        google.maps.event.addListener(lp.map, 'idle', function (event) {
+            var location = lp.getMarkerPosition();
+            latInput.value = location.lat;
+            lngInput.value = location.lng;
+        });
+        google.maps.event.addListener(lp.map, 'dragend', function (event) {
+            var location = lp.getMarkerPosition();
+            updateAltitude(location, elevInput);
+        });
     });
-});
+})();

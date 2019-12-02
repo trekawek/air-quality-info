@@ -9,7 +9,7 @@
             <div class="card-body">
                 <form action="<?php echo l('device', 'edit', null, array('device_id' => $deviceId)) ?>" method="post">
                     <?php $deviceForm->render() ?>
-                    <div class="form-group collapse map-control map-group <?php echo $device['location_provided'] ? 'show' : '' ?>" data-input-lat="#latInput" data-input-lng="#lngInput">
+                    <div class="form-group collapse map-control map-group <?php echo $device['location_provided'] ? 'show' : '' ?>" data-input-lat="#latInput" data-input-lng="#lngInput" data-input-elevation="#elevationInput">
                         <div class="map"></div>
                     </div>
                     <button type="submit" class="btn btn-primary"><?php echo __('Update') ?></button>

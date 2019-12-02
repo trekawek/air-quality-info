@@ -17,9 +17,12 @@ class RecordModel {
 
     private $csvModel;
 
-    public function __construct($pdo, CsvModel $csvModel) {
+    private $deviceModel;
+
+    public function __construct($pdo, CsvModel $csvModel, DeviceModel $deviceModel) {
         $this->pdo = $pdo;
         $this->csvModel = $csvModel;
+        $this->deviceModel = $deviceModel;
     }
 
     public function update($deviceId, $records) {
@@ -85,6 +88,8 @@ class RecordModel {
         foreach (RecordModel::FIELDS as $f) {
             $data[$f] = $row[$f];
         }
+        $device = $this->deviceModel->getDeviceById($deviceId);
+        $data['pressure'] = RecordModel::normalizePressure($data['pressure'], $device['elevation'], $data['temperature']);
         return $data;
     }
 
@@ -106,6 +111,8 @@ class RecordModel {
         foreach (RecordModel::FIELDS as $i => $f) {
             $data[$f] = $row[$i];
         }
+        $device = $this->deviceModel->getDeviceById($deviceId);
+        $data['pressure'] = RecordModel::normalizePressure($data['pressure'], $device['elevation'], $data['temperature']);
         return $data;
     }
 
@@ -165,7 +172,7 @@ class RecordModel {
             break;
         
             case 'pressure':
-            $fields = array('pressure');
+            $fields = array('pressure', 'temperature');
             break;
         
             case 'humidity':
@@ -232,6 +239,12 @@ class RecordModel {
             $since += 60 * 60 * $avgType;
         }
 
+        if (isset($data['pressure'])) {
+            $device = $this->deviceModel->getDeviceById($deviceId);
+            foreach ($data['pressure'] as $ts => $v) {
+                $data['pressure'][$ts] = RecordModel::normalizePressure($data['pressure'][$ts], $device['elevation'], $data['temperature'][$ts]);
+            }
+        }
         return array('start' => $since, 'end' => $now, 'data' => $data);
     }
 
@@ -341,5 +354,22 @@ class RecordModel {
         );
     }
 
+    // https://pl.wikipedia.org/wiki/Wz%C3%B3r_barometryczny
+    private static function normalizePressure($pressure, $h, $temp) {
+        if ($pressure === null) {
+            return null;
+        }
+        $pressure = (float)$pressure;
+        if ($h === null) {
+            return $pressure;
+        }
+        $h = (int)$h;
+        $mu = 0.0289644;
+        $g = 9.80665;
+        $R = 8.3144598;
+        $T = $temp + 273.15;
+        $normalized = $pressure * exp(- $mu * $g * $h / ($R * $T));
+        return $normalized;
+    }
 }
 ?>

@@ -81,6 +81,7 @@ $locale['ESP 8266 id'] = 'ESP 8266 ID';
 $locale['ESP8266 ID'] = 'ESP8266 ID';
 $locale['Edit device'] = 'Edycja urządzenia';
 $locale['Edit directory'] = 'Edycja katalogu';
+$locale['Elevation (m a.s.l.)'] = 'Wysokość (m n.p.m.)';
 $locale['Extra description'] = 'Dodatkowy opis';
 $locale['Fill to add a new item to the menu.'] = 'Wpisz nazwę, aby dodać nową pozycję w menu';
 $locale['Footer'] = 'Stopka';
