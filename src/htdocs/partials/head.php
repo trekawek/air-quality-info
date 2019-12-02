@@ -48,7 +48,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
                 <?php navItem("/", 'Home'); ?>
-                <?php if (!(($currentController == 'main' && $currentAction == 'all') || ($currentController == 'map'))): ?>
+                <?php if (!(($currentController == 'main' && $currentAction == 'all') || ($currentController == 'map' && $displayLocations))): ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <?php echo __('Graphs') ?>
