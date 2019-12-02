@@ -368,7 +368,7 @@ class RecordModel {
         $g = 9.80665;
         $R = 8.3144598;
         $T = $temp + 273.15;
-        $normalized = $pressure * exp(- $mu * $g * $h / ($R * $T));
+        $normalized = $pressure / exp(- $mu * $g * $h / ($R * $T));
         return $normalized;
     }
 }
