@@ -71,7 +71,7 @@ class WidgetController extends AbstractController {
             $this->alert(__('Updated widget', 'success'));
         }
 
-        $widgetUri = 'https:'.$this->getUriPrefix()."/widget/".$widgetId;
+        $widgetUri = $this->getProtocol().':'.$this->getUriPrefix()."/widget/".$widgetId;
 
         $this->render(array(
             'view' => 'admin/views/widget/domain/edit.php'
@@ -95,7 +95,7 @@ class WidgetController extends AbstractController {
             $path = $paths[0];
         }
 
-        $widgetUri = 'https:'.$this->getUriPrefix().$path.'/widget';
+        $widgetUri = $this->getProtocol().':'.$this->getUriPrefix().$path.'/widget';
 
         $this->render(array(
             'view' => 'admin/views/widget/device/show.php'
@@ -104,5 +104,12 @@ class WidgetController extends AbstractController {
         ));
     }
 
+    private function getProtocol() {
+        if (strpos(CONFIG['user_domain_suffixes'][0], '.localhost') === FALSE) {
+            return 'https';
+        } else {
+            return 'http';
+        }
+    }
 }
 ?>
