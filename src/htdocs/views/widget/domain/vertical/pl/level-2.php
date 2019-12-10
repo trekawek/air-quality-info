@@ -18,7 +18,7 @@
                 <span class="strip-recommended">
                   <strong>Dopuszczalna</strong>
                   <br />
-                  <span class="strip-recommended-description">aktywność fizyczna</span>
+                  <span class="strip-recommended-description">aktywność fizyczna na zewnątrz</span>
                 </span>
               </span>
             </li>
@@ -38,7 +38,7 @@
                 <span class="strip-recommended">
                   <strong>Niezalecane</strong>
                   <br />
-                  <span class="strip-recommended-description">przebywanie na świeżym powietrzu dla kobiet w ciąży, chorych na astmę i osób starszych</span>
+                  <span class="strip-recommended-description">przebywanie na świeżym powietrzu (ciąża, astma, osoby starsze)</span>
                 </span>
               </span>
             </li>

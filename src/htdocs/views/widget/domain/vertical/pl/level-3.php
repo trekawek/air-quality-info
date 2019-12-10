@@ -8,7 +8,7 @@
                 <span class="strip-recommended">
                   <strong>Zalecane</strong>
                   <br />
-                  <span class="strip-recommended-description">Pozostanie w domu dla osób starszych, kobiet w ciąży oraz osób z chorobami serca i dróg oddechowych</span>
+                  <span class="strip-recommended-description">Pozostanie w domu (osoby starsze, kobiety w ciąży, osoby z chorobami serca i dróg oddechowych)</span>
                 </span>
               </span>
             </li>
@@ -28,7 +28,7 @@
                 <span class="strip-recommended">
                   <strong>Niezalecana</strong>
                   <br />
-                  <span class="strip-recommended-description">aktywność fizyczna</span>
+                  <span class="strip-recommended-description">aktywność fizyczna na zewnątrz</span>
                 </span>
               </span>
             </li>

@@ -28,7 +28,7 @@
                 <span class="strip-recommended">
                   <strong>Zrezygnuj</strong>
                   <br />
-                  <span class="strip-recommended-description">z aktywności fizycznej</span>
+                  <span class="strip-recommended-description">z aktywności fizycznej na zewnątrz</span>
                 </span>
               </span>
             </li>
