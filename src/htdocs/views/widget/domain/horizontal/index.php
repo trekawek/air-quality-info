@@ -52,6 +52,10 @@
       }
 
       small {
+        font-size: 95%;
+      }
+
+      footer small {
         font-size: 80%;
       }
 
