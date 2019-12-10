@@ -52,7 +52,7 @@
       }
 
       small {
-        font-size: 95%;
+        font-size: 80%;
       }
 
       .aqibox-h,
