@@ -14,5 +14,9 @@
     });
 })();
 </script>
-<iframe id="aqi-widget-<?php echo $widgetId ?>" style="width: 300px; height: 620px; border: 0;" src="<?php echo $widgetUri ?>"></iframe>
+<?php if ($widgetTemplate == 'horizontal'): ?>
+    <iframe id="aqi-widget-<?php echo $widgetId ?>" style="width: 1110px; height: 210px; border: 0;" src="<?php echo $widgetUri ?>"></iframe>
+<?php else: ?>
+    <iframe id="aqi-widget-<?php echo $widgetId ?>" style="width: 300px; height: 620px; border: 0;" src="<?php echo $widgetUri ?>"></iframe>
+<?php endif ?>
 <!-- aqi.eco widget END -->

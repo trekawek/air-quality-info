@@ -9,16 +9,16 @@ class WidgetModel {
         $this->pdo = $pdo;
     }
 
-    public function createWidget($userId, $title) {
-        $stmt = $this->pdo->prepare("INSERT INTO `widgets` (`user_id`, `title`) VALUES (?, ?)");
-        $stmt->execute([$userId, $title]);
+    public function createWidget($userId, $title, $template) {
+        $stmt = $this->pdo->prepare("INSERT INTO `widgets` (`user_id`, `title`, `template`) VALUES (?, ?, ?)");
+        $stmt->execute([$userId, $title, $template]);
         $stmt->closeCursor();
         return $this->pdo->lastInsertId();
     }
 
-    public function updateWidget($userId, $widgetId, $title) {
-        $stmt = $this->pdo->prepare("UPDATE `widgets` SET `title` = ? WHERE `user_id` = ? AND `id` = ?");
-        $stmt->execute([$title, $userId, $widgetId]);
+    public function updateWidget($userId, $widgetId, $title, $template) {
+        $stmt = $this->pdo->prepare("UPDATE `widgets` SET `title` = ?, `template` = ? WHERE `user_id` = ? AND `id` = ?");
+        $stmt->execute([$title, $template, $userId, $widgetId]);
         $stmt->closeCursor();
     }
 

@@ -56,7 +56,7 @@ class DomainWidgetController extends AbstractController {
         if ($maxLevel == -1) {
             $maxLevel = null;
         }
-        $this->render(array('view' => 'views/widget/domain/index.php', 'layout' => false), array(
+        $this->render(array('view' => 'views/widget/domain/'.$widget['template'].'/index.php', 'layout' => false), array(
             'title' => $widget['title'],
             'level' => $maxLevel,
             'siteUrl' => $this->getUriPrefix(),
