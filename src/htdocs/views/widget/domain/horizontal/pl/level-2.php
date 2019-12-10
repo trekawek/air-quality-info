@@ -30,7 +30,7 @@
         <span class="strip-recommended">
           <strong>Dopuszczalna</strong>
           <br />
-          <span class="strip-recommended-description">aktywność fizyczna</span>
+          <span class="strip-recommended-description">aktywność fizyczna na zewnątrz</span>
         </span>
         </span>
         </li>
