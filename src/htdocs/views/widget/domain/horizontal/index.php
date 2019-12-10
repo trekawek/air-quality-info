@@ -166,7 +166,7 @@
 </head>
 
 <body>
-  <a href="<?php echo $siteUrl ?>" target="_parent">
+  <a href="<?php echo $siteUrl ?>" target="_parent" class="aqibox-h">
     <?php include(sprintf('%s/level-%s.php', 'pl'/*$currentLocale->getCurrentLang()*/, $level === null ? 'null' : $level)); ?>
   </a>
 
