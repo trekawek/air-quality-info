@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 10.135.14.82
--- Generation Time: Dec 02, 2019 at 02:51 PM
+-- Generation Time: Dec 10, 2019 at 12:59 PM
 -- Server version: 8.0.18-0ubuntu0.19.10.1
 -- PHP Version: 7.2.23
 
@@ -11,12 +11,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `air_quality_info`
@@ -188,7 +182,8 @@ CREATE TABLE `users` (
 CREATE TABLE `widgets` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `title` varchar(512) NOT NULL
+  `title` varchar(512) NOT NULL,
+  `template` enum('horizontal','vertical') NOT NULL DEFAULT 'vertical'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -376,7 +371,3 @@ ALTER TABLE `templates`
 ALTER TABLE `widgets`
   ADD CONSTRAINT `widgets_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
