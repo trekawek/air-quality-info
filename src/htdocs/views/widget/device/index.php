@@ -8,7 +8,7 @@
     <title>aqi.eco</title>
     <link rel="stylesheet" href="/public/css/vendor.min.css"/>
     <link rel="stylesheet" href="/public/css/themes/default.min.css"/>
-    <link rel="stylesheet" href="/public/css/themes/device-widget.css"/>
+    <link rel="stylesheet" href="/public/css/device-widget.css"/>
 </head>
 
 <body>
