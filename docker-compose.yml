@@ -38,3 +38,14 @@ services:
     volumes:
     - ./src/htdocs:/var/www/html
     - ./nginx.conf:/etc/nginx/conf.d/default.conf
+
+  minio:
+    image: minio/minio:RELEASE.2020-01-03T19-12-21Z
+    ports:
+    - "127.0.0.1:9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server /data
+    volumes:
+    - ./var-data/s3:/data

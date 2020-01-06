@@ -1,6 +1,7 @@
 <?php
 namespace Aws\Credentials;
 
+use Aws\Exception\AwsException;
 use Aws\Exception\CredentialsException;
 use Aws\Result;
 use Aws\Sts\StsClient;
@@ -13,6 +14,7 @@ use GuzzleHttp\Promise;
 class AssumeRoleWithWebIdentityCredentialProvider
 {
     const ERROR_MSG = "Missing required 'AssumeRoleWithWebIdentityCredentialProvider' configuration option: ";
+    const ENV_RETRIES = 'AWS_METADATA_SERVICE_NUM_ATTEMPTS';
 
     /** @var string */
     private $tokenFile;
@@ -58,7 +60,7 @@ class AssumeRoleWithWebIdentityCredentialProvider
             throw new \InvalidArgumentException("'WebIdentityTokenFile' must be an absolute path.");
         }
 
-        $this->retries = isset($config['retries']) ? $config['retries'] : 3;
+        $this->retries = (int) getenv(self::ENV_RETRIES) ?: (isset($config['retries']) ? $config['retries'] : 3);
         $this->attempts = 0;
 
         $this->session = isset($config['SessionName'])
@@ -109,7 +111,7 @@ class AssumeRoleWithWebIdentityCredentialProvider
 
                 try {
                     $result = $client->assumeRoleWithWebIdentity($assumeParams);
-                } catch (\Exception $e) {
+                } catch (AwsException $e) {
                     if ($e->getAwsErrorCode() == 'InvalidIdentityToken') {
                         if ($this->attempts < $this->retries) {
                             sleep(pow(1.2, $this->attempts));
@@ -125,6 +127,11 @@ class AssumeRoleWithWebIdentityCredentialProvider
                             $e
                         );
                     }
+                } catch (\Exception $e) {
+                    throw new CredentialsException(
+                        "Error retrieving web identity credentials: " . $e->getMessage()
+                        . " (" . $e->getCode() . ")"
+                    );
                 }
                 $this->attempts++;
             }

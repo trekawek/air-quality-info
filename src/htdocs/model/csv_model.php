@@ -9,13 +9,34 @@ class CsvModel {
 
     private $userModel;
 
-    private $space;
+    private $s3Bucket;
 
-    public function __construct(DeviceModel $deviceModel, UserModel $userModel, \SpacesConnect $space) {
+    private $s3Client;
+
+    public function __construct(DeviceModel $deviceModel, UserModel $userModel, \Aws\S3\S3Client $s3Client, $s3Bucket) {
         $this->deviceModel = $deviceModel;
         $this->userModel = $userModel;
-        $this->space = $space;
+        $this->s3Client = $s3Client;
+        $this->s3Bucket = $s3Bucket;
     }
+
+    public function listDirs($dirPath) {
+        $dirPath = explode('/', $dirPath);
+        $prefix = '';
+        foreach($dirPath as $segment) {
+            if (!empty($segment)) {
+                $prefix .= $segment.'/';
+            }
+        }
+        $objects = $this->s3Client->ListObjects(array(
+            'Bucket' => $this->s3Bucket,
+            'Prefix' => $prefix,
+            'Delimiter' => '/'
+        ));
+        return array_map(function($el) {
+            return substr($el['Prefix'], 0, -1);
+        }, $objects->get('CommonPrefixes'));
+   }
 
     public function storeRecords($deviceId, $records, $removeDuplicates = false) {
         $device = $this->deviceModel->getDeviceById($deviceId);
@@ -59,10 +80,14 @@ class CsvModel {
     }
 
     private function open($filename) {
-        $fileExists = $this->space->DoesObjectExist($filename);
+        $fileExists = $this->s3Client->doesObjectExist($this->s3Bucket, $filename);
         $tmpName = tempnam(sys_get_temp_dir(), str_replace('/', '_', $filename));
         if ($fileExists) {
-            $this->space->DownloadFile($filename, $tmpName);
+            $this->s3Client->getObject(array(
+                'Bucket' => $this->s3Bucket,
+                'Key'    => $filename,
+                'SaveAs' => $tmpName
+            ));
             $fp = fopen($tmpName, 'a');
         } else {
             $fp = fopen($tmpName, 'a');
@@ -78,7 +103,15 @@ class CsvModel {
         if ($removeDuplicates) {
             $this->removeDuplicates($tmpFileName);
         }
-        $this->space->UploadFile($tmpFileName, 'private', $filename);
+        $this->s3Client->putObject(array(
+            'Bucket'      => $this->s3Bucket,
+            'Key'         => $filename,
+            'SourceFile'  => $tmpFileName
+        ));
+        $this->s3Client->waitUntil('ObjectExists', array(
+            'Bucket' => $this->s3Bucket,
+            'Key'    => $filename
+        ));        
         unlink($tmpFileName);
     }
 

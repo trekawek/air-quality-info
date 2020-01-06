@@ -3,6 +3,6 @@
         "vendor-dir": "src/htdocs/vendor"
     },
     "require": {
-        "sociallydev/spaces-api": "dev-master"
+        "aws/aws-sdk-php": "^3.52"
     }
 }

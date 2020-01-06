@@ -35,7 +35,7 @@ $options = [
 ];
 $pdo = new \PDO($dsn, CONFIG['db']['user'], CONFIG['db']['password'], $options);
 
-$space = new \SpacesConnect(CONFIG['spaces']['key'], CONFIG['spaces']['secret'], CONFIG['spaces']['space'], CONFIG['spaces']['region']);
+$s3Client = \Aws\S3\S3Client::factory(CONFIG['s3']);
 
 $diContainer = new Lib\DiContainer();
 
@@ -45,7 +45,8 @@ if (isset($_GET['lang'])) {
 }
 
 $diContainer->setBinding('pdo', $pdo);
-$diContainer->setBinding('space', $space);
+$diContainer->setBinding('s3Bucket', CONFIG['s3Bucket']);
+$diContainer->setBinding('s3Client', $s3Client);
 $diContainer->setBinding('currentLocale', $currentLocale);
 
 Lib\CsrfToken::generateTokenIfNotExists();
