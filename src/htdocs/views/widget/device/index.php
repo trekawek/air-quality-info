@@ -8,33 +8,7 @@
     <title>aqi.eco</title>
     <link rel="stylesheet" href="/public/css/vendor.min.css"/>
     <link rel="stylesheet" href="/public/css/themes/default.min.css"/>
-    <style>
-.index-cat-0 {
-  background-color: #57b108;
-  color: #ffffff;
-}
-
-.index-cat-1 {
-  background-color: #b0dd10;
-  color: #262626;
-}
-
-.index-cat-2 {
-  background-color: #ffd911;
-  color: #262626;
-}
-
-.index-cat-3 {
-  background-color: #e58100;
-  color: #262626;
-}
-
-.index-cat-4 {
-  background-color: #990000;
-  color: #ffffff;
-}
-
-    </style>
+    <link rel="stylesheet" href="/public/css/themes/device-widget.css"/>
 </head>
 
 <body>
@@ -107,7 +81,7 @@
             <?php if (isset($domainTemplate['widget_footer'])): ?>
             <?php echo $domainTemplate['widget_footer'] ?><br/>
             <?php endif ?>
-            <?php echo __('Powered by ') ?><a href="https://aqi.eco">aqi.eco</a>.
+            <?php echo __('Powered by ') ?><a href="https://aqi.eco" target="_blank">aqi.eco</a>.
         </small>
     </footer>
     <script src="/admin/public/js/vendor.min.js"></script>
