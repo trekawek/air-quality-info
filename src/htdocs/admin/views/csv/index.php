@@ -7,11 +7,11 @@ $currentPath[] = $segment;
 ?>
     <?php $lastItem = (end($breadcrumbs) === $segment) ?>
     <li class="breadcrumb-item <?php echo $lastItem ? 'active' : '' ?>">
-        <?php if (!$lastItem || $lastItemLink): ?>
+        <?php if (!$lastItem): ?>
         <a href="<?php echo l('csv', 'index', null, array('path' => implode('/', $currentPath))) ?>">
         <?php endif ?>
             <?php echo $segment ?>
-        <?php if (!$lastItem || $lastItemLink): ?>
+        <?php if (!$lastItem): ?>
         </a>
         <?php endif ?>
     </li>

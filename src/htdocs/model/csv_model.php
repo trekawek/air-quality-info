@@ -28,10 +28,18 @@ class CsvModel {
             'Prefix' => $dirPath.'/',
             'Delimiter' => '/'
         ));
-        $result['dirs'] = array_map(function($el) {
-            return substr($el['Prefix'], 0, -1);
-        }, $objects->get('CommonPrefixes'));
-        $result['objects'] = $objects->get('Contents');
+        if ($objects->get('CommonPrefixes') === null) {
+            $result['dirs'] = array();
+        } else {
+            $result['dirs'] = array_map(function($el) {
+                return substr($el['Prefix'], 0, -1);
+            }, $objects->get('CommonPrefixes'));
+        }
+        if ($objects->get('Contents') === null) {
+            $result['objects'] = array();
+        } else {
+            $result['objects'] = $objects->get('Contents');
+        }
         return $result;
     }
 
