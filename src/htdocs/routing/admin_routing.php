@@ -59,6 +59,10 @@ $routes = array(
     'GET /device/:device_id/json' => array('device_json', 'index'),
     'GET /device/:device_id/json/:timestamp' => array('device_json', 'get'),
 
+    'GET /csv/file/[:path]' => array('csv', 'downloadFile'),
+    'GET /csv/dir/[:path]' => array('csv', 'downloadDir'),
+    'GET /csv/[:path]' => array('csv', 'index'),
+
     'GET /template/edit' => array('template', 'edit'),
     'POST /template/edit' => array('template', 'edit'),
     'GET /attachment/:name' => array('attachment', 'get'),

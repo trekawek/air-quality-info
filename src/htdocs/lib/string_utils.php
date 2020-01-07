@@ -14,6 +14,14 @@ class StringUtils {
     public static function escapeHtmlAttribute($string) {
         return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
     }
+
+    public static function removePrefix($str, $prefix) {
+        if (substr($str, 0, strlen($prefix)) == $prefix) {
+            return substr($str, strlen($prefix));
+        } else {
+            return $str;
+        }
+    }
 }
 
 ?>

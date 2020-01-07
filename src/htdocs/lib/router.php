@@ -64,6 +64,9 @@ namespace AirQualityInfo\Lib {
                         }
                         $arguments['device'] = $device;
                         $i += $segmentCount;
+                    } else if ($argName === 'path') {
+                        $arguments['path'] = implode('/', array_slice($uri, $i));
+                        return $arguments;
                     } else if (count($uri) > $i) {
                         $arguments[$argName] = $uri[$i++];
                     } else if (!$optional) {

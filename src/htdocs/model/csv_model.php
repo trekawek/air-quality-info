@@ -1,6 +1,8 @@
 <?php
 namespace AirQualityInfo\Model;
 
+use \AirQualityInfo\Lib\StringUtils;
+
 class CsvModel {
 
     const FIELDS = array('timestamp', 'pm25','pm10','temperature','pressure','humidity','heater_temperature','heater_humidity');
@@ -20,23 +22,72 @@ class CsvModel {
         $this->s3Bucket = $s3Bucket;
     }
 
-    public function listDirs($dirPath) {
-        $dirPath = explode('/', $dirPath);
-        $prefix = '';
-        foreach($dirPath as $segment) {
-            if (!empty($segment)) {
-                $prefix .= $segment.'/';
-            }
-        }
+    public function list($dirPath) {
         $objects = $this->s3Client->ListObjects(array(
             'Bucket' => $this->s3Bucket,
-            'Prefix' => $prefix,
+            'Prefix' => $dirPath.'/',
             'Delimiter' => '/'
         ));
-        return array_map(function($el) {
+        $result['dirs'] = array_map(function($el) {
             return substr($el['Prefix'], 0, -1);
         }, $objects->get('CommonPrefixes'));
-   }
+        $result['objects'] = $objects->get('Contents');
+        return $result;
+    }
+
+    public function downloadFile($filePath) {
+        if ($this->s3Client->doesObjectExist($this->s3Bucket, $filePath)) {
+            $tmpName = tempnam(sys_get_temp_dir(), str_replace('/', '_', $filePath));
+            $object = $this->s3Client->getObject(array(
+                'Bucket' => $this->s3Bucket,
+                'Key'    => $filePath,
+                'SaveAs' => $tmpName
+            ));
+            header('Content-Type: '.$object->get('ContentType'));
+            header('Content-Disposition: attachment; filename="'.basename($filePath).'"');
+            header('Content-Length: '.$object->get('ContentLength'));
+            readfile($tmpName);
+            unlink($tmpName);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function downloadDir($dirPath) {
+        $objects = $this->s3Client->ListObjects(array(
+            'Bucket' => $this->s3Bucket,
+            'Prefix' => $dirPath.'/'
+        ));
+        $toCleanUp = array();
+
+        $zip = new \ZipArchive();
+        $zipName = tempnam(sys_get_temp_dir(), str_replace('/', '_', $dirPath));
+        $toCleanUp[] = $zipName;
+        if ($zip->open($zipName, \ZipArchive::CREATE) === TRUE) {
+            foreach ($objects->get('Contents') as $obj) {
+                $tmpName = tempnam(sys_get_temp_dir(), str_replace('/', '_', $obj['Key']));
+                $object = $this->s3Client->getObject(array(
+                    'Bucket' => $this->s3Bucket,
+                    'Key'    => $obj['Key'],
+                    'SaveAs' => $tmpName
+                ));
+                $zip->addFile($tmpName, basename($dirPath).'/'.StringUtils::removePrefix($obj['Key'], $dirPath.'/'));
+                $toCleanUp[] = $tmpName;
+            }
+            $zip->close();
+            header('Content-Type: application/zip');
+            header('Content-Disposition: attachment; filename="'.basename($dirPath).'.zip"');
+            header('Content-Length: '.filesize($zipName));
+            readfile($zipName);
+            foreach ($toCleanUp as $f) {
+                unlink($f);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public function storeRecords($deviceId, $records, $removeDuplicates = false) {
         $device = $this->deviceModel->getDeviceById($deviceId);

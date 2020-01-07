@@ -40,6 +40,10 @@
                             <i class="nav-icon fa fa-sitemap"></i> <?php echo __('Locations') ?></a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="<?php echo l('csv', 'index') ?>">
+                            <i class="nav-icon fa fa-archive"></i> <?php echo __('CSV') ?></a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="<?php echo l('user', 'settings') ?>">
                             <i class="nav-icon fa fa-cog"></i> <?php echo __('Settings') ?></a>
                         </li>
