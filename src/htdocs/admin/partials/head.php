@@ -41,7 +41,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo l('csv', 'index') ?>">
-                            <i class="nav-icon fa fa-archive"></i> <?php echo __('CSV') ?></a>
+                            <i class="nav-icon fa fa-archive"></i> <?php echo __('CSV archive') ?></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo l('user', 'settings') ?>">

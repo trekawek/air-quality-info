@@ -30,6 +30,7 @@ $currentPath[] = $segment;
                     <thead>
                         <tr>
                             <th><?php echo __('Name') ?></th>
+                            <th><?php echo __('Last modification') ?></th>
                             <th><?php echo __('Size') ?></th>
                             <th></th>
                         </tr>
@@ -42,6 +43,7 @@ $currentPath[] = $segment;
                                     <?php echo htmlspecialchars(basename($dir)) ?>
                                 </a>
                             </td>
+                            <td>-</td>
                             <td>-</td>
                             <td>
                                 <a href="<?php echo l('csv', 'downloadDir', null, array('path' => $dir)) ?>" class="btn btn-primary"><i class="fa fa-download"></i></a>
@@ -56,6 +58,7 @@ $currentPath[] = $segment;
                                     <?php echo htmlspecialchars(basename($object['Key'])) ?>
                                 </a>
                             </td>
+                            <td><?php echo $object['LastModified'] ?></td>
                             <td><?php echo $object['Size'] ?></td>
                             <td>-</td>
                         </tr>
