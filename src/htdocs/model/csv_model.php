@@ -40,6 +40,9 @@ class CsvModel {
         } else {
             $result['objects'] = $objects->get('Contents');
         }
+        array_filter($result['objects'], function($el) {
+            return substr($el['Key'], -1) !== '/';
+        });
         return $result;
     }
 
