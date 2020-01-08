@@ -113,7 +113,7 @@ class CsvModel {
         while(!feof($fp))  {
             $line = trim(fgets($fp));
             $r = explode(';', $line);
-            $r[0] = date('Y-m-d H:i:s', $r[0]);
+            $r[0] = date('Y-m-d H:i:s', intval($r[0]));
             $records[] = implode(';', $r);
         }
         fclose($fp);
