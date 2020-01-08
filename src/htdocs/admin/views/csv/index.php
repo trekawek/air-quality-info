@@ -46,7 +46,8 @@ $currentPath[] = $segment;
                         <tr>
                             <td>
                                 <a href="<?php echo l('csv', 'index', null, array('path' => $dir)) ?>" ?>
-                                    <?php echo htmlspecialchars(basename($dir)) ?>
+                                <i class="fa fa-folder"></i>
+                                <?php echo htmlspecialchars(basename($dir)) ?>
                                 </a>
                             </td>
                             <td>-</td>
@@ -61,6 +62,7 @@ $currentPath[] = $segment;
                         <tr>
                             <td>
                                 <a href="<?php echo l('csv', 'downloadFile', null, array('path' => $object['Key'])) ?>" ?>
+                                    <i class="fa fa-file"></i>
                                     <?php echo htmlspecialchars(basename($object['Key'])) ?>
                                 </a>
                             </td>
