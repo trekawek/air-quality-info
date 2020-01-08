@@ -112,6 +112,9 @@ class CsvModel {
         $records = array();
         while(!feof($fp))  {
             $line = trim(fgets($fp));
+            if (empty($line)) {
+                continue;
+            }
             $r = explode(';', $line);
             $r[0] = date('Y-m-d H:i:s', intval($r[0]));
             $records[] = implode(';', $r);
