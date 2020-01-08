@@ -54,9 +54,10 @@ class CsvModel {
                 'Key'    => $filePath,
                 'SaveAs' => $tmpName
             ));
+            $this->translateTimeStamps($tmpName);
             header('Content-Type: '.$object->get('ContentType'));
             header('Content-Disposition: attachment; filename="'.basename($filePath).'"');
-            header('Content-Length: '.$object->get('ContentLength'));
+            header('Content-Length: '.filesize($tmpName));
             readfile($tmpName);
             unlink($tmpName);
             return true;
@@ -83,6 +84,7 @@ class CsvModel {
                     'Key'    => $obj['Key'],
                     'SaveAs' => $tmpName
                 ));
+                $this->translateTimeStamps($tmpName);
                 $zip->addFile($tmpName, basename($dirPath).'/'.StringUtils::removePrefix($obj['Key'], $dirPath.'/'));
                 $toCleanUp[] = $tmpName;
             }
@@ -98,6 +100,30 @@ class CsvModel {
         } else {
             return false;
         }
+    }
+
+    private function translateTimeStamps($csvFile) {
+        if (!file_exists($csvFile)) {
+            return;
+        }
+
+        $fp = fopen($csvFile, 'r');
+        fgets($fp); // header
+        $records = array();
+        while(!feof($fp))  {
+            $line = trim(fgets($fp));
+            $r = explode(';', $line);
+            $r[0] = date('Y-m-d H:i:s', $r[0]);
+            $records[] = implode(';', $r);
+        }
+        fclose($fp);
+
+        $fp = fopen($csvFile, 'w');
+        $this->writeHeader($fp);
+        foreach ($records as $r) {
+            fwrite($fp, $r."\n");
+        }
+        fclose($fp);
     }
 
     public function storeRecords($deviceId, $records, $removeDuplicates = false) {

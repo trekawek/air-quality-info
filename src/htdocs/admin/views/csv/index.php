@@ -1,5 +1,11 @@
 <ol class="breadcrumb">
 <?php
+function formatDate(\DateTimeInterface $dateTime) {
+    $tz = new DateTimeZone(date_default_timezone_get());
+    $dateTime->setTimezone($tz);
+    return $dateTime->format("Y-m-d H:i:s");
+}
+
 $breadcrumbs = explode('/', $path);
 $currentPath = array();
 foreach($breadcrumbs as $segment):
@@ -58,7 +64,7 @@ $currentPath[] = $segment;
                                     <?php echo htmlspecialchars(basename($object['Key'])) ?>
                                 </a>
                             </td>
-                            <td><?php echo $object['LastModified'] ?></td>
+                            <td><?php echo formatDate($object['LastModified']) ?></td>
                             <td><?php echo $object['Size'] ?></td>
                             <td>-</td>
                         </tr>
