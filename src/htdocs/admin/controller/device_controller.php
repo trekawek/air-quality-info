@@ -55,6 +55,7 @@ class DeviceController extends AbstractController {
                 'extra_description' => null,
                 'http_username' => $this->user['email'],
                 'http_password' => bin2hex(random_bytes(8)),
+                'api_key' => bin2hex(random_bytes(16)),
                 'default_device' => 0,
                 'location_provided' => 0
             ));
@@ -167,7 +168,8 @@ class DeviceController extends AbstractController {
     public function resetHttpPassword($deviceId) {
         $device = $this->getDevice($deviceId);
         $data = array(
-            'http_password' => bin2hex(random_bytes(8))
+            'http_password' => bin2hex(random_bytes(8)),
+            'api_key' => bin2hex(random_bytes(16)),
         );
         $this->deviceModel->updateDevice($deviceId, $data);
         $this->alert(__('New password has been set.', 'success'));

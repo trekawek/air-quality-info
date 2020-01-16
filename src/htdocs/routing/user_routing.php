@@ -36,6 +36,7 @@ $routes = array(
     'GET /all/[:node_id]'            => array('main', 'all'),
     'GET /offline'                   => array('static', 'offline'),
     'GET /about'                     => array('static', 'about'),
+    'POST /u/:key'                   => array('update', 'updateWithKey'),
     'POST /update'                   => array('update', 'update'),
     'GET /:device/graphs'            => array('graph', 'index'),
     'GET /[:device]/graph_data.json' => array('graph', 'get_data'),

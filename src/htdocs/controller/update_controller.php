@@ -46,6 +46,25 @@ class UpdateController extends AbstractController {
         $this->updater->update($device, $map);
     }
 
+    public function updateWithKey($key) {
+        $device = $this->authWithKey($key);
+        if ($device === null) {
+            $this->authError();
+        }
+        $payload = file_get_contents("php://input");
+        $data = json_decode($payload, true);
+        $device['mapping'] = $this->deviceModel->getMappingAsAMap($device['id']);
+
+        $sensors = $data['sensordatavalues'];
+        $map = array();
+        foreach ($sensors as $row) {
+            $map[$row['value_type']] = $row['value'];
+        }
+        
+        $this->jsonUpdateModel->logJsonUpdate($device['id'], time(), $payload);
+        $this->updater->update($device, $map);
+    }
+
     private function authWithHttpBasic() {
         $matchingDevices = array();
         foreach ($this->devices as $device) {
@@ -59,6 +78,15 @@ class UpdateController extends AbstractController {
         } else {
             return null;
         }
+    }
+
+    private function authWithKey($key) {
+        foreach ($this->devices as $device) {
+            if ($key == $device['api_key']) {
+                return $device;
+            }
+        }
+        return null;
     }
 
     private function authWithEsp8266id($devices, $data) {
