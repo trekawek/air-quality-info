@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 10.135.14.82
--- Generation Time: Dec 10, 2019 at 12:59 PM
+-- Generation Time: Jan 16, 2020 at 02:20 PM
 -- Server version: 8.0.18-0ubuntu0.19.10.1
 -- PHP Version: 7.2.23
 
@@ -74,6 +74,7 @@ CREATE TABLE `devices` (
   `esp8266_id` int(11) NOT NULL,
   `http_username` varchar(256) NOT NULL,
   `http_password` varchar(256) NOT NULL,
+  `api_key` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `name` varchar(256) NOT NULL,
   `description` varchar(256) NOT NULL,
   `extra_description` varchar(512) DEFAULT NULL,
