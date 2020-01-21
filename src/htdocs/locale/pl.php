@@ -188,6 +188,7 @@ $locale['Updated the device'] = 'Zaktualizowano urządzenie';
 $locale['Updated the password'] = 'Zaktualizowano hasło';
 $locale['Updated widget'] = 'Zaktualizowano widget';
 $locale['Use PNG picture'] = 'Użyj pliku PNG';
+$locale['Use as a favicon'] = 'Użyj jako favicon';
 $locale['User'] = 'Nazwa użytkownika';
 $locale['Value'] = 'Wartość';
 $locale['Values'] = 'Wartości';

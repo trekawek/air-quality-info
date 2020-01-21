@@ -25,12 +25,13 @@ class TemplateController extends AbstractController {
         if ($brandIcon !== null) {
             $templateForm->addElement('current_brand_icon', 'image', 'Current brand icon', array('style' => 'height: 3rem;'))->setValue('brand_icon');
             $templateForm->addElement('remove_brand_icon', 'checkbox', 'Remove brand icon');
+            $templateForm->addElement('customize_favicon', 'checkbox', 'Use as a favicon');
         }
         $templateForm->addElement('brand_icon', 'file', 'Update brand icon (1)', array(), 'Use PNG picture')
             ->addRule('file_max_size', array('value' => 256 * 1024 * 1024, 'message' => __('Maximum allowed size is 256 kB.')))
             ->addRule('file_type', array('types' => array('image/png', 'image/svg+xml'), 'message' => __('Only PNGs and SVGs are allowed')));
-        $templateForm->addElement('brand_name', 'text', 'Brand name (2)');
 
+        $templateForm->addElement('brand_name', 'text', 'Brand name (2)');
         $templateForm->addElement('custom_page_name', 'text', 'About page name (3)', array(), 'Fill to add a new item to the menu.');
         $templateForm->addElement('custom_page', 'textarea', 'About page body', array('rows'=>8), 'This is the HTML content of the custom page linked above.');
 
@@ -51,7 +52,8 @@ class TemplateController extends AbstractController {
                 'widget_footer' => $_POST['widget_footer'],
                 'css' => $_POST['css'],
                 'custom_page_name' => $_POST['custom_page_name'],
-                'custom_page' => $_POST['custom_page']
+                'custom_page' => $_POST['custom_page'],
+                'customize_favicon' => $_POST['customize_favicon'],
             );
             $this->templateModel->updateTemplate($this->user['id'], $data);
             

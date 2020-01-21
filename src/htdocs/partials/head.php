@@ -12,8 +12,13 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php if (isset($domainTemplate['customize_favicon']) && $domainTemplate['customize_favicon'] && isset($customBrandIcon)): ?>
+    <link rel="shortcut icon" type="image/png" href="<?php echo $customBrandIcon ?>"/>
+    <link rel="apple-touch-icon" sizes="512x512" href="<?php echo $customBrandIcon ?>">
+    <?php else: ?>
     <link rel="shortcut icon" type="image/png" href="/public/img/aqi-favicon.png"/>
     <link rel="apple-touch-icon" sizes="512x512" href="/public/img/aqi-512.png">
+    <?php endif ?>
     <link rel="manifest" href="/manifest.json">
 
     <?php if (isset($currentDevice)): ?>
