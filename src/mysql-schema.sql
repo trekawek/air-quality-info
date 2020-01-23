@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 10.135.14.82
--- Generation Time: Jan 16, 2020 at 02:20 PM
+-- Generation Time: Jan 23, 2020 at 08:17 AM
 -- Server version: 8.0.18-0ubuntu0.19.10.1
--- PHP Version: 7.2.23
+-- PHP Version: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -71,7 +71,7 @@ CREATE TABLE `custom_domains` (
 CREATE TABLE `devices` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `esp8266_id` int(11) NOT NULL,
+  `esp8266_id` bigint(11) NOT NULL,
   `http_username` varchar(256) NOT NULL,
   `http_password` varchar(256) NOT NULL,
   `api_key` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
