@@ -21,10 +21,10 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
     <?php endif ?>
     <link rel="manifest" href="/manifest.json">
 
-    <?php if (isset($currentDevice)): ?>
-    <title><?php echo __('Air quality') ?> - <?php echo $currentDevice['description']; ?></title>
+    <?php if (isset($currentDevice) && !(($currentController == 'main' && $currentAction == 'all') || ($currentController == 'map' && $displayLocations))): ?>
+    <title><?php echo isset($domainTemplate['brand_name']) ? $domainTemplate['brand_name'] : __('Air quality') ?> - <?php echo $currentDevice['description']; ?></title>
     <?php else: ?>
-    <title><?php echo __('Air quality') ?></title>
+    <title><?php echo isset($domainTemplate['brand_name']) ? $domainTemplate['brand_name'] : __('Air quality') ?></title>
     <?php endif ?>
 
     <style><?php echo file_get_contents('public/css/critical.css') ?></style>
