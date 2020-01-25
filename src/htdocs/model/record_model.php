@@ -52,7 +52,7 @@ class RecordModel {
 
         foreach ($records as $i => $record) {
             foreach ($record as $k => $v) {
-                if (is_nan($v)) {
+                if (is_numeric($v) && is_nan(floatval($v))) {
                     $record[$k] = null;
                 }
             }
