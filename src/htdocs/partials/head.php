@@ -12,6 +12,9 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <?php if (isset($domainTemplate['head_section'])): ?>
+<?php echo $domainTemplate['head_section']; ?>
+    <?php endif ?>
     <?php if (isset($domainTemplate['customize_favicon']) && $domainTemplate['customize_favicon'] && isset($customBrandIcon)): ?>
     <link rel="shortcut icon" type="image/png" href="<?php echo $customBrandIcon ?>"/>
     <link rel="apple-touch-icon" sizes="512x512" href="<?php echo $customBrandIcon ?>">
@@ -33,9 +36,6 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
     <script defer src="/public/js/main.js?v=33"></script>
     <script defer src="/public/js/graph.js?v=35"></script>
     <script defer src="/public/js/annual_graph.js?v=32"></script>
-    <?php if (isset($domainTemplate['head_section'])): ?>
-<?php echo $domainTemplate['head_section']; ?>
-    <?php endif ?>
   </head>
   <body data-pm10-limit1h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_24H ?>" data-current-lang='<?php echo $currentLocale->getCurrentLang() ?>' data-locale='<?php echo json_encode($currentLocale->getJsMessages()) ?>' data-timezone='<?php echo date_default_timezone_get() ?>'>
     <div class="container">
