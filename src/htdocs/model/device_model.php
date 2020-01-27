@@ -43,7 +43,14 @@ class DeviceModel {
     }
 
     public function getAllUserDevices($userId) {
-        $stmt = $this->pdo->prepare("SELECT * FROM `devices` WHERE `user_id` = ? OR `id` IN (SELECT `dh`.`device_id` FROM `device_hierarchy` `dh` WHERE `dh`.`user_id` = ?) ORDER BY `default_device` DESC, `id` ASC");
+        $stmt = $this->pdo->prepare("
+        (SELECT `d1`.* FROM `devices` `d1`
+            WHERE `d1`.`user_id` = ?)
+        UNION DISTINCT
+        (SELECT `d2`.* FROM `device_hierarchy` `dh`
+            LEFT JOIN `devices` `d2` ON `d2`.`id` = `dh`.`device_id`
+            WHERE `dh`.`user_id` = ?)
+        ORDER BY `default_device` DESC, `id` ASC");
         $stmt->execute([$userId, $userId]);
         $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
