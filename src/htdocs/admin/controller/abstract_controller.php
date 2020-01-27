@@ -58,6 +58,7 @@ class AbstractController {
 
     protected function authorize() {
         if (!$this->user) {
+            $_SESSION['redirect_uri'] = $_SERVER['REQUEST_URI'];
             header('Location: ' . l('user', 'login'));
             die();
         }

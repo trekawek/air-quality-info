@@ -21,7 +21,13 @@ class UserController extends AbstractController {
         if ($user != null && password_verify($_POST['password'], $user['password_hash'])) {
             $_SESSION['user_id'] = $user['id'];
             \AirQualityInfo\Lib\CsrfToken::generateToken();
-            header('Location: /');
+
+            if (isset($_SESSION['redirect_uri'])) {
+                header('Location: '.$_SESSION['redirect_uri']);
+                unset($_SESSION['redirect_uri']);
+            } else {
+                header('Location: /');
+            }
         } else {
             $this->render(array('view' => 'admin/views/user/login.php', 'layout' => false), array('message' => __('Invalid email or password')));
         }
