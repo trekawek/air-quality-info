@@ -1,7 +1,7 @@
 <div class="form-group">
 
 <?php if ($this->label): ?>
-<label for="<?php echo $this->name ?>Input"><?php echo __($this->label) ?>
+<label for="<?php echo $this->name ?>Input"><?php echo htmlspecialchars(__($this->label)) ?>
 </label>
 <?php endif ?>
 
@@ -17,7 +17,7 @@
         id="<?php echo $this->name ?>Input"
         <?php echo $this->getAttributesString() ?>><?php echo $this->getEscapedValue() ?></textarea>
 
-<?php if ($this->description): ?><span class="help-block"><?php echo __($this->description) ?></span><?php endif ?>
+<?php if ($this->description): ?><span class="help-block"><?php echo htmlspecialchars(__($this->description)) ?></span><?php endif ?>
 
 <?php if ($this->validationMessage): ?><div class="alert alert-danger" role="alert"><?php echo $this->validationMessage ?></div><?php endif ?>
 

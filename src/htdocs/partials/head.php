@@ -33,6 +33,9 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
     <script defer src="/public/js/main.js?v=33"></script>
     <script defer src="/public/js/graph.js?v=35"></script>
     <script defer src="/public/js/annual_graph.js?v=32"></script>
+    <?php if (isset($domainTemplate['head_section'])): ?>
+<?php echo $domainTemplate['head_section']; ?>
+    <?php endif ?>
   </head>
   <body data-pm10-limit1h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_24H ?>" data-current-lang='<?php echo $currentLocale->getCurrentLang() ?>' data-locale='<?php echo json_encode($currentLocale->getJsMessages()) ?>' data-timezone='<?php echo date_default_timezone_get() ?>'>
     <div class="container">

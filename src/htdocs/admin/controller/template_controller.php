@@ -40,6 +40,7 @@ class TemplateController extends AbstractController {
         $templateForm->addElement('widget_footer', 'text', 'Widget footer (6)');
 
         $templateForm->addElement('css', 'textarea', 'Custom CSS style', array('rows'=>8));
+        $templateForm->addElement('head_section', 'textarea', '<meta> tags to be put in the <head> section', array('rows'=>8));
 
         $templateForm->setDefaultValues($template);
 
@@ -54,6 +55,7 @@ class TemplateController extends AbstractController {
                 'custom_page_name' => $_POST['custom_page_name'],
                 'custom_page' => $_POST['custom_page'],
                 'customize_favicon' => $_POST['customize_favicon'],
+                'head_section' => $_POST['head_section'],
             );
             $this->templateModel->updateTemplate($this->user['id'], $data);
             

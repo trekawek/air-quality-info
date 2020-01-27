@@ -18,6 +18,7 @@ $jsLocale['Very high'] = 'Bardzo wysoki';
 $jsLocale['Very low'] = 'Bardzo niski';
 
 $locale = array_merge($jsLocale);
+$locale['<meta> tags to be put in the <head> section'] = 'Dodatkowe tagi <meta> do sekcji <head>';
 $locale['%s is out of range'] = '%s jest poza zakresem';
 $locale['<a href="https://www.airqualitynow.eu/about_indices_definition.php">CAQI</a> index'] = 'Indeks <a href="https://www.airqualitynow.eu/pl/about_indices_definition.php">CAQI</a>';
 $locale['About page body'] = '"O serwisie" - treść strony';
