@@ -30,10 +30,10 @@
                     <dd class="col-lg-6"><input type="checkbox" class="form-control" checked disabled/></dd>
 
                     <dt class="col-lg-6"><?php echo __('Server') ?></dt>
-                    <dd class="col-lg-6"><input type="text" class="form-control" value="<?php echo $this->user['domain'] . CONFIG['user_domain_suffixes'][0] ?>" disabled/></dd>
+                    <dd class="col-lg-6"><input type="text" class="form-control" value="<?php echo 'api' . CONFIG['user_domain_suffixes'][0] ?>" disabled/></dd>
 
                     <dt class="col-lg-6"><?php echo __('Path') ?></dt>
-                    <dd class="col-lg-6"><input type="text" class="form-control" value="/u/<?php echo $device['api_key']; ?>" disabled/></dd>
+                    <dd class="col-lg-6"><input type="text" class="form-control" value="/update/<?php echo $device['api_key']; ?>" disabled/></dd>
 
                     <dt class="col-lg-6"><?php echo __('Port') ?></dt>
                     <dd class="col-lg-6"><input type="text" class="form-control" value="443" disabled/></dd>
