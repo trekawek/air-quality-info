@@ -29,7 +29,7 @@ class UpdateController {
 
     public function update($device, $payload, $data = null) {
         $now = time();
-        if ($device['last_update'] !== null && $now - $device['last_update'] < 120) {
+        if ($device['last_update'] !== null && $now - $device['last_update'] < 90) {
             http_response_code(429);
             die();
         }
