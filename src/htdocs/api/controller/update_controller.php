@@ -24,7 +24,13 @@ class UpdateController {
             $this->authError();
         }
         $payload = file_get_contents("php://input");
-        $data = json_decode($payload, true);
+        $this->update($device, $payload);
+    }
+
+    public function update($device, $payload, $data = null) {
+        if ($data === null) {
+            $data = json_decode($payload, true);
+        }
         $device['mapping'] = $this->deviceModel->getMappingAsAMap($device['id']);
 
         $sensors = $data['sensordatavalues'];

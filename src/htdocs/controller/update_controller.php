@@ -11,15 +11,19 @@ class UpdateController extends AbstractController {
 
     private $devices;
 
+    private $apiUpdateController;
+
     public function __construct(
             \AirQualityInfo\Model\Updater $updater,
             \AirQualityInfo\Model\JsonUpdateModel $jsonUpdateModel,
             \AirQualityInfo\Model\DeviceModel $deviceModel,
+            \AirQualityInfo\Api\Controller\UpdateController $apiUpdateController,
             $devices) {
         $this->updater = $updater;
         $this->jsonUpdateModel = $jsonUpdateModel;
         $this->deviceModel = $deviceModel;
         $this->devices = $devices;
+        $this->apiUpdateController = $apiUpdateController;
     }
 
     public function update() {
@@ -34,16 +38,7 @@ class UpdateController extends AbstractController {
         if ($device === null) {
             $this->authError();
         }
-        $device['mapping'] = $this->deviceModel->getMappingAsAMap($device['id']);
-
-        $sensors = $data['sensordatavalues'];
-        $map = array();
-        foreach ($sensors as $row) {
-            $map[$row['value_type']] = $row['value'];
-        }
-        
-        $this->jsonUpdateModel->logJsonUpdate($device['id'], time(), $payload);
-        $this->updater->update($device, $map);
+        $this->apiUpdateController->update($device, $payload, $data);
     }
 
     public function updateWithKey($key) {
@@ -52,17 +47,7 @@ class UpdateController extends AbstractController {
             $this->authError();
         }
         $payload = file_get_contents("php://input");
-        $data = json_decode($payload, true);
-        $device['mapping'] = $this->deviceModel->getMappingAsAMap($device['id']);
-
-        $sensors = $data['sensordatavalues'];
-        $map = array();
-        foreach ($sensors as $row) {
-            $map[$row['value_type']] = $row['value'];
-        }
-        
-        $this->jsonUpdateModel->logJsonUpdate($device['id'], time(), $payload);
-        $this->updater->update($device, $map);
+        $this->apiUpdateController->update($device, $payload);
     }
 
     private function authWithHttpBasic() {
