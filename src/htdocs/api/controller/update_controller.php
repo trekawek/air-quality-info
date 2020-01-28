@@ -28,6 +28,12 @@ class UpdateController {
     }
 
     public function update($device, $payload, $data = null) {
+        $now = time();
+        if ($device['last_update'] !== null && $now - $device['last_update'] < 120) {
+            http_response_code(429);
+            die();
+        }
+
         if ($data === null) {
             $data = json_decode($payload, true);
         }
@@ -41,6 +47,7 @@ class UpdateController {
         
         $this->jsonUpdateModel->logJsonUpdate($device['id'], time(), $payload);
         $this->updater->update($device, $map);
+        $this->deviceModel->updateDevice($device['id'], array('last_update' => $now));
     }
 
     private function authError() {
