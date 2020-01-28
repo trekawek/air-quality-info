@@ -7,7 +7,7 @@ $routes = array(
     'POST /update/:key' => array('update', 'updateWithKey'),
 );
 
-$router = new Lib\Router($routes, $devices, $user);
+$router = new Lib\Router($routes);
 
 $uri = urldecode(explode("?", $_SERVER['REQUEST_URI'])[0]);
 list($route, $args) = $router->findRoute(
