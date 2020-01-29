@@ -22,9 +22,7 @@ class Updater {
         $this->record_model = $record_model;
     }
 
-    public function update($device, $map) {
-        $time = time();
-
+    public function update($device, $time, $map) {
         $mapping = $this->getMapping($device);
         $gps_date = Updater::readValue($mapping, $device, 'gps_date', $map, null);
         $gps_time = Updater::readValue($mapping, $device, 'gps_time', $map, null);

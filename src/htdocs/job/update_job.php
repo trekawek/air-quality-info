@@ -30,7 +30,7 @@ class UpdateJob {
         }
         
         $this->jsonUpdateModel->logJsonUpdate($device['id'], $ts, $jsonPayload);
-        $this->updater->update($device, $map);
+        $this->updater->update($device, $ts, $map);
     }
 }
 ?>
