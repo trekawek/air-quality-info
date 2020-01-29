@@ -340,6 +340,61 @@
         ]
     },
     {
+        "name": "pda/pheanstalk",
+        "version": "v4.0.0",
+        "version_normalized": "4.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pheanstalk/pheanstalk.git",
+            "reference": "328708b2cb843c214579a9ac3d1730c074038d6a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pheanstalk/pheanstalk/zipball/328708b2cb843c214579a9ac3d1730c074038d6a",
+            "reference": "328708b2cb843c214579a9ac3d1730c074038d6a",
+            "shasum": ""
+        },
+        "require": {
+            "ext-mbstring": "*",
+            "php": ">=7.1.0"
+        },
+        "require-dev": {
+            "phpdocumentor/phpdocumentor": "^2",
+            "phpunit/phpunit": "^7",
+            "vimeo/psalm": "^2.0"
+        },
+        "time": "2019-01-19T15:11:35+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Pheanstalk\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Paul Annesley",
+                "email": "paul@annesley.cc",
+                "homepage": "http://paul.annesley.cc/",
+                "role": "Developer"
+            },
+            {
+                "name": "Sam Mousa",
+                "email": "sam@mousa.nl",
+                "role": "Maintainer"
+            }
+        ],
+        "description": "PHP client for beanstalkd queue",
+        "homepage": "https://github.com/pda/pheanstalk",
+        "keywords": [
+            "beanstalkd"
+        ]
+    },
+    {
         "name": "psr/http-message",
         "version": "1.0.1",
         "version_normalized": "1.0.1.0",

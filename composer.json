@@ -3,6 +3,7 @@
         "vendor-dir": "src/htdocs/vendor"
     },
     "require": {
-        "aws/aws-sdk-php": "^3.52"
+        "aws/aws-sdk-php": "^3.52",
+        "pda/pheanstalk": "^4.0"
     }
 }

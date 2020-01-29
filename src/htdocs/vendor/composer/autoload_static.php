@@ -24,6 +24,7 @@ class ComposerStaticInitc8ad867624f289aeb5ef5831898ca58a
         'P' => 
         array (
             'Psr\\Http\\Message\\' => 17,
+            'Pheanstalk\\' => 11,
         ),
         'J' => 
         array (
@@ -49,6 +50,10 @@ class ComposerStaticInitc8ad867624f289aeb5ef5831898ca58a
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Pheanstalk\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/pda/pheanstalk/src',
         ),
         'JmesPath\\' => 
         array (

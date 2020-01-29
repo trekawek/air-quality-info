@@ -10,7 +10,7 @@ x-mysql-variables: &mysql-variables
 
 services:
   fpm:
-    build: .
+    build: docker-img/fpm
     environment: *mysql-variables
     volumes:
     - ./src/htdocs:/var/www/html
@@ -50,3 +50,20 @@ services:
     command: server /data
     volumes:
     - ./var-data/s3:/data
+
+  beanstalkd:
+    build: docker-img/beanstalkd
+    volumes:
+    - ./var-data/beanstalkd:/data
+
+  job-handler:
+    build: docker-img/fpm
+    environment: *mysql-variables
+    command: /usr/local/bin/php /usr/local/bin/aqi/job-handler.php
+    volumes:
+    - ./src/htdocs:/var/www/html
+    - ./src/cli:/usr/local/bin/aqi
+    - ./config.php:/etc/aqi/config.php
+    - ./var-data:/var/lib/aqi
+    - ./var-data/log:/usr/local/var/log/php-fpm
+    restart: on-failure

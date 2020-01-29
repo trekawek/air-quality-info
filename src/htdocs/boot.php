@@ -37,6 +37,8 @@ $pdo = new \PDO($dsn, CONFIG['db']['user'], CONFIG['db']['password'], $options);
 
 $s3Client = \Aws\S3\S3Client::factory(CONFIG['s3']);
 
+$beanstalk = \Pheanstalk\Pheanstalk::create('beanstalkd');
+
 $diContainer = new Lib\DiContainer();
 
 $currentLocale = new Lib\Locale();
@@ -47,6 +49,7 @@ if (isset($_GET['lang'])) {
 $diContainer->setBinding('pdo', $pdo);
 $diContainer->setBinding('s3Bucket', CONFIG['s3Bucket']);
 $diContainer->setBinding('s3Client', $s3Client);
+$diContainer->setBinding('beanstalk', $beanstalk);
 $diContainer->setBinding('currentLocale', $currentLocale);
 
 Lib\CsrfToken::generateTokenIfNotExists();
