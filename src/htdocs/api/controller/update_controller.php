@@ -3,19 +3,15 @@ namespace AirQualityInfo\Api\Controller;
 
 class UpdateController {
 
-    private $updater;
-
-    private $jsonUpdateModel;
-
     private $deviceModel;
 
+    private $jobUtils;
+
     public function __construct(
-            \AirQualityInfo\Model\Updater $updater,
-            \AirQualityInfo\Model\JsonUpdateModel $jsonUpdateModel,
-            \AirQualityInfo\Model\DeviceModel $deviceModel) {
-        $this->updater = $updater;
-        $this->jsonUpdateModel = $jsonUpdateModel;
+            \AirQualityInfo\Model\DeviceModel $deviceModel,
+            \AirQualityInfo\Lib\JobUtils $jobUtils) {
         $this->deviceModel = $deviceModel;
+        $this->jobUtils = $jobUtils;
     }
 
     public function updateWithKey($key) {
@@ -33,21 +29,8 @@ class UpdateController {
             http_response_code(429);
             die();
         }
-
-        if ($data === null) {
-            $data = json_decode($payload, true);
-        }
-        $device['mapping'] = $this->deviceModel->getMappingAsAMap($device['id']);
-
-        $sensors = $data['sensordatavalues'];
-        $map = array();
-        foreach ($sensors as $row) {
-            $map[$row['value_type']] = $row['value'];
-        }
-        
-        $this->jsonUpdateModel->logJsonUpdate($device['id'], time(), $payload);
-        $this->updater->update($device, $map);
         $this->deviceModel->updateDevice($device['id'], array('last_update' => $now));
+        $this->jobUtils->createJob('update', 'update', array($device['id'], $now, $payload));
     }
 
     private function authError() {
