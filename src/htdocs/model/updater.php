@@ -12,8 +12,8 @@ class Updater {
         'pressure'    => array('BME280_pressure', 'BMP_pressure', 'BMP280_pressure'),
         'heater_temperature' => array('temperature', 'HECA_temperature'),
         'heater_humidity'    => array('humidity', 'HECA_humidity'),
-        'gps_time'    => 'GPS_time',
-        'gps_date'    => 'GPS_date',
+        'gps_time'    => array('GPS_time'),
+        'gps_date'    => array('GPS_date'),
     );
 
     private $record_model;
@@ -80,6 +80,11 @@ class Updater {
     private function getMapping($device) {
         $mapping = Updater::VALUE_MAPPING;
         if (isset($device['mapping'])) {
+            foreach ($device['mapping'] as $dbType => $jsonTypes) {
+                foreach ($mapping as $mDbType => $mJsonTypes) {
+                    $mapping[$mDbType] = array_diff($mJsonTypes, $jsonTypes);
+                }
+            }
             $mapping = array_merge($mapping, $device['mapping']);
         }
         return $mapping;
