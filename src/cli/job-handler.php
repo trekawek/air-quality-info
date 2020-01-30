@@ -7,7 +7,7 @@ echo "Starting job-handler\n";
 while (true) {
     $job = $beanstalk->reserveWithTimeout(50);
     echo ".\n";
-    if (isset($job)) {
+    if ($job !== null) {
         try {
             $data = json_decode($job->getData(), true);
 
@@ -19,11 +19,10 @@ while (true) {
 
             echo "Deleting job: {$job->getId()}\n";
             $beanstalk->delete($job);
-        } catch (\Throwable $t) {       
-            echo "\n{$t->getMessage()}\n";
-            echo "{$t->getTraceAsString()}\n";
+        } catch (\Throwable $t) {
             echo "Burying job: {$job->getId()}\n";
             $beanstalk->bury($job);
+            throw $t;
         }
     }
 }
