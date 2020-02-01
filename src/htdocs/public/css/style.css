@@ -12,9 +12,12 @@ body {
 }
 
 .navbar-brand {
-  font-family: 'Ubuntu Mono', monospace;
   font-size: 1.09375rem;
   color: #2b302a;
+}
+
+.aqieco {
+  font-family: 'Ubuntu Mono', monospace;
 }
 
 .navbar-brand img {

@@ -46,7 +46,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
             <a href="/" class="navbar-left navbar-brand">
               <img src="<?php echo isset($customBrandIcon) ? $customBrandIcon : '/public/img/aqi.png' ?>"/><?php echo isset($domainTemplate['brand_name']) ? $domainTemplate['brand_name'] : '' ?></a>
 <?php else: ?>
-            <a href="//aqi.eco" class="navbar-left navbar-brand">
+            <a href="//aqi.eco" class="navbar-left navbar-brand aqieco">
                 <img src="/public/img/aqi.png">aqi.eco
             </a>
 <?php endif ?>
