@@ -35,6 +35,7 @@ $locale['An account with this e-mail address is already registered.'] = 'Ten adr
 $locale['Annual average'] = 'Średnia';
 $locale['Annual averages'] = 'Średnie roczna';
 $locale['Annual stats'] = 'Statystyki roczne';
+$locale['Average'] = 'Średnia';
 $locale['Back to the device'] = 'Powrót do urządzenia';
 $locale['Brand name (2)'] = 'Nazwa (2)';
 $locale['Choose location'] = 'Ustaw lokalizację';

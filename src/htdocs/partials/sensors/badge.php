@@ -1,3 +1,5 @@
+<small>
+<a class="text-dark" href="https://www.airqualitynow.eu/about_indices_definition.php"><?php echo __('Pollution level') ?></a>:</small>
 <h2>
     <?php if ($averages['max_level'] !== null): ?>
     <span class="badge index-cat-<?php echo $averages['max_level']; ?>">

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-8 offset-md-2 text-center">
-    <small><?php echo __('<a href="https://www.airqualitynow.eu/about_indices_definition.php">CAQI</a> index') ?>
+    <small><?php echo __('Average') ?>:
     (<?php
         foreach (array('1' => '1h', '24' => '24h') as $value => $name) {
           if ($currentAvgType == $value) {
@@ -13,7 +13,7 @@
           if ($value != '24') {
             echo " / ";
           }
-      }?>):
+      }?>)
     </small>
   </div>
 </div>
