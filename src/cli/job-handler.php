@@ -19,13 +19,15 @@ while (true) {
 
             echo "Deleting job: {$job->getId()}\n";
             $beanstalk->delete($job);
+        } catch (\PDOException $e) {
+            echo "Burying job: {$job->getId()}\n";
+            $beanstalk->bury($job);
+            echo "Restarting handler\n";
+            throw $e;
         } catch (\Throwable $t) {
             echo "Burying job: {$job->getId()}\n";
             $beanstalk->bury($job);
-            throw $t;
         }
     }
 }
-
-
 ?>
