@@ -28,9 +28,12 @@ class UpdateJob {
         foreach ($sensors as $row) {
             $map[$row['value_type']] = $row['value'];
         }
-        
-        $this->jsonUpdateModel->logJsonUpdate($device['id'], $ts, $jsonPayload);
         $this->updater->update($device, $ts, $map);
+        try {
+            $this->jsonUpdateModel->logJsonUpdate($device['id'], $ts, $jsonPayload);
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        } 
     }
 }
 ?>
