@@ -10,7 +10,6 @@
                         <tr>
                             <th>#</th>
                             <th><?php echo __('Device name') ?></th>
-                            <th><?php echo __('ESP8266 ID') ?></th>
                             <th><?php echo __('Description') ?></th>
                             <th></th>
                         </tr>
@@ -20,7 +19,6 @@
                         <tr>
                             <td><?php echo $i + 1 ?></td>
                             <td><?php echo htmlspecialchars($d['name']) ?></td>
-                            <td><?php echo htmlspecialchars($d['esp8266_id']) ?></td>
                             <td><?php echo htmlspecialchars($d['description']) ?></td>
                             <td>
                                 <form action="<?php echo l('device', 'move', null, array('device_id' => $d['id'])) ?>" method="post">

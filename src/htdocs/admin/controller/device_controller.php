@@ -42,7 +42,6 @@ class DeviceController extends AbstractController {
 
     public function create() {
         $deviceForm = new \AirQualityInfo\Lib\Form\Form("deviceForm");
-        $deviceForm->addElement('esp8266_id', 'number', 'ESP 8266 id')->addRule('required')->addRule('numeric');
         if (isset($_GET['api_key']) || isset($_POST['api_key'])) {
             $deviceForm->addElement('api_key', 'text', 'API Key', array('readonly' => true))->addRule('required');
         }
@@ -50,13 +49,11 @@ class DeviceController extends AbstractController {
             ->setOptions(array('prepend' => 'https://' . $this->user['domain'] . CONFIG['user_domain_suffixes'][0] . '/'));
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
         $deviceForm->setDefaultValues(array(
-            'esp8266_id' => $_GET['esp8266_id'],
             'api_key' => $_GET['api_key']
         ));
         if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
             $deviceId = $this->deviceModel->createDevice(array(
                 'user_id' => $this->user['id'],
-                'esp8266_id' => $_POST['esp8266_id'],
                 'name' => $_POST['name'],
                 'description' => $_POST['description'],
                 'extra_description' => null,

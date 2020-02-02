@@ -89,11 +89,13 @@
                 <?php echo __('Operations') ?>
             </div>
             <div class="card-body">
+                <?php if ($device['esp8266_id'] !== null): ?>
                 <p>
                     <a class="btn btn-primary" href="<?php echo l('device', 'importMadaviWrapper', null, array('device_id' => $deviceId)) ?>">
                         <?php echo __('Import data from Madavi.de') ?>
                     </a>
                 </p>
+                <?php endif ?>
 
                 <p>
                     <form action="<?php echo l('device', 'resetHttpPassword', null, array('device_id' => $deviceId)) ?>" method="post">

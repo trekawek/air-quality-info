@@ -29,6 +29,10 @@ class UpdateController {
             http_response_code(429);
             die();
         }
+        $data = json_decode($payload, true);
+        if (isset($data['esp8266id']) && $data['esp8266id'] != $device['esp8266_id']) {
+            $this->deviceModel->updateDevice($device['id'], array('esp8266_id' => $data['esp8266id']));
+        }
         $this->deviceModel->updateDevice($device['id'], array('last_update' => $now));
         $this->jobUtils->createJob('update', 'update', array($device['id'], $now, $payload));
     }

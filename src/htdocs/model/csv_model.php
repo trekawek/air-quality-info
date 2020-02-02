@@ -166,7 +166,11 @@ class CsvModel {
     }
 
     private function getFileName($user, $device, $ts) {
-        $dir = sprintf("%s/%s-%s/%s", $user['domain'], $device['name'], $device['esp8266_id'], date('Y-m', $ts));
+        if ($device['esp8266_id'] === null) {
+            $dir = sprintf("%s/%s/%s", $user['domain'], $device['name'], date('Y-m', $ts));
+        } else {
+            $dir = sprintf("%s/%s-%s/%s", $user['domain'], $device['name'], $device['esp8266_id'], date('Y-m', $ts));
+        }
         return "$dir/".date('Y-m-d', $ts).".csv";
     }
 

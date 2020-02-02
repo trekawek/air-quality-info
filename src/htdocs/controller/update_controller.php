@@ -33,12 +33,7 @@ class UpdateController extends AbstractController {
         }
 
         $payload = file_get_contents("php://input");
-        $data = json_decode($payload, true);
-        $device = $this->authWithEsp8266id($matchingDevices, $data);
-        if ($device === null) {
-            $this->authError();
-        }
-        $this->apiUpdateController->update($device, $payload, $data);
+        $this->apiUpdateController->update($device, $payload);
     }
 
     public function updateWithKey($key) {
@@ -69,15 +64,6 @@ class UpdateController extends AbstractController {
         foreach ($this->devices as $device) {
             if ($key == $device['api_key']) {
                 return $device;
-            }
-        }
-        return null;
-    }
-
-    private function authWithEsp8266id($devices, $data) {
-        foreach ($devices as $d) {
-            if ($d['esp8266_id'] == $data['esp8266id']) {
-                return $d;
             }
         }
         return null;
