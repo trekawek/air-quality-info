@@ -17,11 +17,9 @@
             <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-brand">
-                <img src="/public/img/aqi.png">
-                aqi.eco
-                <sup>&beta;</sup>
-            </div>
+        <a class="navbar-brand" href="/">
+            <img src="/public/img/aqi.png"/><span class="logo">aqi.eco</span>
+        </a>
         </header>
 
         <div class="app-body">

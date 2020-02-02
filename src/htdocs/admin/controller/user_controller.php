@@ -26,7 +26,7 @@ class UserController extends AbstractController {
                 header('Location: '.$_SESSION['redirect_uri']);
                 unset($_SESSION['redirect_uri']);
             } else {
-                header('Location: /');
+                header('Location: '.l('device', 'index'));
             }
         } else {
             $this->render(array('view' => 'admin/views/user/login.php', 'layout' => false), array('message' => __('Invalid email or password')));

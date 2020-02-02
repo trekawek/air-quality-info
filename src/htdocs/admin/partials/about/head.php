@@ -32,8 +32,12 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
             <ul class="navbar-nav mr-auto">
                 <?php navItem(array('main', 'index'), 'Home'); ?>
                 <?php navItem(array('map', 'index'), 'Map'); ?>
+                <?php if ($this->user): ?>
+                <?php navItem(array('device', 'index'), 'Dashboard'); ?>
+                <?php else: ?>
                 <?php navItem(array('user', 'login'), 'Sign in'); ?>
                 <?php navItem(array('user', 'register'), 'Sign up'); ?>
+                <?php endif ?>
                 <?php navItem('/about/support', 'Support'); ?>
             </ul>
         </div>

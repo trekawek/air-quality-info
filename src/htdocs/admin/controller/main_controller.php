@@ -11,10 +11,6 @@ class MainController extends AbstractController {
     }
 
     public function index() {
-        if (isset($_SESSION['user_id'])) {
-            header('Location: '.l('device', 'index'));
-            exit;
-        }
         $this->render(array(
             'view' => 'admin/views/index-'.$this->currentLocale->getCurrentLang().'.php',
             'head' => 'admin/partials/about/head.php',
