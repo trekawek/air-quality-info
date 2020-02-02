@@ -34,6 +34,9 @@ class UpdateController {
             $this->deviceModel->updateDevice($device['id'], array('esp8266_id' => $data['esp8266id']));
         }
         $this->deviceModel->updateDevice($device['id'], array('last_update' => $now));
+        if ($device['id'] === null) {
+            throw new \Exception("Device can't be null");
+        }
         $this->jobUtils->createJob('update', 'update', array($device['id'], $now, $payload));
     }
 
