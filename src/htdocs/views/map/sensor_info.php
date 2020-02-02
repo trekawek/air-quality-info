@@ -6,7 +6,7 @@
     <a href="<?php echo $deviceUrl ?>"><?php echo $device['description'] ?></a>
 
     <?php if (!empty($device['extra_description'])): ?>
-    <br/><small><?php echo $device['extra_description'] ?></small>
+    <br/><small><?php echo $device['extra_description'] ?></small><br/>
     <?php endif ?>
 
     <?php include('partials/sensors/badge.php') ?>
