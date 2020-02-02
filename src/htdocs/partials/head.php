@@ -117,7 +117,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
       </div>
 <?php endif ?>
 
-<?php if (isset($domainTemplate['header'])): ?>
+<?php if (isset($domainTemplate['header']) && $displayCustomHeader): ?>
       <div class="row">
         <div class="col-md-8 offset-md-2">
           <?php echo $domainTemplate['header'] ?>

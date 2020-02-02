@@ -21,7 +21,7 @@ class MainController extends AbstractController {
     }
 
     public function index($device) {
-        $this->render(array('view' => 'views/index.php'));
+        $this->render(array('view' => 'views/index.php'), array('displayCustomHeader' => true));
     }
 
     public function index_inner($device) {
@@ -101,7 +101,8 @@ class MainController extends AbstractController {
         $this->render(array('view' => 'views/all_sensors.php'), array(
             'data' => $data,
             'currentAvgType' => $currentAvgType,
-            'nodeId' => $nodeId
+            'nodeId' => $nodeId,
+            'displayCustomHeader' => true
         ));
     }
 
