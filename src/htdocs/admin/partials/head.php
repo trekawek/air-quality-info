@@ -60,7 +60,7 @@
                             <i class="nav-icon fa fa-user"></i> <?php echo __('Account') ?></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" target="_blank" href="<?php echo l('main', 'support') ?>">
+                            <a class="nav-link" target="_blank" href="<?php echo l('main', 'static', null, array('pageName' => 'support')) ?>">
                             <i class="nav-icon fa fa-dollar"></i> <?php echo __('Support') ?></a>
                         </li>
                         <li class="nav-item">

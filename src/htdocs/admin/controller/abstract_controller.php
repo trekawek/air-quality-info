@@ -26,13 +26,29 @@ class AbstractController {
         extract($data);
 
         if ($args['layout']) {
-            include($args['head']);
+            if (is_array($args['head'])) {
+                foreach ($args['head'] as $f) {
+                    include($f);
+                }
+            } else {
+                include($args['head']);
+            }
         }
 
-        include($args['view']);
+        if (isset($args['body'])) {
+            echo $args['body'];
+        } else {
+            include($args['view']);
+        }
 
         if ($args['layout']) {
-            include($args['tail']);
+            if (is_array($args['tail'])) {
+                foreach ($args['tail'] as $f) {
+                    include($f);
+                }
+            } else {
+                include($args['tail']);
+            }
         }
     }
 

@@ -1,3 +1,7 @@
+<div class="container">
+<div class="row">
+<div class="col-md-8 offset-md-2 text-justify">
+
 <p class="lead">
 <span class="logo">aqi.eco</span> jest projektem niekomercyjnym, rozwijanym w wolnym czasie i utrzymywanym ze środków prywatnych. Kod źródłowy aqi.eco jest publicznie dostępny w serwisie <a href="https://github.com/trekawek/air-quality-info">GitHub</a>.
 </p>
@@ -15,4 +19,8 @@
     <img alt="" border="0" src="https://www.paypal.com/pl_PL/i/scr/pixel.gif" width="1" height="1" />
 </form>
 <?php endif ?>
+</div>
+
+</div>
+</div>
 </div>

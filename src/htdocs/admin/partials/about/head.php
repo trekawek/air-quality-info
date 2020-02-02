@@ -34,9 +34,9 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
                 <?php navItem(array('map', 'index'), 'Map'); ?>
                 <?php navItem(array('user', 'login'), 'Sign in'); ?>
                 <?php navItem(array('user', 'register'), 'Sign up'); ?>
-                <?php navItem(array('main', 'support'), 'Support'); ?>
+                <?php navItem('/about/support', 'Support'); ?>
             </ul>
         </div>
     </nav>
 
-    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto">
+    <div class="pt-3 mx-auto">

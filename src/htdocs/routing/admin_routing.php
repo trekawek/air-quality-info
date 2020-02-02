@@ -16,7 +16,7 @@ $routes = array(
     'GET /' => array('main', 'index'),
     'GET /map' => array('map', 'index'),
     'GET /map/data.json' => array('map', 'data'),
-    'GET /support' => array('main', 'support'),
+    'GET /about/:pageName' => array('main', 'static'),
 
     'GET /login' => array('user', 'login'),
     'POST /login' => array('user', 'doLogin'),
@@ -77,9 +77,10 @@ $routes = array(
 );
 
 $router = new Lib\Router($routes);
+$uri = urldecode(explode("?", $_SERVER['REQUEST_URI'])[0]);
 list($route, $args) = $router->findRoute(
     $_SERVER['REQUEST_METHOD'],
-    urldecode(explode("?", $_SERVER['REQUEST_URI'])[0])
+    $uri
 );
 
 if ($route === null) {

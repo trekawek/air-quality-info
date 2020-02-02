@@ -1,3 +1,7 @@
+<div class="container">
+<div class="row">
+<div class="col-md-8 offset-md-2 text-justify">
+
 <p class="lead">
 <span class="logo">aqi.eco</span> is a non-profit project, developed in the spare time and run from the private funds. It's an open-source, with its code available on <a href="https://github.com/trekawek/air-quality-info">GitHub</a>.
 </p>
@@ -15,4 +19,8 @@ Please use the donate button below to support the infrastructure - server and do
     <img alt="" border="0" src="https://www.paypal.com/en_PL/i/scr/pixel.gif" width="1" height="1" />
 </form>
 <?php endif ?>
+</div>
+
+</div>
+</div>
 </div>

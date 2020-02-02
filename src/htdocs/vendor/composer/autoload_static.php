@@ -77,11 +77,22 @@ class ComposerStaticInitc8ad867624f289aeb5ef5831898ca58a
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'Parsedown' => 
+            array (
+                0 => __DIR__ . '/..' . '/erusev/parsedown',
+            ),
+        ),
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitc8ad867624f289aeb5ef5831898ca58a::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitc8ad867624f289aeb5ef5831898ca58a::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitc8ad867624f289aeb5ef5831898ca58a::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
