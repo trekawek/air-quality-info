@@ -31,7 +31,7 @@ class UpdateController extends AbstractController {
         if ($matchingDevices === null) {
             $this->authError();
         }
-
+        $device = $matchingDevices[0];
         $payload = file_get_contents("php://input");
         $this->apiUpdateController->update($device, $payload);
     }
