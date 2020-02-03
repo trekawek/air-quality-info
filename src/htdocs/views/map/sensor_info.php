@@ -6,10 +6,10 @@
     <a href="<?php echo $deviceUrl ?>"><?php echo $device['description'] ?></a>
 
     <?php if (!empty($device['extra_description'])): ?>
-    <br/><small><?php echo $device['extra_description'] ?></small><br/>
+    <br/><small><?php echo $device['extra_description'] ?></small>
     <?php endif ?>
 
-    <?php include('partials/sensors/badge.php') ?>
+    <br/><?php include('partials/sensors/badge.php') ?>
 </div>
 
 <?php
