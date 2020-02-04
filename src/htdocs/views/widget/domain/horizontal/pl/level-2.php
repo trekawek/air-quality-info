@@ -40,7 +40,7 @@
         <span class="strip-recommended">
           <strong>Niezalecane</strong>
           <br />
-          <span class="strip-recommended-description">przebywanie na świeżym powietrzu</span>
+          <span class="strip-recommended-description">długotrwałe przebywanie na świeżym powietrzu</span>
         </span>
         </span>
         </li>
@@ -50,7 +50,7 @@
         <span class="strip-recommended">
           <strong>Niezalecane</strong>
           <br />
-          <span class="strip-recommended-description">przebywanie na świeżym powietrzu (ciąża, astma, osoby starsze)</span>
+          <span class="strip-recommended-description">długotrwałe przebywanie na świeżym powietrzu (ciąża, astma, osoby starsze)</span>
         </span>
         </span>
         </li>
