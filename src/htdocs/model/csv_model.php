@@ -160,7 +160,11 @@ class CsvModel {
     private function writeRecord($fp, $record) {
         $row = array();
         foreach (CsvModel::FIELDS as $f) {
-            $row[] = $record[$f];
+            if (isset($record[$f])) {
+                $row[] = $record[$f];
+            } else {
+                $row[] = '';
+            }
         }
         fwrite($fp, implode(';', $row)."\n");
     }

@@ -91,6 +91,14 @@ class DeviceModel {
         return $data;
     }
 
+    public function getSensors() {
+        $stmt = $this->pdo->prepare("SELECT * FROM `device_sensors`");
+        $stmt->execute();
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $data;
+    }
+
     public function getMappingAsAMap($deviceId) {
         $mapping = array();
         foreach ($this->getMappingForDevice($deviceId) as $m) {

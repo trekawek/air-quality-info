@@ -62,7 +62,11 @@ class RecordModel {
 
             $param = array($deviceId, $record['timestamp']);
             foreach (RecordModel::FIELDS as $f) {
-                $param[] = $record[$f];
+                if (isset($record[$f])) {
+                    $param[] = $record[$f];
+                } else {
+                    $param[] = null;
+                }
             }
 
             try {

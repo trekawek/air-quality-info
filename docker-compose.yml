@@ -8,16 +8,18 @@ x-mysql-variables: &mysql-variables
     AQI_CONFIG: /etc/aqi/config.php
     AQI_PATH: /var/www/html
 
-services:
-  fpm:
-    build: docker-img/fpm
-    environment: *mysql-variables
-    volumes:
+x-fpm-volumes: &fpm-volumes
     - ./src/htdocs:/var/www/html
     - ./src/cli:/usr/local/bin/aqi
     - ./config.php:/etc/aqi/config.php
     - ./var-data:/var/lib/aqi
     - ./var-data/log:/usr/local/var/log/php-fpm
+
+services:
+  fpm:
+    build: docker-img/fpm
+    environment: *mysql-variables
+    volumes: *fpm-volumes
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -60,10 +62,12 @@ services:
     build: docker-img/fpm
     environment: *mysql-variables
     command: /usr/local/bin/php /usr/local/bin/aqi/job-handler.php
-    volumes:
-    - ./src/htdocs:/var/www/html
-    - ./src/cli:/usr/local/bin/aqi
-    - ./config.php:/etc/aqi/config.php
-    - ./var-data:/var/lib/aqi
-    - ./var-data/log:/usr/local/var/log/php-fpm
+    volumes: *fpm-volumes
+    restart: on-failure
+
+  sensor-fetcher:
+    build: docker-img/fpm
+    environment: *mysql-variables
+    command: /usr/local/bin/php /usr/local/bin/aqi/fetch-sensors.php
+    volumes: *fpm-volumes
     restart: on-failure

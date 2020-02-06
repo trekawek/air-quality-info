@@ -72,9 +72,9 @@ CREATE TABLE `devices` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
   `esp8266_id` bigint DEFAULT NULL,
-  `http_username` varchar(256) NOT NULL,
-  `http_password` varchar(256) NOT NULL,
-  `api_key` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `http_username` varchar(256) DEFAULT NULL,
+  `http_password` varchar(256) DEFAULT NULL,
+  `api_key` varchar(32) DEFAULT NULL,
   `name` varchar(256) NOT NULL,
   `description` varchar(256) NOT NULL,
   `extra_description` varchar(512) DEFAULT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE `devices` (
   `location_provided` tinyint(1) NOT NULL DEFAULT '0',
   `lat` decimal(17,14) DEFAULT NULL,
   `lng` decimal(17,14) DEFAULT NULL,
-  `radius` int NOT NULL DEFAULT '250',
+  `radius` decimal(5,1) NOT NULL DEFAULT '250.0',
   `elevation` int DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_update` int DEFAULT NULL
@@ -115,6 +115,17 @@ CREATE TABLE `device_mapping` (
   `device_id` int NOT NULL,
   `db_name` varchar(32) NOT NULL,
   `json_name` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `device_sensors`
+--
+
+CREATE TABLE `device_sensors` (
+  `device_id` int NOT NULL,
+  `sensor_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -242,6 +253,12 @@ ALTER TABLE `device_mapping`
   ADD KEY `device_id` (`device_id`);
 
 --
+-- Indexes for table `device_sensors`
+--
+ALTER TABLE `device_sensors`
+  ADD PRIMARY KEY (`device_id`,`sensor_id`);
+
+--
 -- Indexes for table `json_updates`
 --
 ALTER TABLE `json_updates`
@@ -352,6 +369,12 @@ ALTER TABLE `device_hierarchy`
 --
 ALTER TABLE `device_mapping`
   ADD CONSTRAINT `device_mapping_device_id_fkey` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+--
+-- Constraints for table `device_sensors`
+--
+ALTER TABLE `device_sensors`
+  ADD CONSTRAINT `device_sensors_device_id` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `json_updates`
