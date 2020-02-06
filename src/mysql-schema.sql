@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 10.135.14.82
--- Generation Time: Jan 23, 2020 at 08:17 AM
--- Server version: 8.0.18-0ubuntu0.19.10.1
+-- Generation Time: Feb 06, 2020 at 10:14 PM
+-- Server version: 8.0.19-0ubuntu0.19.10.3
 -- PHP Version: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -23,9 +23,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `aggregates` (
-  `device_id` int(11) NOT NULL,
-  `timestamp` int(11) NOT NULL,
-  `resolution` int(11) NOT NULL,
+  `device_id` int NOT NULL,
+  `timestamp` int NOT NULL,
+  `resolution` int NOT NULL,
   `pm25` decimal(6,2) DEFAULT NULL,
   `pm10` decimal(6,2) DEFAULT NULL,
   `temperature` decimal(5,2) DEFAULT NULL,
@@ -42,10 +42,10 @@ CREATE TABLE `aggregates` (
 --
 
 CREATE TABLE `attachments` (
-  `user_id` int(11) NOT NULL,
+  `user_id` int NOT NULL,
   `name` varchar(256) NOT NULL,
   `filename` varchar(256) NOT NULL,
-  `length` int(11) NOT NULL,
+  `length` int NOT NULL,
   `mime` varchar(64) NOT NULL,
   `data` mediumblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -57,8 +57,8 @@ CREATE TABLE `attachments` (
 --
 
 CREATE TABLE `custom_domains` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
   `fqdn` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -69,9 +69,9 @@ CREATE TABLE `custom_domains` (
 --
 
 CREATE TABLE `devices` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `esp8266_id` bigint(11) NOT NULL,
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `esp8266_id` bigint DEFAULT NULL,
   `http_username` varchar(256) NOT NULL,
   `http_password` varchar(256) NOT NULL,
   `api_key` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -82,9 +82,10 @@ CREATE TABLE `devices` (
   `location_provided` tinyint(1) NOT NULL DEFAULT '0',
   `lat` decimal(17,14) DEFAULT NULL,
   `lng` decimal(17,14) DEFAULT NULL,
-  `radius` int(11) NOT NULL DEFAULT '250',
-  `elevation` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `radius` int NOT NULL DEFAULT '250',
+  `elevation` int DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_update` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -94,13 +95,13 @@ CREATE TABLE `devices` (
 --
 
 CREATE TABLE `device_hierarchy` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `parent_id` int(11) DEFAULT NULL,
-  `position` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `parent_id` int DEFAULT NULL,
+  `position` int NOT NULL,
   `name` varchar(256) DEFAULT NULL,
   `description` varchar(256) DEFAULT NULL,
-  `device_id` int(11) DEFAULT NULL
+  `device_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -110,8 +111,8 @@ CREATE TABLE `device_hierarchy` (
 --
 
 CREATE TABLE `device_mapping` (
-  `id` int(11) NOT NULL,
-  `device_id` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `device_id` int NOT NULL,
   `db_name` varchar(32) NOT NULL,
   `json_name` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -123,8 +124,8 @@ CREATE TABLE `device_mapping` (
 --
 
 CREATE TABLE `json_updates` (
-  `device_id` int(11) NOT NULL,
-  `timestamp` int(11) NOT NULL,
+  `device_id` int NOT NULL,
+  `timestamp` int NOT NULL,
   `data` varchar(2048) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -135,8 +136,8 @@ CREATE TABLE `json_updates` (
 --
 
 CREATE TABLE `records` (
-  `device_id` int(11) NOT NULL,
-  `timestamp` int(11) NOT NULL,
+  `device_id` int NOT NULL,
+  `timestamp` int NOT NULL,
   `pm25` decimal(6,2) DEFAULT NULL,
   `pm10` decimal(6,2) DEFAULT NULL,
   `temperature` decimal(5,2) DEFAULT NULL,
@@ -153,7 +154,7 @@ CREATE TABLE `records` (
 --
 
 CREATE TABLE `templates` (
-  `user_id` int(11) NOT NULL,
+  `user_id` int NOT NULL,
   `template_name` varchar(32) NOT NULL,
   `template` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -165,7 +166,7 @@ CREATE TABLE `templates` (
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `email` varchar(254) NOT NULL,
   `password_hash` varchar(128) NOT NULL,
   `domain` varchar(256) NOT NULL,
@@ -181,8 +182,8 @@ CREATE TABLE `users` (
 --
 
 CREATE TABLE `widgets` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
   `title` varchar(512) NOT NULL,
   `template` enum('horizontal','vertical') NOT NULL DEFAULT 'vertical'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -218,8 +219,11 @@ ALTER TABLE `custom_domains`
 --
 ALTER TABLE `devices`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `api_key` (`api_key`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `esp8266_id` (`esp8266_id`);
+  ADD KEY `esp8266_id` (`esp8266_id`),
+  ADD KEY `default_device` (`default_device`),
+  ADD KEY `id` (`id`,`user_id`);
 
 --
 -- Indexes for table `device_hierarchy`
@@ -263,7 +267,8 @@ ALTER TABLE `templates`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `domain` (`domain`);
 
 --
 -- Indexes for table `widgets`
@@ -280,37 +285,37 @@ ALTER TABLE `widgets`
 -- AUTO_INCREMENT for table `custom_domains`
 --
 ALTER TABLE `custom_domains`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `devices`
 --
 ALTER TABLE `devices`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `device_hierarchy`
 --
 ALTER TABLE `device_hierarchy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `device_mapping`
 --
 ALTER TABLE `device_mapping`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `widgets`
 --
 ALTER TABLE `widgets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
