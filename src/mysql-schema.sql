@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 10.135.14.82
--- Generation Time: Feb 06, 2020 at 10:14 PM
+-- Generation Time: Feb 07, 2020 at 04:47 PM
 -- Server version: 8.0.19-0ubuntu0.19.10.3
 -- PHP Version: 7.4.1
 
@@ -71,10 +71,11 @@ CREATE TABLE `custom_domains` (
 CREATE TABLE `devices` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
+  `update_mode` enum('push','pull') NOT NULL DEFAULT 'push',
   `esp8266_id` bigint DEFAULT NULL,
-  `http_username` varchar(256) DEFAULT NULL,
-  `http_password` varchar(256) DEFAULT NULL,
-  `api_key` varchar(32) DEFAULT NULL,
+  `http_username` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `http_password` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `api_key` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `name` varchar(256) NOT NULL,
   `description` varchar(256) NOT NULL,
   `extra_description` varchar(512) DEFAULT NULL,
@@ -256,7 +257,8 @@ ALTER TABLE `device_mapping`
 -- Indexes for table `device_sensors`
 --
 ALTER TABLE `device_sensors`
-  ADD PRIMARY KEY (`device_id`,`sensor_id`);
+  ADD PRIMARY KEY (`device_id`,`sensor_id`),
+  ADD KEY `device_id` (`device_id`);
 
 --
 -- Indexes for table `json_updates`
