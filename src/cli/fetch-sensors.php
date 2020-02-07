@@ -37,7 +37,6 @@ class FetchSensorTask {
         list($locations, $records) = $this->readSensorData();
         echo 'Inserting '.count($records)." records\n";
         $this->insertRecords($records);
-        $this->updateDevices($locations);
     }
 
     function updateDevices($locations) {
@@ -79,7 +78,8 @@ class FetchSensorTask {
             $records[$r['device_id']] = array();
         }
 
-        foreach ($this->sensorsApi->getRecords($sensorIds) as $r) {
+        foreach ($sensorIds as $sensorId) {
+            $r = $this->sensorsApi->getSensorValues($sensorId);
             foreach ($sensorToDevices[$r['sensor']['id']] as $deviceId) {
                 foreach ($r['location'] as $k => $v) {
                     if (isset(FetchSensorTask::locationMapping[$k])) {
