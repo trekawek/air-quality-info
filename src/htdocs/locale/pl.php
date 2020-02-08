@@ -9,6 +9,7 @@ $jsLocale['High'] = 'Wysoki';
 $jsLocale['Humidity'] = 'Wilgotność';
 $jsLocale['Low'] = 'Niski';
 $jsLocale['Medium'] = 'Średni';
+$jsLocale['Night view'] = 'Widok nocny';
 $jsLocale['PM₁₀ limit'] = 'Limit PM₁₀';
 $jsLocale['PM₂₅ limit'] = 'Limit PM₂₅';
 $jsLocale['Pollution level'] = 'Poziom zanieczyszczenia';

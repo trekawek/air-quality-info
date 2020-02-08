@@ -241,7 +241,10 @@ function initMap(mapDiv, data) {
             ]
           }
       ],
-      {name: 'Widok nocny'});
+      {
+        name: __('Night view')
+      }
+    );
 
     var initPosition = getPosition(data[0]);
     var map = new google.maps.Map(mapDiv, {

@@ -18,7 +18,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
         <link rel="apple-touch-icon" sizes="512x512" href="/public/img/aqi-512.png">
     </head>
 
-<body>
+<body data-locale='<?php echo json_encode($currentLocale->getJsMessages()) ?>'>
     <div class="container">
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
