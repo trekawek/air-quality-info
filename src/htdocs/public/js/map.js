@@ -248,7 +248,7 @@ function initMap(mapDiv, data) {
         zoom: 15,
         mapTypeControlOptions: {
             mapTypeIds: ['roadmap', 'satellite', 'styled_map']
-        }
+        },
         center: initPosition,
         streetViewControl: false
     });
