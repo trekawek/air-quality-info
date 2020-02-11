@@ -3,17 +3,23 @@ namespace AirQualityInfo\Lib;
  
 class SensorCommunityApi {
 
-    const ALL_SENSORS = 'https://maps.sensor.community/data/v2/data.json';
+    const URL = 'https://data.sensor.community/static/v1/data.json';
 
-    public function getSensorValues($sensorId) {
-        return $this->read("https://data.sensor.community/airrohr/v1/sensor/$sensorId/")[0];
+    private $data = null;
+
+    public function getRecords($sensorIds) {
+        $result = array();
+        foreach ($this->getData(true) as $row) {
+            if (in_array($row['sensor']['id'], $sensorIds)) {
+                $result[] = $row;
+            }
+        }
+        return $result;
     }
 
     public function getMatchingSensors($sensorId) {
-        $data = $this->read(ALL_SENSORS);
-
         $locationId = null;
-        foreach ($data as $row) {
+        foreach ($this->getData() as $row) {
             if ($sensorId == $row['sensor']['id']) {
                 $locationId = $row['location']['id'];
             }
@@ -23,7 +29,7 @@ class SensorCommunityApi {
         }
 
         $sensorIds = array();
-        foreach ($data as $row) {
+        foreach ($this->getData() as $row) {
             if ($locationId == $row['location']['id']) {
                 $sensorIds[] = $row['sensor']['id'];
             }
@@ -31,11 +37,18 @@ class SensorCommunityApi {
         return $sensorIds;
     }
 
-    private static function read($url) {
+    private function getData($forceReload = false) {
+        if ($this->data === null || $forceReload) {
+            $this->data = SensorCommunityApi::read();
+        }
+        return $this->data;
+    }
+
+    private static function read() {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, SensorCommunityApi::URL);
         $result = curl_exec($ch);
         curl_close($ch);
 
