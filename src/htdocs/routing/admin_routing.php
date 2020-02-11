@@ -68,6 +68,7 @@ $routes = array(
     'GET /attachment/:name' => array('attachment', 'get'),
 
     'GET /widget' => array('widget', 'index'),
+    'POST /widget' => array('widget', 'updateWidgetSettings'),
     'GET /widget_device/:device_id' => array('widget', 'showDeviceWidget'),
     'GET /widget/create' => array('widget', 'create'),
     'POST /widget/create' => array('widget', 'create'),

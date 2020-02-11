@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
                 <?php echo __('Domain widget list') ?>
@@ -31,8 +31,10 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div class="col-lg-6">
+<div class="row">
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
                 <?php echo __('Device widget list') ?>
@@ -59,6 +61,22 @@
                     <?php endforeach ?>
                 </table>
                 <p><?php echo __('Widgets created here will show the state of a single device.') ?></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <?php echo __('Template widgets') ?>
+            </div>
+            <div class="card-body">
+                <form action="<?php echo l('widget', 'updateWidgetSettings') ?>" method="post">
+                    <?php $userForm->render() ?>
+                    <button type="submit" class="btn btn-primary"><?php echo __('Update') ?></button>
+                </form>
             </div>
         </div>
     </div>

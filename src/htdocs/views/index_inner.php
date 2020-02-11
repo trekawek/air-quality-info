@@ -1,3 +1,7 @@
+<?php if ($aggregate['level'] !== null && $this->user['sensor_widget']): ?>
+<?php include('views/widget/home/pl/level-'.round($aggregate['level'], 0).'.php') ?>
+<?php endif ?>
+
 <?php include('partials/sensors/avg-switch.php') ?>
 
 <div class="row device-header">

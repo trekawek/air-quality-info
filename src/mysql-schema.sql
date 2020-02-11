@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 10.135.14.82
--- Generation Time: Feb 07, 2020 at 04:47 PM
+-- Generation Time: Feb 11, 2020 at 06:44 PM
 -- Server version: 8.0.19-0ubuntu0.19.10.3
 -- PHP Version: 7.4.1
 
@@ -182,6 +182,8 @@ CREATE TABLE `users` (
   `email` varchar(254) NOT NULL,
   `password_hash` varchar(128) NOT NULL,
   `domain` varchar(256) NOT NULL,
+  `sensor_widget` tinyint(1) NOT NULL DEFAULT '0',
+  `all_widget` tinyint(1) NOT NULL DEFAULT '0',
   `redirect_root` varchar(255) DEFAULT NULL,
   `timezone` varchar(64) NOT NULL DEFAULT 'Europe/Warsaw',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP

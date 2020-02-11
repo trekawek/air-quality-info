@@ -127,7 +127,7 @@ class UserController extends AbstractController {
         if ($userForm->isSubmitted() && $userForm->validate($_POST)) {
             $data = array(
                 'redirect_root' => $_POST['redirect_root'],
-                'timezone' => $_POST['timezone']
+                'timezone' => $_POST['timezone'],
             );
             $this->userModel->updateUser($this->user['id'], $data);
             $this->alert(__('Updated settings', 'success'));

@@ -16,7 +16,8 @@
 
   <link rel="stylesheet" href="/public/css/themes/<?php echo $currentTheme->getTheme() ?>.min.css"/>
   <link rel="stylesheet" href="/public/css/vendor.min.css?v=32"/>
-  <link rel="stylesheet" href="/public/css/style.css?v=34"/>
+  <link rel="stylesheet" href="/public/css/style.css?v=35"/>
+  <link rel="stylesheet" href="/public/css/font_aqi.css?v=34"/>
   <?php if (isset($domainTemplate['css'])): ?>
   <?php echo "<style>\n".$domainTemplate['css']."\n</style>\n" ?>
   <?php endif ?>

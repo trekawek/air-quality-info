@@ -63,3 +63,138 @@ a.disabled {
 .device-header h4 {
   margin-bottom: 0;
 }
+
+/* homewidget */
+
+.homewidget h3 {
+  font-size: 2rem;
+  letter-spacing: -0.1rem;
+  font-weight: 700;
+}
+
+.homewidget h5 {
+  font-size: 1.4rem;
+  letter-spacing: -0.08rem;
+  font-weight: 400;
+}
+
+.homewidget small {
+  font-size: 95%;
+}
+
+.homewidget .list-group-item:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.homewidget .list-group-item:last-child {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.homewidget .list-group-item {
+  margin-bottom: -16px;
+  background: transparent;
+  border: none;
+}
+
+.homewidget .air-quality-0,
+.homewidget .air-quality-1,
+.homewidget .air-quality-2,
+.homewidget .air-quality-3,
+.homewidget .air-quality-4 {
+  border: none;
+}
+
+.homewidget .air-quality-0 {
+  color: #80bc66;
+}
+
+.homewidget .air-quality-1 {
+  color: #bccf40;
+}
+
+.homewidget .air-quality-2 {
+  color: #e9c100;
+}
+
+.homewidget .air-quality-3 {
+  color: #eb9200;
+}
+
+.homewidget .air-quality-4 {
+  color: #8f0014;
+}
+
+.homewidget .green {
+  color: #1bb152;
+}
+
+.homewidget .orange {
+  color: #ffc00f;
+}
+
+.homewidget .red {
+  color: #e6150d;
+}
+
+.homewidget .weather-icons-size {
+  font-size: 30px;
+}
+
+.homewidget .weather-icons-text {
+  font-size: 25px;
+  font-weight: 700;
+  padding-left: 8px;
+}
+
+.homewidget .weather-icons-text-temp {
+  font-size: 3rem;
+  letter-spacing: -0.1rem;
+  font-weight: 700;
+  padding-left: 8px;
+}
+
+.homewidget .weather-icons-text-light {
+  font-weight: 300;
+}
+
+.homewidget .strip {
+  display: block;
+  border-radius: 5px;
+  padding: 10px;
+  font-weight: normal;
+  color: #000;
+  text-align: left;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center;
+}
+
+.homewidget .strip-recommended {
+  display: block;
+  color: #000;
+  text-align: left;
+  margin-left: 4px;
+  line-height: 17px;
+}
+
+.homewidget .strip-recommended-description {
+  color: #000;
+  font-size: 15px;
+  text-align: left;
+  letter-spacing: -0.03rem;
+}
+
+.darkly .homewidget .strip,
+.darkly .homewidget .strip-recommended,
+.darkly .homewidget .strip-recommended-description {
+  color: #fff !important;
+}

@@ -31,12 +31,19 @@ class MainController extends AbstractController {
 
         $nodeById = $this->deviceHierarchyModel->getAllNodesById($this->userId);
         $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculateDevicePath($nodeById, $device['id']);
+
         $this->render(array('view' => 'views/index_inner.php', 'layout' => false), array(
             'averages' => $averages,
             'currentAvgType' => $currentAvgType,
             'sensors' => $lastData,
             'device' => $device,
-            'breadcrumbs' => $path
+            'breadcrumbs' => $path,
+            'aggregate' => array(
+                'level' => $averages['max_level'],
+                'temperature' => $lastData['temperature'],
+                'pressure' => $lastData['pressure'],
+                'humidity' => $lastData['humidity'],
+            )
         ));
     }
 
@@ -88,6 +95,10 @@ class MainController extends AbstractController {
         $tree = $this->deviceHierarchyModel->getTree($this->userId, $nodeId);
         $devices = $this->flatTree($tree);
         $data = array();
+
+        $maxLevels = array();
+        $weather = array('temperature' => [], 'humidity' => [], 'pressure' => []);
+
         foreach ($devices as $device) {
             $sensors = $this->recordModel->getLastData($device['id']);
             $currentAvgType = '1';
@@ -97,16 +108,48 @@ class MainController extends AbstractController {
             $averages = $this->recordModel->getAverages($device['id'], $currentAvgType);
             $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculateDevicePath($nodeById, $device['id']);
             $data[] = array('sensors' => $sensors, 'averages' => $averages, 'device' => $device, 'breadcrumbs' => $path);
+
+            $maxLevels[] = $averages['max_level'];
+            foreach ($weather as $k => $_) {
+                $weather[$k][] = $sensors[$k];
+            }
         }
+
         $this->render(array('view' => 'views/all_sensors.php'), array(
             'data' => $data,
             'currentAvgType' => $currentAvgType,
             'nodeId' => $nodeId,
-            'displayCustomHeader' => true
+            'displayCustomHeader' => true,
+            'aggregate' => array(
+                'level' => MainController::avg($maxLevels),
+                'temperature' => MainController::median($weather['temperature']),
+                'pressure' => MainController::median($weather['pressure']),
+                'humidity' => MainController::median($weather['humidity']),
+            )
         ));
     }
 
-    
+    private static function avg($arr) {
+        $arr = array_filter($arr, function($v) { return $v !== null; } );
+        if (count($arr) === 0) {
+            return null;
+        }
+        return array_sum($arr) / count($arr);
+    }
+
+    private static function median($arr) {
+        $arr = array_filter($arr, function($v) { return $v !== null; } );
+        $c = count($arr);
+        if ($c === 0) {
+            return null;
+        }
+        sort($arr);
+        if (($c % 2) == 1) {
+            return $arr[floor($c / 2)];
+        } else {
+            return ($arr[$c / 2 - 1] + $arr[$c / 2]) / 2;
+        }
+    }
 }
 
 ?>

@@ -21,10 +21,33 @@ class WidgetController extends AbstractController {
     public function index() {
         $widgets = $this->widgetModel->getWidgetsForUser($this->user['id']);
         $devices = $this->deviceModel->getDevicesForUser($this->user['id']);
+
         $this->render(array('view' => 'admin/views/widget/index.php'), array(
             'widgets' => $widgets,
-            'devices' => $devices
+            'devices' => $devices,
+            'userForm' => $this->widgetSettingsForm()
         ));
+    }
+
+    public function updateWidgetSettings() {
+        $userForm = $this->widgetSettingsForm();
+        if ($userForm->isSubmitted() && $userForm->validate($_POST)) {
+            $data = array(
+                'sensor_widget' => isset($_POST['sensor_widget']) ? 1 : 0,
+                'all_widget' => isset($_POST['all_widget']) ? 1 : 0,
+            );
+            $this->userModel->updateUser($this->user['id'], $data);
+            $this->alert(__('Updated settings', 'success'));
+            header('Location: '.l('widget', 'index'));
+        }
+    }
+
+    private function widgetSettingsForm() {
+        $userForm = new \AirQualityInfo\Lib\Form\Form("userForm");
+        $userForm->addElement('sensor_widget', 'checkbox', 'Show widget on the sensor page');
+        $userForm->addElement('all_widget', 'checkbox', 'Show widget on the group page');
+        $userForm->setDefaultValues($this->user);
+        return $userForm;
     }
 
     public function create() {
