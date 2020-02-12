@@ -9,8 +9,8 @@ class Theme {
 
   function __construct() {
     $theme = null;
-    if (isset($_SESSION['theme'])) {
-      $theme = $_SESSION['theme'];
+    if (isset($_COOKIE['theme'])) {
+      $theme = $_COOKIE['theme'];
     }
     if (!isset(Theme::THEMES[$theme])) {
       $theme = 'default';
@@ -24,7 +24,7 @@ class Theme {
 
   function setTheme($theme) {
     if (isset(Theme::THEMES[$theme])) {
-      $_SESSION['theme'] = $theme;
+      setcookie("theme", $theme, time() + 60 * 60 * 24 * 365);
       $this->theme = $theme;
     }
   }

@@ -23,7 +23,7 @@ namespace AirQualityInfo\Lib {
 
         function setLang($lang) {
             if (isset(Locale::SUPPORTED_LANGUAGES[$lang])) {
-                $_SESSION['lang'] = $lang;
+                setcookie("lang", $lang, time() + 60 * 60 * 24 * 365);
                 $this->currentLang = $lang;
             }
         }
@@ -45,8 +45,8 @@ namespace AirQualityInfo\Lib {
 
         private static function resolveCurrentLang() {
             $currentLang = null;
-            if (isset($_SESSION['lang'])) {
-                $currentLang = $_SESSION['lang'];
+            if (isset($_COOKIE['lang'])) {
+                $currentLang = $_COOKIE['lang'];
             }
             if (isset($_GET['lang'])) {
                 $currentLang = $_GET['lang'];
