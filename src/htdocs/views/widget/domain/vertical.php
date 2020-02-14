@@ -30,7 +30,7 @@
               </li>
             <?php else: ?>
               <li class="list-group-item text-center air-quality-<?php echo $level ?>">
-                <i class="fa fa-smile-o fa-5x dropshadow white"></i>
+                <i class="fa <?php echo $locale['icon'] ?> fa-5x dropshadow white"></i>
                 <h4 class="dropshadow white"><?php echo $locale['label'] ?></h4>
               </li>
 

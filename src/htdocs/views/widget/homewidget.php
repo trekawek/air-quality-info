@@ -8,7 +8,7 @@
             <h3 class=""><?php echo __('Air quality') ?></h3>
           </li>
           <li class="list-group-item text-center">
-            <i class="fa fa-smile-o fa-5x air-quality-<?php echo $homeWidget['level'] ?>"></i>
+            <i class="fa <?php echo $homeWidget['locale']['icon'] ?> fa-5x air-quality-<?php echo $homeWidget['level'] ?>"></i>
             <h3 class="air-quality-<?php echo $homeWidget['level'] ?>"><?php echo $homeWidget['locale']['label'] ?></h3>
           </li>
         </ul>
