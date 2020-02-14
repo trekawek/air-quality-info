@@ -212,4 +212,158 @@ $locale['Widgets'] = 'Widgety';
 $locale['Widgets created here will show the average air quality calculated from all sensors.'] = 'Widgety będą reprezentować jakość powietrza obliczoną jako średnia ze wszystkich czujników.';
 $locale['Widgets created here will show the state of a single device.'] = 'Widgety będą reprezentować stan pojedynczego czujnika.';
 $locale['Year'] = 'Rok';
+
+$locale['_widgets'] = [
+    0 => [
+        'label' => 'Dobra',
+        'icon' => 'fa-smile-o',
+        'recommendations' => [
+            [
+                'icon' => 'icon-spacer',
+                'color' => 'green',
+                'label' => 'Zalecane',
+                'description' => 'spacery na zewnątrz'
+            ],
+            [
+                'icon' => 'icon-rower',
+                'color' => 'green',
+                'label' => 'Zalecana',
+                'description' => 'aktywność fizyczna na zewnątrz'
+            ],
+            [
+                'icon' => 'icon-tree',
+                'color' => 'green',
+                'label' => 'Zalecane',
+                'description' => 'przebywanie na świeżym powietrzu'
+            ],
+            [
+                'icon' => 'icon-elderly',
+                'color' => 'green',
+                'label' => 'Zalecane',
+                'description' => 'przebywanie na świeżym powietrzu (ciąża, astma, osoby starsze)'
+            ],
+        ]
+    ],
+    1 => [
+        'label' => 'Umiarkowana',
+        'icon' => 'fa-meh-o',
+        'recommendations' => [
+            [
+                'icon' => 'icon-spacer',
+                'color' => 'green',
+                'label' => 'Zalecane',
+                'description' => 'spacery na zewnątrz'
+            ],
+            [
+                'icon' => 'icon-rower',
+                'color' => 'green',
+                'label' => 'Zalecana',
+                'description' => 'aktywność fizyczna na zewnątrz'
+            ],
+            [
+                'icon' => 'icon-tree',
+                'color' => 'green',
+                'label' => 'Zalecane',
+                'description' => 'przebywanie na świeżym powietrzu'
+            ],
+            [
+                'icon' => 'icon-elderly',
+                'color' => 'orange',
+                'label' => 'Niezalecane',
+                'description' => 'przebywanie na świeżym powietrzu (ciąża, astma, osoby starsze)'
+            ],
+        ]
+    ],
+    2 => [
+        'label' => 'Poniżej normy',
+        'icon' => 'fa-meh-o',
+        'recommendations' => [
+            [
+                'icon' => 'icon-spacer',
+                'color' => 'green',
+                'label' => 'Dopuszczalne',
+                'description' => 'spacery na zewnątrz'
+            ],
+            [
+                'icon' => 'icon-rower',
+                'color' => 'green',
+                'label' => 'Dopuszczalna',
+                'description' => 'aktywność fizyczna na zewnątrz'
+            ],
+            [
+                'icon' => 'icon-tree',
+                'color' => 'orange',
+                'label' => 'Niezalecane',
+                'description' => 'długotrwałe przebywanie na świeżym powietrzu'
+            ],
+            [
+                'icon' => 'icon-elderly',
+                'color' => 'orange',
+                'label' => 'Niezalecane',
+                'description' => 'długotrwałe przebywanie na świeżym powietrzu (ciąża, astma, osoby starsze)'
+            ],
+        ]
+    ],
+    3 => [
+        'label' => 'Niekorzystna',
+        'icon' => 'fa-frown-o',
+        'recommendations' => [
+            [
+                'icon' => 'icon-home',
+                'color' => 'green',
+                'label' => 'Zalecane',
+                'description' => 'Pozostanie w domu (osoby starsze, kobiety w ciąży, osoby z chorobami serca i dróg oddechowych)'
+            ],
+            [
+                'icon' => 'icon-spacer',
+                'color' => 'orange',
+                'label' => 'Niezalecane',
+                'description' => 'spacery na zewnątrz'
+            ],
+            [
+                'icon' => 'icon-rower',
+                'color' => 'orange',
+                'label' => 'Niezalecana',
+                'description' => 'aktywność fizyczna na zewnątrz'
+            ],
+            [
+                'icon' => 'icon-car',
+                'color' => 'orange',
+                'label' => 'Ogranicz',
+                'description' => 'jazdę samochodem'
+            ],
+        ]
+    ],
+    4 => [
+        'label' => 'Zła',
+        'icon' => 'fa-frown-o',
+        'recommendations' => [
+            [
+                'icon' => 'icon-home',
+                'color' => 'green',
+                'label' => 'Zalecane',
+                'description' => 'Pozostanie w domu'
+            ],
+            [
+                'icon' => 'icon-spacer',
+                'color' => 'red',
+                'label' => 'Zrezygnuj',
+                'description' => 'ze spacerów na zewnątrz'
+            ],
+            [
+                'icon' => 'icon-rower',
+                'color' => 'red',
+                'label' => 'Zrezygnuj',
+                'description' => 'z aktywności fizycznej na zewnątrz'
+            ],
+            [
+                'icon' => 'icon-car',
+                'color' => 'red',
+                'label' => 'Zrezygnuj',
+                'description' => 'z jazdy samochodem'
+            ],
+        ]
+    ]
+];
+
 ?>

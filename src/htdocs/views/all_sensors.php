@@ -1,5 +1,5 @@
-<?php if ($aggregate['level'] !== null && $this->user['all_widget']): ?>
-<?php include('views/widget/home/pl/level-'.round($aggregate['level'], 0).'.php') ?>
+<?php if ($homeWidget['level'] !== null && $this->user['all_widget']): ?>
+<?php include('views/widget/homewidget.php') ?>
 <?php endif ?>
 
 <?php include('partials/sensors/avg-switch.php');

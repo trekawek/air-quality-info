@@ -32,6 +32,10 @@ namespace AirQualityInfo\Lib {
             return $this->jsLocale;
         }
 
+        function getValue($key) {
+            return $this->locale[$key];
+        }
+
         function getMessage($msg) {
             if (isset($this->locale[$msg])) {
                 return $this->locale[$msg];

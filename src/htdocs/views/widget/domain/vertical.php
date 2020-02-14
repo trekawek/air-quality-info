@@ -24,12 +24,27 @@
                 <small class="dropshadow white"><?php echo __('Current air quality') ?></small>
             </li>
 
-            <?php if ($level !== null): ?>
-              <?php include(sprintf('%s/level-%d.php', 'pl'/*$currentLocale->getCurrentLang()*/, $level)); ?>
-            <?php else: ?>
+            <?php if ($level === null): ?>
               <li class="list-group-item text-center air-quality-null">
                 <h4 class="dropshadow white"><?php echo __('There are no data') ?></h4>
               </li>
+            <?php else: ?>
+              <li class="list-group-item text-center air-quality-<?php echo $level ?>">
+                <i class="fa fa-smile-o fa-5x dropshadow white"></i>
+                <h4 class="dropshadow white"><?php echo $locale['label'] ?></h4>
+              </li>
+
+              <?php foreach ($locale['recommendations'] as $r): ?>
+              <li class="list-group-item text-center air-quality-<?php echo $level ?>">
+                <span class="strip"><i class="<?php echo $r['icon'] ?> <?php echo $r['color'] ?>"></i>
+                  <span class="strip-recommended">
+                    <strong><?php echo $r['label'] ?></strong>
+                    <br />
+                    <span class="strip-recommended-description"><?php echo $r['description'] ?></span>
+                  </span>
+                </span>
+              </li>
+              <?php endforeach ?>
             <?php endif ?>
 
             <li class="list-group-item text-center air-quality-<?php echo $level === null ? 'null' : $level; ?>">

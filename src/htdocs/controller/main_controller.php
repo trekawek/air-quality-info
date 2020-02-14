@@ -9,14 +9,18 @@ class MainController extends AbstractController {
 
     private $jsonUpdateModel;
 
+    private $locale;
+
     private $devices;
 
     public function __construct(
             \AirQualityInfo\Model\RecordModel $recordModel,
             \AirQualityInfo\Model\JsonUpdateModel $jsonUpdateModel,
+            \AirQualityInfo\Lib\Locale $currentLocale,
             $devices) {
         $this->recordModel = $recordModel;
         $this->jsonUpdateModel = $jsonUpdateModel;
+        $this->locale = $currentLocale;
         $this->devices = $devices;
     }
 
@@ -38,8 +42,9 @@ class MainController extends AbstractController {
             'sensors' => $lastData,
             'device' => $device,
             'breadcrumbs' => $path,
-            'aggregate' => array(
+            'homeWidget' => array(
                 'level' => $averages['max_level'],
+                'locale' => $this->locale->getValue('_widgets')[$averages['max_level']],
                 'temperature' => $lastData['temperature'],
                 'pressure' => $lastData['pressure'],
                 'humidity' => $lastData['humidity'],
@@ -115,13 +120,15 @@ class MainController extends AbstractController {
             }
         }
 
+        $level = round(MainController::avg($maxLevels), 0);
         $this->render(array('view' => 'views/all_sensors.php'), array(
             'data' => $data,
             'currentAvgType' => $currentAvgType,
             'nodeId' => $nodeId,
             'displayCustomHeader' => true,
-            'aggregate' => array(
-                'level' => MainController::avg($maxLevels),
+            'homeWidget' => array(
+                'level' => $level,
+                'locale' => $this->locale->getValue('_widgets')[$level],
                 'temperature' => MainController::median($weather['temperature']),
                 'pressure' => MainController::median($weather['pressure']),
                 'humidity' => MainController::median($weather['humidity']),

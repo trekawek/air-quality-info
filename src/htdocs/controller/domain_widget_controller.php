@@ -11,13 +11,17 @@ class DomainWidgetController extends AbstractController {
 
     private $widgetModel;
 
+    private $locale;
+
     public function __construct(
             \AirQualityInfo\Model\RecordModel $recordModel,
             \AirQualityInfo\Model\WidgetModel $widgetModel,
-            \AirQualityInfo\Model\UserModel $userModel) {
+            \AirQualityInfo\Model\UserModel $userModel,
+            \AirQualityInfo\Lib\Locale $currentLocale) {
         $this->recordModel = $recordModel;
         $this->userModel = $userModel;
         $this->widgetModel = $widgetModel;
+        $this->locale = $currentLocale;
     }
 
     public function show($widgetId) {
@@ -56,9 +60,10 @@ class DomainWidgetController extends AbstractController {
         if ($maxLevel == -1) {
             $maxLevel = null;
         }
-        $this->render(array('view' => 'views/widget/domain/'.$widget['template'].'/index.php', 'layout' => false), array(
+        $this->render(array('view' => 'views/widget/domain/'.$widget['template'].'.php', 'layout' => false), array(
             'title' => $widget['title'],
             'level' => $maxLevel,
+            'locale' => $this->locale->getValue('_widgets')[$maxLevel],
             'siteUrl' => $this->getUriPrefix(),
             'widgetId' => $widgetId
         ));
