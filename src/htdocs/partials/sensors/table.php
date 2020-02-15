@@ -25,7 +25,7 @@
         <?php
         $weather = array();
         if ($sensors['temperature'] !== null) {
-          $weather[] = '<i class="wi wi-thermometer"></i> '.number_format_locale($sensors['temperature'], 1).' &deg;C';
+          $weather[] = '<i class="wi wi-thermometer"></i> '.round($sensors['temperature'], 1).' &deg;C';
         }
         if ($sensors['pressure'] !== null) {
           $weather[] = '<i class="wi wi-barometer"></i> '.round($sensors['pressure'], 0).' hPa';

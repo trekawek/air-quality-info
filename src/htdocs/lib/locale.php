@@ -77,12 +77,5 @@ namespace {
         global $currentLocale;
         return $currentLocale->getMessage($msg);
     }
-
-    function number_format_locale($number, $decimals = 2) {
-        $locale = localeconv();
-        return number_format($number,$decimals,
-            $locale['decimal_point'],
-            $locale['thousands_sep']);
-     }    
 }
 ?>
