@@ -18,7 +18,7 @@ spl_autoload_register(function($className) {
     if (array_shift ($classPath) != 'AirQualityInfo') {
         return;
     }
-    $classPath = array_map (function($string) {
+    $classPath = array_map(function($string) {
         return strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
     }, $classPath);
     $path = $rootPath."/".implode('/', $classPath).".php";

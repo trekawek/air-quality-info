@@ -4,6 +4,8 @@ namespace AirQualityInfo\Lib {
 
         const SUPPORTED_LANGUAGES = array('en' => 'English', 'pl' => 'Polski');
 
+        const LANG_TO_LOCALE = array('en' => 'en_US', 'pl' => 'pl_PL');
+
         private $currentLang;
 
         private $locale;
@@ -12,6 +14,7 @@ namespace AirQualityInfo\Lib {
 
         function __construct() {
             $this->currentLang = Locale::resolveCurrentLang();
+            setlocale(LC_ALL, Locale::LANG_TO_LOCALE[$this->currentLang]);
             include_once(__DIR__."/../locale/".$this->currentLang.".php");
             $this->locale = $locale;
             $this->jsLocale = $jsLocale;
@@ -74,5 +77,12 @@ namespace {
         global $currentLocale;
         return $currentLocale->getMessage($msg);
     }
+
+    function number_format_locale($number, $decimals = 2) {
+        $locale = localeconv();
+        return number_format($number,$decimals,
+            $locale['decimal_point'],
+            $locale['thousands_sep']);
+     }    
 }
 ?>

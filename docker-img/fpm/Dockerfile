@@ -1,6 +1,9 @@
-FROM php:7.3-fpm-alpine
+FROM php:7.3-fpm-buster
 
-RUN apk add zlib-dev libzip-dev \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        libzip-dev zlib1g-dev locales locales-all \
+    && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install zip pdo pdo_mysql
 
 RUN sed -i 's/^pm.max_children.*/pm.max_children = 40/' /usr/local/etc/php-fpm.d/www.conf \
