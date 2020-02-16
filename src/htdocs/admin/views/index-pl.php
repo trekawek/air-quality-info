@@ -3,7 +3,7 @@
         <div class="col-md-6">
             <h1 class="display-3"><span class="logo">aqi.eco</span></h1>
             <p class="text-justify">
-                to niekomercyjny, darmowy i <a href="https://github.com/trekawek/air-quality-info">otwarty</a> serwis na którym sprawdzisz jakość powietrza lub przedstawisz wyniki własnego czujnika smogu. A może chciałbyś zrobić coś więcej dla swojej ulicy, osiedla lub gminy? Dzięki <span class="logo">aqi.eco</span> jesteś w stanie rozpocząć program monitorowania jakości powietrza w swojej okolicy - tak jak zrobili to już mieszkańcy <a href="https://eko.edial.pl/">Oleśnicy</a>, <a href="https://smog.tlw24.pl/">Włoszczowej</a>, <a href="https://mosina.aqi.eco/">Mosiny</a> czy <a href="https://soleckujawski.aqi.eco/">Solca Kujawskiego</a>.
+                to niekomercyjny, darmowy i <a href="https://github.com/trekawek/air-quality-info">otwarty</a> serwis na którym sprawdzisz jakość powietrza lub przedstawisz wyniki własnego czujnika smogu. A może chciałbyś zrobić coś więcej dla swojej ulicy, osiedla lub gminy? Dzięki <span class="logo">aqi.eco</span> jesteś w stanie rozpocząć program monitorowania jakości powietrza w swojej okolicy - tak jak zrobili to już mieszkańcy <a href="https://eko.edial.pl/">Oleśnicy</a>, <a href="https://smog.tlw24.pl/">Włoszczowy</a>, <a href="https://mosina.aqi.eco/">Mosiny</a> czy <a href="https://soleckujawski.aqi.eco/">Solca Kujawskiego</a>.
             </p>
         </div>
         <div class="col-md-6">
