@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-ini_set('memory_limit', '268435456');
+ini_set('memory_limit', '402653184');
 
 include(getenv('AQI_PATH').'/boot.php');
 
