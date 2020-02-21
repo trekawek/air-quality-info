@@ -53,6 +53,10 @@ $routes = array(
     'POST /device/:device_id/reset_password' => array('device', 'resetHttpPassword'),
     'POST /device/:device_id/default' => array('device', 'makeDefault'),
 
+    'GET /sensor/create' => array('sensor', 'create'),
+    'POST /sensor/create' => array('sensor', 'create'),
+    'GET /sensor/map.json' => array('sensor', 'map'),
+
     'POST /device/:device_id/mapping' => array('device', 'createMapping'),
     'DELETE /device/:device_id/mapping/:mapping_id' => array('device', 'deleteMapping'),
 

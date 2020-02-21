@@ -97,4 +97,50 @@ document.querySelectorAll('.post-with-output').forEach(link => {
             updateAltitude(location, elevInput);
         });
     });
+
+    function getSensorPosition(sensor) {
+        return {
+            lat: parseFloat(sensor.location.latitude),
+            lng: parseFloat(sensor.location.longitude)
+        };
+    }
+
+    function initSensorCommunityMap(mapDiv, sensorIdInput, data) {
+        var map = new google.maps.Map(mapDiv, {
+            zoom: 15,
+            mapTypeControlOptions: {
+                mapTypeIds: ['roadmap', 'satellite']
+            },
+            center: getSensorPosition(data[0]),
+            streetViewControl: false
+        });
+
+        var bounds = new google.maps.LatLngBounds();
+        for (var i in data) {
+            var sensor = data[i];
+            var position = getSensorPosition(sensor);
+            var marker = new google.maps.Marker({
+                position: position,
+                map: map,
+                sensorId: sensor.sensor.id
+            });
+            marker.addListener('click', function() {
+                sensorIdInput.value = this.sensorId;
+            });        
+            bounds.extend(position);
+        }
+        map.fitBounds(bounds);
+    }
+
+    document.querySelectorAll('.sensor-community-map-group').forEach(element => {
+        var request = new XMLHttpRequest();
+        request.open('GET', "/sensor/map.json", true);
+        request.onload = function() {
+            if (request.status == 200) {
+                var data = JSON.parse(request.responseText);
+                initSensorCommunityMap(element.querySelector('.map'), element.querySelector('#sensor_idInput'), data);
+            }
+        };
+        request.send();
+    });
 })();

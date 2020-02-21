@@ -57,8 +57,7 @@ class DeviceController extends AbstractController {
                 'name' => $_POST['name'],
                 'description' => $_POST['description'],
                 'extra_description' => null,
-                'http_username' => $this->user['email'],
-                'http_password' => bin2hex(random_bytes(8)),
+                'update_mode' => 'push',
                 'api_key' => isset($_POST['api_key']) ? $_POST['api_key'] : bin2hex(random_bytes(16)),
                 'default_device' => 0,
                 'location_provided' => 0
@@ -172,11 +171,10 @@ class DeviceController extends AbstractController {
     public function resetHttpPassword($deviceId) {
         $device = $this->getDevice($deviceId);
         $data = array(
-            'http_password' => bin2hex(random_bytes(8)),
             'api_key' => bin2hex(random_bytes(16)),
         );
         $this->deviceModel->updateDevice($deviceId, $data);
-        $this->alert(__('New password has been set.', 'success'));
+        $this->alert(__('New API key has been set.', 'success'));
         header('Location: '.l('device', 'edit', null, array('device_id' => $deviceId)));
     }
 
@@ -229,12 +227,6 @@ class DeviceController extends AbstractController {
         header('X-Accel-Buffering: no');
         flush();
         ob_end_flush();
-    }
-
-    private function addNameField($deviceForm) {
-        return $deviceForm->addElement('name', 'text', 'Name')
-            ->addRule('required')
-            ->addRule('regexp', array('pattern' => '/^[a-z0-9][a-z0-9-]*[a-z0-9]$/', 'message' => __('The name should consist of alphanumeric characters and dashes')));
     }
 }
 

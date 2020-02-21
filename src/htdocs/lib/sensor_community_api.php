@@ -34,7 +34,7 @@ class SensorCommunityApi {
                 $sensorIds[] = $row['sensor']['id'];
             }
         }
-        return $sensorIds;
+        return array_unique($sensorIds);
     }
 
     private function getData($forceReload = false) {

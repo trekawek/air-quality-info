@@ -99,6 +99,12 @@ class DeviceModel {
         return $data;
     }
 
+    public function insertSensor($deviceId, $sensorId) {
+        $stmt = $this->pdo->prepare("INSERT INTO `device_sensors` (`device_id`, `sensor_id`) VALUES (?, ?)");
+        $stmt->execute([$deviceId, $sensorId]);
+        $stmt->closeCursor();
+    }
+
     public function getMappingAsAMap($deviceId) {
         $mapping = array();
         foreach ($this->getMappingForDevice($deviceId) as $m) {
