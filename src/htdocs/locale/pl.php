@@ -97,6 +97,7 @@ $locale['Edit directory'] = 'Edycja katalogu';
 $locale['Elevation (m a.s.l.)'] = 'Wysokość (m n.p.m.)';
 $locale['Extra description'] = 'Dodatkowy opis';
 $locale['Fill to add a new item to the menu.'] = 'Wpisz nazwę, aby dodać nową pozycję w menu';
+$locale['Find sensor on'] = 'Znajdź czujnik na';
 $locale['Footer'] = 'Stopka';
 $locale['Footer (5)'] = 'Stopka (5)';
 $locale['Graphs'] = 'Wykresy';

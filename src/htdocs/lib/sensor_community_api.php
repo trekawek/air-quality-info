@@ -5,6 +5,8 @@ class SensorCommunityApi {
 
     const URL = 'https://data.sensor.community/static/v1/data.json';
 
+    const CACHE_FILE = "/var/aqi/sensor-community-data.json";
+
     private $data = null;
 
     public function getRecords($sensorIds) {
@@ -13,7 +15,7 @@ class SensorCommunityApi {
             if (in_array($item['sensor']['id'], $sensorIds)) {
                 $result[] = $item;
             }
-        });
+        }, true);
         return $result;
     }
 
@@ -38,9 +40,18 @@ class SensorCommunityApi {
         }
     }
 
-    private static function read($listener) {
+    private static function read($listener, $forceReload = false) {
+        if (!file_exists(SensorCommunityApi::CACHE_FILE) || $forceReload) {
+            $remoteStream = fopen(SensorCommunityApi::URL, 'r');
+            $localFile = tempnam('/tmp', 'sensor-community-data.json');
+            $localStream = fopen($localFile, 'w');
+            stream_copy_to_stream($remoteStream, $localStream);
+            fclose($localStream);
+            fclose($remoteStream);
+            rename($localFile, SensorCommunityApi::CACHE_FILE);
+        }
+        $stream = fopen(SensorCommunityApi::CACHE_FILE, 'r');
         $parser = new \JsonCollectionParser\Parser();
-        $stream = fopen(SensorCommunityApi::URL, 'r');
         $parser->parse($stream, $listener);
     }
 }

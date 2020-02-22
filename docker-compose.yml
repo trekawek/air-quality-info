@@ -12,7 +12,7 @@ x-fpm-volumes: &fpm-volumes
     - ./src/htdocs:/var/www/html
     - ./src/cli:/usr/local/bin/aqi
     - ./config.php:/etc/aqi/config.php
-    - ./var-data:/var/lib/aqi
+    - ./var-data/var-aqi:/var/aqi
     - ./var-data/log:/usr/local/var/log/php-fpm
 
 services:
