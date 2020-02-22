@@ -131,8 +131,8 @@ class SensorController extends AbstractController {
             ->addRule('required')
             ->addRule('range', array('min' => 50, 'max' => 500, 'message' => 'Please choose value between 50 and 500.' ));
         $deviceForm->addElement('elevation', 'text', 'Elevation (m a.s.l.)', array('readonly' => true));
-        $deviceForm->addElement('lat', 'text', 'Latitude', array('readonly' => true));
-        $deviceForm->addElement('lng', 'text', 'Longitude', array('readonly' => true));
+        $deviceForm->addElement('lat', 'hidden');
+        $deviceForm->addElement('lng', 'hidden');
         $deviceForm->setDefaultValues($device);
         return $deviceForm;
     }

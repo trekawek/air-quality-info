@@ -35,7 +35,6 @@ class MainController extends AbstractController {
 
         $nodeById = $this->deviceHierarchyModel->getAllNodesById($this->userId);
         $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculateDevicePath($nodeById, $device['id']);
-
         $this->render(array('view' => 'views/index_inner.php', 'layout' => false), array(
             'averages' => $averages,
             'currentAvgType' => $currentAvgType,
@@ -44,7 +43,7 @@ class MainController extends AbstractController {
             'breadcrumbs' => $path,
             'homeWidget' => array(
                 'level' => $averages['max_level'],
-                'locale' => $this->locale->getValue('_widgets')[$averages['max_level']],
+                'locale' => ($averages['max_level'] === null ? array() : $this->locale->getValue('_widgets')[$averages['max_level']]),
                 'temperature' => $lastData['temperature'],
                 'pressure' => $lastData['pressure'],
                 'humidity' => $lastData['humidity'],
@@ -128,7 +127,7 @@ class MainController extends AbstractController {
             'displayCustomHeader' => true,
             'homeWidget' => array(
                 'level' => $level,
-                'locale' => $this->locale->getValue('_widgets')[$level],
+                'locale' => ($level === null ? array() : $this->locale->getValue('_widgets')[$level]),
                 'temperature' => MainController::median($weather['temperature']),
                 'pressure' => MainController::median($weather['pressure']),
                 'humidity' => MainController::median($weather['humidity']),

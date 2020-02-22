@@ -80,13 +80,16 @@ document.querySelectorAll('.post-with-output').forEach(link => {
             zoom: 15,
             streetViewControl: false
         }
+        if (element.dataset.readonly) {
+            mapsConfig.draggable = false;
+        }
         if (!!latInput.value) {
             pickerConfig.lat = latInput.value;
         }
         if (!!lngInput.value) {
             pickerConfig.lng = lngInput.value;
         }
-        var lp = new locationPicker(document.querySelector('.map'), pickerConfig, mapsConfig);
+        var lp = new locationPicker(element.querySelector('.map'), pickerConfig, mapsConfig);
         google.maps.event.addListener(lp.map, 'idle', function (event) {
             var location = lp.getMarkerPosition();
             latInput.value = location.lat;
