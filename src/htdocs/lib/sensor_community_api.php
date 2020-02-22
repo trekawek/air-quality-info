@@ -9,50 +9,39 @@ class SensorCommunityApi {
 
     public function getRecords($sensorIds) {
         $result = array();
-        foreach ($this->getData(true) as $row) {
-            if (in_array($row['sensor']['id'], $sensorIds)) {
-                $result[] = $row;
+        SensorCommunityApi::read(function (array $item) use (&$result, &$sensorIds) {
+            if (in_array($item['sensor']['id'], $sensorIds)) {
+                $result[] = $item;
             }
-        }
+        });
         return $result;
     }
 
     public function getMatchingSensors($sensorId) {
-        $locationId = null;
-        foreach ($this->getData() as $row) {
-            if ($sensorId == $row['sensor']['id']) {
-                $locationId = $row['location']['id'];
+        $locationToSensors = array();
+        $location = null;
+        SensorCommunityApi::read(function (array $item) use (&$locationToSensors, &$location, $sensorId) {
+            $sId = $item['sensor']['id'];
+            $lId = $item['location']['id'];
+            if (!isset($locationToSensors[$lId])) {
+                $locationToSensors[$lId] = array();
             }
-        }
-        if ($locationId === null) {
-            return array($sensorId);
-        }
-
-        $sensorIds = array();
-        foreach ($this->getData() as $row) {
-            if ($locationId == $row['location']['id']) {
-                $sensorIds[] = $row['sensor']['id'];
+            $locationToSensors[$lId][] = $sId;
+            if ($sId == $sensorId) {
+                $location = $item['location'];
             }
+        });
+        if ($location !== null) {
+            return array(array_unique($locationToSensors[$location['id']]), $location);
+        } else {
+            return array(array(), array());
         }
-        return array_unique($sensorIds);
     }
 
-    private function getData($forceReload = false) {
-        if ($this->data === null || $forceReload) {
-            $this->data = SensorCommunityApi::read();
-        }
-        return $this->data;
-    }
-
-    private static function read() {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL, SensorCommunityApi::URL);
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        return json_decode($result, true);
+    private static function read($listener) {
+        $parser = new \JsonCollectionParser\Parser();
+        $stream = fopen(SensorCommunityApi::URL, 'r');
+        $parser->parse($stream, $listener);
     }
 }
 

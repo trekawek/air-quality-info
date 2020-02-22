@@ -1,4 +1,4 @@
-<?php if ($homeWidget['level'] !== null && $this->user['all_widget']): ?>
+<?php if ($homeWidget['level'] !== null && isset($this->user['sensor_widget']) && $this->user['all_widget']): ?>
 <?php include('views/widget/homewidget.php') ?>
 <?php endif ?>
 

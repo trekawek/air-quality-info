@@ -1,0 +1,16 @@
+checks:
+    php:
+        code_rating: true
+        duplication: true
+
+filter:
+    paths:
+        - src/*
+    excluded_paths:
+        - tests/*
+        - vendor/*
+
+tools:
+    php_code_sniffer:
+        config:
+            standard: "PSR2"

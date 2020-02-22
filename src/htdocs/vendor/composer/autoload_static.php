@@ -28,6 +28,10 @@ class ComposerStaticInitc8ad867624f289aeb5ef5831898ca58a
         ),
         'J' => 
         array (
+            'JsonStreamingParser\\Test\\' => 25,
+            'JsonStreamingParser\\' => 20,
+            'JsonCollectionParser\\Tests\\' => 27,
+            'JsonCollectionParser\\' => 21,
             'JmesPath\\' => 9,
         ),
         'G' => 
@@ -54,6 +58,22 @@ class ComposerStaticInitc8ad867624f289aeb5ef5831898ca58a
         'Pheanstalk\\' => 
         array (
             0 => __DIR__ . '/..' . '/pda/pheanstalk/src',
+        ),
+        'JsonStreamingParser\\Test\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/salsify/json-streaming-parser/tests',
+        ),
+        'JsonStreamingParser\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/salsify/json-streaming-parser/src',
+        ),
+        'JsonCollectionParser\\Tests\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maxakawizard/json-collection-parser/tests',
+        ),
+        'JsonCollectionParser\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maxakawizard/json-collection-parser/src',
         ),
         'JmesPath\\' => 
         array (
