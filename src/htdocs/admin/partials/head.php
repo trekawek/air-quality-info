@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <title>aqi.eco<?php echo $title ? (' - ' . $title) : '' ?></title>
         <link rel="stylesheet" href="/admin/public/css/vendor.min.css?v=31"/>
-        <link rel="stylesheet" href="/admin/public/css/style.css?v=32"/>
+        <link rel="stylesheet" href="/admin/public/css/style.css?v=33"/>
         <link rel="shortcut icon" type="image/png" href="/public/img/aqi-favicon.png"/>
         <link rel="apple-touch-icon" sizes="512x512" href="/public/img/aqi-512.png">
     </head>

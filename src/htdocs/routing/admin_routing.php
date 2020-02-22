@@ -53,13 +53,6 @@ $routes = array(
     'POST /device/:device_id/reset_password' => array('device', 'resetHttpPassword'),
     'POST /device/:device_id/default' => array('device', 'makeDefault'),
 
-    'GET /sensor/create' => array('sensor', 'create'),
-    'POST /sensor/create' => array('sensor', 'create'),
-    'GET /sensor/map.json' => array('sensor', 'map'),
-    'GET /sensor/:device_id' => array('sensor', 'edit'),
-    'POST /sensor/:device_id' => array('sensor', 'edit'),
-    'DELETE /sensor/:device_id/sensorId/:sensor_id' => array('sensor', 'deleteSensorId'),
-
     'DELETE /device/:device_id/mapping/:mapping_id' => array('device', 'deleteMapping'),
 
     'GET /device/:device_id/json' => array('device_json', 'index'),
@@ -82,6 +75,17 @@ $routes = array(
     'POST /widget/edit/:widget_id' => array('widget', 'edit'),
     'DELETE /widget/:widget_id' => array('widget', 'delete'),
 );
+
+if ($authorizedUser != null && $authorizedUser['allow_sensor_community']) {
+    $routes = array_merge($routes, array(
+        'GET /sensor/create' => array('sensor', 'create'),
+        'POST /sensor/create' => array('sensor', 'create'),
+        'GET /sensor/map.json' => array('sensor', 'map'),
+        'GET /sensor/:device_id' => array('sensor', 'edit'),
+        'POST /sensor/:device_id' => array('sensor', 'edit'),
+        'DELETE /sensor/:device_id/sensorId/:sensor_id' => array('sensor', 'deleteSensorId'),
+    ));
+}
 
 $router = new Lib\Router($routes);
 $uri = urldecode(explode("?", $_SERVER['REQUEST_URI'])[0]);

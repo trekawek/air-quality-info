@@ -42,7 +42,7 @@ class SensorController extends AbstractController {
                 'description' => $_POST['description'],
                 'update_mode' => 'pull',
                 'default_device' => 0,
-                'location_provided' => 0,
+                'location_provided' => 1,
                 'lat' => $location['latitude'],
                 'lng' => $location['longitude'],
                 'elevation' => $location['altitude']

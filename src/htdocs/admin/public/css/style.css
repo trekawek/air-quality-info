@@ -19,6 +19,11 @@
     height: 360px;
 }
 
+.sensor-community-map-group .map {
+    width: 100%;
+    height: 640px;
+}
+
 form textarea {
     font-family: monospace;
 }

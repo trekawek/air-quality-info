@@ -33,7 +33,7 @@ class TemplateModel {
         $user = $this->userModel->getUserById($userId);
         if ($user['allow_sensor_community']) {
             foreach (TemplateModel::DISABLED_WITH_SENSOR_COMMUNITY as $name) {
-                unset($template[$name]);
+                unset($templates[$name]);
             }
         }
         return $templates;

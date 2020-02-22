@@ -5,8 +5,11 @@ class DeviceHierarchyModel {
 
     private $pdo;
 
-    public function __construct($pdo) {
+    private $userModel;
+
+    public function __construct($pdo, UserModel $userModel) {
         $this->pdo = $pdo;
+        $this->userModel = $userModel;
     }
 
     private function createRoot($userId) {
@@ -139,13 +142,24 @@ class DeviceHierarchyModel {
             `dh`.`position`,
             IFNULL(`d`.`name`, `dh`.`name`) AS `name`,
             IFNULL(`d`.`description`, `dh`.`description`) AS `description`,
-            `d`.`location_provided`
+            `d`.`location_provided`,
+            `d`.`update_mode`
         FROM `device_hierarchy` `dh`
         LEFT JOIN `devices` `d` ON `d`.`id` = `dh`.`device_id`
         WHERE `dh`.`user_id` = ? ORDER BY `position`");
         $stmt->execute([$userId]);
         $nodes = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
+
+        $user = $this->userModel->getUserById($userId);
+        if (!$user['allow_sensor_community']) {
+            foreach($nodes as $i => $d) {
+                if ($d['update_mode'] == 'pull') {
+                    unset($nodes[$i]);
+                }
+            }
+        }
+
         return $nodes;
     }
 

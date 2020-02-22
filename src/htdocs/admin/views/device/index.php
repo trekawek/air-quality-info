@@ -35,7 +35,9 @@
                     <?php endforeach ?>
                 </table>
                 <a href="<?php echo l('device', 'create') ?>" class="btn btn-primary"><i class="fa fa-plus"></i> <?php echo __('Add your own device') ?></a>
+                <?php if ($this->user['allow_sensor_community']): ?>
                 <a href="<?php echo l('sensor', 'create') ?>" class="btn btn-warning"><i class="fa fa-plus"></i> <?php echo __('Link sensor.community device') ?></a>
+                <?php endif ?>
             </div>
         </div>
     </div>

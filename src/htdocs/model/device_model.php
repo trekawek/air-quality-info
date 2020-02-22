@@ -5,8 +5,11 @@ class DeviceModel {
 
     private $pdo;
 
-    public function __construct($pdo) {
+    private $userModel;
+
+    public function __construct($pdo, UserModel $userModel) {
         $this->pdo = $pdo;
+        $this->userModel = $userModel;
     }
 
     public function createDevice($data) {
@@ -47,6 +50,16 @@ class DeviceModel {
         $stmt->execute([$userId]);
         $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
+
+        $user = $this->userModel->getUserById($userId);
+        if (!$user['allow_sensor_community']) {
+            foreach($data as $i => $d) {
+                if ($d['update_mode'] == 'pull') {
+                    unset($data[$i]);
+                }
+            }
+        }
+
         return $data;
     }
 
@@ -62,6 +75,16 @@ class DeviceModel {
         $stmt->execute([$userId, $userId]);
         $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
+
+        $user = $this->userModel->getUserById($userId);
+        if (!$user['allow_sensor_community']) {
+            foreach($data as $i => $d) {
+                if ($d['update_mode'] == 'pull') {
+                    unset($data[$i]);
+                }
+            }
+        }
+
         return $data;
     }
 

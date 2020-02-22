@@ -107,15 +107,19 @@ document.querySelectorAll('.post-with-output').forEach(link => {
 
     function initSensorCommunityMap(mapDiv, sensorIdInput, data) {
         var map = new google.maps.Map(mapDiv, {
-            zoom: 15,
+            zoom: 10,
             mapTypeControlOptions: {
                 mapTypeIds: ['roadmap', 'satellite']
             },
             center: getSensorPosition(data[0]),
             streetViewControl: false
         });
-
-        var bounds = new google.maps.LatLngBounds();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                map.setCenter(initialLocation);
+            });
+        }
         for (var i in data) {
             var sensor = data[i];
             var position = getSensorPosition(sensor);
@@ -127,9 +131,7 @@ document.querySelectorAll('.post-with-output').forEach(link => {
             marker.addListener('click', function() {
                 sensorIdInput.value = this.sensorId;
             });        
-            bounds.extend(position);
         }
-        map.fitBounds(bounds);
     }
 
     document.querySelectorAll('.sensor-community-map-group').forEach(element => {

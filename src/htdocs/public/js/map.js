@@ -111,7 +111,7 @@ function initMap(mapDiv, data) {
         bounds.extend(position);
     }
     google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
-        if (this.getZoom() > 15) {
+        if (this.getZoom() < 15) {
             this.setZoom(15);
         }
     });

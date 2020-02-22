@@ -9,6 +9,6 @@
         </footer>
         <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo CONFIG['google_maps_key'] ?>"></script>
         <script src="/admin/public/js/vendor.min.js?v=31"></script>
-        <script src="/admin/public/js/main.js?v=33"></script>
+        <script src="/admin/public/js/main.js?v=38"></script>
     </body>
 </html>
