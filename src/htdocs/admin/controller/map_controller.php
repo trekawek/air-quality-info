@@ -42,10 +42,16 @@ class MapController extends AbstractController {
                 $nodeById[$node['id']] = $node;
                 if ($node['device_id']) {
                     $deviceId = $node['device_id'];
-                    $deviceById[$deviceId]['node_id'] = $node['id'];
+                    if (isset($deviceById[$deviceId])) {
+                        $deviceById[$deviceId]['node_id'] = $node['id'];
+                    }
                 }
             }
             foreach ($deviceById as $i => $device) {
+                if (!isset($device['node_id'])) {
+                    unset($deviceById[$i]);
+                    continue;
+                }
                 $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculatePath($nodeById, $device['node_id']);
                 $textPath = \AirQualityInfo\Model\DeviceHierarchyModel::getTextPath($path);
                 $deviceById[$i]['path'] = $textPath;
