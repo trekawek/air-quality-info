@@ -24,6 +24,7 @@
                 <?php echo __('Sensord id list') ?>
             </div>
             <div class="card-body">
+                <p><?php echo __('Find sensor on') ?> <a href="https://maps.sensor.community/#16/<?php echo $device['lat'] ?>/<?php echo $device['lng'] ?>">maps.sensor.community</a>.</p>
                 <table class="table">
                     <thead>
                         <tr>

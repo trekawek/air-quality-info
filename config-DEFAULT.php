@@ -23,7 +23,6 @@ define('CONFIG', array(
   'user_domain_suffixes' => array('.aqi.eco.localhost'),
   'paypal_donate_id' => null,
   'ga_id' => null,
-  'google_maps_key' => null,
-  'csv_root' => '/var/lib/aqi/csv'
+  'google_maps_key' => null
 ));
 ?>
