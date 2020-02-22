@@ -99,8 +99,25 @@ class DeviceModel {
         return $data;
     }
 
+    public function getSensorIds($deviceId) {
+        $stmt = $this->pdo->prepare("SELECT `sensor_id` FROM `device_sensors` WHERE `device_id` = ?");
+        $stmt->execute([$deviceId]);
+        $data = array();
+        while ($row = $stmt->fetch()) {
+            $data[] = $row['sensor_id'];
+        }
+        $stmt->closeCursor();
+        return $data;
+    }
+
     public function insertSensor($deviceId, $sensorId) {
         $stmt = $this->pdo->prepare("INSERT INTO `device_sensors` (`device_id`, `sensor_id`) VALUES (?, ?)");
+        $stmt->execute([$deviceId, $sensorId]);
+        $stmt->closeCursor();
+    }
+
+    public function deleteSensorId($deviceId, $sensorId) {
+        $stmt = $this->pdo->prepare("DELETE FROM `device_sensors` WHERE `device_id` = ? AND `sensor_id` = ?");
         $stmt->execute([$deviceId, $sensorId]);
         $stmt->closeCursor();
     }

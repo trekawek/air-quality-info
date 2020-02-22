@@ -79,6 +79,11 @@ class DeviceController extends AbstractController {
 
     public function edit($deviceId) {
         $device = $this->getDevice($deviceId);
+        if ($device['update_mode'] == 'pull') {
+            header('Location: '.l('sensor', 'edit', null, array('device_id' => $deviceId)));
+            return;
+        }
+
         $nodes = $this->deviceHierarchyModel->getDeviceNodes($this->user['id'], $device['id']);
         $breadcrumbs = null;
         if (!empty($nodes)) {

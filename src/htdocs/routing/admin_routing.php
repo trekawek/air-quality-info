@@ -56,8 +56,10 @@ $routes = array(
     'GET /sensor/create' => array('sensor', 'create'),
     'POST /sensor/create' => array('sensor', 'create'),
     'GET /sensor/map.json' => array('sensor', 'map'),
+    'GET /sensor/:device_id' => array('sensor', 'edit'),
+    'POST /sensor/:device_id' => array('sensor', 'edit'),
+    'DELETE /sensor/:device_id/sensorId/:sensor_id' => array('sensor', 'deleteSensorId'),
 
-    'POST /device/:device_id/mapping' => array('device', 'createMapping'),
     'DELETE /device/:device_id/mapping/:mapping_id' => array('device', 'deleteMapping'),
 
     'GET /device/:device_id/json' => array('device_json', 'index'),
