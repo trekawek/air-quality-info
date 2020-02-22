@@ -56,7 +56,7 @@ class RecordModel {
                     $record[$k] = null;
                 }
             }
-            if ($record['pressure'] !== null) {
+            if (isset($record['pressure']) && $record['pressure'] !== null) {
                 $record['pressure'] /= 100;
             }
 
