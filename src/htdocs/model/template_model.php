@@ -3,6 +3,8 @@ namespace AirQualityInfo\Model;
 
 class TemplateModel {
 
+    const DISABLED_WITH_SENSOR_COMMUNITY = array('custom_page_name', 'custom_page', 'header', 'footer', 'widget_footer');
+
     const TYPE_TO_EXT = array(
         'image/png'     => 'png',
         'image/svg+xml' => 'svg'
@@ -27,6 +29,13 @@ class TemplateModel {
             $templates[$row['template_name']] = $row['template'];
         }
         $stmt->closeCursor();
+
+        $user = $this->userModel->getUserById($userId);
+        if ($user['allow_sensor_community']) {
+            foreach (TemplateModel::DISABLED_WITH_SENSOR_COMMUNITY as $name) {
+                unset($template[$name]);
+            }
+        }
         return $templates;
     }
 

@@ -33,8 +33,8 @@ class WidgetController extends AbstractController {
         $userForm = $this->widgetSettingsForm();
         if ($userForm->isSubmitted() && $userForm->validate($_POST)) {
             $data = array(
-                'sensor_widget' => isset($_POST['sensor_widget']) ? 1 : 0,
-                'all_widget' => isset($_POST['all_widget']) ? 1 : 0,
+                'sensor_widget' => $_POST['sensor_widget'],
+                'all_widget' => $_POST['all_widget'],
             );
             $this->userModel->updateUser($this->user['id'], $data);
             $this->alert(__('Updated settings', 'success'));

@@ -1,5 +1,9 @@
 <div class="form-group form-check">
 <input
+    type="hidden"
+    name="<?php echo $this->name ?>"
+    value="0" />
+<input
     type="checkbox"
     class="form-check-input"
     name="<?php echo $this->name ?>"
@@ -12,7 +16,7 @@
 <label class="form-check-label" for="<?php echo $this->name ?>Input"><?php echo __($this->label) ?></label>
 <?php endif ?>
 
-<?php if ($this->description): ?><span class="help-block"><?php echo __($this->description) ?></span><?php endif ?>
+<?php if ($this->description): ?><p><span class="help-block"><?php echo __($this->description) ?></span></p><?php endif ?>
 
 <?php if ($this->validationMessage): ?><div class="alert alert-danger" role="alert"><?php echo $this->validationMessage ?></div><?php endif ?>
 </div>

@@ -79,9 +79,7 @@ class FormElement {
     }
 
     public function validate($value) {
-        if ($value !== null) {
-            $this->value = $value;
-        }
+        $this->value = $value;
         foreach ($this->rules as $rule) {
             if (!$this->validateRule($rule['type'], $rule['options'], $value)) {
                 return false;

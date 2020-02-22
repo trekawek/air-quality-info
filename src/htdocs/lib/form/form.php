@@ -17,6 +17,10 @@ class Form {
         return $element;
     }
 
+    public function removeElement($name) {
+        unset($this->elements[$name]);
+    }
+
     public function getElement($name) {
         return $this->elements[$name];
     }

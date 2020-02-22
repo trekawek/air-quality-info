@@ -112,6 +112,7 @@ class UserController extends AbstractController {
         $timezones = array_combine($timezones, $timezones);
 
         $userForm = new \AirQualityInfo\Lib\Form\Form("userForm");
+        $userForm->addElement('allow_sensor_community', 'checkbox', 'Allows sensor.community sensors', array(), 'Enabling the sensor.community support disables the templating options.');
         $urlPrefix = 'https://'
             .$this->user['domain']
             .CONFIG['user_domain_suffixes'][0];
@@ -128,6 +129,7 @@ class UserController extends AbstractController {
             $data = array(
                 'redirect_root' => $_POST['redirect_root'],
                 'timezone' => $_POST['timezone'],
+                'allow_sensor_community' => $_POST['allow_sensor_community'],
             );
             $this->userModel->updateUser($this->user['id'], $data);
             $this->alert(__('Updated settings', 'success'));

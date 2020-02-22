@@ -98,7 +98,7 @@ class DeviceController extends AbstractController {
                 'name' => $_POST['name'],
                 'description' => $_POST['description'],
                 'extra_description' => $_POST['extra_description'],
-                'location_provided' => isset($_POST['location_provided']) ? 1 : 0,
+                'location_provided' => $_POST['location_provided'],
                 'lat' => $_POST['lat'],
                 'lng' => $_POST['lng'],
                 'radius' => $_POST['radius'],

@@ -32,15 +32,21 @@ class TemplateController extends AbstractController {
             ->addRule('file_type', array('types' => array('image/png', 'image/svg+xml'), 'message' => __('Only PNGs and SVGs are allowed')));
 
         $templateForm->addElement('brand_name', 'text', 'Brand name (2)');
+
         $templateForm->addElement('custom_page_name', 'text', 'About page name (3)', array(), 'Fill to add a new item to the menu.');
         $templateForm->addElement('custom_page', 'textarea', 'About page body', array('rows'=>8), 'This is the HTML content of the custom page linked above.');
-
         $templateForm->addElement('header', 'textarea', 'Header (4)', array('rows'=>8));
         $templateForm->addElement('footer', 'textarea', 'Footer (5)', array('rows'=>8));
         $templateForm->addElement('widget_footer', 'text', 'Widget footer (6)');
 
         $templateForm->addElement('css', 'textarea', 'Custom CSS style', array('rows'=>8));
         $templateForm->addElement('head_section', 'textarea', '<meta> tags to be put in the <head> section', array('rows'=>8));
+
+        if ($this->user['allow_sensor_community']) {
+            foreach (\AirQualityInfo\Model\TemplateModel::DISABLED_WITH_SENSOR_COMMUNITY as $name) {
+                $templateForm->removeElement($name);
+            }
+        }
 
         $templateForm->setDefaultValues($template);
 
