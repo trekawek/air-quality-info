@@ -26,7 +26,7 @@ namespace AirQualityInfo\Lib {
 
         function setLang($lang) {
             if (isset(Locale::SUPPORTED_LANGUAGES[$lang])) {
-                setcookie("lang", $lang, time() + 60 * 60 * 24 * 365);
+                setcookie("lang", $lang, time() + 60 * 60 * 24 * 365, '/');
                 $this->currentLang = $lang;
             }
         }
@@ -50,13 +50,48 @@ namespace AirQualityInfo\Lib {
             }
         }
 
+        function addLangPrefix($uri) {
+            $path = urldecode(explode("?", $uri)[0]);
+            $segments = explode('/', $path);
+
+            // language prefix is already present
+            if (count($segments) > 1) {
+                if (isset(Locale::SUPPORTED_LANGUAGES[$segments[1]])) {
+                    return $uri;
+                }
+            }
+
+            $prefix = '/'.$this->getCurrentLang();
+            if ($path === '/') {
+                return $prefix.substr($uri, 1);
+            } else {
+                return $prefix.$uri;
+            }
+        }
+
+        function updateLangPrefix($uri, $newLanguage) {
+            $path = urldecode(explode("?", $uri)[0]);
+            $segments = explode('/', $path);
+
+            if (count($segments) > 1) {
+                if (isset(Locale::SUPPORTED_LANGUAGES[$segments[1]])) {
+                    $uri = substr($uri, 1 + strlen($segments[1]));
+                    $path = urldecode(explode("?", $uri)[0]);
+                }
+            }
+
+            $prefix = '/'.$newLanguage;
+            if ($path === '/') {
+                return $prefix.substr($uri, 1);
+            } else {
+                return $prefix.$uri;
+            }
+        }
+
         private static function resolveCurrentLang() {
             $currentLang = null;
             if (isset($_COOKIE['lang'])) {
                 $currentLang = $_COOKIE['lang'];
-            }
-            if (isset($_GET['lang'])) {
-                $currentLang = $_GET['lang'];
             }
             if (!isset(Locale::SUPPORTED_LANGUAGES[$currentLang])) {
                 $currentLang = null;

@@ -6,6 +6,10 @@ body {
   width: 100px;
 }
 
+.navbar img {
+  height: 2rem;
+}
+
 .tooltip-inner {
   max-width: 400px;
   text-align: justify;

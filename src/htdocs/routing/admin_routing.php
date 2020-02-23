@@ -13,10 +13,10 @@ if (isset($_SESSION['user_id'])) {
 }
 
 $routes = array(
-    'GET /' => array('main', 'index'),
-    'GET /map' => array('map', 'index'),
+    'GET /:lang' => array('main', 'index'),
+    'GET /:lang/map' => array('map', 'index'),
     'GET /map/data.json' => array('map', 'data'),
-    'GET /about/:pageName' => array('main', 'static'),
+    'GET /:lang/about/:pageName' => array('main', 'static'),
 
     'GET /login' => array('user', 'login'),
     'POST /login' => array('user', 'doLogin'),
@@ -87,15 +87,28 @@ if ($authorizedUser != null && $authorizedUser['allow_sensor_community']) {
     ));
 }
 
-$router = new Lib\Router($routes);
+$router = new Lib\Router($routes, $currentLocale);
 $uri = urldecode(explode("?", $_SERVER['REQUEST_URI'])[0]);
 list($route, $args) = $router->findRoute(
     $_SERVER['REQUEST_METHOD'],
     $uri
 );
 
+if ($route === null && $_SERVER['REQUEST_METHOD'] == 'GET') {
+    $uriWithLang = $currentLocale->addLangPrefix($uri);
+    if ($uri != $uriWithLang && $router->findRoute('GET', $uriWithLang)) {
+        header("Location: ".$currentLocale->addLangPrefix($_SERVER['REQUEST_URI']));
+        exit;
+    }
+}
+
 if ($route === null) {
     Lib\Router::send404();
+}
+
+if (isset($args['lang'])) {
+    $currentLocale->setLang($args['lang']);
+    unset($args['lang']);
 }
 
 $currentController = $route[0];

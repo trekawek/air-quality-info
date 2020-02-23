@@ -9,10 +9,13 @@ namespace AirQualityInfo\Lib {
 
         private $user;
 
-        public function __construct($routes, $devices = array(), $user = null) {
+        private $currentLocale;
+
+        public function __construct($routes, $currentLocale, $devices = array(), $user = null) {
             $this->routes = $routes;
             $this->devices = $devices;
             $this->user = $user;
+            $this->currentLocale = $currentLocale;
         }
 
         public function findRoute($method, $uri) {
@@ -52,7 +55,14 @@ namespace AirQualityInfo\Lib {
                 }
                 if (substr($segment, 0, 1) === ':') {
                     $argName = substr($segment, 1);
-                    if ($argName === 'device') {
+                    if ($argName === 'lang') {
+                        if (isset(Locale::SUPPORTED_LANGUAGES[$uri[$i]])) {
+                            $arguments['lang'] = $uri[$i++];
+                            continue;
+                        } else if (!$optional) {
+                            return null;
+                        }
+                    } else if ($argName === 'device') {
                         list($device, $segmentCount) = $this->tryParseDevice(array_slice($uri, $i));
                         if ($device === null) {
                             if ($optional) {
@@ -115,6 +125,10 @@ namespace AirQualityInfo\Lib {
 
         function createLink($controller, $action, $device = null, $args = array(), $queryArgs = array()) {
             $isDefaultDevice = count($this->devices) > 0 && $this->devices[0]['id'] == $device['id'];
+
+            if (!isset($args['lang'])) {
+                $args['lang'] = $this->currentLocale->getCurrentLang();
+            }
 
             $link = '';
             $path = null;

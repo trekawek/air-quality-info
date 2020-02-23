@@ -90,7 +90,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <?php foreach(\AirQualityInfo\Lib\Locale::SUPPORTED_LANGUAGES as $lang => $desc): ?>
                   <li>
-                    <a class="dropdown-item <?php echo ($lang == $currentLocale->getCurrentLang()) ? 'active' : ''; ?>" href="<?php echo explode('?', $_SERVER['REQUEST_URI'])[0] . "?lang=$lang" ?>"><img src="/public/img/flags/<?php echo $lang ?>.png"/> <?php echo $desc ?></a>
+                    <a class="dropdown-item <?php echo ($lang == $currentLocale->getCurrentLang()) ? 'active' : ''; ?>" href="<?php echo $currentLocale->updateLangPrefix($_SERVER['REQUEST_URI'], $lang) ?>"><img src="/public/img/flags/<?php echo $lang ?>.png"/> <?php echo $desc ?></a>
                   </li>
                   <?php endforeach ?>
                   </ul>

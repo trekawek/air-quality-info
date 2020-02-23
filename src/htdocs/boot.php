@@ -42,9 +42,6 @@ $beanstalk = \Pheanstalk\Pheanstalk::create('beanstalkd');
 $diContainer = new Lib\DiContainer();
 
 $currentLocale = new Lib\Locale();
-if (isset($_GET['lang'])) {
-    $currentLocale->setLang($_GET['lang']);
-}
 
 $diContainer->setBinding('pdo', $pdo);
 $diContainer->setBinding('s3Bucket', CONFIG['s3Bucket']);

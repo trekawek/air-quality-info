@@ -15,11 +15,15 @@ class StringUtils {
         return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
     }
 
-    public static function removePrefix($str, $prefix) {
-        if (substr($str, 0, strlen($prefix)) == $prefix) {
-            return substr($str, strlen($prefix));
+    public static function startsWith($string, $prefix) {
+        return substr($string, 0, strlen($prefix)) == $prefix;
+    }
+
+    public static function removePrefix($string, $prefix) {
+        if (StringUtils::startsWith($string, $prefix)) {
+            return substr($string, strlen($prefix));
         } else {
-            return $str;
+            return $string;
         }
     }
 }

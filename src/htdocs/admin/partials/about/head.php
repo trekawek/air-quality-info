@@ -13,7 +13,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
         <title>aqi.eco</title>
         <link rel="stylesheet" href="/public/css/vendor.min.css"/>
         <link rel="stylesheet" href="/public/css/themes/default.min.css"/>
-        <link rel="stylesheet" href="/admin/public/css/landing.css?v=2"/>
+        <link rel="stylesheet" href="/admin/public/css/landing.css?v=3"/>
         <link rel="shortcut icon" type="image/png" href="/public/img/aqi-favicon.png"/>
         <link rel="apple-touch-icon" sizes="512x512" href="/public/img/aqi-512.png">
     </head>
@@ -39,6 +39,18 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
                 <?php navItem(array('user', 'register'), 'Sign up'); ?>
                 <?php endif ?>
                 <?php navItem('/about/support', 'Support'); ?>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-globe" aria-hidden="true"></i>
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <?php foreach(\AirQualityInfo\Lib\Locale::SUPPORTED_LANGUAGES as $lang => $desc): ?>
+                  <li>
+                    <a class="dropdown-item <?php echo ($lang == $currentLocale->getCurrentLang()) ? 'active' : ''; ?>" href="<?php echo $currentLocale->updateLangPrefix($_SERVER['REQUEST_URI'], $lang) ?>"><img src="/public/img/flags/<?php echo $lang ?>.png"/> <?php echo $desc ?></a>
+                  </li>
+                  <?php endforeach ?>
+                  </ul>
+                </li>
             </ul>
         </div>
     </nav>

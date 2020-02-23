@@ -21,7 +21,7 @@ class MainController extends AbstractController {
     public function static($pageName) {
         $path = $this->findPath($pageName);
         if ($path === null) {
-            http_response_code(429);
+            http_response_code(404);
             die();
         }
 

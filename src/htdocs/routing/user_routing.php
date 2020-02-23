@@ -28,27 +28,29 @@ foreach ($devices as $i => $d) {
 }
 
 $routes = array(
-    'GET /[:device]'                 => array('main', 'index'),
-    'GET /:device/data.json'         => array('main', 'data_json'),
-    'GET /[:device]/main_inner'      => array('main', 'index_inner'),
-    'GET /:device/annual_stats'      => array('annual_stats', 'index'),
-    'GET /:device/annual_stats/graph_data.json'  => array('annual_stats', 'get_data'),
-    'GET /all/[:node_id]'            => array('main', 'all'),
-    'GET /offline'                   => array('static', 'offline'),
-    'GET /about'                     => array('static', 'about'),
-    'POST /u/:key'                   => array('update', 'updateWithKey'),
-    'POST /update'                   => array('update', 'update'),
-    'GET /:device/graphs'            => array('graph', 'index'),
-    'GET /[:device]/graph_data.json' => array('graph', 'get_data'),
-    'GET /map'                       => array('map', 'index'),
-    'GET /map/data.json'             => array('map', 'data'),
-    'GET /map/:device'               => array('map', 'sensorInfo'),
-    'GET /attachment/:name'          => array('attachment', 'get'),
-    'GET /:device/widget'            => array('device_widget', 'show'),
-    'GET /widget/:widgetId'          => array('domain_widget', 'show'),
+    'GET /:lang/[:device]'                 => array('main', 'index'),
+    'GET /[:lang]/:device/data.json'       => array('main', 'data_json'),
+    'GET /:lang/[:device]/main_inner'      => array('main', 'index_inner'),
+    'GET /:lang/:device/annual_stats'      => array('annual_stats', 'index'),
+    'GET /:lang/:device/annual_stats/graph_data.json'  => array('annual_stats', 'get_data'),
+    'GET /:lang/all/[:node_id]'            => array('main', 'all'),
+    'GET /:lang/offline'                   => array('static', 'offline'),
+    'GET /:lang/about'                     => array('static', 'about'),
+    'GET /:lang/:device/graphs'            => array('graph', 'index'),
+    'GET /:lang/[:device]/graph_data.json' => array('graph', 'get_data'),
+    'GET /:lang/map'                       => array('map', 'index'),
+    'GET /:lang/map/data.json'             => array('map', 'data'),
+    'GET /:lang/map/:device'               => array('map', 'sensorInfo'),
+    'GET /:lang/attachment/:name'          => array('attachment', 'get'),
+    'GET /:lang/:device/widget'            => array('device_widget', 'show'),
+    'GET /:lang/widget/:widgetId'          => array('domain_widget', 'show'),
+
+    // deprecated
+    'POST /u/:key'                         => array('update', 'updateWithKey'),
+    'POST /update'                         => array('update', 'update'),
 );
 
-$router = new Lib\Router($routes, $devices, $user);
+$router = new Lib\Router($routes, $currentLocale, $devices, $user);
 
 $uri = urldecode(explode("?", $_SERVER['REQUEST_URI'])[0]);
 list($route, $args) = $router->findRoute(
@@ -56,10 +58,22 @@ list($route, $args) = $router->findRoute(
     $uri
 );
 
-// the domain is correct, but the path is not
+if ($route === null && $_SERVER['REQUEST_METHOD'] == 'GET') {
+    $uriWithLang = $currentLocale->addLangPrefix($uri);
+    if ($uri != $uriWithLang && $router->findRoute('GET', $uriWithLang)) {
+        header("Location: ".$currentLocale->addLangPrefix($_SERVER['REQUEST_URI']));
+        exit;
+    }
+}
+
 if ($route === null) {
     header("Location: /");
     die();
+}
+
+if (isset($args['lang'])) {
+    $currentLocale->setLang($args['lang']);
+    unset($args['lang']);
 }
 
 if (isset($args['device'])) {

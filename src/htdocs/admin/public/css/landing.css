@@ -3,6 +3,10 @@
   margin-right: 0.5rem;
 }
 
+.navbar img {
+  height: 2rem;
+}
+
 .logo {
   font-family: 'Ubuntu Mono', monospace;
   color: #2b302a;
