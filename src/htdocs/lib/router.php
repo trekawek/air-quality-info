@@ -56,7 +56,7 @@ namespace AirQualityInfo\Lib {
                 if (substr($segment, 0, 1) === ':') {
                     $argName = substr($segment, 1);
                     if ($argName === 'lang') {
-                        if (isset(Locale::SUPPORTED_LANGUAGES[$uri[$i]])) {
+                        if (isset($uri[$i]) && isset(Locale::SUPPORTED_LANGUAGES[$uri[$i]])) {
                             $arguments['lang'] = $uri[$i++];
                             continue;
                         } else if (!$optional) {
