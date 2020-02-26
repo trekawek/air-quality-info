@@ -14,10 +14,7 @@ namespace AirQualityInfo\Lib {
 
         function __construct() {
             $this->currentLang = Locale::resolveCurrentLang();
-            setlocale(LC_ALL, Locale::LANG_TO_LOCALE[$this->currentLang]);
-            include_once(__DIR__."/../locale/".$this->currentLang.".php");
-            $this->locale = $locale;
-            $this->jsLocale = $jsLocale;
+            $this->loadLocale();
         }
 
         function getCurrentLang() {
@@ -27,7 +24,11 @@ namespace AirQualityInfo\Lib {
         function setLang($lang) {
             if (isset(Locale::SUPPORTED_LANGUAGES[$lang])) {
                 setcookie("lang", $lang, time() + 60 * 60 * 24 * 365, '/');
-                $this->currentLang = $lang;
+
+                if ($this->currentLang != $lang) {
+                    $this->currentLang = $lang;
+                    $this->loadLocale();
+                }
             }
         }
 
@@ -86,6 +87,13 @@ namespace AirQualityInfo\Lib {
             } else {
                 return $prefix.$uri;
             }
+        }
+
+        private function loadLocale() {
+            setlocale(LC_ALL, Locale::LANG_TO_LOCALE[$this->currentLang]);
+            include_once(__DIR__."/../locale/".$this->currentLang.".php");
+            $this->locale = $locale;
+            $this->jsLocale = $jsLocale;
         }
 
         private static function resolveCurrentLang() {
