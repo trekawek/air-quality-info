@@ -227,9 +227,6 @@ $locale['Widgets created here will show the average air quality calculated from 
 $locale['Widgets created here will show the state of a single device.'] = 'Widgety będą reprezentować stan pojedynczego czujnika.';
 $locale['Year'] = 'Év';
 
-$jsLocale = array();
-$locale = array();
-
 $locale['_widgets'] = [
     0 => [
         'label' => 'Kíváló',
