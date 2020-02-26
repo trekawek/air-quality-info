@@ -19,25 +19,6 @@ namespace AirQualityInfo\Lib {
         }
 
         public function findRoute($method, $uri) {
-            if (($uri == '/' || isset(Locale::SUPPORTED_LANGUAGES[substr($uri, 1)]))
-                    && $method == 'GET'
-                    && $this->user
-                    && $this->user['redirect_root']) {
-                $redirectedUri = $this->user['redirect_root'];
-                $route = $this->doFindRoute('GET', $redirectedUri);
-                if ($route[0] != null) {
-                    return $route;
-                }
-                $redirectedUri = $this->currentLocale->addLangPrefix($redirectedUri);
-                $route = $this->doFindRoute('GET', $redirectedUri);
-                if ($route[0] != null) {
-                    return $route;
-                }
-            }
-            return $this->doFindRoute($method, $uri);
-        }
-
-        private function doFindRoute($method, $uri) {
             $uri = array_values(array_filter(explode('/', $uri)));
             foreach ($this->routes as $path => $route) {
                 $path = explode(' ', $path);

@@ -71,6 +71,22 @@ if ($route === null) {
     die();
 }
 
+if ($route[0] === 'main' && $route[1] === 'index' && $user['redirect_root']) {
+    $redirectedUri = $user['redirect_root'];
+    $result = $router->findRoute('GET', $redirectedUri);
+    if ($result[0] != null) {
+        $route = $result[0];
+        $args = $result[1];
+    } else {
+        $redirectedUri = $currentLocale->addLangPrefix($redirectedUri);
+        $result = $router->findRoute('GET', $redirectedUri);
+        if ($result[0] != null) {
+            $route = $result[0];
+            $args = $result[1];
+        }
+    }
+}
+
 if (isset($args['lang'])) {
     $currentLocale->setLang($args['lang']);
     unset($args['lang']);
