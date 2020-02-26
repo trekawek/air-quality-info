@@ -42,7 +42,12 @@ class SensorCommunityApi {
 
     private static function read($listener, $forceReload = false) {
         if (!file_exists(SensorCommunityApi::CACHE_FILE) || $forceReload) {
-            $remoteStream = fopen(SensorCommunityApi::URL, 'r');
+            $opts = array("ssl" => array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ));
+            $ctx = stream_context_create($opts);
+            $remoteStream = fopen(SensorCommunityApi::URL, 'r', false, $ctx);
             $localFile = tempnam('/tmp', 'sensor-community-data.json');
             $localStream = fopen($localFile, 'w');
             stream_copy_to_stream($remoteStream, $localStream);
