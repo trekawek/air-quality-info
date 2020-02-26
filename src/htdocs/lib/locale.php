@@ -2,9 +2,11 @@
 namespace AirQualityInfo\Lib {
     class Locale {
 
-        const SUPPORTED_LANGUAGES = array('en' => 'English', 'pl' => 'Polski');
+        const SUPPORTED_USER_LANGUAGES = array('en', 'pl');
 
-        const LANG_TO_LOCALE = array('en' => 'en_US', 'pl' => 'pl_PL');
+        const SUPPORTED_LANGUAGES = array('en' => 'English', 'hu' => 'Magyar', 'pl' => 'Polski');
+
+        const LANG_TO_LOCALE = array('en' => 'en_US', 'hu' => 'hu_HU', 'pl' => 'pl_PL');
 
         private $currentLang;
 
@@ -44,7 +46,7 @@ namespace AirQualityInfo\Lib {
             if (isset($this->locale[$msg])) {
                 return $this->locale[$msg];
             } else {
-                if ($this->currentLang != 'en') {
+                if ($this->currentLang == 'pl') {
                     error_log("Unknown msg: [$msg] for locale [".$this->currentLang."]");
                 }
                 return $msg;
