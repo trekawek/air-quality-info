@@ -3,8 +3,11 @@ namespace AirQualityInfo\Admin\Controller;
 
 class UserController extends AbstractController {
 
-    public function __construct() {
+    private $currentLocale;
+
+    public function __construct(\AirQualityInfo\Lib\Locale $currentLocale) {
         $this->authorizationRequired = false;
+        $this->currentLocale = $currentLocale;
     }
 
     public function login() {
@@ -118,7 +121,7 @@ class UserController extends AbstractController {
             .CONFIG['user_domain_suffixes'][0];
         $userForm->addElement('redirect_root', 'text', 'Redirect home page')
             ->addRule('regexp', array('pattern' => '/^\/[a-z0-9\/-]+$/', 'message' => __('The path should consist of alphanumeric characters, dashes and slashes')))
-            ->setOptions(array('prepend' => $urlPrefix));
+            ->setOptions(array('prepend' => $urlPrefix + '/' + $this->currentLocale->getCurrentLang()));
         $userForm->addElement('timezone', 'select', 'Timezone')
             ->addRule('required')
             ->setOptions($timezones);
