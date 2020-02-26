@@ -25,7 +25,7 @@ namespace AirQualityInfo\Lib {
                 if ($route[0] != null) {
                     return $route;
                 }
-                $redirectedUri = $currentLocale->addLangPrefix($redirectedUri);
+                $redirectedUri = $this->currentLocale->addLangPrefix($redirectedUri);
                 $route = $this->doFindRoute('GET', $redirectedUri);
                 if ($route[0] != null) {
                     return $route;
