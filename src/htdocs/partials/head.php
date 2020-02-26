@@ -88,9 +88,9 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
                     <i class="fa fa-globe" aria-hidden="true"></i>
                   </a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <?php foreach(\AirQualityInfo\Lib\Locale::SUPPORTED_USER_LANGUAGES as $lang): ?>
+                  <?php foreach(\AirQualityInfo\Lib\Locale::SUPPORTED_LANGUAGES as $lang => $desc): ?>
                   <li>
-                    <a class="dropdown-item <?php echo ($lang == $currentLocale->getCurrentLang()) ? 'active' : ''; ?>" href="<?php echo $currentLocale->updateLangPrefix($_SERVER['REQUEST_URI'], $lang) ?>"><img src="/public/img/flags/<?php echo $lang ?>.png"/> <?php echo \AirQualityInfo\Lib\Locale::SUPPORTED_LANGUAGES[$lang] ?></a>
+                    <a class="dropdown-item <?php echo ($lang == $currentLocale->getCurrentLang()) ? 'active' : ''; ?>" href="<?php echo $currentLocale->updateLangPrefix($_SERVER['REQUEST_URI'], $lang) ?>"><img src="/public/img/flags/<?php echo $lang ?>.png"/> <?php echo $desc ?></a>
                   </li>
                   <?php endforeach ?>
                   </ul>

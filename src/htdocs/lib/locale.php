@@ -2,8 +2,6 @@
 namespace AirQualityInfo\Lib {
     class Locale {
 
-        const SUPPORTED_USER_LANGUAGES = array('en', 'pl');
-
         const SUPPORTED_LANGUAGES = array('en' => 'English', 'hu' => 'Magyar', 'pl' => 'Polski');
 
         const LANG_TO_LOCALE = array('en' => 'en_US', 'hu' => 'hu_HU', 'pl' => 'pl_PL');
