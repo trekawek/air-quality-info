@@ -19,7 +19,10 @@ namespace AirQualityInfo\Lib {
         }
 
         public function findRoute($method, $uri) {
-            if ($uri == '/' && $method == 'GET' && $this->user && $this->user['redirect_root']) {
+            if (($uri == '/' || isset(Locale::SUPPORTED_LANGUAGES[substr($uri, 1)]))
+                    && $method == 'GET'
+                    && $this->user
+                    && $this->user['redirect_root']) {
                 $redirectedUri = $this->user['redirect_root'];
                 $route = $this->doFindRoute('GET', $redirectedUri);
                 if ($route[0] != null) {
