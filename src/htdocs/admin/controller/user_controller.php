@@ -118,10 +118,12 @@ class UserController extends AbstractController {
         $userForm->addElement('allow_sensor_community', 'checkbox', 'Allows sensor.community sensors', array(), 'Enabling the sensor.community support disables the templating options.');
         $urlPrefix = 'https://'
             .$this->user['domain']
-            .CONFIG['user_domain_suffixes'][0];
+            .CONFIG['user_domain_suffixes'][0]
+            .'/'
+            .$this->currentLocale->getCurrentLang();
         $userForm->addElement('redirect_root', 'text', 'Redirect home page')
             ->addRule('regexp', array('pattern' => '/^\/[a-z0-9\/-]+$/', 'message' => __('The path should consist of alphanumeric characters, dashes and slashes')))
-            ->setOptions(array('prepend' => $urlPrefix + '/' + $this->currentLocale->getCurrentLang()));
+            ->setOptions(array('prepend' => $urlPrefix));
         $userForm->addElement('timezone', 'select', 'Timezone')
             ->addRule('required')
             ->setOptions($timezones);
