@@ -47,6 +47,9 @@ class FetchSensorTask {
             $device = $this->deviceModel->getDeviceById($deviceId);
             $data = array();
             foreach (array('lat', 'lng', 'elevation') as $k) {
+                if (!isset($values[$k])) {
+                    continue;
+                }
                 $v1 = floatval($device[$k]);
                 $v2 = floatval($values[$k]);
                 if (abs($v1 - $v2) > 0.01) {

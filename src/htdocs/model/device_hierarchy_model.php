@@ -287,7 +287,7 @@ class DeviceHierarchyModel {
 
     public static function flatTree($tree, $deviceById) {
         $devices = array();
-        if ($tree['device_id']) {
+        if (isset($tree['device_id']) && $tree['device_id']) {
             $devices[] = $deviceById[$tree['device_id']];
         } else if (isset($tree['children'])) {
             foreach ($tree['children'] as $c) {

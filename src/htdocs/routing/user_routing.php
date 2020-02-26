@@ -92,6 +92,11 @@ if (isset(\AirQualityInfo\Lib\Locale::SUPPORTED_LANGUAGES[substr($uri, 1)]) && $
     }
 }
 
+if (isset($args['lang'])) {
+    $currentLocale->setLang($args['lang']);
+    unset($args['lang']);
+}
+
 if (isset($args['device'])) {
     $currentDevice = $args['device'];
 } else {
