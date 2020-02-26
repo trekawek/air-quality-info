@@ -76,7 +76,7 @@ if (isset($args['lang'])) {
     unset($args['lang']);
 }
 
-if (isset(Locale::SUPPORTED_LANGUAGES[substr($uri, 1)]) && $user['redirect_root']) {
+if (isset(\AirQualityInfo\Lib\Locale::SUPPORTED_LANGUAGES[substr($uri, 1)]) && $user['redirect_root']) {
     $redirectedUri = $user['redirect_root'];
     $result = $router->findRoute('GET', $redirectedUri);
     if ($result[0] != null) {
