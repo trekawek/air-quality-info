@@ -1,7 +1,5 @@
 #!/usr/bin/env php
 <?php
-ini_set('memory_limit', '402653184');
-
 include(getenv('AQI_PATH').'/boot.php');
 
 class FetchSensorTask {
@@ -64,8 +62,8 @@ class FetchSensorTask {
 
     function insertRecords($records) {
         foreach ($records as $deviceId => $record) {
-            if (!isset($record['timestamp'])) {
-                echo "Can't find timestamp for record $deviceId\n";
+            if (empty($record)) {
+                continue;
             }
             $this->recordModel->update($deviceId, array($record));
         }
@@ -104,6 +102,7 @@ class FetchSensorTask {
                 $records[$deviceId]['timestamp'] = DateTime::createFromFormat('Y-m-d H:i:s', $r['timestamp'], new DateTimeZone('UTC'))->getTimestamp();
             }
         }
+
         return array($locations, $records);
     }
 }
