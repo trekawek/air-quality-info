@@ -44,7 +44,7 @@ namespace AirQualityInfo\Lib {
             if (isset($this->locale[$msg])) {
                 return $this->locale[$msg];
             } else {
-                if ($this->currentLang == 'pl') {
+                if ($this->currentLang != 'en') {
                     error_log("Unknown msg: [$msg] for locale [".$this->currentLang."]");
                 }
                 return $msg;
