@@ -64,6 +64,9 @@ class FetchSensorTask {
 
     function insertRecords($records) {
         foreach ($records as $deviceId => $record) {
+            if (!isset($record['timestamp'])) {
+                echo "Can't find timestamp for record $deviceId\n";
+            }
             $this->recordModel->update($deviceId, array($record));
         }
     }
