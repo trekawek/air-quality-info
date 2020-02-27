@@ -94,7 +94,7 @@ function emptyTimeSeries(data) {
         for (var j = 0; j <= range.steps; j++) {
             var mu = j / range.steps;
             var t = Math.round(interpolate(minTime, maxTime, mu));
-            var y = interpolate(range.from.y, range.to.y, mu);
+            var y = Math.round(interpolate(range.from.y, range.to.y, mu) * 100) / 100;
             result[t] = y;
             if (from === null) {
                 from = t;
