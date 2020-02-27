@@ -41,7 +41,7 @@ $routes = array(
     'GET /:lang/map'                       => array('map', 'index'),
     'GET /:lang/map/data.json'             => array('map', 'data'),
     'GET /:lang/map/:device'               => array('map', 'sensorInfo'),
-    'GET /:lang/attachment/:name'          => array('attachment', 'get'),
+    'GET /attachment/:name'                => array('attachment', 'get'),
     'GET /:lang/:device/widget'            => array('device_widget', 'show'),
     'GET /:lang/widget/:widgetId'          => array('domain_widget', 'show'),
 
