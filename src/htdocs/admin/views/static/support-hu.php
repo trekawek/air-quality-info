@@ -7,7 +7,7 @@
 </p>
 
 </p>
-Kérjük, az adományozás gomb használatával támogassa a projektünket- a domain név és a kiszolgáló szerver fenntartásához.
+Kérjük, az adományozás gomb használatával támogassa a projektünket a domain név, és a kiszolgáló szerver fenntartásához.
 </p>
 <?php if (isset(CONFIG['paypal_donate_id'])): ?>
 <div class="text-center">
