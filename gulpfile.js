@@ -121,7 +121,7 @@ function createCriticalCss() {
     cssString += fs.readFileSync(path);
   });
   return penthouse({
-    url: 'http://localhost:8080/graphs',
+    url: 'http://smolna.aqi.eco.localhost:8080/en/',
     cssString: cssString
   })
   .then(criticalCss => {
