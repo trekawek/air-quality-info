@@ -7,7 +7,7 @@ $jsLocale['Detector humidity'] = 'Umiditatea detectorului';
 $jsLocale['Detector temperature'] = 'Temperatura detectorului';
 $jsLocale['High'] = 'Mare';
 $jsLocale['Humidity'] = 'Umiditate';
-$jsLocale['Low'] = 'Mică';
+$jsLocale['Low'] = 'Mic';
 $jsLocale['Medium'] = 'Medie';
 $jsLocale['Night view'] = 'Mod de noapte';
 $jsLocale['PM₁₀ limit'] = 'Limită PM₁₀';
@@ -57,7 +57,7 @@ $locale['Custom CSS style'] = 'Stil CSS personalizat';
 $locale['Current air quality'] = 'Calitatea curentă a aerului';
 $locale['Current brand icon'] = 'Brand icon curent';
 $locale['Custom field mappings'] = 'Mapări de câmpuri personalizate';
-$locale['Daily graph'] = 'Grahic zilnic';
+$locale['Daily graph'] = 'Grafic zilnic';
 $locale['Dashboard'] = 'Panou de control';
 $locale['Darkly theme'] = 'Tema Dark';
 $locale['Data'] = 'Data';
@@ -165,12 +165,12 @@ $locale['Show all'] = 'Arată tot';
 $locale['Show widget on the group page'] = 'Afișează widget pe pagina grupului (/all)';
 $locale['Show widget on the sensor page'] = 'Afișează widget pe pagina senzorului';
 $locale['Sign in'] = 'Logare';
-$locale['Sign in to your account'] = 'Logare in cotul tău';
+$locale['Sign in to your account'] = 'Logare in contul tău';
 $locale['Sign up'] = 'Înscrie-te';
 $locale['Size'] = 'Dimensiune';
 $locale['Start'] = 'Start';
 $locale['Stats'] = 'Statistici';
-$locale['Support'] = 'Donează';
+$locale['Support'] = 'Suport';
 $locale['Template widgets'] = 'Șablon Widget';
 $locale['Templates'] = 'Șabloane';
 $locale['The domain name has to consists of letters and digits.'] = 'Numele de domeniu trebuie să fie format din litere și cifre.';
@@ -215,152 +215,152 @@ $locale['Year'] = 'An';
 
 $locale['_widgets'] = [
     0 => [
-        'label' => 'Okay',
+        'label' => 'Excelentă',
         'icon' => 'fa-smile-o',
         'recommendations' => [
             [
                 'icon' => 'icon-spacer',
                 'color' => 'green',
-                'label' => 'Recommended',
-                'description' => 'walks outside'
+                'label' => 'Recomandat',
+                'description' => 'să faceți plimbări în aer liber'
             ],
             [
                 'icon' => 'icon-rower',
                 'color' => 'green',
-                'label' => 'Recommended',
-                'description' => 'physical activity outside'
+                'label' => 'Recomandat',
+                'description' => 'să faceți activități fizice în aer liber'
             ],
             [
                 'icon' => 'icon-tree',
                 'color' => 'green',
-                'label' => 'Recommended',
-                'description' => 'spending time outdoors'
+                'label' => 'Recomandat',
+                'description' => 'să petreceți timpul afară'
             ],
             [
                 'icon' => 'icon-elderly',
                 'color' => 'green',
-                'label' => 'Recommended',
-                'description' => 'spending time outdoors (pregnant, asthmatic, elderly)'
+                'label' => 'Recomandat',
+                'description' => 'să faceți activități de agrement în aer liber (femei însărcinate, copii, persoane cu probleme respiratorii, vârstnici)'
             ],
         ]
     ],
     1 => [
-        'label' => 'Moderate',
+        'label' => 'Moderată',
         'icon' => 'fa-meh-o',
         'recommendations' => [
             [
                 'icon' => 'icon-spacer',
                 'color' => 'green',
-                'label' => 'Recommended',
-                'description' => 'walks outside'
+                'label' => 'Recomandat',
+                'description' => 'să faceți plimbări în aer liber'
             ],
             [
                 'icon' => 'icon-rower',
                 'color' => 'green',
-                'label' => 'Recommended',
-                'description' => 'physical activity outside'
+                'label' => 'Recomandat',
+                'description' => 'să faceți activități fizice în aer liber'
             ],
             [
                 'icon' => 'icon-tree',
                 'color' => 'green',
-                'label' => 'Recommended',
-                'description' => 'spending time outdoors'
+                'label' => 'Recomandat',
+                'description' => 'să petreceți timpul afară'
             ],
             [
                 'icon' => 'icon-elderly',
                 'color' => 'orange',
-                'label' => 'Not recommended',
-                'description' => 'spending time outdoors (pregnant, asthmatic, elderly)'
+                'label' => 'Nu este recomandat',
+                'description' => 'să faceți activități de agrement în aer liber (femei însărcinate, copii, persoane cu probleme respiratorii, vârstnici)'
             ],
         ]
     ],
     2 => [
-        'label' => 'Mediocre',
+        'label' => 'Mediocră',
         'icon' => 'fa-meh-o',
         'recommendations' => [
             [
                 'icon' => 'icon-spacer',
                 'color' => 'green',
-                'label' => 'Acceptable',
-                'description' => 'walks outside'
+                'label' => 'Acceptabil',
+                'description' => 'să faceți plimbări în aer liber'
             ],
             [
                 'icon' => 'icon-rower',
                 'color' => 'green',
-                'label' => 'Acceptable',
-                'description' => 'physical activity outside'
+                'label' => 'Acceptabl',
+                'description' => 'să faceți activități fizice în aer liber'
             ],
             [
                 'icon' => 'icon-tree',
                 'color' => 'orange',
-                'label' => 'Not recommended',
-                'description' => 'prolonged exposure in the open air'
+                'label' => 'Nu este recomandat',
+                'description' => 'să petreceți mult timp în aer liber'
             ],
             [
                 'icon' => 'icon-elderly',
                 'color' => 'orange',
-                'label' => 'Not recommended',
-                'description' => 'prolonged exposure in the open air (pregnant, asthmatic, elderly)'
+                'label' => 'Nu este recomandat',
+                'description' => 'să faceți activități de agrement în aer liber (femei însărcinate, copii, persoane cu probleme respiratorii, vârstnici)'
             ],
         ]
     ],
     3 => [
-        'label' => 'Unfavorable',
+        'label' => 'Nefavorabilă',
         'icon' => 'fa-frown-o',
         'recommendations' => [
             [
                 'icon' => 'icon-home',
                 'color' => 'green',
-                'label' => 'Recommended',
-                'description' => 'Staying at home (elderly, pregnant women, people with heart and respiratory diseases)'
+                'label' => 'Recomandat',
+                'description' => 'să stați acasa (femei însărcinate, copii, bătrâni, persoane cu boli cardiovasculare)'
             ],
             [
                 'icon' => 'icon-spacer',
                 'color' => 'orange',
-                'label' => 'Not recommended',
-                'description' => 'walks outside'
+                'label' => 'Nu este recomandat',
+                'description' => 'să faceți plimbări afară'
             ],
             [
                 'icon' => 'icon-rower',
                 'color' => 'orange',
-                'label' => 'Not recommended',
-                'description' => 'physical activity outside'
+                'label' => 'Nu este recomandat',
+                'description' => 'să faceți activități fizice în aer liber'
             ],
             [
                 'icon' => 'icon-car',
                 'color' => 'orange',
-                'label' => 'Limit',
-                'description' => 'driving a car'
+                'label' => 'Amânați',
+                'description' => 'mersul cu mașina, pentru a reduce emisiile de gaze'
             ],
         ]
     ],
     4 => [
-        'label' => 'Bad',
+        'label' => 'Foarte rea',
         'icon' => 'fa-frown-o',
         'recommendations' => [
             [
                 'icon' => 'icon-home',
                 'color' => 'green',
-                'label' => 'Recommended',
-                'description' => 'staying at home'
+                'label' => 'Recomandat',
+                'description' => 'să stați acasă'
             ],
             [
                 'icon' => 'icon-spacer',
                 'color' => 'red',
-                'label' => 'Postpone',
-                'description' => 'walks outside'
+                'label' => 'Amânați',
+                'description' => 'plimbările în aer liber'
             ],
             [
                 'icon' => 'icon-rower',
                 'color' => 'red',
-                'label' => 'Postpone',
-                'description' => 'physical activity outside'
+                'label' => 'Amânați',
+                'description' => 'activitățile fizice în aer liber'
             ],
             [
                 'icon' => 'icon-car',
                 'color' => 'red',
-                'label' => 'Postpone',
-                'description' => 'driving a car'
+                'label' => 'Amânați',
+                'description' => 'mersul cu mașina, pentru a reduce emisiile de gaze'
             ],
         ]
     ]
