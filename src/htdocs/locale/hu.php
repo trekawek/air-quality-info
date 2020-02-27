@@ -1,4 +1,3 @@
-
 <?php
 $jsLocale = array();
 $jsLocale['days'] = 'napok';
