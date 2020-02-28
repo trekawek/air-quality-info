@@ -93,7 +93,9 @@ namespace AirQualityInfo\Lib {
 
         private function loadLocale() {
             setlocale(LC_ALL, Locale::LANG_TO_LOCALE[$this->currentLang]);
+            ob_start();
             include_once(__DIR__."/../locale/".$this->currentLang.".php");
+            ob_end_clean();
             $this->locale = $locale;
             $this->jsLocale = $jsLocale;
         }
