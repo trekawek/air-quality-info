@@ -5,16 +5,16 @@ $jsLocale['Are you sure to delete this resource?'] = 'Sigur ștergeți această 
 $jsLocale['Days'] = 'Zile';
 $jsLocale['Detector humidity'] = 'Umiditatea detectorului';
 $jsLocale['Detector temperature'] = 'Temperatura detectorului';
-$jsLocale['High'] = 'Mare';
+$jsLocale['High'] = 'Ridicat';
 $jsLocale['Humidity'] = 'Umiditate';
-$jsLocale['Low'] = 'Mic';
+$jsLocale['Low'] = 'Scăzut';
 $jsLocale['Medium'] = 'Mediu';
 $jsLocale['Night view'] = 'Mod de noapte';
 $jsLocale['PM₁₀ limit'] = 'Limită PM₁₀';
 $jsLocale['PM₂₅ limit'] = 'Limită PM₂₅';
 $jsLocale['Pollution level'] = 'Nivelul de poluare';
-$jsLocale['Pressure'] = 'Presiunea';
-$jsLocale['Temperature'] = 'Temperatura';
+$jsLocale['Pressure'] = 'Presiune';
+$jsLocale['Temperature'] = 'Temperatură';
 $jsLocale['Very high'] = 'Foarte ridicat';
 $jsLocale['Very low'] = 'Foarte scăzut';
 
@@ -39,7 +39,7 @@ $locale['Annual stats'] = 'Statistici anuale';
 $locale['Atmospheric pressure'] = 'Presiunea atmosferică';
 $locale['Average'] = 'Media';
 $locale['Back to the device'] = 'Înapoi la dispozitiv';
-$locale['Brand name (2)'] = 'Brandul (2)';
+$locale['Brand name (2)'] = 'Firmă (2)';
 $locale['Choose location'] = 'Alegeți locația';
 $locale['Click to see more details.'] = 'Click pentu mai multe detalii.';
 $locale['Contact info'] = 'Contact info';
@@ -55,7 +55,7 @@ $locale['CSV'] = 'CSV';
 $locale['CSV archive'] = 'Arhivă CSV';
 $locale['Custom CSS style'] = 'Stil CSS personalizat';
 $locale['Current air quality'] = 'Calitatea curentă a aerului';
-$locale['Current brand icon'] = 'Pictograma curentă (Marcă / Brand)';
+$locale['Current brand icon'] = 'Pictograma curentă (Firmă)';
 $locale['Custom field mappings'] = 'Mapări de câmpuri personalizate';
 $locale['Daily graph'] = 'Grafic zilnic';
 $locale['Dashboard'] = 'Panou de control';
@@ -63,16 +63,16 @@ $locale['Darkly theme'] = 'Temă întunecată';
 $locale['Data'] = 'Data';
 $locale['Database field'] = 'Câmp Bază de date';
 $locale['Day'] = 'Zi';
-$locale['Days with PM₁₀ above 50µg/m³'] = 'Zile cu PM₁₀ peste 50µg/m³';
+$locale['Days with PM₁₀ above 50µg/m³'] = 'Zile cu depășiri (PM₁₀ peste 50µg/m³)';
 $locale['Debug info'] = 'Debug info';
 $locale['Deleted the device'] = 'Dispozitivul a fost șters';
 $locale['Deleted the mapping'] = 'Maparea a fost ștearsă';
-$locale['Deleted the node'] = 'Poziția ștersă';
+$locale['Deleted the node'] = 'Poziție ștearsă';
 $locale['Description'] = 'Descriere';
 $locale['Default theme'] = 'Temă implicită';
 $locale['Deleted widget'] = 'Widget șters';
-$locale['Device hierarchy'] = 'Ierarhie dispozitiv';
-$locale['Device JSON list'] = 'Lista JSON dispozitiv';
+$locale['Device hierarchy'] = 'Ierarhie dispozitive';
+$locale['Device JSON list'] = 'Listă JSON dispozitiv';
 $locale['Device list'] = 'Lista dispozitivelor';
 $locale['Device name'] = 'Denumirea dispozitivului';
 $locale['Device'] = 'Dispozitiv';
@@ -126,10 +126,10 @@ $locale['Map'] = 'Hartă';
 $locale['Maximum allowed size is 256 kB.'] = 'Dimensiunea maximă permisă este de 256 kB.';
 $locale['Month'] = 'Lună';
 $locale['Moving average'] = 'Mișcarea medie';
-$locale['Name'] = 'Nume';
-$locale['New password has been set.'] = 'New password has been set.';
+$locale['Name'] = 'Denumire';
+$locale['New password has been set.'] = 'S-a setat o parolă nouă.';
 $locale['Only PNGs and SVGs are allowed'] = 'Sunt permise numai PNG și SVG';
-$locale['Open'] = 'Open';
+$locale['Open'] = 'Deschide';
 $locale['Operations'] = 'Operațiuni';
 $locale['Page unavailable offline'] = 'Pagina nu este disponibilă offline';
 $locale['Password'] = 'Parolă';
@@ -164,9 +164,9 @@ $locale['Settings'] = 'Setări';
 $locale['Show all'] = 'Arată tot';
 $locale['Show widget on the group page'] = 'Afișează widget pe pagina grupului (/all)';
 $locale['Show widget on the sensor page'] = 'Afișează widget pe pagina senzorului';
-$locale['Sign in'] = 'Logare';
-$locale['Sign in to your account'] = 'Logare in contul tău';
-$locale['Sign up'] = 'Înscrie-te';
+$locale['Sign in'] = 'Autentificare';
+$locale['Sign in to your account'] = 'Autentificare in contul tău';
+$locale['Sign up'] = 'Înregistrare';
 $locale['Size'] = 'Dimensiune';
 $locale['Start'] = 'Start';
 $locale['Stats'] = 'Statistici';
@@ -183,7 +183,7 @@ $locale['This domain is already used.'] = 'Acest domeniu este deja folosit.';
 $locale['This is default device'] = 'Acesta este dispozitivul implicit';
 $locale['This is the HTML content of the custom page linked above.'] = 'Acesta este conținutul HTML al paginii personalizate conectate mai sus.';
 $locale['Time'] = 'Timpul';
-$locale['Timezone'] = 'Timezone';
+$locale['Timezone'] = 'Fus orar';
 $locale['Title'] = 'Titlu';
 $locale['Update'] = 'Actualizare';
 $locale['Update brand icon (1)'] = 'Update brand icon (1)';
@@ -215,7 +215,7 @@ $locale['Year'] = 'An';
 
 $locale['_widgets'] = [
     0 => [
-        'label' => 'Excelentă',
+        'label' => 'Bună',
         'icon' => 'fa-smile-o',
         'recommendations' => [
             [
@@ -228,7 +228,7 @@ $locale['_widgets'] = [
                 'icon' => 'icon-rower',
                 'color' => 'green',
                 'label' => 'Recomandat',
-                'description' => 'să faceți activități fizice în aer liber'
+                'description' => 'să practicați activități fizice în aer liber'
             ],
             [
                 'icon' => 'icon-tree',
@@ -240,7 +240,7 @@ $locale['_widgets'] = [
                 'icon' => 'icon-elderly',
                 'color' => 'green',
                 'label' => 'Recomandat',
-                'description' => 'să faceți activități de agrement în aer liber (femei însărcinate, copii, persoane cu probleme respiratorii, vârstnici)'
+                'description' => 'să petreceți timpul în aer liber (membrii grupurilor sensibile: femei însărcinate, copii, persoane cu probleme respiratorii, vârstnici etc.)'
             ],
         ]
     ],
@@ -258,7 +258,7 @@ $locale['_widgets'] = [
                 'icon' => 'icon-rower',
                 'color' => 'green',
                 'label' => 'Recomandat',
-                'description' => 'să faceți activități fizice în aer liber'
+                'description' => 'să practicați activități fizice în aer liber'
             ],
             [
                 'icon' => 'icon-tree',
@@ -270,7 +270,7 @@ $locale['_widgets'] = [
                 'icon' => 'icon-elderly',
                 'color' => 'orange',
                 'label' => 'Nu este recomandat',
-                'description' => 'să faceți activități de agrement în aer liber (femei însărcinate, copii, persoane cu probleme respiratorii, vârstnici)'
+                'description' => 'să petreceți timpul în aer liber (membrii grupurilor sensibile: femei însărcinate, copii, persoane cu probleme respiratorii, vârstnici etc.)'
             ],
         ]
     ],
@@ -287,8 +287,8 @@ $locale['_widgets'] = [
             [
                 'icon' => 'icon-rower',
                 'color' => 'green',
-                'label' => 'Acceptabl',
-                'description' => 'să faceți activități fizice în aer liber'
+                'label' => 'Acceptabil',
+                'description' => 'să practicați activități fizice în aer liber'
             ],
             [
                 'icon' => 'icon-tree',
@@ -300,7 +300,7 @@ $locale['_widgets'] = [
                 'icon' => 'icon-elderly',
                 'color' => 'orange',
                 'label' => 'Nu este recomandat',
-                'description' => 'să faceți activități de agrement în aer liber (femei însărcinate, copii, persoane cu probleme respiratorii, vârstnici)'
+                'description' => 'să petreceți timpul în aer liber (membrii grupurilor sensibile: femei însărcinate, copii, persoane cu probleme respiratorii, vârstnici etc.)'
             ],
         ]
     ],
@@ -312,7 +312,7 @@ $locale['_widgets'] = [
                 'icon' => 'icon-home',
                 'color' => 'green',
                 'label' => 'Recomandat',
-                'description' => 'să stați acasa (femei însărcinate, copii, bătrâni, persoane cu boli cardiovasculare)'
+                'description' => 'să stați acasă (membrii grupurilor sensibile: vârstnici, femei însărcinate, persoane cu boli de inimă și respiratorii etc.)'
             ],
             [
                 'icon' => 'icon-spacer',
@@ -324,7 +324,7 @@ $locale['_widgets'] = [
                 'icon' => 'icon-rower',
                 'color' => 'orange',
                 'label' => 'Nu este recomandat',
-                'description' => 'să faceți activități fizice în aer liber'
+                'description' => 'să practicați activități fizice în aer liber'
             ],
             [
                 'icon' => 'icon-car',
@@ -354,7 +354,7 @@ $locale['_widgets'] = [
                 'icon' => 'icon-rower',
                 'color' => 'red',
                 'label' => 'Amânați',
-                'description' => 'activitățile fizice în aer liber'
+                'description' => 'practicarea activităților fizice în aer liber'
             ],
             [
                 'icon' => 'icon-car',
