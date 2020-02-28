@@ -11,11 +11,7 @@ class MainController extends AbstractController {
     }
 
     public function index() {
-        $this->render(array(
-            'view' => 'admin/views/index-'.$this->currentLocale->getCurrentLang().'.php',
-            'head' => 'admin/partials/about/head.php',
-            'tail' => 'admin/partials/about/tail.php'
-        ));
+        $this->static('index');
     }
 
     public function static($pageName) {
