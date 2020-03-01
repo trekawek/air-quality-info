@@ -179,17 +179,14 @@ class CsvModel {
     }
 
     private function open($filename) {
-        $fileExists = $this->s3Client->doesObjectExist($this->s3Bucket, $filename);
-        $tmpName = tempnam(sys_get_temp_dir(), str_replace('/', '_', $filename));
-        if ($fileExists) {
-            $this->s3Client->getObject(array(
-                'Bucket' => $this->s3Bucket,
-                'Key'    => $filename,
-                'SaveAs' => $tmpName
-            ));
+        $fullPath = CONFIG['csv_root'] . '/' . $filename;
+        $parentDir = dirname($fullPath);
+        mkdir($parentDir, 0777, true);
+        
+        if (file_exists($fullPath)) {
             $fp = fopen($tmpName, 'a');
         } else {
-            $fp = fopen($tmpName, 'a');
+            $fp = fopen($tmpName, 'w');
             $this->writeHeader($fp);
         }
         return $fp;
@@ -202,16 +199,6 @@ class CsvModel {
         if ($removeDuplicates) {
             $this->removeDuplicates($tmpFileName);
         }
-        $this->s3Client->putObject(array(
-            'Bucket'      => $this->s3Bucket,
-            'Key'         => $filename,
-            'SourceFile'  => $tmpFileName
-        ));
-        $this->s3Client->waitUntil('ObjectExists', array(
-            'Bucket' => $this->s3Bucket,
-            'Key'    => $filename
-        ));        
-        unlink($tmpFileName);
     }
 
     private function removeDuplicates($filename) {
