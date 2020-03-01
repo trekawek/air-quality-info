@@ -181,7 +181,10 @@ class CsvModel {
     private function open($filename) {
         $fullPath = CONFIG['csv_root'] . '/' . $filename;
         $parentDir = dirname($fullPath);
-        mkdir($parentDir, 0777, true);
+        
+        if (!file_exists($parentDir)) {
+            mkdir($parentDir, 0777, true);
+        }
 
         if (file_exists($fullPath)) {
             $fp = fopen($fullPath, 'a');
