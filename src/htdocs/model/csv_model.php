@@ -129,7 +129,7 @@ class CsvModel {
         fclose($fp);
     }
 
-    public function storeRecords($deviceId, $records, $removeDuplicates = false) {
+    public function storeRecords($deviceId, $records) {
         $device = $this->deviceModel->getDeviceById($deviceId);
         $user = $this->userModel->getUserById($device['user_id']);
 
@@ -140,7 +140,8 @@ class CsvModel {
             $date = date('Y-m-d', $r['timestamp']);
             if ($date !== $lastDate) {
                 if ($fp !== null) {
-                    $this->close($fp, $filename, $removeDuplicates);
+                    fclose($fp);
+                    $fp = null;
                 }
                 $filename = $this->getFileName($user, $device, $r['timestamp']);
                 $fp = $this->open($filename);
@@ -149,7 +150,8 @@ class CsvModel {
             $lastDate = $date;
         }
         if ($fp !== null) {
-            $this->close($fp, $filename, $removeDuplicates);
+            fclose($fp);
+            $fp = null;
         }
     }
 
@@ -193,41 +195,6 @@ class CsvModel {
             $this->writeHeader($fp);
         }
         return $fp;
-    }
-
-    private function close($fp, $filename, $removeDuplicates) {
-        $metadata = stream_get_meta_data($fp);
-        $tmpFileName = $metadata['uri'];
-        fclose($fp);
-        if ($removeDuplicates) {
-            $this->removeDuplicates($tmpFileName);
-        }
-    }
-
-    private function removeDuplicates($filename) {
-        $records = array();
-
-        if (!file_exists($filename)) {
-            return;
-        }
-
-        $fp = fopen($filename, 'r');
-        fgets($fp); // header
-        while(!feof($fp))  {
-            $line = trim(fgets($fp));
-            $r = explode(';', $line);
-            $records[$r[0]] = $line;
-        }
-        fclose($fp);
-
-        ksort($records, SORT_NUMERIC);
-
-        $fp = fopen($filename, 'w');
-        $this->writeHeader($fp);
-        foreach ($records as $r) {
-            fwrite($fp, $r."\n");
-        }
-        fclose($fp);
     }
 }
 ?>

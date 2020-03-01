@@ -2,11 +2,94 @@
 <?php
 include(getenv('AQI_PATH').'/boot.php');
 
+function removeDuplicates($fileName) {
+    $records = array();
+
+    if (!file_exists($fileName)) {
+        return;
+    }
+
+    $fp = fopen($fileName, 'r');
+    $header = fgets($fp); // header
+    while(!feof($fp))  {
+        $line = trim(fgets($fp));
+        $r = explode(';', $line);
+        $records[$r[0]] = $line;
+    }
+    fclose($fp);
+
+    ksort($records, SORT_NUMERIC);
+
+    $fp = fopen($fileName, 'w');
+    fwrite($header);
+    foreach ($records as $r) {
+        fwrite($fp, $r."\n");
+    }
+    fclose($fp);
+}
+
+function upload($s3Client, $fileName, $s3Name) {
+    echo "$fileName -> $s3Name\n";
+
+    $objectExist = $s3Client->doesObjectExist(CONFIG['s3_bucket'], $s3Name);
+
+    if ($objectExist) {
+        echo "Downloading existing $s3Name";
+        $tmpName = tempnam(sys_get_temp_dir(), str_replace('/', '_', $filename));
+        $s3Client->getObject(array(
+            'Bucket' => CONFIG['s3_bucket'],
+            'Key'    => $s3Name,
+            'SaveAs' => $tmpName
+        ));
+
+        echo "Merging entries with $s3Name";
+        $fp = fopen($fileName, 'a');
+        $s3Fp = fopen($tmpName, 'r');
+        fgets($s3Fp); // header
+        while(!feof($s3Fp))  {
+            fwrite($fp, fgets($s3Fp));
+        }
+        fclose($s3Fp);
+        fclose($fp);
+        unlink($tmpName);
+    }
+    
+    removeDuplicates($fileName);
+
+    echo "Uploading $s3Name";
+    $s3Client->putObject(array(
+        'Bucket'      => CONFIG['s3_bucket'],
+        'Key'         => $s3Name,
+        'SourceFile'  => $fileName
+    ));
+
+    $s3Client->waitUntil('ObjectExists', array(
+        'Bucket' => CONFIG['s3_bucket'],
+        'Key'    => $s3Name
+    ));
+
+    echo "Done";
+}
+
 echo "Starting upload-csv\n";
 
-$rootDir = new RecursiveDirectoryIterator(CONFIG['csv_root']);
-$iterator = new RecursiveIteratorIterator($rootDir);
-foreach ($iterator as $name => $object) {
-    echo $name."\n";
+while (true) {
+    $rootDir = new RecursiveDirectoryIterator(CONFIG['csv_root']);
+    $iterator = new RecursiveIteratorIterator($rootDir);
+    $regexIterator = new RegexIterator($iterator, '/^.+\.csv$/i', RecursiveRegexIterator::GET_MATCH);
+
+    $currentCsv = date('Y-m-d').".csv";
+    foreach ($regexIterator as $name => $object) {
+        $fileName = basename($name);
+        if ($currentCsv == $fileName) {
+            continue;
+        }
+        upload($s3Client, $name, substr($name, strlen(CONFIG['csv_root']) + 1));
+        sleep(1);
+        unlink($name);
+    }
+
+    // run process every hour
+    sleep(60 * 60);
 }
 ?>

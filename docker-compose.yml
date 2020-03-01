@@ -71,3 +71,10 @@ services:
     command: /usr/local/bin/php /usr/local/bin/aqi/fetch-sensors.php
     volumes: *fpm-volumes
     restart: on-failure
+
+  csv-uploader:
+    build: docker-img/fpm
+    environment: *mysql-variables
+    command: /usr/local/bin/php /usr/local/bin/aqi/upload-csv.php
+    volumes: *fpm-volumes
+    restart: on-failure
