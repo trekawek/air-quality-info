@@ -182,11 +182,11 @@ class CsvModel {
         $fullPath = CONFIG['csv_root'] . '/' . $filename;
         $parentDir = dirname($fullPath);
         mkdir($parentDir, 0777, true);
-        
+
         if (file_exists($fullPath)) {
-            $fp = fopen($tmpName, 'a');
+            $fp = fopen($fullPath, 'a');
         } else {
-            $fp = fopen($tmpName, 'w');
+            $fp = fopen($fullPath, 'w');
             $this->writeHeader($fp);
         }
         return $fp;
