@@ -34,15 +34,15 @@ function upload($s3Client, $fileName, $s3Name) {
     $objectExist = $s3Client->doesObjectExist(CONFIG['s3Bucket'], $s3Name);
 
     if ($objectExist) {
-        echo "Downloading existing $s3Name";
-        $tmpName = tempnam(sys_get_temp_dir(), str_replace('/', '_', $filename));
+        echo "Downloading existing $s3Name\n";
+        $tmpName = tempnam(sys_get_temp_dir(), str_replace('/', '_', $fileName));
         $s3Client->getObject(array(
             'Bucket' => CONFIG['s3Bucket'],
             'Key'    => $s3Name,
             'SaveAs' => $tmpName
         ));
 
-        echo "Merging entries with $s3Name";
+        echo "Merging entries with $s3Name\n";
         $fp = fopen($fileName, 'a');
         $s3Fp = fopen($tmpName, 'r');
         fgets($s3Fp); // header
@@ -56,7 +56,7 @@ function upload($s3Client, $fileName, $s3Name) {
     
     removeDuplicates($fileName);
 
-    echo "Uploading $s3Name";
+    echo "Uploading $s3Name\n";
     $s3Client->putObject(array(
         'Bucket'      => CONFIG['s3Bucket'],
         'Key'         => $s3Name,
@@ -68,7 +68,7 @@ function upload($s3Client, $fileName, $s3Name) {
         'Key'    => $s3Name
     ));
 
-    echo "Done";
+    echo "Done\n";
 }
 
 echo "Starting upload-csv\n";
