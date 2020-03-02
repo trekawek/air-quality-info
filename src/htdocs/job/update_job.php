@@ -26,7 +26,10 @@ class UpdateJob {
         $sensors = $data['sensordatavalues'];
         $map = array();
         foreach ($sensors as $row) {
-            $map[$row['value_type']] = $row['value'];
+            $value = $row['value'];
+            if ($value != 'nan') {
+                $map[$row['value_type']] = $value;
+            }
         }
         
         $this->jsonUpdateModel->logJsonUpdate($device['id'], $ts, $jsonPayload);
