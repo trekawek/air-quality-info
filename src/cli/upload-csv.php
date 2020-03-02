@@ -21,7 +21,7 @@ function removeDuplicates($fileName) {
     ksort($records, SORT_NUMERIC);
 
     $fp = fopen($fileName, 'w');
-    fwrite($header);
+    fwrite($fp, $header);
     foreach ($records as $r) {
         fwrite($fp, $r."\n");
     }
@@ -31,13 +31,13 @@ function removeDuplicates($fileName) {
 function upload($s3Client, $fileName, $s3Name) {
     echo "$fileName -> $s3Name\n";
 
-    $objectExist = $s3Client->doesObjectExist(CONFIG['s3_bucket'], $s3Name);
+    $objectExist = $s3Client->doesObjectExist(CONFIG['s3Bucket'], $s3Name);
 
     if ($objectExist) {
         echo "Downloading existing $s3Name";
         $tmpName = tempnam(sys_get_temp_dir(), str_replace('/', '_', $filename));
         $s3Client->getObject(array(
-            'Bucket' => CONFIG['s3_bucket'],
+            'Bucket' => CONFIG['s3Bucket'],
             'Key'    => $s3Name,
             'SaveAs' => $tmpName
         ));
@@ -58,13 +58,13 @@ function upload($s3Client, $fileName, $s3Name) {
 
     echo "Uploading $s3Name";
     $s3Client->putObject(array(
-        'Bucket'      => CONFIG['s3_bucket'],
+        'Bucket'      => CONFIG['s3Bucket'],
         'Key'         => $s3Name,
         'SourceFile'  => $fileName
     ));
 
     $s3Client->waitUntil('ObjectExists', array(
-        'Bucket' => CONFIG['s3_bucket'],
+        'Bucket' => CONFIG['s3Bucket'],
         'Key'    => $s3Name
     ));
 
