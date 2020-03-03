@@ -55,6 +55,12 @@ class RecordModel {
                 if (is_numeric($v) && is_nan(floatval($v))) {
                     $record[$k] = null;
                 }
+                if ($k == 'heater_temperature' && $v < -127) {
+                    $record[$k] = null;
+                }
+                if ($k == 'heater_humidity' && $v < -0) {
+                    $record[$k] = null;
+                }
             }
             if (isset($record['pressure']) && $record['pressure'] !== null) {
                 $record['pressure'] /= 100;
