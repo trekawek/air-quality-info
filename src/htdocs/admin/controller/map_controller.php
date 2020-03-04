@@ -28,6 +28,17 @@ class MapController extends AbstractController {
     }
 
     public function data() {
+        $data = $this->cache->load('/map/data.json', function() {
+            return $this->loadData();
+        }, array(
+            \Nette\Caching\Cache::EXPIRE => '5 minutes',
+        ));
+        
+        header('Content-type: application/json');
+        echo json_encode($data);
+    }
+
+    private function loadData() {
         $data = array();
         foreach ($this->userModel->getAllUsers() as $user) {
             $userId = $user['id'];
@@ -79,8 +90,7 @@ class MapController extends AbstractController {
                 $data[] = $deviceFiltered;
             }
         }
-        header('Content-type: application/json');
-        echo json_encode($data);
+        return $data;
     }
 }
 ?>

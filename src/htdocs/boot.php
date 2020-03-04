@@ -40,6 +40,12 @@ $s3Client = \Aws\S3\S3Client::factory(CONFIG['s3']);
 
 $beanstalk = \Pheanstalk\Pheanstalk::create('beanstalkd');
 
+if (!file_exists(CONFIG['cache_root'])) {
+    mkdir(CONFIG['cache_root'], 0777, true);
+}
+$cacheStorage = new \Nette\Caching\Storages\FileStorage(CONFIG['cache_root']);
+$cache = new \Nette\Caching\Cache($cacheStorage);
+
 $diContainer = new Lib\DiContainer();
 
 $currentLocale = new Lib\Locale();
@@ -49,6 +55,7 @@ $diContainer->setBinding('s3Bucket', CONFIG['s3Bucket']);
 $diContainer->setBinding('s3Client', $s3Client);
 $diContainer->setBinding('beanstalk', $beanstalk);
 $diContainer->setBinding('currentLocale', $currentLocale);
+$diContainer->setBinding('cache', $cache);
 
 Lib\CsrfToken::generateTokenIfNotExists();
 ?>

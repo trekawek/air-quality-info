@@ -25,5 +25,7 @@ define('CONFIG', array(
   'ga_id' => null,
   'google_maps_key' => null,
   'csv_root' => '/var/aqi/csv',
+  'cache_root' => '/var/aqi/cache',
+  'use_http' => true
 ));
 ?>

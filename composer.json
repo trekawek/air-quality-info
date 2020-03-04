@@ -6,6 +6,7 @@
         "aws/aws-sdk-php": "^3.52",
         "pda/pheanstalk": "^4.0",
         "erusev/parsedown": "^1.7",
-        "maxakawizard/json-collection-parser": "~1.0"
+        "maxakawizard/json-collection-parser": "~1.0",
+        "nette/caching": "^3.0"
     }
 }

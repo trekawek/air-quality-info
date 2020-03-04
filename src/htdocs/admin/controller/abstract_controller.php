@@ -13,6 +13,8 @@ class AbstractController {
 
     protected $title = null;
 
+    protected $cache;
+
     public function render($args, $data = array()) {
         $args = array_merge(array(
             'layout' => true,
@@ -60,6 +62,11 @@ class AbstractController {
     // @Inject
     public function setUserModel(\AirQualityInfo\Model\UserModel $userModel) {
         $this->userModel = $userModel;
+    }
+
+    // @Inject
+    public function setCache(\Nette\Caching\Cache $cache) {
+        $this->cache = $cache;
     }
 
     public function setUser($authorizedUser) {
