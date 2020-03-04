@@ -12,7 +12,8 @@ window.chartColors = {
 	lightBlue: 'rgba(54, 162, 235, 0.5)',
 	purple: 'rgb(153, 102, 255)',
 	lightPurple: 'rgba(153, 102, 255, 0.5)',
-	grey: 'rgb(201, 203, 207)'
+    grey: 'rgb(169, 169, 169)',
+    lightGrey: 'rgba(169, 169, 169, 0.5)',
 };
 
 (function() {
@@ -254,6 +255,31 @@ function renderGraph(ctx, data, type, avgType) {
                 }
             });
         }
+        break;
+
+        case 'co2':
+        var co2Data = mapToTimeSeries(data.data.co2);
+        var emptyCo2Data = emptyTimeSeries(co2Data);
+        config.data = {
+            datasets: [{
+                borderColor: window.chartColors.grey,
+                label: __('CO2') + ' (ppe)',
+                data: co2Data,
+                borderWidth: 2,
+                fill: false
+            },{
+                borderColor: window.chartColors.lightGrey,
+                data: emptyCo2Data,
+                borderWidth: 2,
+                fill: false
+            }]
+        };
+        config.options.scales.yAxes = [{
+            display: true,
+            scaleLabel: {
+                display: false
+            }
+        }];
         break;
 
         case 'temperature':

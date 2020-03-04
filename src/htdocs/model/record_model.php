@@ -194,6 +194,12 @@ class RecordModel {
         
             case 'pm':
             $fields = array('pm10', 'pm25');
+            break;
+
+            case 'co2':
+            $fields = array('co2');
+            break;
+    
             default:
             break;
         }

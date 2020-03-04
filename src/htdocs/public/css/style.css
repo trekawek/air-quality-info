@@ -36,7 +36,7 @@ body {
 
 .index-cat-1 {
   background-color: #b0dd10;
-  color: #262626;
+  color: #b8a6a6;
 }
 
 .index-cat-2 {
@@ -52,6 +52,10 @@ body {
 .index-cat-4 {
   background-color: #990000;
   color: #ffffff;
+}
+
+.index-cat-co2 {
+  background-color: lightgray;
 }
 
 a.disabled {
