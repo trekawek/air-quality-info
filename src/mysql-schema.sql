@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 10.135.14.82
--- Generation Time: Feb 11, 2020 at 06:44 PM
+-- Generation Time: Mar 04, 2020 at 09:51 PM
 -- Server version: 8.0.19-0ubuntu0.19.10.3
 -- PHP Version: 7.4.1
 
@@ -28,6 +28,7 @@ CREATE TABLE `aggregates` (
   `resolution` int NOT NULL,
   `pm25` decimal(6,2) DEFAULT NULL,
   `pm10` decimal(6,2) DEFAULT NULL,
+  `co2` decimal(6,2) DEFAULT NULL,
   `temperature` decimal(5,2) DEFAULT NULL,
   `humidity` decimal(5,2) DEFAULT NULL,
   `pressure` decimal(6,2) DEFAULT NULL,
@@ -152,6 +153,7 @@ CREATE TABLE `records` (
   `timestamp` int NOT NULL,
   `pm25` decimal(6,2) DEFAULT NULL,
   `pm10` decimal(6,2) DEFAULT NULL,
+  `co2` decimal(6,2) DEFAULT NULL,
   `temperature` decimal(5,2) DEFAULT NULL,
   `humidity` decimal(5,2) DEFAULT NULL,
   `pressure` decimal(6,2) DEFAULT NULL,
@@ -186,6 +188,7 @@ CREATE TABLE `users` (
   `all_widget` tinyint(1) NOT NULL DEFAULT '0',
   `redirect_root` varchar(255) DEFAULT NULL,
   `timezone` varchar(64) NOT NULL DEFAULT 'Europe/Warsaw',
+  `allow_sensor_community` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
