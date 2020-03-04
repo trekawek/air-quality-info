@@ -1,5 +1,5 @@
 <?php
-/*$jsLocale = array();
+$jsLocale = array();
 $jsLocale['days'] = 'Dny';
 $jsLocale['Are you sure to delete this resource?'] = 'Chcete vymazat tento zdroj?';
 $jsLocale['Days'] = 'Dny';
@@ -225,10 +225,7 @@ $locale['Widget source'] = 'Widget zdroje';
 $locale['Widgets'] = 'Widgety';
 $locale['Widgets created here will show the average air quality calculated from all sensors.'] = 'Vytvořené widgety budou zobrazovat průměrnou kvalitu vzduchu vypočítanou ze všech senzorů.';
 $locale['Widgets created here will show the state of a single device.'] = 'Vytvořené widgety zobrazují stav jednoho zařízení';
-$locale['Year'] = 'Rok';*/
-
-$jsLocale = array();
-$locale = array();
+$locale['Year'] = 'Rok';
 
 $locale['_widgets'] = [
     0 => [

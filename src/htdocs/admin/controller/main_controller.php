@@ -41,7 +41,7 @@ class MainController extends AbstractController {
 
     private function findPath($pageName) {
         $pageName = preg_replace('/[^a-z-]/', '', $pageName);
-        foreach (array($this->currentLocale->getCurrentLang(), 'pl') as $lang) {
+        foreach (array($this->currentLocale->getCurrentLang(), 'en') as $lang) {
             foreach (array('php', 'md') as $ext) {
                 $path = "admin/views/static/$pageName-$lang.$ext";
                 if (file_exists($path)) {
