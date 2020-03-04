@@ -11,6 +11,7 @@ if ($configFile === null) {
     $configFile = 'config.php';
 }
 require_once($configFile);
+require_once('lib/template_utils.php');
 
 spl_autoload_register(function($className) {
     $rootPath = getenv('AQI_PATH');

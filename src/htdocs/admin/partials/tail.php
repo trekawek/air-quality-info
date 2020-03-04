@@ -8,7 +8,7 @@
             </div>
         </footer>
         <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo CONFIG['google_maps_key'] ?>"></script>
-        <script src="/admin/public/js/vendor.min.js?v=31"></script>
-        <script src="/admin/public/js/main.js?v=39"></script>
+        <?php echo jsLink("admin/public/js/vendor.min.js"); ?>
+        <?php echo jsLink("admin/public/js/main.js"); ?>
     </body>
 </html>

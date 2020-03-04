@@ -14,8 +14,8 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <title>aqi.eco - <?php echo __('register'); ?></title>
-        <link rel="stylesheet" href="/admin/public/css/vendor.min.css"/>
-        <link rel="stylesheet" href="/admin/public/css/style.css"/>
+        <?php echo cssLink("admin/public/css/vendor.min.css"); ?>
+        <?php echo cssLink("admin/public/css/style.css"); ?>
     </head>
 
     <body class="app flex-row align-items-center">
@@ -68,6 +68,6 @@ gtag('config', '<?php echo CONFIG['ga_id']; ?>');
                 </div>
             </div>
         </div>
-        <script src="/admin/public/js/vendor.min.js"></script>
+        <?php echo jsLink("admin/public/js/vendor.min.js"); ?>
     </body>
 </html>

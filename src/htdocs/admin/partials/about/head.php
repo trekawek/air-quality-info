@@ -11,9 +11,9 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <title>aqi.eco</title>
-        <link rel="stylesheet" href="/public/css/vendor.min.css"/>
-        <link rel="stylesheet" href="/public/css/themes/default.min.css"/>
-        <link rel="stylesheet" href="/admin/public/css/landing.css?v=3"/>
+        <?php echo cssLink("public/css/vendor.min.css"); ?>
+        <?php echo cssLink("public/css/themes/default.min.css"); ?>
+        <?php echo cssLink("admin/public/css/landing.css"); ?>
         <link rel="shortcut icon" type="image/png" href="/public/img/aqi-favicon.png"/>
         <link rel="apple-touch-icon" sizes="512x512" href="/public/img/aqi-512.png">
     </head>

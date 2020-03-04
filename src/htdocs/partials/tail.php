@@ -14,10 +14,10 @@
 
   </div>
 
-  <link rel="stylesheet" href="/public/css/themes/<?php echo $currentTheme->getTheme() ?>.min.css"/>
-  <link rel="stylesheet" href="/public/css/vendor.min.css?v=32"/>
-  <link rel="stylesheet" href="/public/css/style.css?v=37"/>
-  <link rel="stylesheet" href="/public/css/font_aqi.css?v=34"/>
+  <?php echo cssLink("public/css/themes/".$currentTheme->getTheme().".min.css"); ?>
+  <?php echo cssLink("public/css/vendor.min.css"); ?>
+  <?php echo cssLink("public/css/style.css"); ?>
+  <?php echo cssLink("public/css/font_aqi.css"); ?>
   <?php if (isset($domainTemplate['css'])): ?>
   <?php echo "<style>\n".$domainTemplate['css']."\n</style>\n" ?>
   <?php endif ?>

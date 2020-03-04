@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>aqi.eco</title>
-    <link rel="stylesheet" href="/public/css/vendor.min.css"/>
-    <link rel="stylesheet" href="/public/css/themes/default.min.css"/>
-    <link rel="stylesheet" href="/public/css/device-widget.css"/>
+    <?php echo cssLink("public/css/vendor.min.css"); ?>
+    <?php echo cssLink("public/css/themes/default.min.css"); ?>
+    <?php echo cssLink("public/css/device-widget.css"); ?>
 </head>
 
 <body>
@@ -84,6 +84,6 @@
             <?php echo __('Powered by ') ?><a href="https://aqi.eco" target="_blank">aqi.eco</a>.
         </small>
     </footer>
-    <script src="/admin/public/js/vendor.min.js"></script>
+    <?php echo jsLink("admin/public/js/vendor.min.js"); ?>
 </body>
 </html>

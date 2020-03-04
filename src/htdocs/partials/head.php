@@ -32,10 +32,10 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
 
     <style><?php echo file_get_contents('public/css/critical.css') ?></style>
 
-    <script defer src="/public/js/vendor.min.js?v=35"></script>
-    <script defer src="/public/js/main.js?v=34"></script>
-    <script defer src="/public/js/graph.js?v=35"></script>
-    <script defer src="/public/js/annual_graph.js?v=32"></script>
+    <?php echo jsLink("public/js/vendor.min.js", "defer"); ?>
+    <?php echo jsLink("public/js/main.js", "defer"); ?>
+    <?php echo jsLink("public/js/graph.js", "defer"); ?>
+    <?php echo jsLink("public/js/annual_graph.js", "defer"); ?>
   </head>
   <body class="<?php echo $currentTheme->getTheme() ?>" data-pm10-limit1h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_1H ?>" data-pm25-limit1h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_1H ?>" data-pm10-limit24h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_24H ?>" data-pm25-limit24h="<?php echo \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_24H ?>" data-current-lang='<?php echo $currentLocale->getCurrentLang() ?>' data-locale='<?php echo json_encode($currentLocale->getJsMessages()) ?>' data-timezone='<?php echo date_default_timezone_get() ?>'>
     <div class="container">

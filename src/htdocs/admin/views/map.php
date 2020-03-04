@@ -4,7 +4,7 @@
         <div id="map" data-url="<?php echo l('map', 'data') ?>"></div>
     </div>
 </div>
-<script src="/public/js/vendor.min.js?v=31"></script>
-<script src="/public/js/main.js?v=40"></script>
-<script src="/public/js/map.js?v=40"></script>
+<?php echo jsLink("public/js/vendor.min.js"); ?>
+<?php echo jsLink("public/js/main.js"); ?>
+<?php echo jsLink("public/js/map.js"); ?>
 <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo CONFIG['google_maps_key'] ?>&callback=mapsLoaded" async defer></script>
