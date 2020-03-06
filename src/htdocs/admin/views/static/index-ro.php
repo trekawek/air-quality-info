@@ -3,7 +3,7 @@
         <div class="col-md-6">
             <h1 class="display-3"><span class="logo">aqi.eco</span></h1>
             <p class="text-justify">
-                este un site non-comercial, liber și <a href="https://github.com/trekawek/air-quality-info">deschis (open-source)</a> unde puteți verifica calitatea aerului sau prezenta rezultatele propriului dvs. senzor de smog. Sau poate v-ar plăcea să faceți ceva mai mult pentru strada, imobilul sau cartierul dvs.? Datorită <span class="logo">aqi.eco</span> puteți începe un program de monitorizare a calității aerului în zona dvs. - la fel cum au făcut deja rezidenții polonezi din <a href="https://eko.edial.pl/">Oleśnicy</a>, <a href="https://smog.tlw24.pl/">Włoszczowy</a>, <a href="https://mosina.aqi.eco/">Mosiny</a> sau <a href="https://soleckujawski.aqi.eco/">Solca Kujawskiego</a>.
+                este un site non-profit, gratuit și <a href="https://github.com/trekawek/air-quality-info">deschis (open-source)</a> unde puteți verifica calitatea aerului sau prezenta rezultatele propriului dvs. senzor de smog. Sau, poate v-ar plăcea să faceți ceva mai mult pentru strada, imobilul sau cartierul dvs., nu? Datorită <span class="logo">aqi.eco</span> puteți începe un program de monitorizare a calității aerului în zona dvs. - la fel cum au făcut deja rezidenții polonezi din <a href="https://eko.edial.pl/">Oleśnicy</a>, <a href="https://smog.tlw24.pl/">Włoszczowy</a>, <a href="https://mosina.aqi.eco/">Mosiny</a>, <a href="https://soleckujawski.aqi.eco/">Solca Kujawskiego</a> sau, mai recent, în România, voluntarii din complexul rezidențial <a href="https://qp.aqi.eco/ro/about">Quadra Place (Sector 6, București)</a>.
             </p>
         </div>
         <div class="col-md-6">
