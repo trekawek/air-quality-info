@@ -20,14 +20,6 @@
       <td><?php echo round($averages['rel_pm10'], 0); ?>%</td>
       <td><?php echo __(\AirQualityInfo\Lib\PollutionLevel::POLLUTION_LEVELS[$averages['pm10_level']]['name']); ?></td>
     </tr>
-    <?php if (isset($averages['values']['co2'])): ?>
-    <tr class="index-cat-co2">
-      <th scope="row">CO<sub>2</sub></th>
-      <td><?php echo round($averages['values']['co2'], 0); ?><small>&nbsp;ppm</small></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <?php endif ?>
     <tr>
       <td colspan="4" class="weather-measurements">
         <?php
@@ -40,6 +32,9 @@
         }
         if ($sensors['humidity'] !== null) {
           $weather[] = '<i class="wi wi-humidity"></i> '.round($sensors['humidity'], 0).'%';
+        }
+        if (isset($averages['values']['co2'])) {
+          $weather[] = 'CO<sub>2</sub> '.round($averages['values']['co2'], 0).' ppm';
         }
         if (!empty($weather)): ?>
         <?php echo implode(' | ', $weather) ?>
