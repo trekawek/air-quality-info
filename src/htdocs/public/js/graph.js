@@ -263,7 +263,7 @@ function renderGraph(ctx, data, type, avgType) {
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.grey,
-                label: __('CO2') + ' (ppe)',
+                label: __('CO₂') + ' (ppm)',
                 data: co2Data,
                 borderWidth: 2,
                 fill: false
