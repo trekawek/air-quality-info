@@ -36,4 +36,4 @@ Proiectul SMOG din Włoszczowa a fost creat ca o inițiativă socială a locuito
 
 Prin această inițiativă dorim să creștem gradul de conștientizare a locuitorilor din zonă cu privire la poluare și să oferim informații, în timp real, despre calitatea aerului din zonă. În baza acestor informații, locuitorii pot decide, de exemplu, dacă este momentul potrivit pentru practicarea activităților fizice în aer liber, plimbări, aerisirea camerelor etc. Nu putem avea pretenții de la autorități să facă monitorizare permanentă la nivel de stradă, bloc, scară, iar măsurătorile din cea mai apropiată stație oficială permanentă (Lacul Morii) pot să nu fie relevante pentru aerul pe care îl respirăm în zona în care locuim. De aceea, noi, o mână de oameni din ansamblul rezidential Quadra Place, am decis să facem un pas înainte și să creăm propria noastră rețea locală de senzori, bazată pe senzori [Nettigo Air Monitor](https://nettigo.eu/products/nettigo-air-monitor-kit-0-3-2-build-your-own-smog-sensor), pentru monitorizarea calității aerului unde locuim - qp.aqi.eco
 
-[Sursa] (https://qp.aqi.eco/ro/about)
+[Sursa](https://qp.aqi.eco/ro/about)
