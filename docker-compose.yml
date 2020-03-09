@@ -5,6 +5,7 @@ x-mysql-variables: &mysql-variables
     MYSQL_USER: air_quality_info
     MYSQL_PASSWORD: test
     MYSQL_ROOT_PASSWORD: test
+    MYSQL_ROOT_HOST: "%"
     AQI_CONFIG: /etc/aqi/config.php
     AQI_PATH: /var/www/html
 
