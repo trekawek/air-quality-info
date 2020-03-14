@@ -30,10 +30,23 @@ Proiectul SMOG din Włoszczowa a fost creat ca o inițiativă socială a locuito
 
 #### Programele locale de monitorizare a calității aerului din România
 
-În România, primele programe locale pentru monitorizarea calității aerului prin intermediul serviciului Aqi.eco au apărut la începutul anului 2020.
+În România, primele inițiative ale cetățenilor pentru monitorizarea calității aerului prin intermediul serviciului Aqi.eco au apărut la începutul anului 2020.
 
-#### [Quadra Place](https://qp.aqi.eco/ro/), București
+#### [Quadra Place](https://qp.aqi.eco/ro), București
 
 Prin această inițiativă dorim să creștem gradul de conștientizare a locuitorilor din zonă cu privire la poluare și să oferim informații, în timp real, despre calitatea aerului din zonă. În baza acestor informații, locuitorii pot decide, de exemplu, dacă este momentul potrivit pentru practicarea activităților fizice în aer liber, plimbări, aerisirea camerelor etc. Nu putem avea pretenții de la autorități să facă monitorizare permanentă la nivel de stradă, bloc, scară, iar măsurătorile din cea mai apropiată stație oficială permanentă (Lacul Morii) pot să nu fie relevante pentru aerul pe care îl respirăm în zona în care locuim. De aceea, noi, o mână de oameni din ansamblul rezidential Quadra Place, am decis să facem un pas înainte și să creăm propria noastră rețea locală de senzori, bazată pe senzori [Nettigo Air Monitor](https://nettigo.eu/products/nettigo-air-monitor-kit-0-3-2-build-your-own-smog-sensor), pentru monitorizarea calității aerului unde locuim - qp.aqi.eco
 
 [Sursa](https://qp.aqi.eco/ro/about)
+
+#### Și alte locuri:
+
+* [Comunitatea Mogoșoaia Life Residence](https://bp.aqi.eco/ro), Mogoșoaia, Ilfov
+
+
+#### Programele locale de monitorizare a calității aerului din Rep. Moldova
+
+#### [Chișinău](https://md.aqi.eco/ro)
+
+În capitala Republicii Moldova, soluția "open-source software and hardware" bazată pe Aqi.eco și [Nettigo Air Monitor](https://nettigo.eu/products/nettigo-air-monitor-kit-0-3-2-build-your-own-smog-sensor) este utilizată pentru monitorizarea aerului în zona centrală, fiind pusă la dispoziția cetățenilor cu sprijinul Victoriabank și se înscrie în seria de acțiuni organizate de bancă pentru protecției mediului natural și a încurajării unui mod de viață sănătos.
+
+[Sursa](https://md.aqi.eco/ro/about)
