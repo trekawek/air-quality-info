@@ -51,6 +51,22 @@ class MainController extends AbstractController {
         ));
     }
 
+    public function weather($device) {
+        $lastData = $this->recordModel->getLastData($device['id']);
+        $model = array(
+            'homeWidget' => array(
+                'temperature' => $lastData['temperature'],
+                'pressure' => $lastData['pressure'],
+                'humidity' => $lastData['humidity'],
+            )
+        );
+        $this->render(array(
+            'view' => 'views/weather.php',
+            'head' => 'partials/bare/head.php',
+            'tail' => 'partials/bare/tail.php'),
+            $model);
+    }
+
     public function data_json($device) {
         $data = array();
 

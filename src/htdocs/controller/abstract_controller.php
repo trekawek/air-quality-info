@@ -21,7 +21,9 @@ class AbstractController {
 
     public function render($args, $data = array()) {
         $args = array_merge(array(
-            'layout' => true
+            'layout' => true,
+            'head' => 'partials/head.php',
+            'tail' => 'partials/tail.php',
         ), $args);
 
         $deviceTree = $this->deviceHierarchyModel->getTree($this->userId);
@@ -39,13 +41,13 @@ class AbstractController {
         }
 
         if ($args['layout']) {
-            include('partials/head.php');
+            include($args['head']);
         }
 
         include($args['view']);
 
         if ($args['layout']) {
-            include('partials/tail.php');
+            include($args['tail']);
         }
     }
 
