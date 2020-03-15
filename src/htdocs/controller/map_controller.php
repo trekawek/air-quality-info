@@ -18,6 +18,13 @@ class MapController extends AbstractController {
         $this->render(array('view' => 'views/map/index.php'));
     }
 
+    public function fullscreen() {
+        $this->render(array(
+            'view' => 'views/map/fullscreen.php',
+            'head' => 'partials/bare/head.php',
+            'tail' => 'partials/bare/tail.php'));
+    }
+
     public function data() {
         $nodeId = $this->deviceHierarchyModel->getRootId($this->userId);
         $tree = $this->deviceHierarchyModel->getTree($this->userId, $nodeId);

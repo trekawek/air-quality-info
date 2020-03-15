@@ -1,5 +1,3 @@
-    </div>
-  </div>
 
   <?php echo cssLink("public/css/themes/".$currentTheme->getTheme().".min.css"); ?>
   <?php echo cssLink("public/css/vendor.min.css"); ?>

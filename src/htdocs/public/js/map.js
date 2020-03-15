@@ -87,13 +87,15 @@ function initMap(mapDiv, data) {
     );
 
     var initPosition = getPosition(data[0]);
+    
     var map = new google.maps.Map(mapDiv, {
         zoom: 15,
         mapTypeControlOptions: {
             mapTypeIds: ['roadmap', 'satellite', 'styled_map']
         },
         center: initPosition,
-        streetViewControl: false
+        streetViewControl: false,
+        disableDefaultUI: mapDiv.dataset.hideControls
     });
 
     //Associate the styled map with the MapTypeId.
