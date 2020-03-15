@@ -46,10 +46,11 @@
               </li>
               <?php endforeach ?>
             <?php endif ?>
-
+            <?php if (!$hideDetailsLink): ?>
             <li class="list-group-item text-center air-quality-<?php echo $level === null ? 'null' : $level; ?>">
               <small class="dropshadow white"><?php echo __('Click to see more details.') ?></small>
             </li>
+            <?php endif ?>
         </ul>
       </a>
 

@@ -30,31 +30,16 @@ class DomainWidgetController extends AbstractController {
             http_response_code(404);
             die();
         }
-        
-        $user = $this->userModel->getUserById($this->userId);
 
-        $pm10 = $pm25 = null;
-        $pm10count = $pm25count = 0;
-        foreach ($this->deviceById as $deviceId => $device) {
-            $avg1h = $this->recordModel->getAverages($deviceId, 1);
-            if ($avg1h['values']['pm10'] !== null) {
-                $pm10 += $avg1h['values']['pm10'];
-                $pm10count++;
-            }
-            if ($avg1h['values']['pm25'] !== null) {
-                $pm25 += $avg1h['values']['pm25'];
-                $pm25count++;
-            }
-        }
+        $avgs = $this->getAverages();
+
         $maxLevel = -1;
-        if ($pm10count > 0) {
-            $pm10 /= $pm10count;
-            $pm10Level = PollutionLevel::findLevel(PollutionLevel::PM10_THRESHOLDS_1H, $pm10);
+        if ($avgs['pm10'] !== null) {
+            $pm10Level = PollutionLevel::findLevel(PollutionLevel::PM10_THRESHOLDS_1H, $avgs['pm10']);
             $maxLevel = max($maxLevel, $pm10Level);
         }
-        if ($pm25count > 0) {
-            $pm25 /= $pm25count;
-            $pm25Level = PollutionLevel::findLevel(PollutionLevel::PM25_THRESHOLDS_1H, $pm25);
+        if ($avgs['pm25'] !== null) {
+            $pm25Level = PollutionLevel::findLevel(PollutionLevel::PM25_THRESHOLDS_1H, $avgs['pm25']);
             $maxLevel = max($maxLevel, $pm25Level);
         }
         if ($maxLevel == -1) {
@@ -65,8 +50,42 @@ class DomainWidgetController extends AbstractController {
             'level' => $maxLevel,
             'locale' => $this->locale->getValue('_widgets')[$maxLevel],
             'siteUrl' => $this->getUriPrefix(),
-            'widgetId' => $widgetId
+            'widgetId' => $widgetId,
+            'hideDetailsLink' => (isset($_GET['hide_details_link']) && $_GET['hide_details_link'] === 'true')
         ));
+    }
+
+    private function getAverages() {
+        $sums = array();
+        $counts = array();
+
+        foreach ($this->deviceById as $deviceId => $device) {
+            $avg1h = $this->recordModel->getAverages($deviceId, 1);
+            foreach ($avg1h['values'] as $k => $v) {
+                if (!isset($sums[$k])) {
+                    $sums[$k] = null;
+                    $counts[$k] = null;
+                }
+                if ($v !== null) {
+                    if ($sums[$k] === null) {
+                        $sums[$k] = 0;
+                        $counts[$k] = 0;
+                    }
+                    $sums[$k] += $v;
+                    $counts[$k]++;
+                }
+            }
+        }
+
+        $avgs = array();
+        foreach ($sums as $k => $v) {
+            if ($sums[$k] === null) {
+                $avgs[$k] = null;
+            } else {
+                $avgs[$k] = $sums[$k] / $counts[$k];
+            }
+        }
+        return $avgs;
     }
 
 }
