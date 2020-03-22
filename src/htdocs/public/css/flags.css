@@ -1,0 +1,28 @@
+.flag {
+    width: 1.5rem;
+    height: 1.5rem;
+    background-size: cover;
+    display: block;
+    float: left;
+    margin-right: 0.5rem;
+}
+
+.flag-cs {
+    background-image: url("/public/img/flags/czech-republic.png");
+}
+
+.flag-en {
+    background-image: url("/public/img/flags/united-kingdom.png");
+}
+
+.flag-hu {
+    background-image: url("/public/img/flags/hungary.png");
+}
+
+.flag-pl {
+    background-image: url("/public/img/flags/poland.png");
+}
+
+.flag-ro {
+    background-image: url("/public/img/flags/romania.png");
+}

@@ -18,6 +18,7 @@
   <?php echo cssLink("public/css/vendor.min.css"); ?>
   <?php echo cssLink("public/css/style.css"); ?>
   <?php echo cssLink("public/css/font_aqi.css"); ?>
+  <?php echo cssLink("public/css/flags.css"); ?>
   <?php if (isset($domainTemplate['css'])): ?>
   <?php echo "<style>\n".$domainTemplate['css']."\n</style>\n" ?>
   <?php endif ?>

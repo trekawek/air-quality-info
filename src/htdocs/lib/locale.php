@@ -6,8 +6,6 @@ namespace AirQualityInfo\Lib {
 
         const LANG_TO_LOCALE = array('cs' => 'cs_CZ', 'en' => 'en_US', 'hu' => 'hu_HU', 'pl' => 'pl_PL', 'ro' => 'ro_RO');
 
-        const LANG_TO_FLAG = array('cs' => 'czech-republic.png', 'en' => 'united-kingdom.png', 'hu' => 'hungary.png', 'pl' => 'poland.png', 'ro' => 'romania.png');
-
         private $currentLang;
 
         private $locale;
