@@ -28,12 +28,13 @@ class MapController extends AbstractController {
     }
 
     public function data() {
-        $data = $this->cache->load('/map/data.json', function() {
-            return $this->loadData();
-        }, array(
-            \Nette\Caching\Cache::EXPIRE => '5 minutes',
-        ));
-        
+        $data = $this->cache->load('/map/data.json');
+        if ($data === null) {
+            $data = $this->loadData();
+            $this->cache->save('/map/data.json', $data, array(
+                \Nette\Caching\Cache::EXPIRE => '5 minutes',
+            ));
+        }
         header('Content-type: application/json');
         echo json_encode($data);
     }
