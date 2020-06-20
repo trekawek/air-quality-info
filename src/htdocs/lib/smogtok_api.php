@@ -7,6 +7,7 @@ class SmogtokApi {
         'Temperatura' => 'temperature',
         'PM 2,5' => 'pm25',
         'PM 10' => 'pm10',
+        'Ciśnienie' => 'pressure',
         'Wilgotność' => 'humidity'
     );
 

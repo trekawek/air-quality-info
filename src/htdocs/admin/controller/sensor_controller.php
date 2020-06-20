@@ -64,6 +64,34 @@ class SensorController extends AbstractController {
         }
     }
 
+    public function createCustom() {
+        $deviceForm = new \AirQualityInfo\Lib\Form\Form("deviceForm");
+        $this->addNameField($deviceForm)
+            ->setOptions(array('prepend' => 'https://' . $this->user['domain'] . CONFIG['user_domain_suffixes'][0] . '/'));
+        $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
+        if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
+            $deviceId = $this->deviceModel->createDevice(array(
+                'user_id' => $this->user['id'],
+                'name' => $_POST['name'],
+                'description' => $_POST['description'],
+                'update_mode' => 'pull',
+                'default_device' => 0,
+            ));
+
+            $rootId = $this->deviceHierarchyModel->getRootId($this->user['id']);
+            $this->deviceHierarchyModel->addChild($this->user['id'], $rootId, null, null, $deviceId);
+            
+            $this->alert(__('Linked device', 'success'));
+            header('Location: '.l('device', 'edit', null, array('device_id' => $deviceId)));
+        } else {
+            $this->render(array(
+                'view' => 'admin/views/sensor/create_custom.php'
+            ), array(
+                'deviceForm' => $deviceForm
+            ));
+        }
+    }
+
     public function edit($deviceId) {
         $device = $this->getDevice($deviceId);
         $nodes = $this->deviceHierarchyModel->getDeviceNodes($this->user['id'], $device['id']);
@@ -73,13 +101,15 @@ class SensorController extends AbstractController {
         }
 
         $deviceForm = $this->getDeviceForm($device);
-        $sensorIdForm = new \AirQualityInfo\Lib\Form\Form("sensorIdForm");
-        $sensorIdForm->addElement('sensor_id', 'number', 'Sensor id')->addRule('required');
-
         if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
             $data = array(
                 'name' => $_POST['name'],
-                'description' => $_POST['description']
+                'description' => $_POST['description'],
+                'location_provided' => $_POST['location_provided'],
+                'lat' => $_POST['lat'],
+                'lng' => $_POST['lng'],
+                'radius' => $_POST['radius'],
+                'elevation' => empty($_POST['elevation']) ? NULL : $_POST['elevation']
             );
             $this->deviceModel->updateDevice($deviceId, $data);
             $this->alert(__('Updated the device', 'success'));
@@ -87,8 +117,16 @@ class SensorController extends AbstractController {
             $deviceForm->setDefaultValues($device);
         }
 
+        $sensorIdForm = new \AirQualityInfo\Lib\Form\Form("sensorIdForm");
+        $sensorIdForm->addElement('sensor_id', 'number', 'Sensor id')->addRule('required');
+        $sensorIdForm->addElement('type', 'select', 'Sensor type')
+            ->addRule('required')
+            ->setOptions(array(
+                'sensor.community' => 'sensor.community',
+                'smogtok' => 'SmogTok'
+            ));
         if ($sensorIdForm->isSubmitted() && $sensorIdForm->validate($_POST)) {
-            $this->deviceModel->insertSensor($deviceId, $_POST['sensor_id']);
+            $this->deviceModel->insertSensor($deviceId, $_POST['sensor_id'], $_POST['type']);
             $this->alert(__('Added new sensor id', 'success'));    
         }
 
@@ -127,10 +165,16 @@ class SensorController extends AbstractController {
         $deviceForm = new \AirQualityInfo\Lib\Form\Form("deviceForm");
         $this->addNameField($deviceForm);
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
+        $deviceForm->addElement('location_provided', 'checkbox', 'Choose location', array('data-toggle'=>'collapse', 'data-target'=>'.map-control'), null);
         $deviceForm->addElement('radius', 'number', 'Radius (m)', array('min' => 50, 'max' => 500, 'step' => 50))
+            ->addGroupClass('map-control')
+            ->addGroupClass('collapse')
             ->addRule('required')
             ->addRule('range', array('min' => 50, 'max' => 500, 'message' => 'Please choose value between 50 and 500.' ));
-        $deviceForm->addElement('elevation', 'text', 'Elevation (m a.s.l.)', array('readonly' => true));
+        $deviceForm->addElement('elevation', 'number', 'Elevation (m a.s.l.)', array('min' => -10994, 'max' => 8848))
+            ->addGroupClass('map-control')
+            ->addGroupClass('collapse')
+            ->addRule('range', array('min' => -10994, 'max' => 8848, 'message' => 'Please choose value between -10994 and 8848.' ));
         $deviceForm->addElement('lat', 'hidden');
         $deviceForm->addElement('lng', 'hidden');
         $deviceForm->setDefaultValues($device);

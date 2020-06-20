@@ -123,19 +123,16 @@ class DeviceModel {
     }
 
     public function getSensorIds($deviceId) {
-        $stmt = $this->pdo->prepare("SELECT `sensor_id` FROM `device_sensors` WHERE `device_id` = ?");
+        $stmt = $this->pdo->prepare("SELECT `sensor_id`, `type` FROM `device_sensors` WHERE `device_id` = ?");
         $stmt->execute([$deviceId]);
-        $data = array();
-        while ($row = $stmt->fetch()) {
-            $data[] = $row['sensor_id'];
-        }
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
         return $data;
     }
 
-    public function insertSensor($deviceId, $sensorId) {
-        $stmt = $this->pdo->prepare("INSERT INTO `device_sensors` (`device_id`, `sensor_id`) VALUES (?, ?)");
-        $stmt->execute([$deviceId, $sensorId]);
+    public function insertSensor($deviceId, $sensorId, $type = 'sensor.community') {
+        $stmt = $this->pdo->prepare("INSERT INTO `device_sensors` (`device_id`, `sensor_id`, `type`) VALUES (?, ?, ?)");
+        $stmt->execute([$deviceId, $sensorId, $type]);
         $stmt->closeCursor();
     }
 
