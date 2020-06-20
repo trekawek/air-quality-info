@@ -114,9 +114,9 @@ class DeviceModel {
         return $data;
     }
 
-    public function getSensors() {
-        $stmt = $this->pdo->prepare("SELECT * FROM `device_sensors`");
-        $stmt->execute();
+    public function getSensors($type = 'sensor.community') {
+        $stmt = $this->pdo->prepare("SELECT * FROM `device_sensors` WHERE `type` = ?");
+        $stmt->execute([$type]);
         $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         $stmt->closeCursor();
         return $data;
