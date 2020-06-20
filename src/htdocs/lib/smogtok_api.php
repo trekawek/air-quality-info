@@ -31,6 +31,9 @@ class SmogtokApi {
                 $value = $r['VALUE'];
                 $record[SmogtokApi::VALUE_MAPPING[$name]] = $value;
             }
+            if (isset($record['pressure'])) {
+                $record['pressure'] *= 100;
+            }
             $record['timestamp'] = \DateTime::createFromFormat('Y-m-d H:i:s', $item['DT'], new \DateTimeZone('Europe/Warsaw'))->getTimestamp();
         });
 
