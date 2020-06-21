@@ -3,7 +3,7 @@ namespace AirQualityInfo\Model;
 
 class RecordModel {
 
-    const FIELDS = array('pm25','pm10','co2','temperature','pressure','humidity','heater_temperature','heater_humidity');
+    const FIELDS = array('pm25','pm10','pm1','pm4','n05','n1','n4','n10','co2','temperature','pressure','humidity','heater_temperature','heater_humidity');
 
     const AGGREGATES = array(
         array('resolution' => 1 * 180,      'ttl' => 24 * 60 * 60),
@@ -61,7 +61,7 @@ class RecordModel {
                 if (in_array($k, array('humidity', 'heater_humidity')) && $v < 0) {
                     $record[$k] = null;
                 }
-                if (in_array($k, array('pm25', 'pm10', 'pressure')) && $v < 0) {
+                if (in_array($k, array('pm25', 'pm10', 'pm1', 'pm4', 'n05', 'n1', 'n4', 'n10', 'co2', 'pressure')) && $v < 0) {
                     $record[$k] = null;
                 }
             }

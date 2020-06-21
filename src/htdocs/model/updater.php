@@ -4,9 +4,15 @@ namespace AirQualityInfo\Model;
 class Updater {
 
     const VALUE_MAPPING = array(
-        'pm1'         => array(          'PMS_P0'),
-        'pm10'        => array('SDS_P1', 'PMS_P1', 'HPM_P1'),
-        'pm25'        => array('SDS_P2', 'PMS_P2', 'HPM_P2'),
+        'pm10'        => array('SDS_P1', 'PMS_P1', 'HPM_P1', 'SPS30_P1'),
+        'pm25'        => array('SDS_P2', 'PMS_P2', 'HPM_P2', 'SPS30_P2'),
+        'pm1'         => array(          'PMS_P0',           'SPS30_P0'),
+        'pm4'         => array(                              'SPS30_P4'),
+        'n05'         => array(                              'SPS30_N05'),
+        'n1'          => array(                              'SPS30_N1'),
+        'n25'         => array(                              'SPS30_N25'),
+        'n4'          => array(                              'SPS30_N4'),
+        'n10'         => array(                              'SPS30_N10'),
         'co2'         => array('conc_co2_ppm'),
         'temperature' => array('BME280_temperature', 'BMP_temperature', 'BMP280_temperature', 'HTU21_temperature', 'DHT22_temperature', 'SHT1x_temperature'),
         'humidity'    => array('BME280_humidity', 'HTU21_humidity', 'DHT22_humidity', 'SHT1x_humidity'),
@@ -43,17 +49,13 @@ class Updater {
         $records = array();
         foreach ($batch as $row) {
             $data = $row['data'];
-            $records[] = array(
+            $r = array(
                 'timestamp'   => $row['time'],
-                'pm25'        => Updater::readValue($mapping, $device, 'pm25', $data),
-                'pm10'        => Updater::readValue($mapping, $device, 'pm10', $data),
-                'co2'         => Updater::readValue($mapping, $device, 'co2', $data),
-                'temperature' => Updater::readValue($mapping, $device, 'temperature', $data),
-                'pressure'    => Updater::readValue($mapping, $device, 'pressure', $data),
-                'humidity'    => Updater::readValue($mapping, $device, 'humidity', $data),
-                'heater_temperature' => Updater::readValue($mapping, $device, 'heater_temperature', $data),
-                'heater_humidity'    => Updater::readValue($mapping, $device, 'heater_humidity', $data)
             );
+            foreach (array_keys(Updater::VALUE_MAPPING) as $k) {
+                $r[$k] = Updater::readValue($mapping, $device, $k, $data);
+            }
+            $records[] = $r;
         }
         $this->record_model->update($device['id'], $records);
     }
