@@ -14,6 +14,7 @@ window.chartColors = {
 	lightPurple: 'rgba(153, 102, 255, 0.5)',
     grey: 'rgb(169, 169, 169)',
     lightGrey: 'rgba(169, 169, 169, 0.5)',
+    transparent: 'rgba(0, 0, 0, 0)'
 };
 
 (function() {
@@ -176,11 +177,38 @@ function renderGraph(ctx, data, type, avgType) {
         var pm10data = mapToTimeSeries(data.data.pm10);
         var emptyPm25Data = emptyTimeSeries(pm25data);
         var emptyPm10Data = emptyTimeSeries(pm10data);
-        config.data = {
-            datasets: [{
+
+        config.data = {datasets: []};
+
+        if (!isEmptyData(data.data.pm1)) {
+            var pm1data = mapToTimeSeries(data.data.pm1);
+            config.data.datasets.push({
+                backgroundColor: window.chartColors.yellow,
+                borderColor: window.chartColors.red,
+                label: 'PM₁ (µg/m³)',
+                data: pm1data,
+                borderWidth: 1,
+                hidden: true
+            });
+        }
+
+        if (!isEmptyData(data.data.pm4)) {
+            var pm4data = mapToTimeSeries(data.data.pm4);
+            config.data.datasets.push({
+                backgroundColor: window.chartColors.blue,
+                borderColor: window.chartColors.red,
+                label: 'PM₄ (µg/m³)',
+                data: pm4data,
+                borderWidth: 1,
+                hidden: true
+            });
+        }
+
+        config.data.datasets.push(
+            {
                 backgroundColor: window.chartColors.purple,
                 borderColor: window.chartColors.red,
-                label: 'PM₂₅ (µg/m³)',
+                label: 'PM₂.₅ (µg/m³)',
                 data: pm25data,
                 borderWidth: 1
             }, {
@@ -199,8 +227,9 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: window.chartColors.lightRed,
                 data: emptyPm10Data,
                 borderWidth: 1
-            }]
-        };
+            }
+        );
+
         config.options.scales.yAxes = [{
             display: true,
             scaleLabel: {
@@ -232,7 +261,7 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: 'purple',
                 borderWidth: 1,
                 label: {
-                  content: __('PM₂₅ limit'),
+                  content: __('PM₂.₅ limit'),
                   enabled: true,
                   position: 'left',
 		          backgroundColor: 'rgba(0,0,0,0.3)'
@@ -255,6 +284,49 @@ function renderGraph(ctx, data, type, avgType) {
                 }
             });
         }
+        break;
+
+        case 'pm_n':
+        config.data = {datasets: []};
+        [{
+            name: 'n05',
+            label: '#PM₀.₅/cm³',
+            hidden: true,
+            borderColor: window.chartColors.grey
+         },
+         {
+            name: 'n1',
+            label: '#PM₁/cm³',
+            hidden: true,
+            borderColor: window.chartColors.yellow
+         },
+         {
+            name: 'n25',
+            label: '#PM₂.₅/cm³',
+            borderColor: window.chartColors.purple
+         },
+         {
+            name: 'n4',
+            label: '#PM₄/cm³',
+            hidden: true,
+            borderColor: window.chartColors.blue
+         },
+         {
+            name: 'n10',
+            label: '#PM₁₀/cm³',
+            borderColor: window.chartColors.orange
+         }].forEach(function(item) {
+             var d = mapToTimeSeries(data.data[item.name]);
+             if (isEmptyData(d)) {
+                 return;
+             }
+             var dataset = {
+                data: mapToTimeSeries(data.data[item.name]),
+                borderWidth: 2,
+                fill: false
+             };
+             config.data.datasets.push(Object.assign(dataset, item));
+         });
         break;
 
         case 'co2':

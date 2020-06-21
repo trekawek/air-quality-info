@@ -193,9 +193,13 @@ class RecordModel {
             break;
         
             case 'pm':
-            $fields = array('pm10', 'pm25');
+            $fields = array('pm10', 'pm25', 'pm1', 'pm4');
             break;
 
+            case 'pm_n':
+            $fields = array('n05', 'n1', 'n25', 'n4', 'n10');
+            break;
+    
             case 'co2':
             $fields = array('co2');
             break;

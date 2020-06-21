@@ -15,6 +15,9 @@ class GraphController extends AbstractController {
         if ($sensors['pm10'] !== null || $sensors['pm25'] !== null) {
             $graphs[] = 'pm';
         }
+        if ($sensors['n10'] !== null) {
+            $graphs[] = 'pm_n';
+        }
         if ($sensors['co2'] !== null) {
             $graphs[] = 'co2';
         }
