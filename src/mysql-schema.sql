@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 10.135.14.82
--- Generation Time: Mar 04, 2020 at 09:51 PM
--- Server version: 8.0.19-0ubuntu0.19.10.3
--- PHP Version: 7.4.1
+-- Generation Time: Jun 21, 2020 at 07:44 AM
+-- Server version: 8.0.20-0ubuntu0.20.04.1
+-- PHP Version: 7.4.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -28,6 +27,13 @@ CREATE TABLE `aggregates` (
   `resolution` int NOT NULL,
   `pm25` decimal(6,2) DEFAULT NULL,
   `pm10` decimal(6,2) DEFAULT NULL,
+  `pm1` decimal(6,2) DEFAULT NULL,
+  `pm4` decimal(6,2) DEFAULT NULL,
+  `n05` decimal(6,2) DEFAULT NULL,
+  `n1` decimal(6,2) DEFAULT NULL,
+  `n25` decimal(6,2) DEFAULT NULL,
+  `n4` decimal(6,2) DEFAULT NULL,
+  `n10` decimal(6,2) DEFAULT NULL,
   `co2` decimal(6,2) DEFAULT NULL,
   `temperature` decimal(5,2) DEFAULT NULL,
   `humidity` decimal(5,2) DEFAULT NULL,
@@ -127,7 +133,8 @@ CREATE TABLE `device_mapping` (
 
 CREATE TABLE `device_sensors` (
   `device_id` int NOT NULL,
-  `sensor_id` int NOT NULL
+  `sensor_id` int NOT NULL,
+  `type` enum('sensor.community','smogtok') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'sensor.community'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -153,6 +160,13 @@ CREATE TABLE `records` (
   `timestamp` int NOT NULL,
   `pm25` decimal(6,2) DEFAULT NULL,
   `pm10` decimal(6,2) DEFAULT NULL,
+  `pm1` decimal(6,2) DEFAULT NULL,
+  `pm4` decimal(6,2) DEFAULT NULL,
+  `n05` decimal(6,2) DEFAULT NULL,
+  `n1` decimal(6,2) DEFAULT NULL,
+  `n25` decimal(6,2) DEFAULT NULL,
+  `n4` decimal(6,2) DEFAULT NULL,
+  `n10` decimal(6,2) DEFAULT NULL,
   `co2` decimal(6,2) DEFAULT NULL,
   `temperature` decimal(5,2) DEFAULT NULL,
   `humidity` decimal(5,2) DEFAULT NULL,
