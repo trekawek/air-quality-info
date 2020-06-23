@@ -102,9 +102,13 @@ class MainController extends AbstractController {
     }
 
     private static function arr_values_to_float($values) {
-        return array_map (function($v) {
+        $result = array_map (function($v) {
             return is_numeric($v) ? round($v, 2) : $v;
         }, $values);
+        $result = array_filter ($result, function($v) {
+            return $v !== null;
+        });
+        return $result;
     }
 
     public function all($nodeId = null) {
