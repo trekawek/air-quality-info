@@ -111,6 +111,31 @@ class MainController extends AbstractController {
         return $result;
     }
 
+    public function median_weather() {
+        $weather = array('temperature' => [], 'humidity' => [], 'pressure' => []);
+
+        foreach ($this->deviceById as $deviceId => $device) {
+            $sensors = $this->recordModel->getLastData($deviceId);
+            foreach ($weather as $k => $_) {
+                $weather[$k][] = $sensors[$k];
+            }
+        }
+
+        $model = array(
+            'homeWidget' => array(
+                'temperature' => MainController::median($weather['temperature']),
+                'pressure' => MainController::median($weather['pressure']),
+                'humidity' => MainController::median($weather['humidity']),
+            )
+        );
+
+        $this->render(array(
+            'view' => 'views/weather.php',
+            'head' => 'partials/bare/head.php',
+            'tail' => 'partials/bare/tail.php'),
+            $model);
+    }
+
     public function all($nodeId = null) {
         if ($nodeId === null) {
             $nodeId = $this->deviceHierarchyModel->getRootId($this->userId);

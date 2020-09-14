@@ -55,22 +55,6 @@ class DomainWidgetController extends AbstractController {
         ));
     }
 
-    public function average_weather() {
-        $avgs = $this->getAverages();
-        $model = array(
-            'homeWidget' => array(
-                'temperature' => $avgs['temperature'],
-                'pressure' => $avgs['pressure'],
-                'humidity' => $avgs['humidity'],
-            )
-        );
-        $this->render(array(
-            'view' => 'views/weather.php',
-            'head' => 'partials/bare/head.php',
-            'tail' => 'partials/bare/tail.php'),
-            $model);
-    }
-
     private function getAverages() {
         $sums = array();
         $counts = array();
