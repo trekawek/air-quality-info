@@ -31,6 +31,7 @@ $routes = array(
     'GET /:lang/[:device]'                 => array('main', 'index'),
     'GET /[:lang]/:device/data.json'       => array('main', 'data_json'),
     'GET /:lang/[:device]/main_inner'      => array('main', 'index_inner'),
+    'GET /:lang/weather'                   => array('domain_widget', 'average_weather'),
     'GET /:lang/[:device]/weather'         => array('main', 'weather'),
     'GET /:lang/:device/annual_stats'      => array('annual_stats', 'index'),
     'GET /:lang/:device/annual_stats/graph_data.json'  => array('annual_stats', 'get_data'),
