@@ -2,11 +2,9 @@
 
 namespace Pheanstalk\Command;
 
-use Pheanstalk\Contract\JobIdInterface;
 use Pheanstalk\Contract\ResponseInterface;
 use Pheanstalk\Contract\ResponseParserInterface;
 use Pheanstalk\Exception;
-use Pheanstalk\Job;
 use Pheanstalk\Response\ArrayResponse;
 
 /**
@@ -32,7 +30,7 @@ class KickJobCommand extends JobCommand implements ResponseParserInterface
     public function parseResponse(string $responseLine, ?string $responseData): ArrayResponse
     {
         if ($responseLine == ResponseInterface::RESPONSE_NOT_FOUND) {
-            throw new Exception\ServerException(sprintf(
+            throw new Exception\JobNotFoundException(sprintf(
                 '%s: Job %d does not exist or is not in a kickable state.',
                 $responseLine,
                 $this->jobId

@@ -19,11 +19,11 @@ class Pheanstalk implements PheanstalkInterface
      */
     private $connection;
     /**
-     * @var string
+     * @var ?string
      */
     private $using = PheanstalkInterface::DEFAULT_TUBE;
     /**
-     * @var string[]
+     * @var array<string,bool>
      */
     private $watching = [PheanstalkInterface::DEFAULT_TUBE => true];
 
@@ -383,10 +383,8 @@ class Pheanstalk implements PheanstalkInterface
     {
         $this->connection->disconnect();
 
-        if ($this->using != PheanstalkInterface::DEFAULT_TUBE) {
-            $tube = $this->using;
-            $this->using = null;
-            $this->useTube($tube);
+        if ($this->using !== PheanstalkInterface::DEFAULT_TUBE) {
+            $this->dispatch(new Command\UseCommand($this->using));
         }
 
         foreach ($this->watching as $tube => $true) {

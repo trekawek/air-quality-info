@@ -2,15 +2,10 @@
 
 namespace Pheanstalk\Contract;
 
-use Pheanstalk\Contract\ResponseParserInterface;
-use Pheanstalk\Exception;
-
 /**
  * A command to be sent to the beanstalkd server, and response processing logic.
  *
  * @author  Paul Annesley
- * @package Pheanstalk
- * @license http://www.opensource.org/licenses/mit-license.php
  */
 interface CommandInterface
 {

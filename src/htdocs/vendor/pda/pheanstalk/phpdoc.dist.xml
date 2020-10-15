@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor
+        configVersion="3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.phpdoc.org"
+        xsi:noNamespaceSchemaLocation="vendor/phpdocumentor/phpdocumentor/data/xsd/phpdoc.xsd"
+>
+    <paths>
+        <output>docs</output>
+        <cache>cache</cache>
+    </paths>
+    <version number="3.0.0">
+        <api>
+            <source dsn=".">
+                <path>src</path>
+            </source>
+            <extensions>
+                <extension>php</extension>
+            </extensions>
+            <default-package-name>Pheanstalk</default-package-name>
+        </api>
+    </version>
+    <template name="default"/>
+</phpdocumentor>

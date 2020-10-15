@@ -654,17 +654,17 @@
     },
     {
         "name": "pda/pheanstalk",
-        "version": "v4.0.0",
-        "version_normalized": "4.0.0.0",
+        "version": "v4.0.3",
+        "version_normalized": "4.0.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/pheanstalk/pheanstalk.git",
-            "reference": "328708b2cb843c214579a9ac3d1730c074038d6a"
+            "reference": "6165573aad525d39b3ac8ae916214cb483a61263"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/pheanstalk/pheanstalk/zipball/328708b2cb843c214579a9ac3d1730c074038d6a",
-            "reference": "328708b2cb843c214579a9ac3d1730c074038d6a",
+            "url": "https://api.github.com/repos/pheanstalk/pheanstalk/zipball/6165573aad525d39b3ac8ae916214cb483a61263",
+            "reference": "6165573aad525d39b3ac8ae916214cb483a61263",
             "shasum": ""
         },
         "require": {
@@ -672,11 +672,9 @@
             "php": ">=7.1.0"
         },
         "require-dev": {
-            "phpdocumentor/phpdocumentor": "^2",
-            "phpunit/phpunit": "^7",
-            "vimeo/psalm": "^2.0"
+            "phpunit/phpunit": "^7"
         },
-        "time": "2019-01-19T15:11:35+00:00",
+        "time": "2020-09-22T07:17:48+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -702,7 +700,7 @@
             }
         ],
         "description": "PHP client for beanstalkd queue",
-        "homepage": "https://github.com/pda/pheanstalk",
+        "homepage": "https://github.com/pheanstalk/pheanstalk",
         "keywords": [
             "beanstalkd"
         ]

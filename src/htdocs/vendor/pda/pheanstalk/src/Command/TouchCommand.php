@@ -2,7 +2,6 @@
 
 namespace Pheanstalk\Command;
 
-use Pheanstalk\Contract\JobIdInterface;
 use Pheanstalk\Contract\ResponseInterface;
 use Pheanstalk\Contract\ResponseParserInterface;
 use Pheanstalk\Exception;
@@ -26,7 +25,7 @@ class TouchCommand extends JobCommand implements ResponseParserInterface
     public function parseResponse(string $responseLine, ?string $responseData): ArrayResponse
     {
         if ($responseLine == ResponseInterface::RESPONSE_NOT_FOUND) {
-            throw new Exception\ServerException(sprintf(
+            throw new Exception\JobNotFoundException(sprintf(
                 'Job %u %s: does not exist or is not reserved by client',
                 $this->jobId,
                 $responseLine

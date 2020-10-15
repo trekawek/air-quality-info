@@ -2,7 +2,6 @@
 
 namespace Pheanstalk\Command;
 
-use Pheanstalk\Contract\JobIdInterface;
 use Pheanstalk\Contract\ResponseInterface;
 use Pheanstalk\Contract\ResponseParserInterface;
 use Pheanstalk\Exception;
@@ -28,7 +27,7 @@ class PeekJobCommand extends JobCommand implements ResponseParserInterface
                 $responseLine,
                 $this->jobId
             );
-            throw new Exception\ServerException($message);
+            throw new Exception\JobNotFoundException($message);
         }
 
         if (preg_match('#^FOUND (\d+) \d+$#', $responseLine, $matches)) {
