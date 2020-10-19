@@ -93,6 +93,8 @@ class FetchSensorTask {
         $sensorIds = array();
         $sensorToDevices = array();
         $deviceData = array();
+        $locations = array();
+        $records = array();
         foreach ($sensors as $r) {
             $sensorId = $r['sensor_id'];
             $sensorIds[] = $r['sensor_id'];
