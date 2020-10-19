@@ -115,7 +115,7 @@ class UserController extends AbstractController {
         $timezones = array_combine($timezones, $timezones);
 
         $userForm = new \AirQualityInfo\Lib\Form\Form("userForm");
-        $userForm->addElement('allow_sensor_community', 'checkbox', 'Allows sensor.community sensors', array(), 'Enabling the sensor.community support disables the templating options.');
+        $userForm->addElement('allow_sensor_community', 'checkbox', 'Allow pull sensors', array(), 'Enabling the support for pulling measurements from 3rd party sensors (eg. sensor.community) disables the templating options.');
         $urlPrefix = 'https://'
             .$this->user['domain']
             .CONFIG['user_domain_suffixes'][0]
