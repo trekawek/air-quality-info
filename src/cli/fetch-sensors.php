@@ -22,6 +22,8 @@ class FetchSensorTask {
 
     private $smogtokApi;
 
+    private $syngeosApi;
+
     private $deviceModel;
 
     private $recordModel;
@@ -29,10 +31,12 @@ class FetchSensorTask {
     public function __construct(
         \AirQualityInfo\Lib\SensorCommunityApi $sensorsApi,
         \AirQualityInfo\Lib\SmogtokApi $smogtokApi,
+        \AirQualityInfo\Lib\SyngeosApi $syngeosApi,
         \AirQualityInfo\Model\DeviceModel $deviceModel,
         \AirQualityInfo\Model\RecordModel $recordModel) {
         $this->sensorsApi = $sensorsApi;
         $this->smogtokApi = $smogtokApi;
+        $this->syngeosApi = $syngeosApi;
         $this->deviceModel = $deviceModel;
         $this->recordModel = $recordModel;
     }
@@ -47,6 +51,11 @@ class FetchSensorTask {
         echo "Reading smogtok.com data\n";
         $records = $this->readSmogtokData();
         echo 'Inserting '.count($records)." records\n";
+
+        echo "Reading syngeos data\n";
+        $records = $this->readSyngeosData();
+        echo 'Inserting '.count($records)." records\n";
+
         $this->insertRecords($records);
     }
 
@@ -121,6 +130,16 @@ class FetchSensorTask {
         $records = array();
         foreach ($sensors as $s) {
             $r = $this->smogtokApi->getRecord($s['sensor_id']);
+            $records[$s['device_id']] = $r;
+        }
+        return $records;
+    }
+
+    private function readSyngeosData() {
+        $sensors = $this->deviceModel->getSensors('syngeos');
+        $records = array();
+        foreach ($sensors as $s) {
+            $r = $this->syngeosApi->getRecord($s['sensor_id']);
             $records[$s['device_id']] = $r;
         }
         return $records;
