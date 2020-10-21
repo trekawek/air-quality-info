@@ -51,11 +51,11 @@ class FetchSensorTask {
         echo "Reading smogtok.com data\n";
         $records = $this->readSmogtokData();
         echo 'Inserting '.count($records)." records\n";
+        $this->insertRecords($records);
 
         echo "Reading syngeos data\n";
         $records = $this->readSyngeosData();
         echo 'Inserting '.count($records)." records\n";
-
         $this->insertRecords($records);
     }
 
