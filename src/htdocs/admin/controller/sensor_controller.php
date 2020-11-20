@@ -124,7 +124,8 @@ class SensorController extends AbstractController {
             ->setOptions(array(
                 'sensor.community' => 'sensor.community',
                 'smogtok' => 'SmogTok',
-                'syngeos' => 'Syngeos'
+                'syngeos' => 'Syngeos',
+                'gios' => 'GIOŚ'
             ));
         if ($sensorIdForm->isSubmitted() && $sensorIdForm->validate($_POST)) {
             $this->deviceModel->insertSensor($deviceId, $_POST['sensor_id'], $_POST['type']);

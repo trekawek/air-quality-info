@@ -24,6 +24,8 @@ class FetchSensorTask {
 
     private $syngeosApi;
 
+    private $giosApi;
+
     private $deviceModel;
 
     private $recordModel;
@@ -32,11 +34,13 @@ class FetchSensorTask {
         \AirQualityInfo\Lib\SensorCommunityApi $sensorsApi,
         \AirQualityInfo\Lib\SmogtokApi $smogtokApi,
         \AirQualityInfo\Lib\SyngeosApi $syngeosApi,
+        \AirQualityInfo\Lib\GiosApi $giosApi,
         \AirQualityInfo\Model\DeviceModel $deviceModel,
         \AirQualityInfo\Model\RecordModel $recordModel) {
         $this->sensorsApi = $sensorsApi;
         $this->smogtokApi = $smogtokApi;
         $this->syngeosApi = $syngeosApi;
+        $this->giosApi = $giosApi;
         $this->deviceModel = $deviceModel;
         $this->recordModel = $recordModel;
     }
@@ -55,6 +59,11 @@ class FetchSensorTask {
 
         echo "Reading syngeos data\n";
         $records = $this->readSyngeosData();
+        echo 'Inserting '.count($records)." records\n";
+        $this->insertRecords($records);
+
+        echo "Reading GIOS data\n";
+        $records = $this->readGiosData();
         echo 'Inserting '.count($records)." records\n";
         $this->insertRecords($records);
     }
@@ -95,6 +104,9 @@ class FetchSensorTask {
         $deviceData = array();
         $locations = array();
         $records = array();
+        if (empty($sensors)) {
+            return array($locations, $records);
+        }
         foreach ($sensors as $r) {
             $sensorId = $r['sensor_id'];
             $sensorIds[] = $r['sensor_id'];
@@ -130,6 +142,9 @@ class FetchSensorTask {
     private function readSmogtokData() {
         $sensors = $this->deviceModel->getSensors('smogtok');
         $records = array();
+        if (empty($sensors)) {
+            return $records;
+        }
         foreach ($sensors as $s) {
             $r = $this->smogtokApi->getRecord($s['sensor_id']);
             $records[$s['device_id']] = $r;
@@ -140,8 +155,24 @@ class FetchSensorTask {
     private function readSyngeosData() {
         $sensors = $this->deviceModel->getSensors('syngeos');
         $records = array();
+        if (empty($sensors)) {
+            return $records;
+        }
         foreach ($sensors as $s) {
             $r = $this->syngeosApi->getRecord($s['sensor_id']);
+            $records[$s['device_id']] = $r;
+        }
+        return $records;
+    }
+
+    private function readGiosData() {
+        $sensors = $this->deviceModel->getSensors('gios');
+        $records = array();
+        if (empty($sensors)) {
+            return $records;
+        }
+        foreach ($sensors as $s) {
+            $r = $this->giosApi->getRecord($s['sensor_id']);
             $records[$s['device_id']] = $r;
         }
         return $records;
