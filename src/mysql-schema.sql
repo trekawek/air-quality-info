@@ -1,10 +1,10 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 46.101.145.81
--- Generation Time: Oct 19, 2020 at 12:05 PM
--- Server version: 8.0.21-0ubuntu0.20.04.4
+-- Generation Time: Nov 20, 2020 at 10:11 AM
+-- Server version: 8.0.22-0ubuntu0.20.04.2
 -- PHP Version: 7.4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -134,7 +134,7 @@ CREATE TABLE `device_mapping` (
 CREATE TABLE `device_sensors` (
   `device_id` int NOT NULL,
   `sensor_id` int NOT NULL,
-  `type` enum('sensor.community','smogtok','syngeos') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'sensor.community'
+  `type` enum('sensor.community','smogtok','syngeos','gios') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'sensor.community'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
