@@ -1,6 +1,6 @@
 # Air Quality Info
 
-This PHP-based page allows to display the current PM10 and PM2.5 measurements made by the Luftdaten.info-compatible device.
+This PHP-based page allows to display the current PM10 and PM2.5 measurements made by the [Sensor.Community](https://sensor.community)-compatible device.
 
 ![Screenshot](img/screenshot-en.png)
 
@@ -29,7 +29,7 @@ is enough to start the project. The admin dashboard will be available under: htt
 ## Resources
 
 * [Nettigo Air Monitor](https://air.nettigo.pl/)
-* [Luftdaten](https://luftdaten.info/)
+* [Sensor.Community](https://sensor.community)
 * [Forum thread on the app](https://forum.kodujdlapolski.pl/t/strona-informacyjna-dla-czujnika-luftdaten/3217/35) (in Polish)
 
 <p>This project is supported by:</p>

@@ -1,6 +1,6 @@
 ### Lokalne programy monitorowania jakości powietrza
 
-Serwis aqi.eco obsługuje kilka lokalnych, oddolnych programów monitorowania jakości powietrza. W porównaniu do komercyjnych, zamkniętych rozwiązań, użycie czujników opartych o Luftdaten / Nettigo Air Monitor oferuje jawny sposób pomiaru, niższą cenę i możliwość partycypacji, którą świetnie opisuje na swojej stronie projekt eko.edial.pl.
+Serwis aqi.eco obsługuje kilka lokalnych, oddolnych programów monitorowania jakości powietrza. W porównaniu do komercyjnych, zamkniętych rozwiązań, użycie czujników opartych o [Sensor.Community](https://sensor.community) / [Nettigo Air Monitor](https://air.nettigo.pl/) oferuje jawny sposób pomiaru, niższą cenę i możliwość partycypacji, którą świetnie opisuje na swojej stronie projekt eko.edial.pl.
 
 #### [eko.edial.pl](https://eko.edial.pl)
 

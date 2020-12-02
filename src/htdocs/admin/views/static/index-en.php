@@ -2,7 +2,7 @@
 
 <p class="lead text-justify">
 <span class="logo">aqi.eco</span> is a service that allows to display the current PM10 and PM2.5 measurements
-made by your <a href="https://luftdaten.info/">Luftdaten</a> device.
+made by your <a href="https://sensor.community/">Sensor.Community</a> device.
 </p>
 
 <p class="text-center">

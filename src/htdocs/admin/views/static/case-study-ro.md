@@ -1,6 +1,6 @@
 ### Programele locale de monitorizare a calității aerului
 
-În Polonia, serviciul Aqi.eco a permis crearea de zero a mai multor programe locale pentru monitorizarea calității aerului. În comparație cu soluțiile comerciale închise, utilizarea de senzori bazată pe Luftdaten / [Nettigo Air Monitor](https://nettigo.eu/products/nettigo-air-monitor-kit-0-3-2-build-your-own-smog-sensor) oferă o metodă transparentă de măsurare, un preț mai mic și posibilitatea de implicare a cetățenilor, care este bine descrisă pe site-ul eko.edial.pl de mai jos.
+În Polonia, serviciul Aqi.eco a permis crearea de zero a mai multor programe locale pentru monitorizarea calității aerului. În comparație cu soluțiile comerciale închise, utilizarea de senzori bazată pe [Sensor.community](https://sensor.community/) / [Nettigo Air Monitor](https://nettigo.eu/products/nettigo-air-monitor-kit-0-3-2-build-your-own-smog-sensor) oferă o metodă transparentă de măsurare, un preț mai mic și posibilitatea de implicare a cetățenilor, care este bine descrisă pe site-ul eko.edial.pl de mai jos.
 
 #### [eko.edial.pl](https://eko.edial.pl)
 

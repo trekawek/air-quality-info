@@ -3,7 +3,7 @@
 Aby wykorzystać aqi.eco do prezentacji wyników pomiaru czystości powietrza, musisz mieć jeden ze wspiarnych czujników. W tej chwili aqi.eco jest kompatybilny z następującymi czujnikami:
 
 * [Nettigo Air Monitor](https://air.nettigo.pl/zbuduj/),
-* [Sensor.community](http://luftdaten.org.pl/) znany też jako Luftdaten,
+* [Sensor.community](https://sensor.community/) znany też jako Luftdaten,
 * [Smogomierz](https://github.com/hackerspace-silesia/Smogomierz).
 
 Gdy masz już swój czujnik, możesz skonfigurować go na aqi.eco:
@@ -22,7 +22,7 @@ Gdy masz już swój czujnik, możesz skonfigurować go na aqi.eco:
 7. Skopiuj wartość pola *Ścieżka* z panelu *Konfiguracja czujnika*. Powinna ona wyglądać tak: `/update/<sekretny kod>`. Kod jest używany przez aqi.eco do identyfikacji Twojego urządzenia.
 8. Dalsze kroki zależą od rodzaju Twojego czujnika.
 
-#### Nettigo Air Monitor / Luftdaten
+#### Nettigo Air Monitor / Sensor.Community
 
 9. Znajdź adres Twojgo urządzenia w sieci lokalnej. Sposób postępowania zależy od Twojego systemu operacyjnego. Jeśli nie jesteś pewien jaki lokalny adres ma Twój czujnik, przeczytaj sekcję "Jak znaleźć czujnik w sieci lokalnej?" w [dokumentacji Nettigo Air Monitor](https://air.nettigo.pl/baza-wiedzy/namf-konfiguracja-firmware/).
 10. Otwórz stronę konfiguracyjną Nettigo Air Monitor.

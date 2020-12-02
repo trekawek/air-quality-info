@@ -3,7 +3,7 @@
 Pentru a utiliza aqi.eco în scop de prezentare a rezultatelor măsurării calității aerului, trebuie să aveți un senzor compatibil. În acest moment, aqi.eco este compatibil cu următorii senzori:
 
 * [Nettigo Air Monitor](https://air.nettigo.pl/zbuduj/),
-* [Sensor.community](https://sensor.community/en/), cunoscut și ca [Luftdaten.info](https://luftdaten.info/en/home-en/),
+* [Sensor.Community](https://sensor.community/en/), cunoscut și ca Luftdaten,
 * [Smogomierz](https://github.com/hackerspace-silesia/Smogomierz).
 
 După ce ați achiziționat/construit senzorul, îl puteți configura pentru a trimite datele la aqi.eco:
@@ -22,7 +22,7 @@ După ce ați achiziționat/construit senzorul, îl puteți configura pentru a t
 7. Copiați valoarea câmpului *Path* din panoul de configurare al senzorului: `/update/<cheia secretă>`. Valoarea este folosită de aqi.eco pentru identificarea dispozitivului.
 8. Următorii pași depind de tipul senzorului dvs.
 
-#### Nettigo Air Monitor / Luftdaten
+#### Nettigo Air Monitor / Sensor.Community
 
 9. Găsiți adresa dispozitivului dvs. în rețeaua locală. Procedura depinde de sistemul dvs. de operare. Dacă nu sunteți sigur ce adresă locală are senzorul dvs., citiți secțiunea „Cum puteți găsi un senzor în rețeaua locală?” din [documentația Nettigo Air Monitor](https://air.nettigo.pl/baza-wiedzy/namf-konfiguracja-firmware/) - folosiți funcția de traducere din PL->RO din browser-ul dvs., dacă la momentul accesării nu este definitivată traducerea din poloneză.
 10. Deschideți pagina de configurare a Nettigo Air Monitor.
