@@ -1,7 +1,7 @@
 <ol class="breadcrumb">
 <?php
 function formatDate(\DateTimeInterface $dateTime) {
-    $tz = new DateTimeZone(date_default_timezone_get());
+    $tz = new \DateTimeZone(date_default_timezone_get());
     $dateTime->setTimezone($tz);
     return $dateTime->format("Y-m-d H:i:s");
 }

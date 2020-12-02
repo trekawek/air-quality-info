@@ -25,6 +25,7 @@ while (true) {
             echo "Restarting handler\n";
             throw $e;
         } catch (\Throwable $t) {
+            echo "Exception: {$t->getMessage()}\n";
             echo "Burying job: {$job->getId()}\n";
             $beanstalk->bury($job);
         }

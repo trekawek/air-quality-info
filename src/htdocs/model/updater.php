@@ -34,7 +34,7 @@ class Updater {
         $gps_date = Updater::readValue($mapping, $device, 'gps_date', $map, null);
         $gps_time = Updater::readValue($mapping, $device, 'gps_time', $map, null);
         if ($gps_date && $gps_time) {
-            $time = DateTime::createFromFormat('m/d/Y H:i:s.u', $gps_date.' '.$gps_time, new DateTimeZone('UTC'))->getTimestamp();
+            $time = \DateTime::createFromFormat('m/d/Y H:i:s.u', $gps_date.' '.$gps_time, new \DateTimeZone('UTC'))->getTimestamp();
         }
         
         $this->insert($device, $time, $map);
