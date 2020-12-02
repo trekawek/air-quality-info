@@ -100,7 +100,7 @@ class DeviceHierarchyController extends AbstractController {
     public function createExternalDevice($parentId) {
         $breadcrumbs = $this->deviceHierarchyModel->getPath($this->user['id'], $parentId);
         $nodeForm = new \AirQualityInfo\Lib\Form\Form("nodeForm");
-        $nodeForm->addElement('uri', 'text', 'URI', array(), 'Please paste the URL address of the device you want to link. It must be a link within aqi.eco domain, eg.: https://smolna.aqi.eco/13b')
+        $nodeForm->addElement('uri', 'text', 'URI', array(), 'Please paste the URL address of the device you want to link. It must be a link within aqi.eco domain, eg.: https://warsawa.aqi.eco/al-jerozolimskie')
             ->addRule('required');
         if ($nodeForm->isSubmitted() && $nodeForm->validate($_POST)) {
             $deviceId = $this->getDeviceIdFromUrl($_POST['uri']);

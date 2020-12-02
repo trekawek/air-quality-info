@@ -124,7 +124,7 @@ function createCriticalCss() {
     cssString += fs.readFileSync(path);
   });
   return penthouse({
-    url: 'http://smolna.aqi.eco.localhost:8080/en/',
+    url: 'http://grunwald.aqi.eco.localhost:8080/en/',
     cssString: cssString
   })
   .then(criticalCss => {

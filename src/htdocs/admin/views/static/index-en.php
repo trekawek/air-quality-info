@@ -6,7 +6,7 @@ made by your <a href="https://sensor.community/">Sensor.Community</a> device.
 </p>
 
 <p class="text-center">
-<a class="btn btn-warning" href="https://smolna.aqi.eco/">Live demo</a>
+<a class="btn btn-warning" href="https://mosina.aqi.eco/">Live demo</a>
 </p>
 
 <p class="text-justify">

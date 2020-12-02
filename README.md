@@ -4,7 +4,7 @@ This PHP-based page allows to display the current PM10 and PM2.5 measurements ma
 
 ![Screenshot](img/screenshot-en.png)
 
-[Live demo](http://smolna.aqi.eco/)
+[Live demo](http://mosina.aqi.eco/)
 
 This is the code of the SaaS product now, available live on https://aqi.eco.
 
