@@ -68,6 +68,9 @@ class RecordModel {
             if (isset($record['pressure']) && $record['pressure'] !== null) {
                 $record['pressure'] /= 100;
             }
+            if ($record['pressure'] > 2000) {
+                $record['pressure'] = null;
+            }
 
             $param = array($deviceId, $record['timestamp']);
             foreach (RecordModel::FIELDS as $f) {
