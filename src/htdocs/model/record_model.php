@@ -67,9 +67,9 @@ class RecordModel {
             }
             if (isset($record['pressure']) && $record['pressure'] !== null) {
                 $record['pressure'] /= 100;
-            }
-            if ($record['pressure'] > 2000) {
-                $record['pressure'] = null;
+                if ($record['pressure'] > 10000) { // fix the Smogomierz bug
+                    $record['pressure'] /= 100;
+                }
             }
 
             $param = array($deviceId, $record['timestamp']);
