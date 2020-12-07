@@ -4,7 +4,8 @@ namespace AirQualityInfo\Lib;
 class GiosApi {
 
     const VALUE_MAPPING = array(
-        'PM10' => 'pm10',
+        'PM2.5' => 'pm25',
+        'PM10'  => 'pm10',
     );
 
     const STATION_URL = 'https://api.gios.gov.pl/pjp-api/rest/station/sensors/';
@@ -42,6 +43,11 @@ class GiosApi {
                     }
                 }
             });
+        }
+        if (isset($record['timestamp'])) {
+            if (time() - $record['timestamp'] < 2 * 60 * 60) {
+                $record['timestamp'] = time();
+            }
         }
         return $record;
     }
