@@ -2,7 +2,7 @@
 
 <p class="lead text-justify">
 <span class="logo">aqi.eco</span> Ez a szolgáltatás lehetővé teszi az aktuális PM10 és PM2.5 légszenyezettségi adatok megjelenítését.
-Készítsd el saját <a href="https://sensor.community/">Sensor.Community</a> eszközöd.
+Készítse el saját <a href="https://sensor.community/">Sensor.Community</a> eszközét.
 </p>
 
 <p class="text-center">
