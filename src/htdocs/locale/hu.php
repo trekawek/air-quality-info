@@ -229,7 +229,7 @@ $locale['Year'] = 'Év';
 
 $locale['_widgets'] = [
     0 => [
-        'label' => 'Kíváló',
+        'label' => 'Kiváló',
         'icon' => 'fa-smile-o',
         'recommendations' => [
             [
@@ -326,7 +326,7 @@ $locale['_widgets'] = [
                 'icon' => 'icon-home',
                 'color' => 'green',
                 'label' => 'Ajánlott',
-                'description' => 'Lakásban maradni (terhes nők, gyermekek, szépkorúak, szív és elderly, szív és légúti betegségben szenvedők)'
+                'description' => 'Lakásban maradni (terhes nők, gyermekek, szépkorúak, szív és légúti betegségben szenvedők)'
             ],
             [
                 'icon' => 'icon-spacer',
