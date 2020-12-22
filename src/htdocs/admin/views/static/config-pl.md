@@ -36,6 +36,9 @@ Gdy masz już swój czujnik, możesz skonfigurować go na aqi.eco:
 13. Kliknij *Zapisz i zrestartuj*.
 14. Gratulacje, od tej pory Twój czujnik będzie wysyłał dane do aqi.eco. Jeśli chcesz dodać kolejne czujniki do swojego konta, wróć do punku 3.
 
+Dostępna jest również instrukcja wideo, przygotowana przez twórcę kanału [tata.geek](https://www.youtube.com/channel/UCB52WHjYDzTcc-kUfNEZmMw):
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wjsVLYJoOiQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 #### Smogomierz
 
 9. Znajdź nazwę Smogomierza w sieci lokalnej. Informację o tym jak to zrobić uzyskasz z [dokumentacji Smogomierza](https://github.com/hackerspace-silesia/Smogomierz/blob/master/instrukcje/software-additionals.md#nazwa-urz%C4%85dzenia-oraz-bonjourzeroconf).
