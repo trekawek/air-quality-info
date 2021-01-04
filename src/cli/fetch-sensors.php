@@ -107,9 +107,10 @@ class FetchSensorTask {
         if (empty($sensors)) {
             return array($locations, $records);
         }
+
         foreach ($sensors as $r) {
             $sensorId = $r['sensor_id'];
-            $sensorIds[] = $r['sensor_id'];
+            $sensorIds[] = intval($r['sensor_id']);
             if (!isset($sensorToDevices[$sensorId])) {
                 $sensorToDevices[$sensorId] = array();
             }
@@ -117,6 +118,19 @@ class FetchSensorTask {
             $locations[$r['device_id']] = array();
             $records[$r['device_id']] = array();
         }
+
+        $matching = $this->sensorsApi->getMatchingSensors($sensorIds);
+        foreach ($matching as $sensorId => $m) {
+            foreach ($m[0] as $matchingSensorId) {
+                $sensorIds[] = $matchingSensorId;
+                if (!isset($sensorToDevices[$matchingSensorId])) {
+                    $sensorToDevices[$matchingSensorId] = array();
+                }
+                $sensorToDevices[$matchingSensorId] = array_unique(array_merge($sensorToDevices[$matchingSensorId], $sensorToDevices[$sensorId]));
+            }
+        }
+
+        $sensorIds = array_unique($sensorIds);
 
         foreach ($this->sensorsApi->getRecords($sensorIds) as $r) {
             foreach ($sensorToDevices[$r['sensor']['id']] as $deviceId) {
