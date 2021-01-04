@@ -35,7 +35,9 @@ class SensorController extends AbstractController {
             ->setOptions(array('prepend' => 'https://' . $this->user['domain'] . CONFIG['user_domain_suffixes'][0] . '/'));
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
         if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
-            list($matchingSensors, $location) = $this->sensorCommunityApi->getMatchingSensors($_POST['sensor_id']);
+            $sensorId = $_POST['sensor_id'];
+            $matching = $this->sensorCommunityApi->getMatchingSensors(array($sensorId));
+            list($matchingSensors, $location) = $matching[$sensorId];
             $deviceId = $this->deviceModel->createDevice(array(
                 'user_id' => $this->user['id'],
                 'name' => $_POST['name'],

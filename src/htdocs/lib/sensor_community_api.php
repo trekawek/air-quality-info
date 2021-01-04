@@ -19,25 +19,34 @@ class SensorCommunityApi {
         return $result;
     }
 
-    public function getMatchingSensors($sensorId) {
+    public function getMatchingSensors($sensorIds) {
         $locationToSensors = array();
-        $location = null;
-        SensorCommunityApi::read(function (array $item) use (&$locationToSensors, &$location, $sensorId) {
+        $sensorToLocation = array();
+
+        SensorCommunityApi::read(function (array $item) use (&$locationToSensors, &$sensorToLocation, $sensorIds) {
             $sId = $item['sensor']['id'];
             $lId = $item['location']['id'];
             if (!isset($locationToSensors[$lId])) {
                 $locationToSensors[$lId] = array();
             }
             $locationToSensors[$lId][] = $sId;
-            if ($sId == $sensorId) {
-                $location = $item['location'];
+
+            if (in_array($sId, $sensorIds)) {
+                $sensorToLocation[$sId] = $item['location'];
             }
         });
-        if ($location !== null) {
-            return array(array_unique($locationToSensors[$location['id']]), $location);
-        } else {
-            return array(array(), array());
+
+        $result = array();
+        foreach($sensorIds as $sensorId) {
+            if (isset($sensorToLocation[$sensorId])) {
+                $location = $sensorToLocation[$sensorId];
+                $result[$sensorId] = array(array_unique($locationToSensors[$location['id']]), $location);
+            } else {
+                $result[$sensorId] = array(array(), array());
+            }
         }
+
+        return $result;
     }
 
     private static function read($listener, $forceReload = false) {
