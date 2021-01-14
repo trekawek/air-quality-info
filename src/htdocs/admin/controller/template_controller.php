@@ -65,7 +65,7 @@ class TemplateController extends AbstractController {
             );
             $this->templateModel->updateTemplate($this->user['id'], $data);
             
-            if (isset($_POST['remove_brand_icon'])) {
+            if (isset($_POST['remove_brand_icon']) && $_POST['remove_brand_icon']) {
                 $this->attachmentModel->deleteFile($this->user['id'], 'brand_icon');
                 $data['current_brand_icon'] = null;
             }
