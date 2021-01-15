@@ -107,6 +107,7 @@ class SensorController extends AbstractController {
             $data = array(
                 'name' => $_POST['name'],
                 'description' => $_POST['description'],
+                'extra_description' => $_POST['extra_description'],
                 'location_provided' => $_POST['location_provided'],
                 'lat' => $_POST['lat'],
                 'lng' => $_POST['lng'],
@@ -169,6 +170,7 @@ class SensorController extends AbstractController {
         $deviceForm = new \AirQualityInfo\Lib\Form\Form("deviceForm");
         $this->addNameField($deviceForm);
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
+        $deviceForm->addElement('extra_description', 'text', 'Extra description');
         $deviceForm->addElement('location_provided', 'checkbox', 'Choose location', array('data-toggle'=>'collapse', 'data-target'=>'.map-control'), null);
         $deviceForm->addElement('radius', 'number', 'Radius (m)', array('min' => 50, 'max' => 500, 'step' => 50))
             ->addGroupClass('map-control')
