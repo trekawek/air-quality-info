@@ -2,9 +2,9 @@
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 46.101.145.81
--- Generation Time: Nov 20, 2020 at 10:11 AM
--- Server version: 8.0.22-0ubuntu0.20.04.2
+-- Host: 10.135.14.82
+-- Generation Time: Jan 28, 2021 at 11:46 AM
+-- Server version: 8.0.22-0ubuntu0.20.04.3
 -- PHP Version: 7.4.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -92,6 +92,7 @@ CREATE TABLE `devices` (
   `lng` decimal(17,14) DEFAULT NULL,
   `radius` decimal(5,1) NOT NULL DEFAULT '250.0',
   `elevation` int DEFAULT NULL,
+  `temperature_offset` decimal(4,2) NOT NULL DEFAULT '0.00',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_update` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
