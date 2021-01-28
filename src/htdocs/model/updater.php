@@ -55,6 +55,9 @@ class Updater {
             foreach (array_keys(Updater::VALUE_MAPPING) as $k) {
                 $r[$k] = Updater::readValue($mapping, $device, $k, $data);
             }
+            if (isset($r['temperature']) && $r['temperature'] !== null) {
+                $r['temperature'] += $device['temperature_offset'];
+            }
             $records[] = $r;
         }
         $this->record_model->update($device['id'], $records);

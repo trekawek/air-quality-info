@@ -35,7 +35,7 @@ class RuleRegistry {
                 return false;
             }
             return true;
-        }, "%s is out of range");
+        }, "%s should be between %d and %d");
         $this->rules['file_max_size'] = new Rule(function($value, $options, $fieldName) {
             return empty($_FILES[$fieldName]['name']) || ($_FILES[$fieldName]["size"] < $options['value']);
         }, "%s is too large");

@@ -20,7 +20,7 @@ $jsLocale['Very low'] = 'Velmi nízká';
 
 $locale = array_merge($jsLocale);
 $locale['<meta> tags to be put in the <head> section'] = '<meta> značky, které mají být vloženy do sekce <head>';
-$locale['%s is out of range'] = '% jsou mimo rozsah';
+$locale['%s should be between %d and %d'] = '% jsou mimo rozsah';
 $locale['<a href="https://www.airqualitynow.eu/about_indices_definition.php">CAQI</a> index'] = '<a href="https://www.airqualitynow.eu/about_indices_definition.php">CAQI</a> index';
 $locale['About page body'] = 'O webu - obsah stránky';
 $locale['About page name (3)'] = 'O webu - název stránky';

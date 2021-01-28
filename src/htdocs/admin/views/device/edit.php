@@ -43,6 +43,18 @@
 
         <div class="card">
             <div class="card-header">
+                <?php echo __('Sensor options') ?>
+            </div>
+            <div class="card-body">
+                <form action="<?php echo l('device', 'edit', null, array('device_id' => $deviceId)) ?>" method="post">
+                    <?php $sensorOptionsForm->render() ?>
+                    <button type="submit" class="btn btn-primary"><?php echo __('Update') ?></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
                 <?php echo __('Custom field mappings') ?>
             </div>
             <div class="card-body">

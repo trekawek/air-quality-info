@@ -20,7 +20,7 @@ $jsLocale['Very low'] = 'Foarte scăzut';
 
 $locale = array_merge($jsLocale);
 $locale['<meta> tags to be put in the <head> section'] = '<meta> etichete pentru secțiunea <head>';
-$locale['%s is out of range'] = '%s este în afara domeniului';
+$locale['%s should be between %d and %d'] = '%s este în afara domeniului';
 $locale['<a href="https://www.airqualitynow.eu/about_indices_definition.php">CAQI</a> index'] = '<a href="https://www.airqualitynow.eu/about_indices_definition.php">Indicele Comun de Calitate a Aerului(Common Air Quality Index sau CAQI)</a>';
 $locale['About page body'] = 'Corpul paginii "Despre"';
 $locale['About page name (3)'] = 'Denumirea paginii "Despre" (3)';

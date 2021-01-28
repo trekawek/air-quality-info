@@ -92,6 +92,7 @@ class DeviceController extends AbstractController {
 
         $deviceForm = $this->getDeviceForm($device);
         $mappingForm = $this->getMappingForm($deviceId);
+        $sensorOptionsForm = $this->getSensorOptionsForm($device);
 
         if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
             $data = array(
@@ -120,6 +121,16 @@ class DeviceController extends AbstractController {
             $this->alert(__('Created a new mapping', 'success'));    
         }
 
+        if ($sensorOptionsForm->isSubmitted() && $sensorOptionsForm->validate($_POST)) {
+            $data = array(
+                'temperature_offset' => $_POST['temperature_offset'],
+            );
+            $this->deviceModel->updateDevice($deviceId, $data);
+            $this->alert(__('Updated the device', 'success'));
+            $device = $this->getDevice($deviceId);
+            $sensorOptionsForm->setDefaultValues($device);
+        }
+
         $mapping = $this->deviceModel->getMappingForDevice($deviceId);
 
         $this->render(array(
@@ -129,6 +140,7 @@ class DeviceController extends AbstractController {
             'deviceId' => $deviceId,
             'deviceForm' => $deviceForm,
             'mappingForm' => $mappingForm,
+            'sensorOptionsForm' => $sensorOptionsForm,
             'mapping' => $mapping,
             'lastRecord' => $this->recordModel->getLastData($deviceId),
             'jsonUpdates' => $this->jsonUpdateModel->getJsonUpdates($deviceId, 5),
@@ -194,11 +206,11 @@ class DeviceController extends AbstractController {
             ->addGroupClass('map-control')
             ->addGroupClass('collapse')
             ->addRule('required')
-            ->addRule('range', array('min' => 50, 'max' => 500, 'message' => 'Please choose value between 50 and 500.' ));
+            ->addRule('range', array('min' => 50, 'max' => 500));
         $deviceForm->addElement('elevation', 'number', 'Elevation (m a.s.l.)', array('min' => -10994, 'max' => 8848))
             ->addGroupClass('map-control')
             ->addGroupClass('collapse')
-            ->addRule('range', array('min' => -10994, 'max' => 8848, 'message' => 'Please choose value between -10994 and 8848.' ));
+            ->addRule('range', array('min' => -10994, 'max' => 8848));
         $deviceForm->addElement('lat', 'hidden');
         $deviceForm->addElement('lng', 'hidden');
         $deviceForm->setDefaultValues($device);
@@ -215,6 +227,15 @@ class DeviceController extends AbstractController {
             ->addRule('required')
             ->setOptions($options);
         return $mappingForm;
+    }
+
+    private function getSensorOptionsForm($device) {
+        $sensorOptionsForm = new \AirQualityInfo\Lib\Form\Form("sensorOptions");
+        $sensorOptionsForm->addElement('temperature_offset', 'number', 'Temperature offset', array('min' => -10, 'max' => 100))
+            ->addRule('required')
+            ->addRule('range', array('min' => -10, 'max' => 10));
+        $sensorOptionsForm->setDefaultValues($device);
+        return $sensorOptionsForm;
     }
 
     private function getDevice($deviceId) {

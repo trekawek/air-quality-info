@@ -20,7 +20,7 @@ $jsLocale['Very low'] = 'Nagyon alacsony';
 
 $locale = array_merge($jsLocale);
 $locale['<meta> tags to be put in the <head> section'] = '<meta> címkék elhelyezése a <head> részben';
-$locale['%s is out of range'] = '%s kívül esik';
+$locale['%s should be between %d and %d'] = '%s kívül esik';
 $locale['<a href="https://www.airqualitynow.eu/about_indices_definition.php">CAQI</a> index'] = 'Index <a href="https://www.airqualitynow.eu/pl/about_indices_definition.php">CAQI</a>';
 $locale['About page body'] = 'Egyedi HTML kód';
 $locale['About page name (3)'] = 'Az oldal neve (3)';

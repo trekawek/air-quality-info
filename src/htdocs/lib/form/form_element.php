@@ -102,7 +102,7 @@ class FormElement {
         if (isset($ruleOptions['message'])) {
             $msg = $ruleOptions['message'];
         }
-        $this->validationMessage = sprintf($msg, $this->label, $ruleOptions);
+        $this->validationMessage = sprintf(__($msg), __($this->label), ...array_values($ruleOptions));
         return false;
     }
 
