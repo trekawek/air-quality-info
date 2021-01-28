@@ -231,7 +231,7 @@ class DeviceController extends AbstractController {
 
     private function getSensorOptionsForm($device) {
         $sensorOptionsForm = new \AirQualityInfo\Lib\Form\Form("sensorOptions");
-        $sensorOptionsForm->addElement('temperature_offset', 'number', 'Temperature offset', array('min' => -10, 'max' => 100))
+        $sensorOptionsForm->addElement('temperature_offset', 'number', 'Temperature offset', array('min' => -10, 'max' => 10, 'step' => '.01'))
             ->addRule('required')
             ->addRule('range', array('min' => -10, 'max' => 10));
         $sensorOptionsForm->setDefaultValues($device);
