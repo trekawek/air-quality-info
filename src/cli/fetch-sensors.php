@@ -160,7 +160,12 @@ class FetchSensorTask {
             return $records;
         }
         foreach ($sensors as $s) {
-            $r = $this->smogtokApi->getRecord($s['sensor_id']);
+            try {
+                $r = $this->smogtokApi->getRecord($s['sensor_id']);
+            } catch (Exception $e) {
+                echo "Error reading Smogtok data for ".$s['sensor_id']."\n";
+                continue;
+            }
             $records[$s['device_id']] = $r;
         }
         return $records;
@@ -173,7 +178,12 @@ class FetchSensorTask {
             return $records;
         }
         foreach ($sensors as $s) {
-            $r = $this->syngeosApi->getRecord($s['sensor_id']);
+            try {
+                $r = $this->syngeosApi->getRecord($s['sensor_id']);
+            } catch (Exception $e) {
+                echo "Error reading Syngeos data for ".$s['sensor_id']."\n";
+                continue;
+            }
             $records[$s['device_id']] = $r;
         }
         return $records;
@@ -186,7 +196,12 @@ class FetchSensorTask {
             return $records;
         }
         foreach ($sensors as $s) {
-            $r = $this->giosApi->getRecord($s['sensor_id']);
+            try {
+                $r = $this->giosApi->getRecord($s['sensor_id']);
+            } catch (Exception $e) {
+                echo "Error reading GIOS data for ".$s['sensor_id']."\n";
+                continue;
+            }
             $records[$s['device_id']] = $r;
         }
         return $records;
