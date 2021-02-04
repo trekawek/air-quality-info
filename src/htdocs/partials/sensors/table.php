@@ -21,6 +21,7 @@
     </tr>
   </thead>
   <tbody>
+    <?php if ($averages['values']['pm25'] > 0): ?>
     <tr class="index-cat-<?php echo $averages['pm25_level'] ?>">
       <th scope="row">PM<sub>2.5</sub></th>
       <td><?php echo round($averages['values']['pm25'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
@@ -32,6 +33,8 @@
       </td>
       <td><?php echo __(\AirQualityInfo\Lib\PollutionLevel::POLLUTION_LEVELS[$averages['pm25_level']]['name']); ?></td>
     </tr>
+    <?php endif ?>
+    <?php if ($averages['values']['pm10'] > 0): ?>
     <tr class="index-cat-<?php echo $averages['pm10_level'] ?>">
       <th scope="row">PM<sub>10</sub></th>
       <td><?php echo round($averages['values']['pm10'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
@@ -43,6 +46,7 @@
       </td>
       <td><?php echo __(\AirQualityInfo\Lib\PollutionLevel::POLLUTION_LEVELS[$averages['pm10_level']]['name']); ?></td>
     </tr>
+    <?php endif ?>
     <?php if ($averages['values']['n05'] > 0): ?>
     <tr>
       <th scope="row">PM<sub>0.5</sub></th>
