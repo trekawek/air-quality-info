@@ -3,7 +3,7 @@ namespace AirQualityInfo\Model;
 
 class TemplateModel {
 
-    const DISABLED_WITH_SENSOR_COMMUNITY = array('custom_page_name', 'custom_page', 'header', 'footer', 'widget_footer');
+    const DISABLED_WITH_SENSOR_COMMUNITY = array('header', 'footer', 'widget_footer');
 
     const TYPE_TO_EXT = array(
         'image/png'     => 'png',
