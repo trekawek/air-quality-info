@@ -2,6 +2,7 @@
 <?php
 include(getenv('AQI_PATH').'/boot.php');
 
+$pdo = $diContainer->getBinding('pdo');
 $stmt = $pdo->prepare("SELECT `fqdn` FROM `custom_domains`");
 $stmt->execute();
 $domains = array();

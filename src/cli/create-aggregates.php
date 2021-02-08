@@ -2,6 +2,8 @@
 <?php
 include(getenv('AQI_PATH').'/boot.php');
 
+$pdo = $diContainer->getBinding('pdo');
+
 $recordModel = new \AirQualityInfo\Model\RecordModel($pdo);
 
 $stmt = $pdo->prepare("TRUNCATE TABLE `aggregates`");

@@ -5,8 +5,14 @@ class DiContainer {
 
     private $bindings = array();
 
+    private $lazyBindings = array();
+
     public function setBinding($name, $value) {
         $this->bindings[$name] = $value;
+    }
+
+    public function setLazyBinding($name, $provider) {
+        $this->lazyBindings[$name] = $provider;
     }
 
     public function addBindings($bindings) {
@@ -41,10 +47,24 @@ class DiContainer {
         return $object;
     }
 
+    public function getBinding($name) {
+        if (!isset($this->bindings[$name])) {
+            if (isset($this->lazyBindings[$name])) {
+                $this->bindings[$name] = $this->lazyBindings[$name]();
+            } else {
+                throw new \Exception("Can't find binding for $name");
+            }
+        }
+        return $this->bindings[$name];
+    }
+
     function getParamValue($param) {
         $paramName = $param->getName();
         if (!isset($this->bindings[$paramName])) {
-            if ($param->hasType()) {
+            if (isset($this->lazyBindings[$paramName])) {
+                $value = $this->lazyBindings[$paramName]();
+                $this->bindings[$paramName] = $value;
+            } else if ($param->hasType()) {
                 $value = $this->injectClass($param->getType()->__toString());
                 $this->bindings[$paramName] = $value;
             } else {

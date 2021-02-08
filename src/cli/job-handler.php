@@ -4,6 +4,7 @@ include(getenv('AQI_PATH').'/boot.php');
 
 echo "Starting job-handler\n";
 
+$beanstalk = $diContainer->getBinding('beanstalk');
 while (true) {
     $job = $beanstalk->reserveWithTimeout(50);
     echo ".\n";

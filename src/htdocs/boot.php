@@ -30,32 +30,33 @@ spl_autoload_register(function($className) {
     }
 });
 
-$dsn = sprintf("mysql:host=%s;dbname=%s;charset=utf8", CONFIG['db']['host'], CONFIG['db']['name']);
-$options = [
-  \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
-];
-$pdo = new \PDO($dsn, CONFIG['db']['user'], CONFIG['db']['password'], $options);
-
-$s3Client = \Aws\S3\S3Client::factory(CONFIG['s3']);
-
-$beanstalk = \Pheanstalk\Pheanstalk::create('beanstalkd');
-
-if (!file_exists(CONFIG['cache_root'])) {
-    mkdir(CONFIG['cache_root'], 0777, true);
-}
-$cacheStorage = new \Nette\Caching\Storages\FileStorage(CONFIG['cache_root']);
-$cache = new \Nette\Caching\Cache($cacheStorage);
-
 $diContainer = new Lib\DiContainer();
 
 $currentLocale = new Lib\Locale();
 
-$diContainer->setBinding('pdo', $pdo);
-$diContainer->setBinding('s3Bucket', CONFIG['s3Bucket']);
-$diContainer->setBinding('s3Client', $s3Client);
-$diContainer->setBinding('beanstalk', $beanstalk);
 $diContainer->setBinding('currentLocale', $currentLocale);
-$diContainer->setBinding('cache', $cache);
+
+$diContainer->setLazyBinding('pdo', function() {
+    $dsn = sprintf("mysql:host=%s;dbname=%s;charset=utf8", CONFIG['db']['host'], CONFIG['db']['name']);
+    $options = [
+        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION, //turn on errors in the form of exceptions
+    ];
+    return new \PDO($dsn, CONFIG['db']['user'], CONFIG['db']['password'], $options);
+});
+$diContainer->setBinding('s3Bucket', CONFIG['s3Bucket']);
+$diContainer->setLazyBinding('s3Client', function() {
+    return \Aws\S3\S3Client::factory(CONFIG['s3']);
+});
+$diContainer->setLazyBinding('beanstalk', function() {
+    return \Pheanstalk\Pheanstalk::create('beanstalkd');
+});
+$diContainer->setLazyBinding('cache', function() {
+    if (!file_exists(CONFIG['cache_root'])) {
+        mkdir(CONFIG['cache_root'], 0777, true);
+    }
+    $cacheStorage = new \Nette\Caching\Storages\FileStorage(CONFIG['cache_root']);
+    return new \Nette\Caching\Cache($cacheStorage);
+});
 
 Lib\CsrfToken::generateTokenIfNotExists();
 ?>

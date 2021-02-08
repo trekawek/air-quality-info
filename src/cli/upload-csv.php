@@ -73,6 +73,7 @@ function upload($s3Client, $fileName, $s3Name) {
 
 echo "Starting upload-csv\n";
 
+$s3Client = $diContainer->getBinding('s3Client');
 while (true) {
     $rootDir = new RecursiveDirectoryIterator(CONFIG['csv_root']);
     $iterator = new RecursiveIteratorIterator($rootDir);

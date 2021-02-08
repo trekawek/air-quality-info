@@ -2,6 +2,7 @@
 <?php
 include(getenv('AQI_PATH').'/boot.php');
 
+$pdo = $diContainer->getBinding('pdo');
 $csvModel = $diContainer->injectClass('\AirQualityInfo\Model\CsvModel');
 
 $stmt = $pdo->prepare("SELECT `id` FROM `devices`");
