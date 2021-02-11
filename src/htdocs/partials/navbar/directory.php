@@ -13,7 +13,7 @@ function displayDirectory($node, $currentController, $currentAction, $currentDev
 <?php foreach ($node['children'] as $n): ?>
     <li class="dropdown">
         <?php if (isset($n['device'])): ?>
-            <?php if (($currentController == 'main' && $currentAction == 'all') || $currentController == 'map'): ?>
+            <?php if (($currentController == 'main' && $currentAction == 'all') || $currentController == 'map' || $currentController == 'static'): ?>
             <a class="dropdown-item" href="<?php echo l('main', 'index', $n['device']) ?>">
                 <?php echo $n['description'] ?>
             </a>
