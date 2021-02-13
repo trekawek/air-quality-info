@@ -3,7 +3,7 @@ namespace AirQualityInfo\Lib;
  
 class SensorCommunityApi {
 
-    const URL = 'https://maps.sensor.community/data/v1/data.json';
+    const URL = 'https://maps.sensor.community/data/v2/data.json';
 
     const CACHE_FILE = "/var/aqi/sensor-community-data.json";
 
