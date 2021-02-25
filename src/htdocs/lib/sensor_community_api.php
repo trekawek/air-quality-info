@@ -50,7 +50,10 @@ class SensorCommunityApi {
     }
 
     private static function read($listener, $forceReload = false) {
-        if (!file_exists(SensorCommunityApi::CACHE_FILE) || $forceReload) {
+        if (file_exists(SensorCommunityApi::CACHE_FILE) && $forceReload) {
+            unlink(SensorCommunityApi::CACHE_FILE);
+        }
+        if (!file_exists(SensorCommunityApi::CACHE_FILE)) {
             $opts = array("ssl" => array(
                 "verify_peer"=>false,
                 "verify_peer_name"=>false,
@@ -64,9 +67,15 @@ class SensorCommunityApi {
             fclose($remoteStream);
             rename($localFile, SensorCommunityApi::CACHE_FILE);
         }
-        $stream = fopen(SensorCommunityApi::CACHE_FILE, 'r');
-        $parser = new \JsonCollectionParser\Parser();
-        $parser->parse($stream, $listener);
+        try {
+            $stream = fopen(SensorCommunityApi::CACHE_FILE, 'r');
+            $parser = new \JsonCollectionParser\Parser();
+            $parser->parse($stream, $listener);
+        } catch (Exception $e) {
+            echo "Can't parse JSON: ".$e->getMessage()."\n";
+            echo "Removing the cached file ".SensorCommunityApi::CACHE_FILE."\n";
+            unlink(SensorCommunityApi::CACHE_FILE);
+        }
     }
 }
 
