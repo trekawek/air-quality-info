@@ -21,11 +21,16 @@ class Updater {
         'heater_humidity'    => array('humidity', 'HECA_humidity'),
         'gps_time'    => array('GPS_time'),
         'gps_date'    => array('GPS_date'),
+        'gps_lat'    => array('GPS_lat'),
+        'gps_lon'    => array('GPS_lon'),
+        'gps_height'    => array('GPS_height'),
     );
 
     private $record_model;
 
-    public function __construct(RecordModel $record_model) {
+    private $device_model;
+
+    public function __construct(RecordModel $record_model, DeviceModel $device_model) {
         $this->record_model = $record_model;
     }
 
@@ -35,6 +40,26 @@ class Updater {
         $gps_time = Updater::readValue($mapping, $device, 'gps_time', $map, null);
         if ($gps_date && $gps_time) {
             $time = \DateTime::createFromFormat('m/d/Y H:i:s.u', $gps_date.' '.$gps_time, new \DateTimeZone('UTC'))->getTimestamp();
+        }
+
+        $gps_lat = Updater::readValue($mapping, $device, 'gps_lat', $map, null);
+        $gps_lon = Updater::readValue($mapping, $device, 'gps_lon', $map, null);
+        if ($gps_lat !== null && $gps_lon !== null && $gps_lat > -200 && $gps_lon > -200) {
+            if ($gps_lat != $device['lat'] || $gps_lon != $device['lon']) {
+                $this->device_model->updateDevice($device['id'], array(
+                    'lat' => $gps_lat,
+                    'lon' => $gps_lon,
+                ));
+            }
+        }
+
+        $gps_height = Updater::readValue($mapping, $device, 'gps_height', $map, null);
+        if ($gps_height !== null && $gps_height > -1000) {
+            if ($gps_height != $device['elevation']) {
+                $this->device_model->updateDevice($device['id'], array(
+                    'elevation' => $gps_height,
+                ));
+            }
         }
         
         $this->insert($device, $time, $map);
