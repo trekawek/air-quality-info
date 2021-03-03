@@ -32,6 +32,7 @@ class Updater {
 
     public function __construct(RecordModel $record_model, DeviceModel $device_model) {
         $this->record_model = $record_model;
+        $this->device_model = $device_model;
     }
 
     public function update($device, $time, $map) {
