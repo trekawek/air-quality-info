@@ -44,6 +44,8 @@ class Updater {
 
         $gps_lat = Updater::readValue($mapping, $device, 'gps_lat', $map, null);
         $gps_lon = Updater::readValue($mapping, $device, 'gps_lon', $map, null);
+        $gps_height = Updater::readValue($mapping, $device, 'gps_height', $map, null);
+        
         if ($gps_lat !== null && $gps_lon !== null && $gps_lat > -200 && $gps_lon > -200) {
             if ($gps_lat != $device['lat'] || $gps_lon != $device['lon']) {
                 $this->device_model->updateDevice($device['id'], array(
@@ -53,7 +55,6 @@ class Updater {
             }
         }
 
-        $gps_height = Updater::readValue($mapping, $device, 'gps_height', $map, null);
         if ($gps_height !== null && $gps_height > -1000) {
             if ($gps_height != $device['elevation']) {
                 $this->device_model->updateDevice($device['id'], array(
