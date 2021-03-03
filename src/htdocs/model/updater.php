@@ -51,7 +51,7 @@ class Updater {
             if ($gps_lat != $device['lat'] || $gps_lon != $device['lon']) {
                 $this->device_model->updateDevice($device['id'], array(
                     'lat' => $gps_lat,
-                    'lon' => $gps_lon,
+                    'lng' => $gps_lon,
                 ));
             }
         }
