@@ -71,7 +71,7 @@ class SensorCommunityApi {
             $stream = fopen(SensorCommunityApi::CACHE_FILE, 'r');
             $parser = new \JsonCollectionParser\Parser();
             $parser->parse($stream, $listener);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo "Can't parse JSON: ".$e->getMessage()."\n";
             echo "Removing the cached file ".SensorCommunityApi::CACHE_FILE."\n";
             unlink(SensorCommunityApi::CACHE_FILE);
