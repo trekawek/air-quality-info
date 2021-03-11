@@ -1,3 +1,4 @@
+<div class="sensor-info">
 <div class="text-center">
     <?php if(isset($breadcrumbs) && count($breadcrumbs) > 2): ?>
     <small><?php include('partials/sensors/breadcrumbs.php'); ?></small><br/>
@@ -15,3 +16,4 @@
 <?php
 include('partials/sensors/table.php');
 ?>
+</div>

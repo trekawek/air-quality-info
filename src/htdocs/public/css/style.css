@@ -206,3 +206,7 @@ a.disabled {
 .darkly .homewidget .strip-recommended-description {
   color: #fff !important;
 }
+
+.darkly .sensor-info {
+  background-color: #222;
+}
