@@ -101,6 +101,10 @@ function initMap(mapDiv, data) {
     //Associate the styled map with the MapTypeId.
     map.mapTypes.set('styled_map', styledMapType);
 
+    if (document.querySelector('body').classList.contains("darkly")) {
+        map.setMapTypeId('styled_map');
+    }
+
     var bounds = new google.maps.LatLngBounds();
     var circles = [];
     for (var i in data) {
