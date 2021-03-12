@@ -204,9 +204,27 @@ a.disabled {
 .darkly .homewidget .strip,
 .darkly .homewidget .strip-recommended,
 .darkly .homewidget .strip-recommended-description {
-  color: #fff !important;
+  color: #fff!important;
 }
 
-.darkly .sensor-info {
-  background-color: #222;
+.darkly .sensor-info,
+.darkly .sensor-info table.table {
+  color: #212529!important;
+}
+
+.darkly .sensor-info .text-dark {
+  color: #343a40!important;
+}
+
+.darkly .sensor-info .table th,
+.darkly .sensor-info .table td {
+  border-top: 1px solid #dee2e6;
+}
+
+.darkly .sensor-info .table thead th {
+  border-bottom: 2px solid #dee2e6;
+}
+
+.darkly .sensor-info .table tbody + tbody {
+  border-top: 2px solid #dee2e6;
 }
