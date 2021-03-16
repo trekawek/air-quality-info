@@ -7,6 +7,9 @@
         "pda/pheanstalk": "^4.0",
         "erusev/parsedown": "^1.7",
         "maxakawizard/json-collection-parser": "~1.0",
-        "nette/caching": "^3.0"
+        "nette/caching": "^3.0",
+        "mailgun/mailgun-php": "^3.5",
+        "kriswallsmith/buzz": "^1.2",
+        "nyholm/psr7": "^1.4"
     }
 }
