@@ -23,6 +23,11 @@ $routes = array(
     'GET /logout' => array('user', 'logout'),
     'GET /register' => array('user', 'register'),
     'POST /register' => array('user', 'doRegister'),
+    'GET /forgetPassword' => array('user', 'forgotPassword'),
+    'POST /forgetPassword' => array('user', 'doForgotPassword'),
+    'GET /resetPassword/[:token]' => array('user', 'resetPassword'),
+    'POST /resetPassword/[:token]' => array('user', 'doResetPassword'),
+
     'GET /user/edit' => array('user', 'edit'),
     'POST /user/edit' => array('user', 'edit'),
     'GET /user/settings' => array('user', 'settings'),

@@ -5,9 +5,15 @@ class UserController extends AbstractController {
 
     private $currentLocale;
 
-    public function __construct(\AirQualityInfo\Lib\Locale $currentLocale) {
+    private $userTokenModel;
+
+    private $mailgun;
+
+    public function __construct(\AirQualityInfo\Lib\Locale $currentLocale, \AirQualityInfo\Model\UserTokenModel $userTokenModel, $mailgun) {
         $this->authorizationRequired = false;
         $this->currentLocale = $currentLocale;
+        $this->userTokenModel = $userTokenModel;
+        $this->mailgun = $mailgun;
     }
 
     public function login() {
@@ -32,7 +38,64 @@ class UserController extends AbstractController {
                 header('Location: '.l('device', 'index'));
             }
         } else {
-            $this->render(array('view' => 'admin/views/user/login.php', 'layout' => false), array('message' => __('Invalid email or password')));
+            $this->alert(__('Invalid email or password'), 'danger');
+            $this->render(array('view' => 'admin/views/user/login.php', 'layout' => false));
+        }
+    }
+
+    public function forgotPassword() {
+        $this->render(array('view' => 'admin/views/user/forgot-password.php', 'layout' => false));
+    }
+
+    public function doForgotPassword() {
+        if (isset($_POST['email'])) {
+            $user = $this->userModel->getUserByEmail($_POST['email']);
+            if ($user) {
+                $token = $this->userTokenModel->generateToken($user['id']);
+                $this->mailgun->messages()->send('web.aqi.eco', [
+                    'from'    => 'no-reply@web.aqi.eco',
+                    'to'      => $user['email'],
+                    'subject' => __('Update password on aqi.eco'),
+                    'text'    => sprintf(__("Please click the link below to update your password on aqi.eco:\nhttps://%s%s"), CONFIG['admin_domains'][0], l("user", "resetPassword", null, array('token' => $token)))
+                ]);
+            }
+            $this->alert(__('E-mail has been sent. Please check your mailbox.'), 'success');
+            header('Location: '.l('user', 'login'));
+        } else {
+            header('Location: '.l('user', 'forgotPassword'));
+        }
+    }
+
+    public function resetPassword($token) {
+        $userId = $this->userTokenModel->getUserIdByToken($token);
+        if ($userId !== null) {
+            $this->render(array('view' => 'admin/views/user/reset-password.php', 'layout' => false), array('token' => $token));
+        } else {
+            $this->alert(__('This token is no longer valid.'), 'danger');
+            header('Location: '.l('user', 'login'));
+        }
+    }
+
+    public function doResetPassword($token) {
+        $userId = $this->userTokenModel->getUserIdByToken($token);
+        if ($userId !== null) {
+            if (strlen($_POST['password']) < 8) {
+                $this->alert(__('The minimum length of the password is 8 characters.'), 'danger');
+                $this->render(array('view' => 'admin/views/user/reset-password.php', 'layout' => false), array('token' => $token));
+                return;
+            }
+            if ($_POST['password'] != $_POST['password2']) {
+                $this->alert(__('Please provide two identical passwords.'), 'danger');
+                $this->render(array('view' => 'admin/views/user/reset-password.php', 'layout' => false), array('token' => $token));
+                return;
+            }
+            $this->userModel->updatePassword($userId, $_POST['password']);
+            $this->userTokenModel->deleteToken($token);
+            $this->alert(__('Password was successfully updated.'), 'success');
+            header('Location: '.l('user', 'login'));
+        } else {
+            $this->alert(__('This token is no longer valid.'), 'danger');
+            header('Location: '.l('user', 'login'));
         }
     }
 
