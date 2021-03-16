@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 10.135.14.82
--- Generation Time: Jan 28, 2021 at 11:46 AM
--- Server version: 8.0.22-0ubuntu0.20.04.3
--- PHP Version: 7.4.11
+-- Generation Time: Mar 16, 2021 at 07:28 PM
+-- Server version: 8.0.23-0ubuntu0.20.04.1
+-- PHP Version: 7.4.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -210,6 +210,19 @@ CREATE TABLE `users` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `user_tokens`
+--
+
+CREATE TABLE `user_tokens` (
+  `id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `token` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `valid_until` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `widgets`
 --
 
@@ -310,6 +323,14 @@ ALTER TABLE `users`
   ADD KEY `domain` (`domain`);
 
 --
+-- Indexes for table `user_tokens`
+--
+ALTER TABLE `user_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `token` (`token`),
+  ADD KEY `user_tokens_user_id_fkey` (`user_id`);
+
+--
 -- Indexes for table `widgets`
 --
 ALTER TABLE `widgets`
@@ -348,6 +369,12 @@ ALTER TABLE `device_mapping`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user_tokens`
+--
+ALTER TABLE `user_tokens`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
@@ -415,6 +442,12 @@ ALTER TABLE `records`
 --
 ALTER TABLE `templates`
   ADD CONSTRAINT `templates_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_tokens`
+--
+ALTER TABLE `user_tokens`
+  ADD CONSTRAINT `user_tokens_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `widgets`
