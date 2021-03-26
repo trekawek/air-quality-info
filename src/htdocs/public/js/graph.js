@@ -243,12 +243,19 @@ function renderGraph(ctx, data, type, avgType) {
 
         var pm25Limit = null;
         var pm10Limit = null;
-        if (avgType == 1) {
+        var contentSuffix = '';
+        if (avgType == 1 || avgType == 0) {
             pm25Limit = CONFIG.pm25Limit1h;
             pm10Limit = CONFIG.pm10Limit1h;
-        } else if (avgType == 24) {
+            if (avgType == 0) {
+                contentSuffix = ' / 1h';
+            }
+        } else if (avgType == 24 || avgType == 720) {
             pm25Limit = CONFIG.pm25Limit24h;
             pm10Limit = CONFIG.pm10Limit24h;
+            if (avgType == 720) {
+                contentSuffix = ' / 24h';
+            }
         }
         config.options.annotation = { annotations: [] };
         
@@ -261,7 +268,7 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: 'purple',
                 borderWidth: 1,
                 label: {
-                  content: __('PM₂.₅ limit'),
+                  content: __('PM₂.₅ limit') + contentSuffix,
                   enabled: true,
                   position: 'left',
 		          backgroundColor: 'rgba(0,0,0,0.3)'
@@ -277,7 +284,7 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: 'orange',
                 borderWidth: 1,
                 label: {
-                  content: __('PM₁₀ limit'),
+                  content: __('PM₁₀ limit') + contentSuffix,
                   enabled: true,
                   position: 'left',
 		          backgroundColor: 'rgba(0,0,0,0.3)'
