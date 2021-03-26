@@ -75,6 +75,10 @@ echo "Starting upload-csv\n";
 
 $s3Client = $diContainer->getBinding('s3Client');
 while (true) {
+    if (!file_exists(CONFIG['csv_root'])) {
+        sleep(60 * 60);
+        continue;
+    }
     $rootDir = new RecursiveDirectoryIterator(CONFIG['csv_root']);
     $iterator = new RecursiveIteratorIterator($rootDir);
     $regexIterator = new RegexIterator($iterator, '/^.+\.csv$/i', RecursiveRegexIterator::GET_MATCH);
