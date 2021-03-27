@@ -58,7 +58,11 @@ $diContainer->setLazyBinding('cache', function() {
     return new \Nette\Caching\Cache($cacheStorage);
 });
 $diContainer->setLazyBinding('mailgun', function() {
-    return \Mailgun\Mailgun::create(CONFIG['mailgun_key'], 'https://api.eu.mailgun.net');
+    if (!isset(CONFIG['mailgun_key']) || !CONFIG['mailgun_key']) {
+        return null;
+    } else {
+        return \Mailgun\Mailgun::create(CONFIG['mailgun_key'], 'https://api.eu.mailgun.net');
+    }
 });
 
 Lib\CsrfToken::generateTokenIfNotExists();
