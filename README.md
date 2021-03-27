@@ -19,8 +19,22 @@ This is the code of the SaaS product now, available live on https://aqi.eco.
 
 ## Setup
 
+In the project root directory, create the directory structure and assign the right permissions, so it'll be writeable by Docker containers:
+```
+mkdir -p var-data/s3
+mkdir -p var-data/beanstalkd
+mkdir -p var-data/var-aqi
+mkdir -p var-data/log
+chmod -R 777 var-data # or other settings, depending on your setup
+```
+
+Create config:
 ```
 mv config-DEFAULT.php config.php
+```
+
+Start containers:
+```
 docker-compose up
 ```
 
