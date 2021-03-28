@@ -24,7 +24,7 @@ class Theme {
 
   function setTheme($theme) {
     if (isset(Theme::THEMES[$theme])) {
-      setcookie("theme", $theme, time() + 60 * 60 * 24 * 365);
+      setcookie("theme", $theme, time() + 60 * 60 * 24 * 365, '/');
       $this->theme = $theme;
     }
   }
