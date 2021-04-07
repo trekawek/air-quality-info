@@ -5,11 +5,13 @@
 <?php include('partials/sensors/avg-switch.php') ?>
 
 <div class="row device-header">
-    <div class="col-md-3 offset-md-2">
+    <div class="col-md offset-md-2">
         <?php include('partials/device_description.php'); ?>
     </div>
-    <div class="col-md-2 text-center">
+    <div class="col-md-auto text-center">
         <?php include('partials/sensors/badge.php') ?>
+    </div>
+    <div class="col-md offset-md-2">
     </div>
 </div>
 
