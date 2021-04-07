@@ -244,16 +244,16 @@ function renderGraph(ctx, data, type, avgType) {
         var pm25Limit = null;
         var pm10Limit = null;
         var contentSuffix = '';
-        if (avgType == 1 || avgType == 0) {
+        if (avgType <= 1) {
             pm25Limit = CONFIG.pm25Limit1h;
             pm10Limit = CONFIG.pm10Limit1h;
-            if (avgType == 0) {
+            if (avgType < 1) {
                 contentSuffix = ' / 1h';
             }
-        } else if (avgType == 24 || avgType == 720) {
+        } else if (avgType >= 24) {
             pm25Limit = CONFIG.pm25Limit24h;
             pm10Limit = CONFIG.pm10Limit24h;
-            if (avgType == 720) {
+            if (avgType > 24) {
                 contentSuffix = ' / 24h';
             }
         }
@@ -514,6 +514,32 @@ function selectAvgType(avgType) {
     });
 }
 
+function saveAvgType(range, avgType) {
+    return saveProperty('graphs|' + range + '|avgType', avgType);
+}
+
+function getAvgType(range, defaultAvgType) {
+    const savedAvgType = getProperty('graphs|' + range + '|avgType');
+    return savedAvgType === undefined ? defaultAvgType : Number(savedAvgType);
+}
+
+function selectAvgByRange(range) {
+    switch (range) {
+        case 'day':
+        selectAvgType(getAvgType(range, 1));
+        break;
+
+        case 'week':
+        case 'month':
+        selectAvgType(getAvgType(range, 24));
+        break;
+
+        case 'year':
+        selectAvgType(getAvgType(range, 720));
+        break;
+    }
+}
+
 document.querySelectorAll('div.graph-container').forEach(element => {
     updateGraph(element);
 });
@@ -528,20 +554,8 @@ document.querySelectorAll('.graph-range button').forEach(element => {
         element.classList.add('btn-primary');
         
         var range = element.dataset.range;
-        switch (range) {
-            case 'day':
-            selectAvgType(1);
-            break;
+        selectAvgByRange(range);
 
-            case 'week':
-            case 'month':
-            selectAvgType(24);
-            break;
-
-            case 'year':
-            selectAvgType(720);
-            break;
-        }
         document.querySelectorAll('.graph-container').forEach(graphContainer => {
             graphContainer.dataset.range = range;
             updateGraph(graphContainer);
@@ -551,12 +565,20 @@ document.querySelectorAll('.graph-range button').forEach(element => {
 
 document.querySelectorAll('.graph-avg-type button').forEach(element => {
     element.onclick = ev => {
+        const currentRangeElement = document.querySelector('.graph-range button.btn-primary');
         var avgType = element.dataset.avgType;
-        selectAvgType(avgType);        
+        saveAvgType(currentRangeElement.dataset.range, avgType);
+        selectAvgType(avgType);
         document.querySelectorAll('.graph-container').forEach(graphContainer => {
             updateGraph(graphContainer);
         });
     };
 });
+
+var currentPrimary = document.querySelector('.graph-range button.btn-primary');
+if (currentPrimary) {
+    var range = currentPrimary.dataset.range;
+    selectAvgByRange(range);
+}
 
 })();

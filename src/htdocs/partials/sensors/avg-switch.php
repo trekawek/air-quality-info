@@ -2,7 +2,7 @@
     <div class="col-md-8 offset-md-2 text-center">
     <small><?php echo __('Average') ?>:
     (<?php
-        foreach (array('1' => '1h', '24' => '24h') as $value => $name) {
+        foreach (array('0' => __('Last'), '0.25' => '15m', '1' => '1h', '24' => '24h') as $value => $name) {
           if ($currentAvgType == $value) {
             echo "<strong>$name</strong>";
           } else if ($currentController == 'main' && $currentAction == 'all') {

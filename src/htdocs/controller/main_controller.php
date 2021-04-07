@@ -13,6 +13,20 @@ class MainController extends AbstractController {
 
     private $devices;
 
+    private const SUPPORTED_AVG_TYPES = array('0', '0.25', '1', '24');
+
+    private function obtainCurrentAvgType($cookieName) {
+        $currentAvgType = '1'; // default
+        if (isset($_COOKIE[$cookieName]) && in_array($_COOKIE[$cookieName], $this::SUPPORTED_AVG_TYPES)) {
+            $currentAvgType = $_COOKIE[$cookieName];
+        }
+        if (isset($_GET['avgType']) && in_array($_GET['avgType'], $this::SUPPORTED_AVG_TYPES)) {
+            $currentAvgType = $_GET['avgType'];
+            setcookie($cookieName, $currentAvgType, time() + 60 * 60 * 24 * 365, '/');
+        }
+        return $currentAvgType;
+    }
+
     public function __construct(
             \AirQualityInfo\Model\RecordModel $recordModel,
             \AirQualityInfo\Model\JsonUpdateModel $jsonUpdateModel,
@@ -29,7 +43,7 @@ class MainController extends AbstractController {
     }
 
     public function index_inner($device) {
-        $currentAvgType = $_GET['avgType'];
+        $currentAvgType = $this->obtainCurrentAvgType('inner|avgType');
         $lastData = $this->recordModel->getLastData($device['id']);
         $averages = $this->recordModel->getAverages($device['id'], $currentAvgType);
 
@@ -147,13 +161,10 @@ class MainController extends AbstractController {
 
         $maxLevels = array();
         $weather = array('temperature' => [], 'humidity' => [], 'pressure' => []);
+        $currentAvgType = $this->obtainCurrentAvgType('all|avgType');
 
         foreach ($devices as $device) {
             $sensors = $this->recordModel->getLastData($device['id']);
-            $currentAvgType = '1';
-            if (isset($_GET['avgType']) && $_GET['avgType'] == '24') {
-                $currentAvgType = '24';
-            }
             $averages = $this->recordModel->getAverages($device['id'], $currentAvgType);
             $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculateDevicePath($nodeById, $device['id']);
             $data[] = array('sensors' => $sensors, 'averages' => $averages, 'device' => $device, 'breadcrumbs' => $path);

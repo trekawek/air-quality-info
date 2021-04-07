@@ -21,6 +21,7 @@
     </div>
     <div class="btn-group btn-group-sm graph-avg-type" role="group" aria-label="<?php echo __('Moving average') ?>">
       <button type="button" class="btn btn-secondary" data-avg-type="0"><?php echo __('Instantaneous') ?></button>
+      <button type="button" class="btn btn-secondary" data-avg-type="0.25">15m</button>
       <button type="button" class="btn btn-primary" data-avg-type="1">1h</button>
       <button type="button" class="btn btn-secondary" data-avg-type="24">24h</button>
       <button type="button" class="btn btn-secondary" data-avg-type="720">30d</button>
