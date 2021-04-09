@@ -133,6 +133,18 @@ function isEmptyData(data) {
     return true;
 }
 
+function saveVisibility(name, visibility) {
+    saveProperty('graphs|' + name + '|visibility', visibility);
+}
+
+function getVisibility(name, defaultVisibility) {
+    if (defaultVisibility) {
+        return getProperty('graphs|' + name + '|visibility') !== 'false';
+    } else {
+        return getProperty('graphs|' + name + '|visibility') === 'true';
+    }
+}
+
 function renderGraph(ctx, data, type, avgType) {
     var config = {
         type: 'line',
@@ -188,7 +200,8 @@ function renderGraph(ctx, data, type, avgType) {
                 label: 'PM₁ (µg/m³)',
                 data: pm1data,
                 borderWidth: 1,
-                hidden: true
+                name: 'pm1',
+                hidden: !getVisibility('pm1', false),
             });
         }
 
@@ -200,7 +213,8 @@ function renderGraph(ctx, data, type, avgType) {
                 label: 'PM₄ (µg/m³)',
                 data: pm4data,
                 borderWidth: 1,
-                hidden: true
+                name: 'pm4',
+                hidden: !getVisibility('pm4', false),
             });
         }
 
@@ -210,13 +224,17 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: window.chartColors.red,
                 label: 'PM₂.₅ (µg/m³)',
                 data: pm25data,
-                borderWidth: 1
+                borderWidth: 1,
+                name: 'pm25',
+                hidden: !getVisibility('pm25', true),
             }, {
                 backgroundColor: window.chartColors.orange,
                 borderColor: window.chartColors.red,
                 label: 'PM₁₀ (µg/m³)',
                 data: pm10data,
-                borderWidth: 1
+                borderWidth: 1,
+                name: 'pm10',
+                hidden: !getVisibility('pm10', true),
             }, {
                 backgroundColor: window.chartColors.lightPurple,
                 borderColor: window.chartColors.lightRed,
@@ -330,7 +348,8 @@ function renderGraph(ctx, data, type, avgType) {
              var dataset = {
                 data: mapToTimeSeries(data.data[item.name]),
                 borderWidth: 2,
-                fill: false
+                fill: false,
+                hidden: !getVisibility(item.name, true),
              };
              config.data.datasets.push(Object.assign(dataset, item));
          });
@@ -345,7 +364,9 @@ function renderGraph(ctx, data, type, avgType) {
                 label: __('CO₂') + ' (ppm)',
                 data: co2Data,
                 borderWidth: 2,
-                fill: false
+                fill: false,
+                name: 'co2',
+                hidden: !getVisibility('co2', true),
             },{
                 borderColor: window.chartColors.lightGrey,
                 data: emptyCo2Data,
@@ -373,7 +394,9 @@ function renderGraph(ctx, data, type, avgType) {
                 label: __('Temperature') + ' (°C)',
                 data: tempData,
                 borderWidth: 2,
-                fill: false
+                fill: false,
+                name: type,
+                hidden: !getVisibility(type, true),
             }, {
                 borderColor: window.chartColors.lightRed,
                 data: emptyTempData,
@@ -388,7 +411,8 @@ function renderGraph(ctx, data, type, avgType) {
                 data: detectorTempData,
                 borderWidth: 2,
                 fill: false,
-                hidden: true
+                name: 'heater_temperature',
+                hidden: !getVisibility('heater_temperature', false),
             });
         }
         config.options.scales.yAxes = [{
@@ -408,7 +432,9 @@ function renderGraph(ctx, data, type, avgType) {
                 label: __('Pressure') + ' (hPa)',
                 data: pressureData,
                 borderWidth: 2,
-                fill: false
+                fill: false,
+                name: type,
+                hidden: !getVisibility(type, true),
             },{
                 borderColor: window.chartColors.lightGreen,
                 data: emptyPressureData,
@@ -434,7 +460,9 @@ function renderGraph(ctx, data, type, avgType) {
                 label: __('Humidity') + ' (%)',
                 data: humidityData,
                 borderWidth: 2,
-                fill: false
+                fill: false,
+                name: type,
+                hidden: !getVisibility(type, true),
             },{
                 borderColor: window.chartColors.lightBlue,
                 data: emptyHumidityData,
@@ -448,7 +476,8 @@ function renderGraph(ctx, data, type, avgType) {
                 data: detectorHumidityData,
                 borderWidth: 2,
                 fill: false,
-                hidden: true
+                name: 'heater_humidity',
+                hidden: !getVisibility('heater_humidity', false),
             });
         }
         config.options.scales.yAxes = [{
@@ -463,13 +492,22 @@ function renderGraph(ctx, data, type, avgType) {
     if (typeof ctx.chart !== 'undefined') {
         ctx.chart.destroy();
         ctx.chart = null;
-    } 
+    }
 
     config.options.legend = {
         labels: {
             filter: function(item, chart) {
                 return typeof item.text != 'undefined';
             }
+        },
+        onClick: function(evt, item) {
+            const index = item.datasetIndex;
+            const datasetItem = ctx.chart.data.datasets[index];
+
+            saveVisibility(datasetItem.name, item.hidden);
+
+            // call default (super) impl
+            Chart.defaults.global.legend.onClick.apply(this, arguments);
         }
     };
 
