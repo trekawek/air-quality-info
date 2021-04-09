@@ -1,7 +1,7 @@
 <div class="row homewidget">
   <div class="col-md-8 offset-md-2">
 
-    <div class="row">
+    <div class="row justify-content-center">
       <div class="col-md-6">
         <ul class="list-group">
           <li class="list-group-item text-center">
@@ -15,6 +15,7 @@
       </div>
       
 
+    <?php if (!(is_null($homeWidget['temperature']) && is_null($homeWidget['pressure']) && is_null($homeWidget['humidity']))): ?>
       <div class="col-md-6">
         <ul class="list-group">
             <li class="list-group-item text-center">
@@ -26,6 +27,8 @@
             </li>
         </ul>
       </div>
+    <?php endif ?>
+
     </div>
 
     <div class="row">
