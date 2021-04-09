@@ -161,6 +161,7 @@ $locale['Powered by '] = 'Vytvořeno';
 $locale['Radius (m)'] = 'Polomě (m)';
 $locale['Range'] = 'Rozsah';
 // $locale['Reading count'] = '';
+// $locale['Readings'] = '';
 $locale['Redirect home page'] = 'Přesměrovat home page';
 $locale['Received JSONs'] = 'Přijaté JSONs';
 $locale['register'] = 'registrovat';

@@ -149,6 +149,7 @@ $locale['Powered by '] = 'Powered by ';
 $locale['Radius (m)'] = 'Radius (m)';
 $locale['Range'] = 'Gamă';
 // $locale['Reading count'] = '';
+// $locale['Readings'] = '';
 $locale['Redirect home page'] = 'Redirecționeză către prima pagină';
 $locale['Received JSONs'] = 'Received JSONs';
 $locale['register'] = 'înregistrează-te';

@@ -123,9 +123,9 @@
           }
         ?>
         <small class="<?php echo $lastUpdatedClass ?>">
-          <?php echo __('Last update') ?>: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?>.
-        </small><br/>
-        <small><?php echo __('Reading count') ?>: <?php echo $averages['values']['count']; ?>.</small>
+          <span class="smallTitle"><?php echo __('Last update') ?></span>: <?php echo date("Y-m-d H:i:s", $sensors['last_update']); ?>.
+        </small>
+        <small><span class="smallTitle"><?php echo __('Readings') ?></span>: <?php echo $averages['values']['count']; ?>.</small>
       </td>
     </tr>
   </tbody>

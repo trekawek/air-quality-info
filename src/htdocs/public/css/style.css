@@ -244,3 +244,8 @@ a.disabled {
 .darkly .colorOrange {
   color: orangered;
 }
+
+.smallTitle {
+  text-decoration: underline;
+  font-weight: bolder;
+}
