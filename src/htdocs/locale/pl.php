@@ -170,6 +170,7 @@ $locale['Powered by '] = 'Powered by ';
 $locale['Radius (m)'] = 'Promień (m)';
 $locale['Range'] = 'Zakres';
 $locale['Reading count'] = 'Liczba pomiarów';
+$locale['Readings'] = 'Pomiary';
 $locale['Redirect home page'] = 'Przekieruj stronę domową';
 $locale['Received JSONs'] = 'Otrzymane JSONy';
 $locale['register'] = 'rejestruj';

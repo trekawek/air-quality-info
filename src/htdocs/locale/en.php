@@ -168,6 +168,7 @@ $locale['Powered by '] = '';
 $locale['Radius (m)'] = '';
 $locale['Range'] = '';
 $locale['Reading count'] = '';
+$locale['Readings'] = '';
 $locale['Redirect home page'] = '';
 $locale['Received JSONs'] = '';
 $locale['register'] = '';

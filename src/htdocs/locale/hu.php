@@ -161,6 +161,7 @@ $locale['Powered by '] = 'Powered by ';
 $locale['Radius (m)'] = 'Sugár (m)';
 $locale['Range'] = 'Távolság';
 // $locale['Reading count'] = '';
+// $locale['Readings'] = '';
 $locale['Redirect home page'] = 'Honlap átirányítása';
 $locale['Received JSONs'] = 'Fogadott JSON adatok';
 $locale['register'] = 'regisztrálás';
