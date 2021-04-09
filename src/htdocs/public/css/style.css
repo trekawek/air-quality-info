@@ -228,3 +228,19 @@ a.disabled {
 .darkly .sensor-info .table tbody + tbody {
   border-top: 2px solid #dee2e6;
 }
+
+.colorRed {
+  color: firebrick;
+}
+
+.darkly .colorRed {
+  color: #ff1f1f;
+}
+
+.colorOrange {
+  color: #da3b00;
+}
+
+.darkly .colorOrange {
+  color: orangered;
+}

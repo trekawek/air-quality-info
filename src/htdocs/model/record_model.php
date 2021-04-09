@@ -104,6 +104,7 @@ class RecordModel {
         foreach (RecordModel::FIELDS as $f) {
             $data[$f] = $row[$f];
         }
+        $data['count'] = 1;
         $device = $this->deviceModel->getDeviceById($deviceId);
         $data['pressure'] = RecordModel::normalizePressure($data['pressure'], $device['elevation'], $data['temperature']);
         return $data;
@@ -114,6 +115,7 @@ class RecordModel {
         foreach (RecordModel::FIELDS as $f) {
             $fields[] = "AVG($f)";
         }
+        $fields[] = "COUNT(*) AS `cnt`";
         $fields = implode(",", $fields);
 
         $stmt = $this->pdo->prepare("SELECT $fields FROM `records` WHERE `device_id` = ? AND `timestamp` >= ?");
@@ -127,6 +129,8 @@ class RecordModel {
         foreach (RecordModel::FIELDS as $i => $f) {
             $data[$f] = $row[$i];
         }
+        $data['count'] = $row['cnt'];
+
         $device = $this->deviceModel->getDeviceById($deviceId);
         $data['pressure'] = RecordModel::normalizePressure($data['pressure'], $device['elevation'], $data['temperature']);
         return $data;
@@ -334,44 +338,54 @@ class RecordModel {
     }
 
     public function getAverages($deviceId, $currentAvgType = '1') {
-        if ($currentAvgType == '1') {
-            $averages = $this->getLastAvg($deviceId, 1);
+        if ($currentAvgType == '0') {
+            $values = $this->getLastData($deviceId);
+            $hours = 0;
+        } else {
+            $hours = floatval($currentAvgType);
+            if ($hours == 0) {
+                // apply default value of 1 on conversion error
+                $hours = 1;
+            }
+            $values = $this->getLastAvg($deviceId, $hours);
+        }
+
+        if ($hours <= 1) {
             $pm10_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM10_THRESHOLDS_1H;
             $pm25_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM25_THRESHOLDS_1H;
             $pm10_limit = \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_1H;
             $pm25_limit = \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_1H;
-        } else {
-            $averages = $this->getLastAvg($deviceId, 24);
+        } else if ($hours >= 24) {
             $pm10_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM10_THRESHOLDS_24H;
             $pm25_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM25_THRESHOLDS_24H;
             $pm10_limit = \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_24H;
             $pm25_limit = \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_24H;
         }
-    
-        if ($averages['pm10'] === null) {
+
+        if ($values['pm10'] === null) {
             $pm10_level = null;
             $rel_pm10 = null;
         } else {
-            $pm10_level = \AirQualityInfo\Lib\PollutionLevel::findLevel($pm10_thresholds, $averages['pm10']);
-            $rel_pm10 = 100 * $averages['pm10'] / $pm10_limit;
+            $pm10_level = \AirQualityInfo\Lib\PollutionLevel::findLevel($pm10_thresholds, $values['pm10']);
+            $rel_pm10 = 100 * $values['pm10'] / $pm10_limit;
         }
-    
-        if ($averages['pm25'] === null) {
+
+        if ($values['pm25'] === null) {
             $pm25_level = null;
             $rel_pm25 = null;
         } else {
-            $pm25_level = \AirQualityInfo\Lib\PollutionLevel::findLevel($pm25_thresholds, $averages['pm25']);
-            $rel_pm25 = 100 * $averages['pm25'] / $pm25_limit;
+            $pm25_level = \AirQualityInfo\Lib\PollutionLevel::findLevel($pm25_thresholds, $values['pm25']);
+            $rel_pm25 = 100 * $values['pm25'] / $pm25_limit;
         }
-    
+
         if ($pm10_level === null && $pm25_level === null) {
             $max_level = null;
         } else {
             $max_level = max($pm10_level, $pm25_level);
         }
-    
+
         return array(
-            'values' => $averages,
+            'values' => $values,
             'pm25_level' => $pm25_level,
             'pm10_level' => $pm10_level,
             'max_level' => $max_level,
