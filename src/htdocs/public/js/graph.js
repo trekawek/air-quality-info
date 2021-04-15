@@ -576,6 +576,11 @@ function selectAvgByRange(range) {
         selectAvgType(getAvgType(range, 720));
         break;
     }
+
+    document.querySelectorAll('.graph-container').forEach(graphContainer => {
+        graphContainer.dataset.range = range;
+        updateGraph(graphContainer);
+    });
 }
 
 document.querySelectorAll('div.graph-container').forEach(element => {
@@ -593,11 +598,6 @@ document.querySelectorAll('.graph-range button').forEach(element => {
         
         var range = element.dataset.range;
         selectAvgByRange(range);
-
-        document.querySelectorAll('.graph-container').forEach(graphContainer => {
-            graphContainer.dataset.range = range;
-            updateGraph(graphContainer);
-        });
     };
 });
 
