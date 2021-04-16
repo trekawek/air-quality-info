@@ -536,7 +536,38 @@ function updateGraph(graphContainer) {
     request.send();
 }
 
+function refreshAllGraphs() {
+    document.querySelectorAll('.graph-container').forEach(graphContainer => {
+        updateGraph(graphContainer);
+    });
+}
+
 window.updateGraph = updateGraph;
+
+function selectRange(range) {
+    var oldPrimary = document.querySelector('.graph-range button.btn-primary');
+    oldPrimary.classList.remove('btn-primary');
+    oldPrimary.classList.add('btn-secondary');
+
+    var element = document.querySelector('.graph-range button[data-range="' + range + '"]')
+    element.classList.remove('btn-secondary');
+    element.classList.add('btn-primary');
+
+    document.querySelectorAll('.graph-container').forEach(graphContainer => {
+        graphContainer.dataset.range = range;
+    });
+
+    selectAvgByRange(range);
+}
+
+function saveRange(range) {
+    return saveProperty('graphs|range', range);
+}
+
+function getRange(defaultRange) {
+    const savedRange = getProperty('graphs|range');
+    return savedRange === undefined ? defaultRange : savedRange;
+}
 
 function selectAvgType(avgType) {
     var oldPrimary = document.querySelector('.graph-avg-type button.btn-primary');
@@ -576,28 +607,19 @@ function selectAvgByRange(range) {
         selectAvgType(getAvgType(range, 720));
         break;
     }
-
-    document.querySelectorAll('.graph-container').forEach(graphContainer => {
-        graphContainer.dataset.range = range;
-        updateGraph(graphContainer);
-    });
 }
 
-document.querySelectorAll('div.graph-container').forEach(element => {
-    updateGraph(element);
-});
+function init() {
+    selectRange(getRange("day"));
+    refreshAllGraphs();
+}
 
 document.querySelectorAll('.graph-range button').forEach(element => {
     element.onclick = ev => {
-        var oldPrimary = document.querySelector('.graph-range button.btn-primary');
-        oldPrimary.classList.remove('btn-primary');
-        oldPrimary.classList.add('btn-secondary');
-
-        element.classList.remove('btn-secondary');
-        element.classList.add('btn-primary');
-        
         var range = element.dataset.range;
-        selectAvgByRange(range);
+        saveRange(range);
+        selectRange(range);
+        refreshAllGraphs();
     };
 });
 
@@ -607,16 +629,10 @@ document.querySelectorAll('.graph-avg-type button').forEach(element => {
         var avgType = element.dataset.avgType;
         saveAvgType(currentRangeElement.dataset.range, avgType);
         selectAvgType(avgType);
-        document.querySelectorAll('.graph-container').forEach(graphContainer => {
-            updateGraph(graphContainer);
-        });
+        refreshAllGraphs()
     };
 });
 
-var currentPrimary = document.querySelector('.graph-range button.btn-primary');
-if (currentPrimary) {
-    var range = currentPrimary.dataset.range;
-    selectAvgByRange(range);
-}
+init();
 
 })();
