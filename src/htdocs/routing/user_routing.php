@@ -46,6 +46,7 @@ $routes = array(
     'GET /:lang/map/:device'               => array('map', 'sensorInfo'),
     'GET /attachment/:name'                => array('attachment', 'get'),
     'GET /:lang/:device/widget'            => array('device_widget', 'show'),
+    'GET /:lang/:device/widget2'           => array('device_widget', 'show2'),
     'GET /:lang/widget/:widgetId'          => array('domain_widget', 'show'),
 
     // deprecated
