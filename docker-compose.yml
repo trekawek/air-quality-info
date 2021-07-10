@@ -31,12 +31,14 @@ services:
     restart: on-failure
 
   db:
-    image: mysql:5
+    image: mysql:8
     environment: *mysql-variables
     volumes:
     - ./mysql-data:/var/lib/mysql
     - ./src/mysql-schema.sql:/docker-entrypoint-initdb.d/mysql-schema.sql
     restart: on-failure
+    cap_add:
+    - SYS_NICE
 
   nginx:
     image: nginx:1.16-alpine
