@@ -39,7 +39,7 @@ class Updater {
         $mapping = $this->getMapping($device);
         $gps_date = Updater::readValue($mapping, $device, 'gps_date', $map, null);
         $gps_time = Updater::readValue($mapping, $device, 'gps_time', $map, null);
-        if ($gps_date && $gps_time) {
+        if ($gps_date && $gps_time && $gps_date != '00/00/2000') {
             $time = \DateTime::createFromFormat('m/d/Y H:i:s.u', $gps_date.' '.$gps_time, new \DateTimeZone('UTC'))->getTimestamp();
         }
 
