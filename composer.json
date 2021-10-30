@@ -1,15 +1,19 @@
 {
     "config": {
-        "vendor-dir": "src/htdocs/vendor"
+        "vendor-dir": "src/htdocs/vendor",
+        "sort-packages": true
     },
     "require": {
+        "php": "^7.4",
+        "ext-simplexml": "*",
+        "ext-zip": "*",
         "aws/aws-sdk-php": "^3.52",
-        "pda/pheanstalk": "^4.0",
         "erusev/parsedown": "^1.7",
+        "kriswallsmith/buzz": "^1.2",
+        "mailgun/mailgun-php": "^3.5",
         "maxakawizard/json-collection-parser": "~1.0",
         "nette/caching": "^3.0",
-        "mailgun/mailgun-php": "^3.5",
-        "kriswallsmith/buzz": "^1.2",
-        "nyholm/psr7": "^1.4"
+        "nyholm/psr7": "^1.4",
+        "pda/pheanstalk": "^4.0"
     }
 }
