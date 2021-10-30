@@ -244,3 +244,7 @@ a.disabled {
 .darkly .colorOrange {
   color: orangered;
 }
+
+.darkly .text-dark {
+  color: #adb5bd!important;
+}

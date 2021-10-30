@@ -41,7 +41,11 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
     <div class="container">
       <div class="row">
         <div class="col-md-8 offset-md-2">
+<?php if ($currentTheme->getTheme() == "darkly"): ?>
+          <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+<?php else: ?>
           <nav class="navbar navbar-expand-md navbar-light bg-light">
+<?php endif ?>
 <?php if (isset($domainTemplate['brand_name']) || isset($customBrandIcon)): ?>
             <a href="/" class="navbar-left navbar-brand">
               <img src="<?php echo isset($customBrandIcon) ? $customBrandIcon : '/public/img/aqi.png' ?>"/><?php echo isset($domainTemplate['brand_name']) ? $domainTemplate['brand_name'] : '' ?></a>
