@@ -197,10 +197,7 @@ class DeviceHierarchyController extends AbstractController {
             .\AirQualityInfo\Model\DeviceHierarchyModel::getTextPath($breadcrumbs)
             .'/';
 
-        $deviceForm->addElement('name', 'text', 'Name')
-            ->addRule('required')
-            ->addRule('regexp', array('pattern' => '/^[a-z0-9][a-z0-9-]*[a-z0-9]$/', 'message' => __('The name should consist of alphanumeric characters and dashes')))
-            ->setOptions(array('prepend' => $parentUrl));
+        $this->addNameField($deviceForm)->setOptions(array('prepend' => $parentUrl));
     }
 }
 ?>
