@@ -5,6 +5,7 @@ class SmogtokApi {
 
     const VALUE_MAPPING = array(
         'Temperatura' => 'temperature',
+        'PM 0,1' => 'pm1',
         'PM 2,5' => 'pm25',
         'PM 10' => 'pm10',
         'Ciśnienie' => 'pressure',
