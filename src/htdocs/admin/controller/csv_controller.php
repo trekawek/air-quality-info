@@ -15,11 +15,21 @@ class CsvController extends AbstractController {
         if (empty($path)) {
             $path = $this->user['domain'];
         }
+
+        try {
+            $list = $this->csvModel->list($this->sanitizePath($path));
+        } catch (\Exception $exception) {
+            $list = array(
+                "dirs" => array(),
+                "objects" => array(),
+            );
+        }
+
         $this->render(array(
             'view' => 'admin/views/csv/index.php'
         ), array(
             'path' => $path,
-            'list' => $this->csvModel->list($this->sanitizePath($path))
+            'list' => $list,
         ));
     }
 
