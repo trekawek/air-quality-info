@@ -42,7 +42,7 @@ class DeviceHierarchyController extends AbstractController {
         $breadcrumbs = $this->deviceHierarchyModel->getPath($this->user['id'], $parentId);
 
         $nodeForm = new \AirQualityInfo\Lib\Form\Form("nodeForm");
-        $this->addNameField($nodeForm, $breadcrumbs);
+        $this->addNameFieldWithBreadcrumbs($nodeForm, $breadcrumbs);
         $nodeForm->addElement('description', 'text', 'Description')->addRule('required');
         if ($nodeForm->isSubmitted() && $nodeForm->validate($_POST)) {
             $id = $this->deviceHierarchyModel->addChild(
@@ -154,7 +154,7 @@ class DeviceHierarchyController extends AbstractController {
         $node = end($breadcrumbs);
 
         $nodeForm = new \AirQualityInfo\Lib\Form\Form("nodeForm");
-        $this->addNameField($nodeForm, array_slice($breadcrumbs, 0, -1));
+        $this->addNameFieldWithBreadcrumbs($nodeForm, array_slice($breadcrumbs, 0, -1));
         $nodeForm->addElement('description', 'text', 'Description')->addRule('required');
         $nodeForm->setDefaultValues($node);
 
@@ -190,7 +190,7 @@ class DeviceHierarchyController extends AbstractController {
         $this->alert(__('Deleted the node'));
     }
 
-    protected function addNameField(\AirQualityInfo\Lib\Form\Form $deviceForm, $breadcrumbs) {
+    private function addNameFieldWithBreadcrumbs(\AirQualityInfo\Lib\Form\Form $deviceForm, $breadcrumbs) {
         $parentUrl = 'https://'
             .$this->user['domain']
             .CONFIG['user_domain_suffixes'][0]
