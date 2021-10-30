@@ -190,7 +190,7 @@ class DeviceHierarchyController extends AbstractController {
         $this->alert(__('Deleted the node'));
     }
 
-    protected function addNameField($deviceForm, $breadcrumbs) {
+    protected function addNameField(\AirQualityInfo\Lib\Form\Form $deviceForm, $breadcrumbs) {
         $parentUrl = 'https://'
             .$this->user['domain']
             .CONFIG['user_domain_suffixes'][0]

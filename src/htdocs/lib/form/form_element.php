@@ -35,7 +35,7 @@ class FormElement {
         $this->description = $description;
     }
 
-    public function addRule($type, $options = null) {
+    public function addRule($type, $options = null): self {
         if ($type === 'required') {
             $this->required = true;
         }
@@ -43,12 +43,12 @@ class FormElement {
         return $this;
     }
 
-    public function addGroupClass($class) {
+    public function addGroupClass($class): self {
         $this->groupClass[] = $class;
         return $this;
     }
 
-    public function setOptions($options) {
+    public function setOptions($options): self {
         $this->options = $options;
         return $this;
     }

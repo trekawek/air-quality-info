@@ -11,7 +11,7 @@ class Form {
         $this->formName = $formName;
     }
 
-    public function addElement($name, $type, $label = '', $attributes = array(), $description = null) {
+    public function addElement($name, $type, $label = '', $attributes = array(), $description = null): FormElement {
         $element = new FormElement($name, $type, $label, $attributes, $description);
         $this->elements[$name] = $element;
         return $element;

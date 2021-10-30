@@ -116,7 +116,7 @@ class AbstractController {
         return $uri_prefix;
     }
 
-    protected function addNameField($deviceForm) {
+    protected function addNameField(\AirQualityInfo\Lib\Form\Form $deviceForm) {
         return $deviceForm->addElement('name', 'text', 'Name')
             ->addRule('required')
             ->addRule('regexp', array('pattern' => '/^[a-z0-9][a-z0-9-]*[a-z0-9]$/', 'message' => __('The name should consist of alphanumeric characters and dashes')));
