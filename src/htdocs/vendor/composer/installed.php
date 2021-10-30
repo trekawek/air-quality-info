@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => 'f263f86b185996d51848e605251343115dd54f45',
+    'reference' => 'acb90feef438edc564dfac959768e7f5a244f04f',
     'name' => '__root__',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => 'f263f86b185996d51848e605251343115dd54f45',
+      'reference' => 'acb90feef438edc564dfac959768e7f5a244f04f',
     ),
     'aws/aws-sdk-php' => 
     array (
