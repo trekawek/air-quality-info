@@ -100,6 +100,10 @@ class RecordModel {
         $row = $stmt->fetch();
         $stmt->closeCursor();
 
+        if ($row === false) {
+            $row = array();
+        }
+
         $data = array('last_update' => $row['timestamp']);
         foreach (RecordModel::FIELDS as $f) {
             $data[$f] = $row[$f];
@@ -132,6 +136,9 @@ class RecordModel {
         $data['count'] = $row['cnt'];
 
         $device = $this->deviceModel->getDeviceById($deviceId);
+        if ($device === false) {
+            $device['elevation'] = 0;
+        }
         $data['pressure'] = RecordModel::normalizePressure($data['pressure'], $device['elevation'], $data['temperature']);
         return $data;
     }
