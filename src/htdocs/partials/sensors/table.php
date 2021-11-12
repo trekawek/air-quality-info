@@ -1,5 +1,5 @@
-<?php if ($averages['pm25_level'] !== null || $averages['pm10_level'] !== null): ?>
 <table class="table">
+<?php if ($averages['pm25_level'] !== null || $averages['pm10_level'] !== null): ?>
   <thead>
     <tr>
       <th scope="col"><?php echo __('Name') ?></th>
@@ -129,5 +129,5 @@
       </td>
     </tr>
   </tbody>
-</table>
 <?php endif ?>
+</table>
