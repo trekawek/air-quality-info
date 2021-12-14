@@ -101,7 +101,13 @@ class RecordModel {
         $stmt->closeCursor();
 
         if ($row === false) {
-            $row = array();
+            $data = array();
+            $data['last_update'] = null;
+            foreach (RecordModel::FIELDS as $f) {
+                $data[$f] = null;
+            }
+            $data['count'] = null;
+            return $data;
         }
 
         $data = array('last_update' => $row['timestamp']);
