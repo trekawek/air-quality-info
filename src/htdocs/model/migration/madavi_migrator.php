@@ -5,7 +5,7 @@ class MadaviMigrator {
 
     const BATCH_SIZE = 1024;
 
-    const SENSOR_URL = 'https://www.madavi.de/sensor';
+    const SENSOR_URL = 'https://api-rrd.madavi.de';
 
     const MAPPING = array(
         'Temp' => 'temperature',
