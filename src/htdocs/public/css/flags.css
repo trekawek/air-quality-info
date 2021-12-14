@@ -26,3 +26,7 @@
 .flag-ro {
     background-image: url("/public/img/flags/romania.png");
 }
+
+.flag-nl {
+    background-image: url("/public/img/flags/netherlands.png");
+}

@@ -21,7 +21,7 @@ $jsLocale['Very low'] = 'Erg laag';
 $locale = array_merge($jsLocale);
 $locale['<meta> tags to be put in the <head> section'] = '<meta> tags die in de <head> sectie worden geplaatst';
 $locale['%s should be between %d and %d'] = '%s zou tussen %d en %d moeten zijn';
-$locale['<a href="https://www.airqualitynow.eu/about_indices_definition.php">CAQI</a> index'] = '<a href="https://www.airqualitynow.eu/nl/about_indices_definition.php">CAQI</a> index']';
+$locale['<a href="https://www.airqualitynow.eu/about_indices_definition.php">CAQI</a> index'] = '<a href="https://www.airqualitynow.eu/nl/about_indices_definition.php">CAQI</a> index';
 $locale['About page body'] = 'Over paginatekst';
 $locale['About page name (3)'] = 'Over paginanaam';
 $locale['Account'] = 'Account';
