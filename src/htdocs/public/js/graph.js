@@ -575,12 +575,16 @@ function getRange(defaultRange) {
 
 function selectAvgType(avgType) {
     var oldPrimary = document.querySelector('.graph-avg-type button.btn-primary');
-    oldPrimary.classList.remove('btn-primary');
-    oldPrimary.classList.add('btn-secondary');
+    if (oldPrimary != null) {
+        oldPrimary.classList.remove('btn-primary');
+        oldPrimary.classList.add('btn-secondary');
+    }
 
     var element = document.querySelector('.graph-avg-type button[data-avg-type="' + avgType + '"]')
-    element.classList.remove('btn-secondary');
-    element.classList.add('btn-primary');
+    if (element != null) {
+        element.classList.remove('btn-secondary');
+        element.classList.add('btn-primary');
+    }
 
     document.querySelectorAll('.graph-container').forEach(graphContainer => {
         graphContainer.dataset.avgType = avgType;
