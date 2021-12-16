@@ -546,12 +546,16 @@ window.updateGraph = updateGraph;
 
 function selectRange(range) {
     var oldPrimary = document.querySelector('.graph-range button.btn-primary');
-    oldPrimary.classList.remove('btn-primary');
-    oldPrimary.classList.add('btn-secondary');
+    if (oldPrimary != null)  {
+        oldPrimary.classList.remove('btn-primary');
+        oldPrimary.classList.add('btn-secondary');
+    }
 
     var element = document.querySelector('.graph-range button[data-range="' + range + '"]')
-    element.classList.remove('btn-secondary');
-    element.classList.add('btn-primary');
+    if (element != null)  {
+        element.classList.remove('btn-secondary');
+        element.classList.add('btn-primary');
+    }
 
     document.querySelectorAll('.graph-container').forEach(graphContainer => {
         graphContainer.dataset.range = range;
