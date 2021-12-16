@@ -37,6 +37,7 @@ var paths = {
       'node_modules/moment-timezone/builds/moment-timezone-with-data.js',
       'node_modules/moment/locale/cs.js',
       'node_modules/moment/locale/hu.js',
+      'node_modules/moment/locale/nl.js',
       'node_modules/moment/locale/pl.js',
       'node_modules/moment/locale/ro.js',
       'node_modules/chart.js/dist/Chart.js',
