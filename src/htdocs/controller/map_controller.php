@@ -30,6 +30,7 @@ class MapController extends AbstractController {
         $tree = $this->deviceHierarchyModel->getTree($this->userId, $nodeId);
         $devices = $this->flatTree($tree);
         $deviceFields = array('name', 'description', 'path');
+        $data = array();
         foreach ($devices as $device) {
             $deviceFiltered = array();
             foreach ($deviceFields as $f) {
