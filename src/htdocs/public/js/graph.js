@@ -166,9 +166,10 @@ function renderGraph(ctx, data, type, avgType) {
                             second: 'HH:mm:ss',
                             minute: 'HH:mm',
                             hour: 'HH',
+                            day: getLocalDayFormat()
                         },
-                        tooltipFormat: "MMM D HH:mm"
-                    }    
+                        tooltipFormat: getLocalDateTimeFormat()
+                    }
                 }]
             },
             elements: {

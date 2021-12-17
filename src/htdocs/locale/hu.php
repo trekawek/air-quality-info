@@ -17,6 +17,8 @@ $jsLocale['Pressure'] = 'Légnyomás';
 $jsLocale['Temperature'] = 'Hőmérséklet';
 $jsLocale['Very high'] = 'Nagyon magas';
 $jsLocale['Very low'] = 'Nagyon alacsony';
+$jsLocale['DATE_TIME_FORMAT'] = 'dd D MMM HH:mm';
+$jsLocale['DATE_FORMAT'] = 'dd D MMM';
 
 $locale = array_merge($jsLocale);
 $locale['<meta> tags to be put in the <head> section'] = '<meta> címkék elhelyezése a <head> részben';

@@ -17,6 +17,8 @@ $jsLocale['Pressure'] = 'Tlak';
 $jsLocale['Temperature'] = 'Teplota';
 $jsLocale['Very high'] = 'Velmi vysoká';
 $jsLocale['Very low'] = 'Velmi nízká';
+$jsLocale['DATE_TIME_FORMAT'] = 'dd D MMM HH:mm';
+$jsLocale['DATE_FORMAT'] = 'dd D MMM';
 
 $locale = array_merge($jsLocale);
 $locale['<meta> tags to be put in the <head> section'] = '<meta> značky, které mají být vloženy do sekce <head>';

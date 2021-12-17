@@ -45,6 +45,22 @@ function __(msg) {
     }
 }
 
+function getLocalDateTimeFormat() {
+    if (typeof LOCALE['DATE_TIME_FORMAT'] != 'undefined') {
+        return LOCALE['DATE_TIME_FORMAT'];
+    } else {
+        return 'dd, MMM D HH:mm';
+    }
+}
+
+function getLocalDayFormat() {
+    if (typeof LOCALE['DATE_FORMAT'] != 'undefined') {
+        return LOCALE['DATE_FORMAT'];
+    } else {
+        return 'dd, MMM D';
+    }
+}
+
 function bindAvgTypeSwitch(element) {
     element.querySelectorAll('.switch-avg-type').forEach(link => {
         link.onclick = ev => {
