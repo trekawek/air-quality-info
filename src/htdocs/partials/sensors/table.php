@@ -24,7 +24,7 @@
     <?php if ($averages['values']['pm25'] > 0): ?>
     <tr class="index-cat-<?php echo $averages['pm25_level'] ?>">
       <th scope="row">PM<sub>2.5</sub></th>
-      <td><?php echo round($averages['values']['pm25'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
+      <td><?php if ($averages['values']['pm25'] < 10) { $precision = 1; } else { $precision = 0; }; echo round($averages['values']['pm25'], $precision); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
       <td><?php echo round($averages['rel_pm25'], 0); ?>%</td>
       <td>
         <?php if ($averages['values']['n25'] > 0): ?>
@@ -37,7 +37,7 @@
     <?php if ($averages['values']['pm10'] > 0): ?>
     <tr class="index-cat-<?php echo $averages['pm10_level'] ?>">
       <th scope="row">PM<sub>10</sub></th>
-      <td><?php echo round($averages['values']['pm10'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
+      <td><?php if ($averages['values']['pm10'] < 10) { $precision = 1; } else { $precision = 0; }; echo round($averages['values']['pm10'], $precision); ?><small>&nbsp;µg/m<sup>3</sup></small></td>
       <td><?php echo round($averages['rel_pm10'], 0); ?>%</td>
       <td>
         <?php if ($averages['values']['n10'] > 0): ?>
@@ -63,7 +63,7 @@
       <th scope="row">PM<sub>1</sub></th>
       <td>
         <?php if ($averages['values']['pm1'] > 0): ?>
-        <?php echo round($averages['values']['pm1'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small>
+        <?php if ($averages['values']['pm1'] < 10) { $precision = 1; } else { $precision = 0; }; echo round($averages['values']['pm1'], $precision); ?><small>&nbsp;µg/m<sup>3</sup></small>
         <?php endif ?>
       </td>
       <td></td>
@@ -80,7 +80,7 @@
       <th scope="row">PM<sub>4</sub></th>
       <td>
         <?php if ($averages['values']['pm4'] > 0): ?>
-        <?php echo round($averages['values']['pm4'], 0); ?><small>&nbsp;µg/m<sup>3</sup></small>
+        <?php if ($averages['values']['pm4'] < 10) { $precision = 1; } else { $precision = 0; }; echo round($averages['values']['pm4'], $precision); ?><small>&nbsp;µg/m<sup>3</sup></small>
         <?php endif ?>
       </td>
       <td></td>
