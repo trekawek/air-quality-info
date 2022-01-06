@@ -40,7 +40,10 @@ class Updater {
         $gps_date = Updater::readValue($mapping, $device, 'gps_date', $map, null);
         $gps_time = Updater::readValue($mapping, $device, 'gps_time', $map, null);
         if ($gps_date && $gps_time && $gps_date != '00/00/2000') {
-            $time = \DateTime::createFromFormat('m/d/Y H:i:s.u', $gps_date.' '.$gps_time, new \DateTimeZone('UTC'))->getTimestamp();
+            $parsedTime = \DateTime::createFromFormat('m/d/Y H:i:s.u', $gps_date.' '.$gps_time, new \DateTimeZone('UTC'))->getTimestamp();
+            if ($parsedTime <= ($time + 60 * 60 * 24)) {
+                $time = $parsedTime;
+            }
         }
 
         $gps_lat = Updater::readValue($mapping, $device, 'gps_lat', $map, null);
