@@ -109,7 +109,7 @@ class MainController extends AbstractController {
         if ($device['expose_location']) {
             $data['location'] = array(
                 'lat' => $device['lat'],
-                'lon' => $device['lon']
+                'lng' => $device['lng']
             );
         }
 
