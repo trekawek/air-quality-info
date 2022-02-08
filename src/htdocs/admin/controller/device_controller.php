@@ -103,7 +103,8 @@ class DeviceController extends AbstractController {
                 'lat' => $_POST['lat'],
                 'lng' => $_POST['lng'],
                 'radius' => $_POST['radius'],
-                'elevation' => empty($_POST['elevation']) ? NULL : $_POST['elevation']
+                'elevation' => empty($_POST['elevation']) ? NULL : $_POST['elevation'],
+                'expose_location' => $_POST['expose_location']
             );
             $this->deviceModel->updateDevice($deviceId, $data);
             $this->alert(__('Updated the device', 'success'));
@@ -211,6 +212,9 @@ class DeviceController extends AbstractController {
             ->addGroupClass('map-control')
             ->addGroupClass('collapse')
             ->addRule('range', array('min' => -10994, 'max' => 8848));
+        $deviceForm->addElement('expose_location', 'checkbox', 'Expose location in the data.json', array(), null)
+            ->addGroupClass('map-control')
+            ->addGroupClass('collapse');
         $deviceForm->addElement('lat', 'hidden');
         $deviceForm->addElement('lng', 'hidden');
         $deviceForm->setDefaultValues($device);

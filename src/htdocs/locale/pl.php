@@ -100,6 +100,7 @@ $locale['Edit device'] = 'Edycja urządzenia';
 $locale['Edit directory'] = 'Edycja katalogu';
 $locale['E-mail has been sent. Please check your mailbox.'] = 'Wysłano e-mail. Sprawdź swoją skrzynkę.';
 $locale['Elevation (m a.s.l.)'] = 'Wysokość (m n.p.m.)';
+$locale['Expose location in the data.json'] = 'Udostępnij położenie w data.json';
 $locale['Extra description'] = 'Dodatkowy opis';
 $locale['Fill to add a new item to the menu.'] = 'Wpisz nazwę, aby dodać nową pozycję w menu';
 $locale['Find sensor on'] = 'Znajdź czujnik na';

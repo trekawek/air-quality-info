@@ -100,6 +100,7 @@ $locale['Edit device'] = '';
 $locale['Edit directory'] = '';
 $locale['E-mail has been sent. Please check your mailbox.'] = '';
 $locale['Elevation (m a.s.l.)'] = '';
+$locale['Expose location in the data.json'] = '';
 $locale['Extra description'] = '';
 $locale['Fill to add a new item to the menu.'] = '';
 $locale['Find sensor on'] = '';

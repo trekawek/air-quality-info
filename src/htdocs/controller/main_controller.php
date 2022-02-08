@@ -106,6 +106,13 @@ class MainController extends AbstractController {
             $data['average_24h']['index_num'] = $avg24h['max_level'];
         }
 
+        if ($device['expose_location']) {
+            $data['location'] = array(
+                'lat' => $device['lat'],
+                'lon' => $device['lon']
+            );
+        }
+
         if ($data['last_data'] === null) {
             http_response_code(404);
             die();
