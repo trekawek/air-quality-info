@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 10.135.14.82
--- Generation Time: Mar 16, 2021 at 07:28 PM
--- Server version: 8.0.23-0ubuntu0.20.04.1
--- PHP Version: 7.4.15
+-- Generation Time: Feb 08, 2022 at 09:32 PM
+-- Server version: 8.0.28-0ubuntu0.20.04.3
+-- PHP Version: 7.4.20
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,7 +40,7 @@ CREATE TABLE `aggregates` (
   `pressure` decimal(6,2) DEFAULT NULL,
   `heater_temperature` decimal(5,2) DEFAULT NULL,
   `heater_humidity` decimal(5,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -55,7 +55,7 @@ CREATE TABLE `attachments` (
   `length` int NOT NULL,
   `mime` varchar(64) NOT NULL,
   `data` mediumblob NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -67,7 +67,7 @@ CREATE TABLE `custom_domains` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
   `fqdn` varchar(256) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -88,6 +88,7 @@ CREATE TABLE `devices` (
   `extra_description` varchar(512) DEFAULT NULL,
   `default_device` tinyint(1) NOT NULL,
   `location_provided` tinyint(1) NOT NULL DEFAULT '0',
+  `expose_location` tinyint(1) NOT NULL DEFAULT '0',
   `lat` decimal(17,14) DEFAULT NULL,
   `lng` decimal(17,14) DEFAULT NULL,
   `radius` decimal(5,1) NOT NULL DEFAULT '250.0',
@@ -95,7 +96,7 @@ CREATE TABLE `devices` (
   `temperature_offset` decimal(4,2) NOT NULL DEFAULT '0.00',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_update` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -111,7 +112,7 @@ CREATE TABLE `device_hierarchy` (
   `name` varchar(256) DEFAULT NULL,
   `description` varchar(256) DEFAULT NULL,
   `device_id` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -124,7 +125,7 @@ CREATE TABLE `device_mapping` (
   `device_id` int NOT NULL,
   `db_name` varchar(32) NOT NULL,
   `json_name` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -136,7 +137,7 @@ CREATE TABLE `device_sensors` (
   `device_id` int NOT NULL,
   `sensor_id` int NOT NULL,
   `type` enum('sensor.community','smogtok','syngeos','gios') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'sensor.community'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -148,7 +149,7 @@ CREATE TABLE `json_updates` (
   `device_id` int NOT NULL,
   `timestamp` int NOT NULL,
   `data` varchar(2048) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -174,7 +175,7 @@ CREATE TABLE `records` (
   `pressure` decimal(6,2) DEFAULT NULL,
   `heater_temperature` decimal(5,2) DEFAULT NULL,
   `heater_humidity` decimal(5,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -186,7 +187,7 @@ CREATE TABLE `templates` (
   `user_id` int NOT NULL,
   `template_name` varchar(32) NOT NULL,
   `template` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -205,7 +206,7 @@ CREATE TABLE `users` (
   `timezone` varchar(64) NOT NULL DEFAULT 'Europe/Warsaw',
   `allow_sensor_community` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -218,7 +219,7 @@ CREATE TABLE `user_tokens` (
   `user_id` int NOT NULL,
   `token` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `valid_until` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -231,7 +232,7 @@ CREATE TABLE `widgets` (
   `user_id` int NOT NULL,
   `title` varchar(512) NOT NULL,
   `template` enum('horizontal','vertical') NOT NULL DEFAULT 'vertical'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Indexes for dumped tables
