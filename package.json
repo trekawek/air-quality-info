@@ -15,7 +15,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.0",
     "location-picker": "^1.1.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.26",
     "popper.js": "^1.15.0",
     "simple-line-icons": "^2.4.1",
