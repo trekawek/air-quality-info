@@ -57,6 +57,8 @@ $routes = array(
     'POST /device/:device_id/import_madavi' => array('device', 'importMadavi'),
     'POST /device/:device_id/reset_password' => array('device', 'resetHttpPassword'),
     'POST /device/:device_id/default' => array('device', 'makeDefault'),
+    'GET /device/assign/:key' => array('device', 'assign'),
+    'POST /device/assign/:key' => array('device', 'assign'),
 
     'DELETE /device/:device_id/mapping/:mapping_id' => array('device', 'deleteMapping'),
 

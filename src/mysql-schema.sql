@@ -88,14 +88,14 @@ CREATE TABLE `devices` (
   `extra_description` varchar(512) DEFAULT NULL,
   `default_device` tinyint(1) NOT NULL,
   `location_provided` tinyint(1) NOT NULL DEFAULT '0',
-  `expose_location` tinyint(1) NOT NULL DEFAULT '0',
   `lat` decimal(17,14) DEFAULT NULL,
   `lng` decimal(17,14) DEFAULT NULL,
   `radius` decimal(5,1) NOT NULL DEFAULT '250.0',
   `elevation` int DEFAULT NULL,
   `temperature_offset` decimal(4,2) NOT NULL DEFAULT '0.00',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `last_update` int DEFAULT NULL
+  `last_update` int DEFAULT NULL,
+  `assign_token` varchar(32) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
@@ -207,6 +207,13 @@ CREATE TABLE `users` (
   `allow_sensor_community` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `email`, `password_hash`, `domain`, `sensor_widget`, `all_widget`, `redirect_root`, `timezone`, `allow_sensor_community`, `created_at`) VALUES
+(9999, 'trekawek+nam@gmail.com', '', '', 0, 0, NULL, 'Europe/Warsaw', 0, '2022-04-17 18:31:36');
 
 -- --------------------------------------------------------
 

@@ -45,6 +45,14 @@ class DeviceModel {
         return $data;
     }
 
+    public function getDeviceByAssignToken($assignToken) {
+        $stmt = $this->pdo->prepare("SELECT * FROM `devices` WHERE `assign_token` = ?");
+        $stmt->execute([$assignToken]);
+        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $data;
+    }
+
     public function getDevicesForUser($userId) {
         $stmt = $this->pdo->prepare("SELECT * FROM `devices` WHERE `user_id` = ? ORDER BY `default_device` DESC, `id` ASC");
         $stmt->execute([$userId]);

@@ -251,6 +251,33 @@ class DeviceController extends AbstractController {
         return $device;
     }
 
+    public function assign($assignToken) {
+        $device = $this->deviceModel->getDeviceByAssignToken($assignToken);
+        if ($device === false || $device['user_id'] != 9999) {
+            header('Location: '.l('device', 'index'));
+            die();
+        }
+        $deviceForm = new \AirQualityInfo\Lib\Form\Form("deviceForm");
+
+        if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
+            $data = array(
+                'user_id' => $this->user['id'],
+            );
+            $this->deviceModel->updateDevice($device['id'], $data);
+            $this->alert(__('Assigned the device', 'success'));
+            header('Location: '.l('device', 'edit', null, array('device_id' => $device['id'])));
+            return;
+        }
+
+        $this->render(array(
+            'view' => 'admin/views/device/assign.php'
+        ), array(
+            'deviceForm' => $deviceForm,
+            'assignToken' => $assignToken,
+            'device' => $device,
+        ));
+    }
+
     private static function chunkedContent() {
         set_time_limit(60 * 60);
         header('Content-Type: text/event-stream; charset=utf-8');

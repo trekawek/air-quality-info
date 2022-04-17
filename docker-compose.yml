@@ -32,6 +32,7 @@ services:
 
   db:
     image: mysql:8
+    platform: linux/x86_64
     environment: *mysql-variables
     volumes:
     - ./mysql-data:/var/lib/mysql
