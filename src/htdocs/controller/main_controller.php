@@ -117,6 +117,7 @@ class MainController extends AbstractController {
             http_response_code(404);
             die();
         } else {
+            header('Access-Control-Allow-Origin: *');
             header('Content-type: application/json');
             echo json_encode($data, JSON_PRETTY_PRINT);
         }
