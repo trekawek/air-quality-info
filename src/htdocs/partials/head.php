@@ -32,7 +32,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
 
     <style><?php echo file_get_contents('public/css/critical.css') ?></style>
 
-    <?php echo jsLink("public/js/vendor.min.js", "defer"); ?>
+    <?php echo jsLink("public/js/vendor.min.js"); ?>
     <?php echo jsLink("public/js/main.js", "defer"); ?>
     <?php echo jsLink("public/js/graph.js", "defer"); ?>
     <?php echo jsLink("public/js/annual_graph.js", "defer"); ?>
