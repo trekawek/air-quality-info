@@ -6,6 +6,7 @@
   "dependencies": {
     "@coreui/coreui": "^2.1.12",
     "@coreui/icons": "^0.3.0",
+    "@googlemaps/markerclusterer": "^2.0.14",
     "bootstrap": "^4.3.1",
     "bootswatch": "^4.3.1",
     "chalk": "^2.4.2",

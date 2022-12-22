@@ -1,3 +1,43 @@
+class AqiClusterer extends markerClusterer.MarkerClusterer {
+    renderClusters() {
+        // generate stats to pass to renderers
+        const stats = new AqiClusterStats(this.markers, this.clusters);
+        const map = this.getMap();
+    
+        this.clusters.forEach((cluster) => {
+          if (cluster.markers.length === 1) {
+            cluster.marker = cluster.markers[0];
+          } else {
+            cluster.marker = this.renderer.render(cluster, stats);
+    
+            if (this.onClusterClick) {
+              cluster.marker.addListener(
+                "click",
+                /* istanbul ignore next */
+                (event) => {
+                  google.maps.event.trigger(
+                    this,
+                    markerClusterer.MarkerClustererEvents.CLUSTER_CLICK,
+                    cluster
+                  );
+                  this.onClusterClick(event, cluster, map);
+                }
+              );
+            }
+          }
+    
+          cluster.marker.setMap(map);
+        });
+      }
+}
+
+class AqiClusterStats extends markerClusterer.ClusterStats {
+    constructor(markers, clusters) {
+        super(markers, clusters);
+        this.level = Math.round(markers.map(m => m._level).reduce((a, b) => a + b, 0) / markers.length);
+    }
+}
+
 var mapsLoaded = (function() {
 
 const COLORS = [
@@ -58,12 +98,11 @@ function createInfoWindow(sensor, map, position) {
 
 function addCircle(sensor, position, map) {
     var circle = new google.maps.Circle({
-        strokeColor: COLORS[sensor.averages.max_level],
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: COLORS[sensor.averages.max_level],
-        fillOpacity: 0.35,
-        map: map,
+            strokeColor: COLORS[sensor.averages.max_level],
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: COLORS[sensor.averages.max_level],
+            fillOpacity: 0.35,
         center: position,
         radius: sensor.radius
     });
@@ -71,7 +110,36 @@ function addCircle(sensor, position, map) {
         createInfoWindow(sensor, map, position);
     });
     circle._radius = sensor.radius;
+    circle._level = sensor.averages.max_level;
+
+    var latLng = new google.maps.LatLng(position);
+    circle.getPosition = function() {
+        return latLng;
+    };
     return circle;
+}
+
+function clusterRender({ count, position }, stats) {
+    const color = COLORS[stats.level];
+    const svg = window.btoa(`
+<svg fill="${color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+<circle cx="120" cy="120" opacity=".6" r="70" />
+<circle cx="120" cy="120" opacity=".3" r="90" />
+<circle cx="120" cy="120" opacity=".2" r="110" />
+</svg>`);
+    return new google.maps.Marker({
+        position,
+        icon: {
+            url: `data:image/svg+xml;base64,${svg}`,
+            scaledSize: new google.maps.Size(45, 45),
+        },
+        label: {
+            text: String(count),
+            color: "rgba(255,255,255,0.9)",
+            fontSize: "12px",
+        },
+        zIndex: Number(google.maps.Marker.MAX_ZINDEX) + count,
+    });
 }
 
 function initMap(mapDiv, data) {
@@ -116,6 +184,13 @@ function initMap(mapDiv, data) {
         circles.push(addCircle(sensor, position, map));
         bounds.extend(position);
     }
+
+    new AqiClusterer({
+        map,
+        markers: circles,
+        renderer: {render: clusterRender},
+        algorithm: new markerClusterer.SuperClusterAlgorithm({}) });
+
     google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
         if (this.getZoom() > 15) {
             this.setZoom(15);
