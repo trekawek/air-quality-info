@@ -1,13 +1,18 @@
 class AqiClusterer extends markerClusterer.MarkerClusterer {
     renderClusters() {
         // generate stats to pass to renderers
-        const stats = new AqiClusterStats(this.markers, this.clusters);
+        const stats = new markerClusterer.ClusterStats(this.markers, this.clusters);
         const map = this.getMap();
     
         this.clusters.forEach((cluster) => {
           if (cluster.markers.length === 1) {
             cluster.marker = cluster.markers[0];
           } else {
+            cluster.level = Math.round(
+                cluster.markers
+                    .map(m => m._level)
+                    .reduce((a, b) => a + b, 0)
+                / cluster.markers.length);
             cluster.marker = this.renderer.render(cluster, stats);
     
             if (this.onClusterClick) {
@@ -29,13 +34,6 @@ class AqiClusterer extends markerClusterer.MarkerClusterer {
           cluster.marker.setMap(map);
         });
       }
-}
-
-class AqiClusterStats extends markerClusterer.ClusterStats {
-    constructor(markers, clusters) {
-        super(markers, clusters);
-        this.level = Math.round(markers.map(m => m._level).reduce((a, b) => a + b, 0) / markers.length);
-    }
 }
 
 var mapsLoaded = (function() {
@@ -119,8 +117,8 @@ function addCircle(sensor, position, map) {
     return circle;
 }
 
-function clusterRender({ count, position }, stats) {
-    const color = COLORS[stats.level];
+function clusterRender({ count, position, level }, stats) {
+    const color = COLORS[level];
     const svg = window.btoa(`
 <svg fill="${color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
 <circle cx="120" cy="120" opacity=".6" r="70" />
@@ -189,7 +187,7 @@ function initMap(mapDiv, data) {
         map,
         markers: circles,
         renderer: {render: clusterRender},
-        algorithm: new markerClusterer.SuperClusterAlgorithm({}) });
+        algorithm: new markerClusterer.SuperClusterAlgorithm({minPoints: 4}) });
 
     google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
         if (this.getZoom() > 15) {
