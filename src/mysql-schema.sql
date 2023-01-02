@@ -88,6 +88,7 @@ CREATE TABLE `devices` (
   `extra_description` varchar(512) DEFAULT NULL,
   `default_device` tinyint(1) NOT NULL,
   `location_provided` tinyint(1) NOT NULL DEFAULT '0',
+  `expose_location` tinyint(1) NOT NULL DEFAULT '0',
   `lat` decimal(17,14) DEFAULT NULL,
   `lng` decimal(17,14) DEFAULT NULL,
   `radius` decimal(5,1) NOT NULL DEFAULT '250.0',
