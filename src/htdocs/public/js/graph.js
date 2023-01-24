@@ -240,12 +240,14 @@ function renderGraph(ctx, data, type, avgType) {
                 backgroundColor: window.chartColors.lightPurple,
                 borderColor: window.chartColors.lightRed,
                 data: emptyPm25Data,
-                borderWidth: 1
+                borderWidth: 1,
+                hidden: !getVisibility('pm25', true),
             }, {
                 backgroundColor: window.chartColors.lightOrange,
                 borderColor: window.chartColors.lightRed,
                 data: emptyPm10Data,
-                borderWidth: 1
+                borderWidth: 1,
+                hidden: !getVisibility('pm10', true),
             }
         );
 
@@ -372,7 +374,8 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: window.chartColors.lightGrey,
                 data: emptyCo2Data,
                 borderWidth: 2,
-                fill: false
+                fill: false,
+                hidden: !getVisibility('co2', true),
             }]
         };
         config.options.scales.yAxes = [{
@@ -402,7 +405,8 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: window.chartColors.lightRed,
                 data: emptyTempData,
                 borderWidth: 2,
-                fill: false
+                fill: false,
+                hidden: !getVisibility(type, true),
             }
         ]};
         if (!isEmptyData(data.data.heater_temperature)) {
@@ -440,7 +444,8 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: window.chartColors.lightGreen,
                 data: emptyPressureData,
                 borderWidth: 2,
-                fill: false
+                fill: false,
+                hidden: !getVisibility(type, true),
             }]
         };
         config.options.scales.yAxes = [{
@@ -468,7 +473,8 @@ function renderGraph(ctx, data, type, avgType) {
                 borderColor: window.chartColors.lightBlue,
                 data: emptyHumidityData,
                 borderWidth: 2,
-                fill: false
+                fill: false,
+                hidden: !getVisibility(type, true),
             }]};
         if (!isEmptyData(data.data.heater_humidity)) {
             config.data.datasets.push({
