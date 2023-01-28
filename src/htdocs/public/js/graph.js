@@ -242,12 +242,14 @@ function renderGraph(ctx, data, type, avgType) {
                 data: emptyPm25Data,
                 borderWidth: 1,
                 hidden: !getVisibility('pm25', true),
+                visibilityName: 'pm25',
             }, {
                 backgroundColor: window.chartColors.lightOrange,
                 borderColor: window.chartColors.lightRed,
                 data: emptyPm10Data,
                 borderWidth: 1,
                 hidden: !getVisibility('pm10', true),
+                visibilityName: 'pm10',
             }
         );
 
@@ -376,6 +378,7 @@ function renderGraph(ctx, data, type, avgType) {
                 borderWidth: 2,
                 fill: false,
                 hidden: !getVisibility('co2', true),
+                visibilityName: 'co2',
             }]
         };
         config.options.scales.yAxes = [{
@@ -407,6 +410,7 @@ function renderGraph(ctx, data, type, avgType) {
                 borderWidth: 2,
                 fill: false,
                 hidden: !getVisibility(type, true),
+                visibilityName: type,
             }
         ]};
         if (!isEmptyData(data.data.heater_temperature)) {
@@ -446,6 +450,7 @@ function renderGraph(ctx, data, type, avgType) {
                 borderWidth: 2,
                 fill: false,
                 hidden: !getVisibility(type, true),
+                visibilityName: type,
             }]
         };
         config.options.scales.yAxes = [{
@@ -475,6 +480,7 @@ function renderGraph(ctx, data, type, avgType) {
                 borderWidth: 2,
                 fill: false,
                 hidden: !getVisibility(type, true),
+                visibilityName: type,
             }]};
         if (!isEmptyData(data.data.heater_humidity)) {
             config.data.datasets.push({
@@ -510,11 +516,15 @@ function renderGraph(ctx, data, type, avgType) {
         onClick: function(evt, item) {
             const index = item.datasetIndex;
             const datasetItem = ctx.chart.data.datasets[index];
+            const oldHidden = item.hidden;
+            const hidden = !oldHidden;
 
-            saveVisibility(datasetItem.name, item.hidden);
+            saveVisibility(datasetItem.name, !hidden);
 
             // call default (super) impl
             Chart.defaults.global.legend.onClick.apply(this, arguments);
+            ctx.chart.data.datasets.filter(d => d.visibilityName == datasetItem.name).forEach(d => d.hidden = hidden);
+            ctx.chart.update();
         }
     };
 
