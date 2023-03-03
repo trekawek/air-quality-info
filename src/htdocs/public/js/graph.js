@@ -155,6 +155,9 @@ function renderGraph(ctx, data, type, avgType) {
             tooltips: {
                 mode: 'index',
                 intersect: false,
+                filter: function (tooltipItem, ctx) {
+                    return !('visibilityName' in ctx.datasets[tooltipItem.datasetIndex]);
+                }
             },
             scales: {
                 xAxes: [{
