@@ -178,9 +178,11 @@ class MainController extends AbstractController {
             $data[] = array('sensors' => $sensors, 'averages' => $averages, 'device' => $device, 'breadcrumbs' => $path);
 
             $maxLevels[] = $averages['max_level'];
-            foreach ($weather as $k => $_) {
-                $weather[$k][] = $sensors[$k];
-            }
+            if ($averages['max_level'] !== null) {
+                foreach ($weather as $k => $_) {
+                    $weather[$k][] = $sensors[$k];
+	        }
+	    }
         }
 
         $level = round(MainController::avg($maxLevels), 0);
