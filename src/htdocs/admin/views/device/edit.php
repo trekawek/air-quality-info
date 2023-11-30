@@ -93,6 +93,18 @@
             </div>
         </div>
 
+        <div class="card">
+            <div class="card-header">
+                <?php echo __('CSV fields') ?>
+            </div>
+            <div class="card-body">
+                <form action="<?php echo l('device', 'edit', null, array('device_id' => $deviceId)) ?>" method="post">
+                    <?php $csvFieldsForm->render() ?>
+                    <button type="submit" class="btn btn-primary"><?php echo __('Update CSV fields') ?></button>
+                </form>
+            </div>
+        </div>
+
     </div>
 
     <div class="col-lg-4">

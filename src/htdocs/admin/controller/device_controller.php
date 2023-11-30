@@ -93,6 +93,7 @@ class DeviceController extends AbstractController {
         $deviceForm = $this->getDeviceForm($device);
         $mappingForm = $this->getMappingForm($deviceId);
         $sensorOptionsForm = $this->getSensorOptionsForm($device);
+        $csvFieldsForm = $this->getCsvFieldsForm($device);
 
         if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
             $data = array(
@@ -132,6 +133,14 @@ class DeviceController extends AbstractController {
             $sensorOptionsForm->setDefaultValues($device);
         }
 
+        if ($csvFieldsForm->isSubmitted() && $csvFieldsForm->validate($_POST)) {
+            $data = array('csv_fields' => DeviceController::checkboxValuesToList($_POST, array_keys(\AirQualityInfo\Model\Updater::VALUE_MAPPING)));
+            $this->deviceModel->updateDevice($deviceId, $data);
+            $this->alert(__('Updated CSV fields', 'success'));
+            $device = $this->getDevice($deviceId);
+            $csvFieldsForm->setDefaultValues(DeviceController::listToCheckboxValues($device['csv_fields']));
+        }
+
         $mapping = $this->deviceModel->getMappingForDevice($deviceId);
 
         $this->render(array(
@@ -142,6 +151,7 @@ class DeviceController extends AbstractController {
             'deviceForm' => $deviceForm,
             'mappingForm' => $mappingForm,
             'sensorOptionsForm' => $sensorOptionsForm,
+            'csvFieldsForm' => $csvFieldsForm,
             'mapping' => $mapping,
             'lastRecord' => $this->recordModel->getLastData($deviceId),
             'jsonUpdates' => $this->jsonUpdateModel->getJsonUpdates($deviceId, 5),
@@ -240,6 +250,33 @@ class DeviceController extends AbstractController {
             ->addRule('range', array('min' => -10, 'max' => 10));
         $sensorOptionsForm->setDefaultValues($device);
         return $sensorOptionsForm;
+    }
+
+    private function getCsvFieldsForm($device) {
+        $fields = array_keys(\AirQualityInfo\Model\Updater::VALUE_MAPPING);
+        $csvFieldsForm = new \AirQualityInfo\Lib\Form\Form("csvFields");
+        foreach ($fields as $field) {
+            if (str_starts_with($field, 'gps')) {
+                continue;
+            }
+            $csvFieldsForm->addElement($field, 'checkbox', $field, array(), null);
+        }
+        $csvFieldsForm->setDefaultValues(DeviceController::listToCheckboxValues($device['csv_fields']));
+        return $csvFieldsForm;
+    }
+
+    private static function listToCheckboxValues($commaSeparatedList) {
+        return array_fill_keys(explode(',', $commaSeparatedList), true);
+    }
+
+    private static function checkboxValuesToList($formValues, $allowedValues) {
+        $keys = array();
+        foreach ($formValues as $k => $v) {
+            if ($v && in_array($k, $allowedValues)) {
+                $keys[] = $k;
+            }
+        }
+        return implode(',', $keys);
     }
 
     private function getDevice($deviceId) {

@@ -5,8 +5,6 @@ use \AirQualityInfo\Lib\StringUtils;
 
 class CsvModel {
 
-    const FIELDS = array('timestamp', 'pm25','pm10','temperature','pressure','humidity','heater_temperature','heater_humidity');
-
     private $deviceModel;
 
     private $userModel;
@@ -132,6 +130,8 @@ class CsvModel {
     public function storeRecords($deviceId, $records) {
         $device = $this->deviceModel->getDeviceById($deviceId);
         $user = $this->userModel->getUserById($device['user_id']);
+        $fields = explode(',', $device['csv_fields']);
+        array_unshift($fields, 'timestamp');
 
         $lastDate = null;
         $fp = null;
@@ -144,9 +144,9 @@ class CsvModel {
                     $fp = null;
                 }
                 $filename = $this->getFileName($user, $device, $r['timestamp']);
-                $fp = $this->open($filename);
+                $fp = $this->open($filename, $fields);
             }
-            $this->writeRecord($fp, $r);
+            $this->writeRecord($fp, $r, $fields);
             $lastDate = $date;
         }
         if ($fp !== null) {
@@ -155,13 +155,13 @@ class CsvModel {
         }
     }
 
-    private function writeHeader($fp) {
-        fwrite($fp, implode(';', CsvModel::FIELDS)."\n");
+    private function writeHeader($fp, $fields) {
+        fwrite($fp, implode(';', $fields)."\n");
     }
 
-    private function writeRecord($fp, $record) {
+    private function writeRecord($fp, $record, $fields) {
         $row = array();
-        foreach (CsvModel::FIELDS as $f) {
+        foreach ($fields as $f) {
             if (isset($record[$f])) {
                 $row[] = $record[$f];
             } else {
@@ -180,7 +180,7 @@ class CsvModel {
         return "$dir/".date('Y-m-d', $ts).".csv";
     }
 
-    private function open($filename) {
+    private function open($filename, $fields) {
         $fullPath = CONFIG['csv_root'] . '/' . $filename;
         $parentDir = dirname($fullPath);
         
@@ -192,7 +192,7 @@ class CsvModel {
             $fp = fopen($fullPath, 'a');
         } else {
             $fp = fopen($fullPath, 'w');
-            $this->writeHeader($fp);
+            $this->writeHeader($fp, $fields);
         }
         return $fp;
     }
