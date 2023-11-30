@@ -106,7 +106,7 @@ class CsvModel {
         }
 
         $fp = fopen($csvFile, 'r');
-        fgets($fp); // header
+        $header = fgets($fp);
         $records = array();
         while(!feof($fp))  {
             $line = trim(fgets($fp));
@@ -120,7 +120,7 @@ class CsvModel {
         fclose($fp);
 
         $fp = fopen($csvFile, 'w');
-        $this->writeHeader($fp);
+        fwrite($fp, $header);
         foreach ($records as $r) {
             fwrite($fp, $r."\n");
         }
