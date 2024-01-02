@@ -7,6 +7,7 @@ $routes = array(
     'POST /device/register/:esp8266id' => array('device', 'register'),
     'GET /device/is_assigned/:key' => array('device', 'isAssigned'),
     'POST /update/:key' => array('update', 'updateWithKey'),
+    'GET /data/kanarek.json' => array('data', 'kanarek'),
 );
 
 $router = new Lib\Router($routes, $currentLocale);

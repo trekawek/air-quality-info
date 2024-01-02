@@ -1,15 +1,21 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 10.135.14.82
--- Generation Time: Feb 08, 2022 at 09:32 PM
--- Server version: 8.0.28-0ubuntu0.20.04.3
--- PHP Version: 7.4.20
+-- Host: db
+-- Generation Time: Jan 02, 2024 at 09:53 PM
+-- Server version: 8.0.31
+-- PHP Version: 8.0.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `air_quality_info`
@@ -80,15 +86,16 @@ CREATE TABLE `devices` (
   `user_id` int NOT NULL,
   `update_mode` enum('push','pull') NOT NULL DEFAULT 'push',
   `esp8266_id` bigint DEFAULT NULL,
-  `http_username` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `http_password` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `api_key` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `http_username` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `http_password` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `api_key` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `name` varchar(256) NOT NULL,
   `description` varchar(256) NOT NULL,
   `extra_description` varchar(512) DEFAULT NULL,
   `default_device` tinyint(1) NOT NULL,
   `location_provided` tinyint(1) NOT NULL DEFAULT '0',
   `expose_location` tinyint(1) NOT NULL DEFAULT '0',
+  `kanarek` tinyint(1) NOT NULL DEFAULT '0',
   `lat` decimal(17,14) DEFAULT NULL,
   `lng` decimal(17,14) DEFAULT NULL,
   `radius` decimal(5,1) NOT NULL DEFAULT '250.0',
@@ -138,7 +145,7 @@ CREATE TABLE `device_mapping` (
 CREATE TABLE `device_sensors` (
   `device_id` int NOT NULL,
   `sensor_id` int NOT NULL,
-  `type` enum('sensor.community','smogtok','syngeos','gios') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'sensor.community'
+  `type` enum('sensor.community','smogtok','syngeos','gios') CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT 'sensor.community'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
@@ -210,13 +217,6 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `email`, `password_hash`, `domain`, `sensor_widget`, `all_widget`, `redirect_root`, `timezone`, `allow_sensor_community`, `created_at`) VALUES
-(9999, 'trekawek+nam@gmail.com', '', '', 0, 0, NULL, 'Europe/Warsaw', 0, '2022-04-17 18:31:36');
-
 -- --------------------------------------------------------
 
 --
@@ -226,7 +226,7 @@ INSERT INTO `users` (`id`, `email`, `password_hash`, `domain`, `sensor_widget`, 
 CREATE TABLE `user_tokens` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
-  `token` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `token` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `valid_until` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -465,3 +465,7 @@ ALTER TABLE `user_tokens`
 ALTER TABLE `widgets`
   ADD CONSTRAINT `widgets_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

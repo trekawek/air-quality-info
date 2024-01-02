@@ -123,6 +123,7 @@ $locale['Imports data from'] = 'Importuje dane z';
 $locale['Import finished'] = 'Import zakończony';
 $locale['Index'] = 'Indeks';
 $locale['Instantaneous'] = 'Dane chwilowe';
+$locale['Include in Kanarek'] = 'Udostępnij w Kanarku';
 $locale['Invalid domain'] = 'Nieprawidłowa domena';
 $locale['Invalid email or password'] = 'Nieprawidłowy email lub hasło';
 $locale['Invalid path'] = 'Nieprawidłowa ścieżka';

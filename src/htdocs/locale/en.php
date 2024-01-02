@@ -121,6 +121,7 @@ $locale['Horizontal'] = '';
 $locale['Import data from Madavi.de'] = '';
 $locale['Imports data from'] = '';
 $locale['Import finished'] = '';
+$locale['Include in Kanarek'] = '';
 $locale['Index'] = '';
 $locale['Instantaneous'] = '';
 $locale['Invalid domain'] = '';

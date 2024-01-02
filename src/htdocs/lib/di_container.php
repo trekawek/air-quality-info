@@ -69,6 +69,7 @@ class DiContainer {
                 $this->bindings[$paramName] = $value;
             } else {
                 //throw new \Exception("Can't find type for the $paramName in $className");
+                return null;
             }
         }
         return $this->bindings[$paramName];

@@ -105,7 +105,8 @@ class DeviceController extends AbstractController {
                 'lng' => empty($_POST['lng']) ? NULL : $_POST['lng'],
                 'radius' => empty($_POST['radius']) ? NULL : $_POST['radius'],
                 'elevation' => empty($_POST['elevation']) ? NULL : $_POST['elevation'],
-                'expose_location' => $_POST['expose_location']
+                'expose_location' => $_POST['expose_location'],
+                'kanarek' => $_POST['kanarek'],
             );
             $this->deviceModel->updateDevice($deviceId, $data);
             $this->alert(__('Updated the device', 'success'));
@@ -227,6 +228,7 @@ class DeviceController extends AbstractController {
             ->addGroupClass('collapse');
         $deviceForm->addElement('lat', 'hidden');
         $deviceForm->addElement('lng', 'hidden');
+        $deviceForm->addElement('kanarek', 'checkbox', 'Include in Kanarek');
         $deviceForm->setDefaultValues($device);
         return $deviceForm;
     }
