@@ -18,8 +18,8 @@ Kérjük, az adományozás gomb használatával támogassa a projektünket a dom
     <input type="image" src="https://www.paypalobjects.com/en_US/PL/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - Biztonságos, egyszerű online fizetés!" alt="Támogatás PayPal használatával" />
     <img alt="" border="0" src="https://www.paypal.com/en_PL/i/scr/pixel.gif" width="1" height="1" />
 </form>
-<?php endif ?>
 </div>
+<?php endif ?>
 
 <p>Projektünk támogatója:</p>
 <p>

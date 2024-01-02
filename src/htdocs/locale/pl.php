@@ -53,6 +53,7 @@ $locale['Choose location'] = 'Ustaw lokalizację';
 $locale['Change your password'] = 'Zmień hasło';
 $locale['Click to see more details.'] = 'Kliknij, aby zobaczyć szczegółowe pomiary powietrza.';
 $locale['Contact info'] = 'Kontakt';
+$locale['Contact'] = 'Kontakt';
 $locale['Create'] = 'Utwórz';
 $locale['Create directory'] = 'Utwórz katalog';
 $locale['Create your account'] = 'Utwórz konto';

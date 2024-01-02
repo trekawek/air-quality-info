@@ -49,6 +49,7 @@ $locale['Brand name (2)'] = 'Saját márkanév (2)';
 $locale['Choose location'] = 'Válasszon helyszínt';
 $locale['Click to see more details.'] = 'Kattintson a részletekért';
 $locale['Contact info'] = 'Kapcsolat';
+$locale['Contact'] = 'Kapcsolat';
 $locale['Create'] = 'Létrehoz';
 $locale['Create directory'] = 'Könyvtár létrehozása';
 $locale['Create your account'] = 'Új fiók létrehozása';

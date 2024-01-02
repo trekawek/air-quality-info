@@ -39,6 +39,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
                 <?php navItem(array('user', 'login'), 'Sign in'); ?>
                 <?php navItem(array('user', 'register'), 'Sign up'); ?>
                 <?php endif ?>
+                <?php navItem('/about/contact', 'Contact'); ?>
                 <?php navItem('/about/support', 'Support'); ?>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

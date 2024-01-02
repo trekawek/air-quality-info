@@ -49,6 +49,7 @@ $locale['Brand name (2)'] = 'Jméno (2)';
 $locale['Choose location'] = 'Zvolte umístění';
 $locale['Click to see more details.'] = 'Klikněte pro více podrobností';
 $locale['Contact info'] = 'Kontakt';
+$locale['Contact'] = 'Kontakt';
 $locale['Create'] = 'Vytvořit';
 $locale['Create directory'] = 'Vytvořit adresář';
 $locale['Create your account'] = 'Vytvořit účet';

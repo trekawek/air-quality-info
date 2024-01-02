@@ -50,6 +50,7 @@ $locale['Choose location'] = 'Kies locatie';
 $locale['Change your password'] = 'Verander uw wachtwoord';
 $locale['Click to see more details.'] = 'Klik om meer details te zien';
 $locale['Contact info'] = 'Contactinformatie';
+$locale['Contact'] = 'Contactinformatie';
 $locale['Create'] = 'Maak';
 $locale['Create directory'] = 'Map aanmaken';
 $locale['Create your account'] = 'Maak uw account aan';

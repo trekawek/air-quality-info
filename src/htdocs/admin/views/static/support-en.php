@@ -18,8 +18,8 @@ Please use the donate button below to support the infrastructure - server and do
     <input type="image" src="https://www.paypalobjects.com/en_US/PL/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
     <img alt="" border="0" src="https://www.paypal.com/en_PL/i/scr/pixel.gif" width="1" height="1" />
 </form>
-<?php endif ?>
 </div>
+<?php endif ?>
 
 <p>This project is supported by:</p>
 <p>

@@ -53,6 +53,7 @@ $locale['Choose location'] = '';
 $locale['Change your password'] = '';
 $locale['Click to see more details.'] = '';
 $locale['Contact info'] = '';
+$locale['Contact'] = '';
 $locale['Create'] = '';
 $locale['Create directory'] = '';
 $locale['Create your account'] = '';
