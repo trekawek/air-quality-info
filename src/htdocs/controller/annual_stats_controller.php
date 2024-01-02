@@ -12,13 +12,17 @@ class AnnualStatsController extends AbstractController {
     public function index($device) {
         $dailyAvgs = $this->recordModel->getDailyAverages($device['id']);
         $daysWithHighPm10 = 0;
+        $averages = ['pm10' => 0, 'pm25' => 0];
+
         foreach ($dailyAvgs as $dailyAvg) {
             if ($dailyAvg['pm10_avg'] > 50) {
                 $daysWithHighPm10++;
             }
+            $averages['pm10'] += $dailyAvg['pm10_avg'];
+            $averages['pm25'] += $dailyAvg['pm25_avg'];
         }
-
-        $averages = $this->recordModel->getLastAvg($device['id'], 60 * 24 * 365);
+        $averages['pm10'] /= count($dailyAvgs);
+        $averages['pm25'] /= count($dailyAvgs);
 
         $nodeById = $this->deviceHierarchyModel->getAllNodesById($this->userId);
         $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculateDevicePath($nodeById, $device['id']);
