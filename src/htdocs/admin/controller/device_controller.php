@@ -213,7 +213,7 @@ class DeviceController extends AbstractController {
         $this->addNameField($deviceForm);
         $deviceForm->addElement('description', 'text', 'Description')->addRule('required');
         $deviceForm->addElement('extra_description', 'text', 'Extra description');
-        $deviceForm->addElement('kanarek', 'checkbox', 'Include in Kanarek');
+        $deviceForm->addElement('kanarek', 'checkbox', 'Include in Kanarek', array(), "It is only required for the devices which are not configured to push data to sensor.community.");
         $deviceForm->addElement('location_provided', 'checkbox', 'Choose location', array('data-toggle'=>'collapse', 'data-target'=>'.map-control'), null);
         $deviceForm->addElement('radius', 'number', 'Radius (m)', array('min' => 50, 'max' => 500, 'step' => 50))
             ->addGroupClass('map-control')

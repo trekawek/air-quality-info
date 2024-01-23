@@ -128,6 +128,7 @@ $locale['Instantaneous'] = '';
 $locale['Invalid domain'] = '';
 $locale['Invalid email or password'] = '';
 $locale['Invalid path'] = '';
+$locale['It is only required for the devices which are not configured to push data to sensor.community.'] = '';
 $locale['JSON field'] = '';
 $locale['JSONs'] = '';
 $locale['Last'] = '';

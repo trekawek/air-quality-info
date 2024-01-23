@@ -128,6 +128,7 @@ $locale['Include in Kanarek'] = 'Udostępnij w Kanarku';
 $locale['Invalid domain'] = 'Nieprawidłowa domena';
 $locale['Invalid email or password'] = 'Nieprawidłowy email lub hasło';
 $locale['Invalid path'] = 'Nieprawidłowa ścieżka';
+$locale['It is only required for the devices which are not configured to push data to sensor.community.'] = 'Zaznaczenie pola jest wymagane tylko dla urządzeń, które nie wysyłają swoich danych do sensor.community.';
 $locale['JSON field'] = 'Pole JSON';
 $locale['JSONs'] = 'JSONy';
 $locale['Last'] = 'Ostatni';
