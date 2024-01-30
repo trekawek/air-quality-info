@@ -66,6 +66,7 @@ $locale['CSV'] = 'CSV';
 $locale['CSV archive'] = 'Archiwum CSV';
 $locale['CSV fields'] = 'Pola CSV';
 $locale['Custom CSS style'] = 'Styl CSS';
+$locale['Custom CSS style for widget'] = 'Styl CSS widgetu';
 $locale['Current air quality'] = 'Aktualna jakość powietrza';
 $locale['Current brand icon'] = 'Aktualna ikona';
 $locale['Custom field mappings'] = 'Mapowanie pól JSON';

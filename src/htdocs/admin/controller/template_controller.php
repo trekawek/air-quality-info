@@ -40,6 +40,7 @@ class TemplateController extends AbstractController {
         $templateForm->addElement('widget_footer', 'text', 'Widget footer (6)');
 
         $templateForm->addElement('css', 'textarea', 'Custom CSS style', array('rows'=>8));
+        $templateForm->addElement('css_widget', 'textarea', 'Custom CSS style for widget', array('rows'=>8));
         $templateForm->addElement('head_section', 'textarea', '<meta> tags to be put in the <head> section', array('rows'=>8));
 
         if ($this->user['allow_sensor_community']) {
@@ -58,6 +59,7 @@ class TemplateController extends AbstractController {
                 'footer' => $_POST['footer'],
                 'widget_footer' => $_POST['widget_footer'],
                 'css' => $_POST['css'],
+                'css_widget' => $_POST['css_widget'],
                 'custom_page_name' => $_POST['custom_page_name'],
                 'custom_page' => $_POST['custom_page'],
                 'customize_favicon' => $_POST['customize_favicon'],

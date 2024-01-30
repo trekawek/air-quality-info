@@ -39,6 +39,9 @@
             <?php echo __('Powered by ') ?><a href="https://aqi.eco" target="_blank">aqi.eco</a>.
         </small>
     </footer>
+    <?php if (isset($domainTemplate['css_widget'])): ?>
+    <?php echo "<style>\n".$domainTemplate['css_widget']."\n</style>\n" ?>
+    <?php endif ?>
     <?php echo jsLink("admin/public/js/vendor.min.js"); ?>
 </body>
 </html>

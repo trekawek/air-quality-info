@@ -74,6 +74,9 @@
           <?php echo __('Powered by ') ?><a href="https://aqi.eco" target="_blank">aqi.eco</a>.
       </small>
   </footer>
+  <?php if (isset($domainTemplate['css_widget'])): ?>
+  <?php echo "<style>\n".$domainTemplate['css_widget']."\n</style>\n" ?>
+  <?php endif ?>
   <script>
 var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 var eventer = window[eventMethod];

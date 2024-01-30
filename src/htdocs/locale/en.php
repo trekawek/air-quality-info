@@ -66,6 +66,7 @@ $locale['CSV'] = '';
 $locale['CSV archive'] = '';
 $locale['CSV fields'] = '';
 $locale['Custom CSS style'] = '';
+$locale['Custom CSS style for widget'] = '';
 $locale['Current air quality'] = '';
 $locale['Current brand icon'] = '';
 $locale['Custom field mappings'] = '';
