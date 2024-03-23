@@ -88,6 +88,9 @@ class Updater {
             if (isset($r['temperature']) && $r['temperature'] !== null) {
                 $r['temperature'] += $device['temperature_offset'];
             }
+            if (!isset($r['pm10']) || $r['pm10'] == null) {
+                continue;
+            }
             $records[] = $r;
         }
         $this->record_model->update($device['id'], $records);
