@@ -14,6 +14,10 @@ class MainController extends AbstractController {
         $this->static('index');
     }
 
+    public function news() {
+        $this->static('news');
+    }
+
     public function static($pageName) {
         $path = $this->findPath($pageName);
         if ($path === null) {

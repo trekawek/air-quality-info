@@ -32,6 +32,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <?php navItem(array('main', 'index'), 'Home'); ?>
+                <?php navItem(array('main', 'news'), 'News'); ?>
                 <?php navItem(array('map', 'index'), 'Map'); ?>
                 <?php if ($this->user): ?>
                 <?php navItem(array('device', 'index'), 'Dashboard'); ?>

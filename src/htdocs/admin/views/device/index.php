@@ -1,3 +1,7 @@
+<div class="alert alert-danger" role="alert">
+  <?php echo __('If you device has stopped sending data, please check <a href="https://aqi.eco/news">the news page</a>.'); ?>
+</div>
+
 <div class="row">
     <div class="col-lg-12">
         <div class="card">

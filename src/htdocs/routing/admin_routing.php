@@ -16,6 +16,7 @@ $routes = array(
     'GET /:lang' => array('main', 'index'),
     'GET /:lang/map' => array('map', 'index'),
     'GET /map/data.json' => array('map', 'data'),
+    'GET /:lang/news' => array('main', 'news'),
     'GET /:lang/about/:pageName' => array('main', 'static'),
 
     'GET /login' => array('user', 'login'),
