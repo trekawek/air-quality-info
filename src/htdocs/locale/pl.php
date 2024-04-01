@@ -1,6 +1,7 @@
 <?php
 $jsLocale = array();
 $jsLocale['days'] = 'dni';
+$jsLocale['Ambient light'] = 'Natężenie światła otoczenia';
 $jsLocale['Are you sure to delete this resource?'] = 'Czy na pewno chcesz usunąć?';
 $jsLocale['Days'] = 'Dni';
 $jsLocale['Detector humidity'] = 'Wilgotność detektora';

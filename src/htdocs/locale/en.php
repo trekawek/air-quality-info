@@ -1,6 +1,7 @@
 <?php
 /*$jsLocale = array();
 $jsLocale['days'] = '';
+$jsLocale['Ambient light'] = '';
 $jsLocale['Are you sure to delete this resource?'] = '';
 $jsLocale['Days'] = '';
 $jsLocale['Detector humidity'] = '';

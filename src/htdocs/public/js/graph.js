@@ -6,6 +6,7 @@ window.chartColors = {
 	orange: 'rgb(255, 159, 64)',
 	lightOrange: 'rgba(255, 159, 64, 0.5)',
 	yellow: 'rgb(255, 205, 86)',
+	lightYellow: 'rgb(255, 205, 86, 0.5)',
 	green: 'rgb(75, 192, 192)',
 	lightGreen: 'rgba(75, 192, 192, 0.5)',
 	blue: 'rgb(54, 162, 235)',
@@ -449,6 +450,35 @@ function renderGraph(ctx, data, type, avgType) {
                 hidden: !getVisibility(type, true),
             },{
                 borderColor: window.chartColors.lightGreen,
+                data: emptyPressureData,
+                borderWidth: 2,
+                fill: false,
+                hidden: !getVisibility(type, true),
+                visibilityName: type,
+            }]
+        };
+        config.options.scales.yAxes = [{
+            display: true,
+            scaleLabel: {
+                display: false
+            }
+        }];
+        break;
+
+        case 'ambient_light':
+        var ambientLightData = mapToTimeSeries(data.data.ambient_light);
+        var emptyPressureData = emptyTimeSeries(ambientLightData);
+        config.data = {
+            datasets: [{
+                borderColor: window.chartColors.yellow,
+                label: __('Ambient light') + ' (lx)',
+                data: ambientLightData,
+                borderWidth: 2,
+                fill: false,
+                name: type,
+                hidden: !getVisibility(type, true),
+            },{
+                borderColor: window.chartColors.lightYellow,
                 data: emptyPressureData,
                 borderWidth: 2,
                 fill: false,

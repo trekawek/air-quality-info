@@ -212,6 +212,10 @@ class RecordModel {
             $fields = array('humidity', 'heater_humidity');
             break;
         
+            case 'ambient_light':
+            $fields = array('ambient_light');
+            break;
+            
             case 'pm':
             $fields = array('pm10', 'pm25', 'pm1', 'pm4');
             break;
