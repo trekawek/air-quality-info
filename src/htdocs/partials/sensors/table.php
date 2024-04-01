@@ -108,6 +108,9 @@
         if (isset($averages['values']['co2'])) {
           $weather[] = 'CO<sub>2</sub> '.round($averages['values']['co2'], 0).' ppm';
         }
+        if ($sensors['ambient_light'] !== null) {
+          $weather[] = '<i class="wi wi-day-sunny"></i> '.round($sensors['ambient_light'], 0).' lx';
+        }
         if (!empty($weather)): ?>
         <?php echo implode(' | ', $weather) ?>
         <br/>

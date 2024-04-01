@@ -17,6 +17,7 @@ class Updater {
         'temperature' => array('SHT3X_temperature', 'BME280_temperature', 'BMP_temperature', 'BMP280_temperature', 'HTU21_temperature', 'DHT22_temperature', 'SHT1x_temperature'),
         'humidity'    => array('SHT3X_humidity', 'BME280_humidity', 'HTU21_humidity', 'DHT22_humidity', 'SHT1x_humidity'),
         'pressure'    => array('BME280_pressure', 'BMP_pressure', 'BMP280_pressure'),
+        'ambient_light'      => array('ambient_light'),
         'heater_temperature' => array('temperature', 'HECA_temperature'),
         'heater_humidity'    => array('humidity', 'HECA_humidity'),
         'gps_time'    => array('GPS_time'),
