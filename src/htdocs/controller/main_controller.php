@@ -61,6 +61,8 @@ class MainController extends AbstractController {
                 'temperature' => $lastData['temperature'],
                 'pressure' => $lastData['pressure'],
                 'humidity' => $lastData['humidity'],
+                'wind_speed' => $lastData['wind_speed'],
+                'rainfall' => $lastData['rainfall'],
             )
         ));
     }
@@ -72,6 +74,8 @@ class MainController extends AbstractController {
                 'temperature' => $lastData['temperature'],
                 'pressure' => $lastData['pressure'],
                 'humidity' => $lastData['humidity'],
+                'wind_speed' => $lastData['wind_speed'],
+                'rainfall' => $lastData['rainfall'],
             )
         );
         $this->render(array(

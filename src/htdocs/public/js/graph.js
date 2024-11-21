@@ -494,6 +494,64 @@ function renderGraph(ctx, data, type, avgType) {
         }];
         break;
 
+        case 'wind_speed':
+        var windSpeedData = mapToTimeSeries(data.data.wind_speed);
+        var emptyPressureData = emptyTimeSeries(windSpeedData);
+        config.data = {
+            datasets: [{
+                borderColor: window.chartColors.grey,
+                label: __('Wind speed') + ' (m/s)',
+                data: windSpeedData,
+                borderWidth: 2,
+                fill: false,
+                name: type,
+                hidden: !getVisibility(type, true),
+            },{
+                borderColor: window.chartColors.lightGrey,
+                data: emptyPressureData,
+                borderWidth: 2,
+                fill: false,
+                hidden: !getVisibility(type, true),
+                visibilityName: type,
+            }]
+        };
+        config.options.scales.yAxes = [{
+            display: true,
+            scaleLabel: {
+                display: false
+            }
+        }];
+        break;
+
+        case 'rainfall':
+        var rainfallData = mapToTimeSeries(data.data.rainfall);
+        var emptyPressureData = emptyTimeSeries(rainfallData);
+        config.data = {
+            datasets: [{
+                borderColor: window.chartColors.blue,
+                label: __('Rainfall') + ' (mm)',
+                data: rainfallData,
+                borderWidth: 2,
+                fill: false,
+                name: type,
+                hidden: !getVisibility(type, true),
+            },{
+                borderColor: window.chartColors.lightBlue,
+                data: emptyPressureData,
+                borderWidth: 2,
+                fill: false,
+                hidden: !getVisibility(type, true),
+                visibilityName: type,
+            }]
+        };
+        config.options.scales.yAxes = [{
+            display: true,
+            scaleLabel: {
+                display: false
+            }
+        }];
+        break;
+
         case 'humidity':
         var humidityData = mapToTimeSeries(data.data.humidity);
         var detectorHumidityData = mapToTimeSeries(data.data.heater_humidity);

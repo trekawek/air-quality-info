@@ -33,6 +33,12 @@ class GraphController extends AbstractController {
         if ($sensors['ambient_light'] !== null) {
             $graphs[] = 'ambient_light';
         }
+        if ($sensors['wind_speed'] !== null) {
+            $graphs[] = 'wind_speed';
+        }
+        if ($sensors['rainfall'] !== null) {
+            $graphs[] = 'rainfall';
+        }
 
         $nodeById = $this->deviceHierarchyModel->getAllNodesById($this->userId);
         $path = \AirQualityInfo\Model\DeviceHierarchyModel::calculateDevicePath($nodeById, $device['id']);

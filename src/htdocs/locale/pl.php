@@ -15,9 +15,11 @@ $jsLocale['PM₁₀ limit'] = 'Limit PM₁₀';
 $jsLocale['PM₂.₅ limit'] = 'Limit PM₂.₅';
 $jsLocale['Pollution level'] = 'Poziom zanieczyszczenia';
 $jsLocale['Pressure'] = 'Ciśnienie';
+$jsLocale['Rainfall'] = 'Opady deszczu';
 $jsLocale['Temperature'] = 'Temperatura';
 $jsLocale['Very high'] = 'Bardzo wysoki';
 $jsLocale['Very low'] = 'Bardzo niski';
+$jsLocale['Wind speed'] = 'Prędkość wiatru';
 $jsLocale['DATE_TIME_FORMAT'] = 'dd D MMM HH:mm';
 $jsLocale['DATE_FORMAT'] = 'dd D MMM';
 

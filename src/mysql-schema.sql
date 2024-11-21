@@ -45,6 +45,8 @@ CREATE TABLE `aggregates` (
   `humidity` decimal(5,2) DEFAULT NULL,
   `pressure` decimal(6,2) DEFAULT NULL,
   `ambient_light` decimal(8,2) DEFAULT NULL,
+  `wind_speed` decimal(5,2) DEFAULT NULL,
+  `rainfall` decimal(6,2) DEFAULT NULL,
   `heater_temperature` decimal(5,2) DEFAULT NULL,
   `heater_humidity` decimal(5,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -184,6 +186,8 @@ CREATE TABLE `records` (
   `humidity` decimal(5,2) DEFAULT NULL,
   `pressure` decimal(6,2) DEFAULT NULL,
   `ambient_light` decimal(8,2) DEFAULT NULL,
+  `wind_speed` decimal(5,2) DEFAULT NULL,
+  `rainfall` decimal(6,2) DEFAULT NULL,
   `heater_temperature` decimal(5,2) DEFAULT NULL,
   `heater_humidity` decimal(5,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;

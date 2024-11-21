@@ -111,6 +111,12 @@
         if ($sensors['ambient_light'] !== null) {
           $weather[] = '<i class="wi wi-day-sunny"></i> '.round($sensors['ambient_light'], 0).' lx';
         }
+        if ($sensors['wind_speed'] !== null) {
+          $weather[] = '<i class="wi wi-strong-wind"></i> '.round($sensors['wind_speed'], 0).' m/s';
+        }
+        if ($sensors['rainfall'] !== null) {
+          $weather[] = '<i class="wi wi-raindrops"></i> '.round($sensors['rainfall'], 0).' mm';
+        }
         if (!empty($weather)): ?>
         <?php echo implode(' | ', $weather) ?>
         <br/>
