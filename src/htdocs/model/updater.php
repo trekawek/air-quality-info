@@ -117,7 +117,7 @@ class Updater {
                 break;
             }
         }
-        return $value == null ? $undefinedValue : $value;
+        return $value === null ? $undefinedValue : $value;
     }
 
     private function getMapping($device) {

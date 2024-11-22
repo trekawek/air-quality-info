@@ -27,7 +27,7 @@ class UpdateJob {
         $map = array();
         foreach ($sensors as $row) {
             $value = $row['value'];
-            if ($value != 'nan') {
+            if ($value !== 'nan') {
                 $map[$row['value_type']] = $value;
             }
         }
