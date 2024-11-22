@@ -500,7 +500,7 @@ function renderGraph(ctx, data, type, avgType) {
         config.data = {
             datasets: [{
                 borderColor: window.chartColors.grey,
-                label: __('Wind speed') + ' (m/s)',
+                label: __('Wind speed') + ' (km/h)',
                 data: windSpeedData,
                 borderWidth: 2,
                 fill: false,

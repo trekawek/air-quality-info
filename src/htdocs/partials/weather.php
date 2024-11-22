@@ -21,7 +21,7 @@
 <?php if($homeWidget['wind_speed'] !== null): ?>
                 <i class="wi wi-strong-wind weather-icons-size"></i>
                 <span class="weather-icons-text" title="<?php echo __('Wind speed') ?>">
-                    <?php echo round($homeWidget['wind_speed'], 1); ?> m/s
+                    <?php echo round($homeWidget['wind_speed'], 1); ?> km/h
                 </span>
                 &nbsp;&nbsp;
 <?php endif; ?>

@@ -18,7 +18,7 @@ class Updater {
         'humidity'    => array('SHT3X_humidity', 'BME280_humidity', 'HTU21_humidity', 'DHT22_humidity', 'SHT1x_humidity'),
         'pressure'    => array('BME280_pressure', 'BMP_pressure', 'BMP280_pressure'),
         'ambient_light'      => array('ambient_light'),
-        'wind_speed'  => array('wind_speed'),  // m/s
+        'wind_speed'  => array('wind_speed'),  // km/h
         'rainfall'    => array('rainfall'),    // mm
         'heater_temperature' => array('temperature', 'HECA_temperature'),
         'heater_humidity'    => array('humidity', 'HECA_humidity'),

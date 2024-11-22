@@ -112,7 +112,7 @@
           $weather[] = '<i class="wi wi-day-sunny"></i> '.round($sensors['ambient_light'], 0).' lx';
         }
         if ($sensors['wind_speed'] !== null) {
-          $weather[] = '<i class="wi wi-strong-wind"></i> '.round($sensors['wind_speed'], 0).' m/s';
+          $weather[] = '<i class="wi wi-strong-wind"></i> '.round($sensors['wind_speed'], 0).' km/h';
         }
         if ($sensors['rainfall'] !== null) {
           $weather[] = '<i class="wi wi-raindrops"></i> '.round($sensors['rainfall'], 0).' mm';
