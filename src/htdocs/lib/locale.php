@@ -2,9 +2,9 @@
 namespace AirQualityInfo\Lib {
     class Locale {
 
-        const SUPPORTED_LANGUAGES = array('cs' => 'Čeština', 'en' => 'English', 'hu' => 'Magyar', 'nl' => 'Nederlands', 'pl' => 'Polski', 'ro' => 'Română', 'ru' => 'Русский');
+        const SUPPORTED_LANGUAGES = array('bs' => 'Bosanski', 'cs' => 'Čeština', 'en' => 'English', 'hu' => 'Magyar', 'nl' => 'Nederlands', 'pl' => 'Polski', 'ro' => 'Română', 'ru' => 'Русский');
 
-        const LANG_TO_LOCALE = array('cs' => 'cs_CZ', 'en' => 'en_US', 'hu' => 'hu_HU', 'nl' => 'nl_NL', 'pl' => 'pl_PL', 'ro' => 'ro_RO', 'ru' => 'ru_RU');
+        const LANG_TO_LOCALE = array('bs' => 'bs_BA', 'cs' => 'cs_CZ', 'en' => 'en_US', 'hu' => 'hu_HU', 'nl' => 'nl_NL', 'pl' => 'pl_PL', 'ro' => 'ro_RO', 'ru' => 'ru_RU');
 
         private $currentLang;
 

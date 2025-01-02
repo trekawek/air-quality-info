@@ -7,6 +7,10 @@
     margin-right: 0.5rem;
 }
 
+.flag-bs {
+    background-image: url("/public/img/flags/bosnia-and-herzegovina.png");
+}
+
 .flag-cs {
     background-image: url("/public/img/flags/czech-republic.png");
 }
