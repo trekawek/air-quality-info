@@ -17,8 +17,8 @@ $jsLocale['Pollution level'] = 'Nivo zagađenja';
 $jsLocale['Pressure'] = 'Pritisak';
 $jsLocale['Rainfall'] = 'Padavine';
 $jsLocale['Temperature'] = 'Temperatura';
-$jsLocale['Very high'] = 'Vrlo visoko';
-$jsLocale['Very low'] = 'Vrlo nisko';
+$jsLocale['Very high'] = 'Vrlo visok';
+$jsLocale['Very low'] = 'Vrlo nizak';
 $jsLocale['Wind speed'] = 'Brzina vjetra';
 $jsLocale['DATE_TIME_FORMAT'] = 'dd, MMM D HH:mm';
 $jsLocale['DATE_FORMAT'] = 'dd, MMM D';
@@ -262,7 +262,7 @@ $locale['Widgets created here will show the state of a single device.'] = 'Widge
 $locale['Year'] = 'Godina';
 $locale['_widgets'] = [
     0 => [
-        'label' => 'Dobro',
+        'label' => 'Odličan',
         'icon' => 'fa-smile-o',
         'recommendations' => [
             [
@@ -292,7 +292,7 @@ $locale['_widgets'] = [
         ]
     ],
     1 => [
-        'label' => 'Umjereno',
+        'label' => 'Dobar',
         'icon' => 'fa-meh-o',
         'recommendations' => [
             [
@@ -322,7 +322,7 @@ $locale['_widgets'] = [
         ]
     ],
     2 => [
-        'label' => 'Srednje',
+        'label' => 'Umjeren',
         'icon' => 'fa-meh-o',
         'recommendations' => [
             [
@@ -352,7 +352,7 @@ $locale['_widgets'] = [
         ]
     ],
     3 => [
-        'label' => 'Nepovoljno',
+        'label' => 'Loš',
         'icon' => 'fa-frown-o',
         'recommendations' => [
             [
@@ -382,7 +382,7 @@ $locale['_widgets'] = [
         ]
     ],
     4 => [
-        'label' => 'Loše',
+        'label' => 'Vrlo Loš',
         'icon' => 'fa-frown-o',
         'recommendations' => [
             [
