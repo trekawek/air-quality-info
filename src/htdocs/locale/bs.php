@@ -269,25 +269,25 @@ $locale['_widgets'] = [
                 'icon' => 'icon-spacer',
                 'color' => 'green',
                 'label' => 'Preporučuje se',
-                'description' => 'šetnje na svježem zraku'
+                'description' => 'šetnja na otvorenom'
             ],
             [
                 'icon' => 'icon-rower',
                 'color' => 'green',
                 'label' => 'Preporučuje se',
-                'description' => 'fizička aktivnost napolju'
+                'description' => 'fizička aktivnost na otvorenom'
             ],
             [
                 'icon' => 'icon-tree',
                 'color' => 'green',
                 'label' => 'Preporučuje se',
-                'description' => 'provođenje vremena napolju'
+                'description' => 'provođenje vremena na otvorenom'
             ],
             [
                 'icon' => 'icon-elderly',
                 'color' => 'green',
                 'label' => 'Preporučuje se',
-                'description' => 'provođenje vremena napolju (trudnice, astmatičari, stariji)'
+                'description' => 'provođenje vremena na otvorenom (trudnice, astmatičari, stariji)'
             ],
         ]
     ],
@@ -299,25 +299,25 @@ $locale['_widgets'] = [
                 'icon' => 'icon-spacer',
                 'color' => 'green',
                 'label' => 'Preporučuje se',
-                'description' => 'šetnje na svježem zraku'
+                'description' => 'šetnja na otvorenom'
             ],
             [
                 'icon' => 'icon-rower',
                 'color' => 'green',
                 'label' => 'Preporučuje se',
-                'description' => 'fizička aktivnost napolju'
+                'description' => 'fizička aktivnost na otvorenom'
             ],
             [
                 'icon' => 'icon-tree',
                 'color' => 'green',
                 'label' => 'Preporučuje se',
-                'description' => 'provođenje vremena napolju'
+                'description' => 'provođenje vremena na otvorenom'
             ],
             [
                 'icon' => 'icon-elderly',
                 'color' => 'orange',
                 'label' => 'Ne preporučuje se',
-                'description' => 'provođenje vremena napolju (trudnice, astmatičari, stariji)'
+                'description' => 'provođenje vremena na otvorenom (trudnice, astmatičari, stariji)'
             ],
         ]
     ],
@@ -328,26 +328,26 @@ $locale['_widgets'] = [
             [
                 'icon' => 'icon-spacer',
                 'color' => 'green',
-                'label' => 'Prihvatljivo',
-                'description' => 'šetnje na svježem zraku'
+                'label' => 'Prihvatljiva je',
+                'description' => 'šetnja na otvorenom'
             ],
             [
                 'icon' => 'icon-rower',
                 'color' => 'green',
-                'label' => 'Prihvatljivo',
-                'description' => 'fizička aktivnost napolju'
+                'label' => 'Prihvatljiva je',
+                'description' => 'fizička aktivnost na otvorenom'
             ],
             [
                 'icon' => 'icon-tree',
                 'color' => 'orange',
                 'label' => 'Ne preporučuje se',
-                'description' => 'dugotrajno provođenje na svježem zraku'
+                'description' => 'dugotrajno provođenje na otvorenom'
             ],
             [
                 'icon' => 'icon-elderly',
                 'color' => 'orange',
                 'label' => 'Ne preporučuje se',
-                'description' => 'dugotrajno provođenje na svježem zraku (trudnice, astmatičari, stariji)'
+                'description' => 'dugotrajno provođenje na otvorenom (trudnice, astmatičari, stariji)'
             ],
         ]
     ],
@@ -359,25 +359,25 @@ $locale['_widgets'] = [
                 'icon' => 'icon-home',
                 'color' => 'green',
                 'label' => 'Preporučuje se',
-                'description' => 'Boravak kod kuće (stariji, trudnice, osobe sa srčanim i respiratornim problemima)'
+                'description' => 'Boravak kod kuće (trudnice, astmatičari, stariji)'
             ],
             [
                 'icon' => 'icon-spacer',
                 'color' => 'orange',
                 'label' => 'Ne preporučuje se',
-                'description' => 'šetnje na svježem zraku'
+                'description' => 'šetnja na otvorenom'
             ],
             [
                 'icon' => 'icon-rower',
                 'color' => 'orange',
                 'label' => 'Ne preporučuje se',
-                'description' => 'fizička aktivnost napolju'
+                'description' => 'fizička aktivnost na otvorenom'
             ],
             [
                 'icon' => 'icon-car',
                 'color' => 'orange',
                 'label' => 'Ograničiti',
-                'description' => 'vožnju automobila'
+                'description' => 'vožnju automobilom'
             ],
         ]
     ],
@@ -395,19 +395,19 @@ $locale['_widgets'] = [
                 'icon' => 'icon-spacer',
                 'color' => 'red',
                 'label' => 'Odložiti',
-                'description' => 'šetnje na svježem zraku'
+                'description' => 'šetnju na otvorenom'
             ],
             [
                 'icon' => 'icon-rower',
                 'color' => 'red',
                 'label' => 'Odložiti',
-                'description' => 'fizička aktivnost napolju'
+                'description' => 'fizičku aktivnost na otvorenom'
             ],
             [
                 'icon' => 'icon-car',
                 'color' => 'red',
                 'label' => 'Odložiti',
-                'description' => 'vožnju automobila'
+                'description' => 'vožnju automobilom'
             ],
         ]
     ]
