@@ -29,7 +29,8 @@ foreach ($devices as $i => $d) {
 
 $routes = array(
     'GET /:lang/[:device]'                 => array('main', 'index'),
-    'GET /[:lang]/:device/data.json'       => array('main', 'data_json'),
+    'GET /[:lang]/data.json'               => array('main', 'domain_data_json'),
+    'GET /[:lang]/:device/data.json'       => array('main', 'device_data_json'),
     'GET /:lang/[:device]/main_inner'      => array('main', 'index_inner'),
     'GET /:lang/weather'                   => array('main', 'median_weather'),
     'GET /:lang/[:device]/weather'         => array('main', 'weather'),

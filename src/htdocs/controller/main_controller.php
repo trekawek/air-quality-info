@@ -29,10 +29,12 @@ class MainController extends AbstractController {
 
     public function __construct(
             \AirQualityInfo\Model\RecordModel $recordModel,
+            \AirQualityInfo\Model\DeviceModel $deviceModel,
             \AirQualityInfo\Model\JsonUpdateModel $jsonUpdateModel,
             \AirQualityInfo\Lib\Locale $currentLocale,
             $devices) {
         $this->recordModel = $recordModel;
+        $this->deviceModel = $deviceModel;
         $this->jsonUpdateModel = $jsonUpdateModel;
         $this->locale = $currentLocale;
         $this->devices = $devices;
@@ -85,7 +87,31 @@ class MainController extends AbstractController {
             $model);
     }
 
-    public function data_json($device) {
+    public function domain_data_json() {
+        $devices = $this->deviceModel->getDevicesForUser($this->userId);
+        $data = array_filter(
+            array_map(function($device) {
+                $device_data = $this->device_data($device);
+                $device_data['name'] = $device['name'];
+                return $device_data;
+            }, $devices),
+            function($d) {
+                return $d !== null;
+            }
+        );
+        header('Access-Control-Allow-Origin: *');
+        header('Content-type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    public function device_data_json($device) {
+        $data = $this->device_data($device);
+        header('Access-Control-Allow-Origin: *');
+        header('Content-type: application/json');
+        echo json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    private function device_data($device) {
         $data = array();
 
         $last = $this->recordModel->getLastData($device['id']);
@@ -93,6 +119,10 @@ class MainController extends AbstractController {
         $avg24h = $this->recordModel->getAverages($device['id'], 24);
 
         $data['last_data'] = MainController::arr_values_to_float($last);
+        if (empty($data['last_data'])) {
+            unset($data['last_data']);
+            return $data;
+        }
 
         $data['average_1h'] = MainController::arr_values_to_float($avg1h['values']);
         if ($avg1h['max_level'] === null) {
@@ -116,15 +146,7 @@ class MainController extends AbstractController {
                 'lng' => $device['lng']
             );
         }
-
-        if ($data['last_data'] === null) {
-            http_response_code(404);
-            die();
-        } else {
-            header('Access-Control-Allow-Origin: *');
-            header('Content-type: application/json');
-            echo json_encode($data, JSON_PRETTY_PRINT);
-        }
+        return $data;
     }
 
     private static function arr_values_to_float($values) {
