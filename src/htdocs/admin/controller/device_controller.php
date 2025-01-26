@@ -127,6 +127,8 @@ class DeviceController extends AbstractController {
         if ($sensorOptionsForm->isSubmitted() && $sensorOptionsForm->validate($_POST)) {
             $data = array(
                 'temperature_offset' => $_POST['temperature_offset'],
+                'pm25_offset' => $_POST['pm25_offset'],
+                'pm10_offset' => $_POST['pm10_offset'],
             );
             $this->deviceModel->updateDevice($deviceId, $data);
             $this->alert(__('Updated the device', 'success'));
@@ -250,6 +252,13 @@ class DeviceController extends AbstractController {
         $sensorOptionsForm->addElement('temperature_offset', 'number', 'Temperature offset', array('min' => -10, 'max' => 10, 'step' => '.01'))
             ->addRule('required')
             ->addRule('range', array('min' => -10, 'max' => 10));
+        $sensorOptionsForm->addElement('pm25_offset', 'number', 'PM2.5 offset', array('min' => -100, 'max' => 100, 'step' => '1'))
+            ->addRule('required')
+            ->addRule('range', array('min' => -100, 'max' => 100));
+        $sensorOptionsForm->addElement('pm10_offset', 'number', 'PM10 offset', array('min' => -100, 'max' => 100, 'step' => '1'))
+            ->addRule('required')
+            ->addRule('range', array('min' => -100, 'max' => 100));
+
         $sensorOptionsForm->setDefaultValues($device);
         return $sensorOptionsForm;
     }

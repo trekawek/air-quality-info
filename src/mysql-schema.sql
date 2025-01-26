@@ -104,6 +104,8 @@ CREATE TABLE `devices` (
   `radius` decimal(5,1) NOT NULL DEFAULT '250.0',
   `elevation` int DEFAULT NULL,
   `temperature_offset` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `pm25_offset` decimal(4,0) NOT NULL DEFAULT '0',
+  `pm10_offset` decimal(4,0) NOT NULL DEFAULT '0',
   `csv_fields` varchar(1024) NOT NULL DEFAULT 'pm25,pm10,temperature,pressure,humidity,heater_temperature,heater_humidity',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_update` int DEFAULT NULL,

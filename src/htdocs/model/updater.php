@@ -94,6 +94,12 @@ class Updater {
             if (!isset($r['pm10']) || $r['pm10'] == null) {
                 continue;
             }
+            if (isset($r['pm25']) && $r['pm25'] !== null) {
+                $r['pm25'] += $device['pm25_offset'];
+            }
+            if (isset($r['pm10']) && $r['pm10'] !== null) {
+                $r['pm10'] += $device['pm10_offset'];
+            }
             $records[] = $r;
         }
         $this->record_model->update($device['id'], $records);
