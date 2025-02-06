@@ -23,15 +23,19 @@ class UpdateJob {
         $device = $this->deviceModel->getDeviceById($deviceId);
         $device['mapping'] = $this->deviceModel->getMappingAsAMap($device['id']);
 
-        $sensors = $data['sensordatavalues'];
         $map = array();
-        foreach ($sensors as $row) {
-            $value = $row['value'];
-            if ($value !== 'nan') {
-                $map[$row['value_type']] = $value;
+        if (isset($data['sensordatavalues'])) {
+            $sensors = $data['sensordatavalues'];
+            foreach ($sensors as $row) {
+                $value = $row['value'];
+                if ($value !== 'nan') {
+                    $map[$row['value_type']] = $value;
+                }
             }
+        } else if (isset($data['uplink_message'])) {
+            $map = $data['uplink_message']['decoded_payload'];
         }
-        
+
         $this->jsonUpdateModel->logJsonUpdate($device['id'], $ts, $jsonPayload);
         $this->updater->update($device, $ts, $map);
     }

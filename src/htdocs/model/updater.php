@@ -4,8 +4,8 @@ namespace AirQualityInfo\Model;
 class Updater {
 
     const VALUE_MAPPING = array(
-        'pm10'        => array('SDS_P1', 'PMS_P1', 'HPM_P1', 'SPS30_P1'),
-        'pm25'        => array('SDS_P2', 'PMS_P2', 'HPM_P2', 'SPS30_P2'),
+        'pm10'        => array('SDS_P1', 'PMS_P1', 'HPM_P1', 'SPS30_P1', 'temperature_1'),
+        'pm25'        => array('SDS_P2', 'PMS_P2', 'HPM_P2', 'SPS30_P2', 'temperature_2'),
         'pm1'         => array(          'PMS_P0',           'SPS30_P0'),
         'pm4'         => array(                              'SPS30_P4'),
         'n05'         => array(                              'SPS30_N05'),
@@ -14,8 +14,8 @@ class Updater {
         'n4'          => array(                              'SPS30_N4'),
         'n10'         => array(                              'SPS30_N10'),
         'co2'         => array('conc_co2_ppm'),
-        'temperature' => array('SHT3X_temperature', 'BME280_temperature', 'BMP_temperature', 'BMP280_temperature', 'HTU21_temperature', 'DHT22_temperature', 'SHT1x_temperature'),
-        'humidity'    => array('SHT3X_humidity', 'BME280_humidity', 'HTU21_humidity', 'DHT22_humidity', 'SHT1x_humidity'),
+        'temperature' => array('SHT3X_temperature', 'BME280_temperature', 'BMP_temperature', 'BMP280_temperature', 'HTU21_temperature', 'DHT22_temperature', 'SHT1x_temperature', 'temperature_3'),
+        'humidity'    => array('SHT3X_humidity', 'BME280_humidity', 'HTU21_humidity', 'DHT22_humidity', 'SHT1x_humidity', 'relative_humidity_1'),
         'pressure'    => array('BME280_pressure', 'BMP_pressure', 'BMP280_pressure'),
         'ambient_light'      => array('ambient_light'),
         'wind_speed'  => array('wind_speed'),  // km/h
