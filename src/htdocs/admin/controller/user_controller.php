@@ -191,7 +191,6 @@ class UserController extends AbstractController {
             ->addRule('required')
             ->setOptions($timezones);
 
-        $userForm->setDefaultValues($this->user);
 
         if ($userForm->isSubmitted() && $userForm->validate($_POST)) {
             $data = array(
@@ -203,10 +202,26 @@ class UserController extends AbstractController {
             $this->alert(__('Updated settings', 'success'));
         }
 
+        $ttnForm = new \AirQualityInfo\Lib\Form\Form("ttnForm");
+        if ($ttnForm->isSubmitted()) {
+            $data = array(
+                'ttn_api_key' => bin2hex(random_bytes(16)),
+            );
+            $ttnForm->setDefaultValues($data);
+            $this->userModel->updateUser($this->user['id'], $data);
+            $this->alert(__('Generated TTN token', 'success'));
+        }
+
+        $this->user = $this->userModel->getUserById($_SESSION['user_id']);
+        $userForm->setDefaultValues($this->user);
+        $ttnForm->setDefaultValues($this->user);
+
         $this->render(array(
             'view' => 'admin/views/user/settings.php'
         ), array(
-            'userForm' => $userForm
+            'userForm' => $userForm,
+            'ttnForm' => $ttnForm,
+            'user' => $this->user,
         ));
     }
 }

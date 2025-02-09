@@ -47,6 +47,17 @@ class UserModel {
         return $id;
     }
 
+    public function getIdByTtnApiKey($ttnApiKey) {
+        $stmt = $this->pdo->prepare("SELECT id FROM `users` WHERE `ttn_api_key` = ?");
+        $stmt->execute([$ttnApiKey]);
+        $id = null;
+        if ($row = $stmt->fetch()) {
+            $id = $row['id'];
+        }
+        $stmt->closeCursor();
+        return $id;
+    }
+
     public function getCustomFqdns($userId) {
         $stmt = $this->pdo->prepare("SELECT * FROM `custom_domains` WHERE `user_id` = ?");
         $stmt->execute([$userId]);

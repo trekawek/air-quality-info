@@ -3,13 +3,17 @@ namespace AirQualityInfo\Api\Controller;
 
 class UpdateController {
 
+    private $userModel;
+
     private $deviceModel;
 
     private $jobUtils;
 
     public function __construct(
+            \AirQualityInfo\Model\UserModel $userModel,
             \AirQualityInfo\Model\DeviceModel $deviceModel,
             \AirQualityInfo\Lib\JobUtils $jobUtils) {
+        $this->userModel = $userModel;
         $this->deviceModel = $deviceModel;
         $this->jobUtils = $jobUtils;
     }
@@ -33,10 +37,35 @@ class UpdateController {
         if (isset($data['esp8266id']) && $data['esp8266id'] != $device['esp8266_id']) {
             $this->deviceModel->updateDevice($device['id'], array('esp8266_id' => $data['esp8266id']));
         }
-        $this->deviceModel->updateDevice($device['id'], array('last_update' => $now));
         if ($device['id'] === null) {
             throw new \Exception("Device can't be null");
         }
+        $this->deviceModel->updateDevice($device['id'], array('last_update' => $now));
+        $this->jobUtils->createJob('update', 'update', array($device['id'], $now, $payload));
+    }
+
+    public function updateTtn($ttnApiKey) {
+        $now = time();
+        $userId = $this->userModel->getIdByTtnApiKey($ttnApiKey);
+        if ($userId === null) {
+            http_response_code(403);
+            die('Forbidden');
+        }
+
+        $payload = file_get_contents("php://input");
+        $data = json_decode($payload, true);
+
+        if (!isset($data['end_device_ids']['device_id'])) {
+            http_response_code(403);
+            die('Forbidden');
+        }
+
+        $device = $this->deviceModel->getDeviceByUserAndTtnId($userId, $data['end_device_ids']['device_id']);
+        if ($device === false) {
+            http_response_code(403);
+            die('Forbidden');
+        }
+        $this->deviceModel->updateDevice($device['id'], array('last_update' => $now));
         $this->jobUtils->createJob('update', 'update', array($device['id'], $now, $payload));
     }
 

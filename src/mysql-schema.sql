@@ -3,19 +3,13 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Jan 02, 2024 at 09:53 PM
+-- Generation Time: Feb 09, 2025 at 05:23 PM
 -- Server version: 8.0.31
 -- PHP Version: 8.0.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `air_quality_info`
@@ -89,6 +83,7 @@ CREATE TABLE `devices` (
   `user_id` int NOT NULL,
   `update_mode` enum('push','pull') NOT NULL DEFAULT 'push',
   `esp8266_id` bigint DEFAULT NULL,
+  `ttn_id` varchar(256) DEFAULT NULL,
   `http_username` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `http_password` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   `api_key` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
@@ -222,6 +217,7 @@ CREATE TABLE `users` (
   `redirect_root` varchar(255) DEFAULT NULL,
   `timezone` varchar(64) NOT NULL DEFAULT 'Europe/Warsaw',
   `allow_sensor_community` tinyint(1) NOT NULL DEFAULT '0',
+  `ttn_api_key` varchar(32) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -473,7 +469,3 @@ ALTER TABLE `user_tokens`
 ALTER TABLE `widgets`
   ADD CONSTRAINT `widgets_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
