@@ -1,0 +1,9 @@
+Disallow: /bs/map
+Disallow: /cs/map
+Disallow: /en/map
+Disallow: /hu/map
+Disallow: /nl/map
+Disallow: /pl/map
+Disallow: /ro/map
+Disallow: /ru/map
+Disallow: /*/map

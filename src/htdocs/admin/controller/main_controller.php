@@ -18,6 +18,11 @@ class MainController extends AbstractController {
         $this->static('news');
     }
 
+    public function robots() {
+        header('Content-type: text/plain; charset=utf-8');
+        echo file_get_contents('robots.txt');
+    }
+
     public function static($pageName) {
         $path = $this->findPath($pageName);
         if ($path === null) {

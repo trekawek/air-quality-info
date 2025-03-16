@@ -111,6 +111,11 @@ class MainController extends AbstractController {
         echo json_encode($data, JSON_PRETTY_PRINT);
     }
 
+    public function robots() {
+        header('Content-type: text/plain; charset=utf-8');
+        echo file_get_contents('robots.txt');
+    }
+
     private function device_data($device) {
         $data = array();
 
