@@ -50,6 +50,7 @@ $routes = array(
     'GET /:lang/:device/widget2'           => array('device_widget', 'show2'),
     'GET /:lang/widget/:widgetId'          => array('domain_widget', 'show'),
     'GET /robots.txt'                      => array('main', 'robots'),
+    'GET /:lang/robots.txt'                => array('main', 'robots'),
 
     // deprecated
     'POST /u/:key'                         => array('update', 'updateWithKey'),
