@@ -28,7 +28,7 @@ class AbstractController {
 
         $deviceTree = $this->deviceHierarchyModel->getTree($this->userId);
         $displayLocations = $this->isDisplayLocations($deviceTree);
-        $displayMap = $this->isDisplayMap($deviceTree);
+        $displayMap = false; //$this->isDisplayMap($deviceTree);
         $displayCustomHeader = false;
         $this->addDevices($deviceTree);
 
