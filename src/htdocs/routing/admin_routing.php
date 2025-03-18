@@ -14,7 +14,7 @@ if (isset($_SESSION['user_id'])) {
 
 $routes = array(
     'GET /:lang' => array('main', 'index'),
-    'GET /:lang/map' => array('map', 'index'),
+    //'GET /:lang/map' => array('map', 'index'),
     'GET /map/data.json' => array('map', 'data'),
     'GET /:lang/news' => array('main', 'news'),
     'GET /robots.txt' => array('main', 'robots'),
