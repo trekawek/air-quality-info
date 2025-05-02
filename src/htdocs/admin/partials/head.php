@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo $currentLocale->getCurrentLang(); ?>">
     <head>
         <?php require("partials/ga.php") ?>
         <meta charset="utf-8">

@@ -4,7 +4,7 @@ function navItem($action, $desc, $liClass = "nav-item", $aClass = "nav-link") {
     require('partials/navbar/nav_item.php');
 }
 ?><!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo $currentLocale->getCurrentLang(); ?>">
     <head>
         <?php require("partials/ga.php") ?>
         <meta charset="utf-8">

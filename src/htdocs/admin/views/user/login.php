@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo $currentLocale->getCurrentLang(); ?>">
     <head>
         <?php if (CONFIG['ga_id']): ?>
         <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo CONFIG['ga_id']; ?>"></script>
