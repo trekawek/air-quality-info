@@ -21,7 +21,7 @@ class MapController extends AbstractController {
 
     public function index() {
         $this->render(array(
-            'view' => 'admin/views/map.php',
+            'view' => 'admin/views/map_osm.php',
             'head' => 'admin/partials/about/head.php',
             'tail' => 'admin/partials/about/tail.php'
         ));

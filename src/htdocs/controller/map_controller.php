@@ -15,7 +15,7 @@ class MapController extends AbstractController {
     }
 
     public function index() {
-        $this->render(array('view' => 'views/map/index.php'));
+        $this->render(array('view' => 'views/map/index_osm.php'));
     }
 
     public function fullscreen() {

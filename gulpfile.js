@@ -14,7 +14,10 @@ var paths = {
       'src/vendor/css/ubuntu-mono-font.css',
       'node_modules/font-awesome/css/font-awesome.css',
       'node_modules/weathericons/css/weather-icons.css',
-      'node_modules/smartmenus/dist/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.css'
+      'node_modules/smartmenus/dist/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.css',
+      'node_modules/leaflet/dist/leaflet.css',
+      'node_modules/leaflet.markercluster/dist/MarkerCluster.css',
+      'node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css',
     ],
     dest: 'src/htdocs/public/css/'
   },
@@ -44,7 +47,9 @@ var paths = {
       'node_modules/chart.js/dist/Chart.js',
       'node_modules/chartjs-plugin-annotation/chartjs-plugin-annotation.js',
       'node_modules/smartmenus/dist/jquery.smartmenus.js',
-      'node_modules/smartmenus/dist/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.js'
+      'node_modules/smartmenus/dist/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.js',
+      'node_modules/leaflet/dist/leaflet.js',
+      'node_modules/leaflet.markercluster/dist/leaflet.markercluster.js',
     ],
     dest: 'src/htdocs/public/js/'
   },
@@ -58,6 +63,12 @@ var paths = {
       'node_modules/location-picker/dist/location-picker.umd.js',
     ],
     dest: 'src/htdocs/admin/public/js/'
+  },
+  images: {
+    src: [
+      'node_modules/leaflet/dist/images/**',
+    ],
+    dest: 'src/htdocs/public/img/'
   },
   themes: [
     {
@@ -116,6 +127,11 @@ function adminScripts() {
     .pipe(gulp.dest(paths.adminScripts.dest));
 }
 
+function images() {
+  return gulp.src(paths.images.src)
+    .pipe(gulp.dest(paths.images.dest));
+}
+
 function createCriticalCss() {
   var cssString = "";
   [
@@ -143,7 +159,7 @@ function watch() {
 /*
  * Specify if tasks run in series or parallel using `gulp.series` and `gulp.parallel`
  */
-var build = gulp.series(gulp.parallel(styles, adminStyles, bootstrapThemes, scripts, adminScripts));
+var build = gulp.series(gulp.parallel(styles, adminStyles, bootstrapThemes, scripts, adminScripts, images));
 
 /*
  * You can use CommonJS `exports` module notation to declare tasks
@@ -153,6 +169,7 @@ exports.adminStyles = adminStyles;
 exports.themes = bootstrapThemes;
 exports.scripts = scripts;
 exports.adminScripts = adminScripts;
+exports.images = images;
 exports.watch = watch;
 exports.build = build;
 exports.createCriticalCss = createCriticalCss;
