@@ -113,7 +113,9 @@ var mapsLoaded = (function() {
 		});
 
 		var bounds = new L.LatLngBounds(positions);
-		map.fitBounds(bounds);	
+		map.fitBounds(bounds, {maxZoom: 15});
+		map.setMaxZoom(15);
+		map.setMinZoom(2);
 		map.addLayer(clusterGroup);
 	}
 
