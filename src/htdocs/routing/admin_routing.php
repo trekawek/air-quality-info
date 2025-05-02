@@ -64,6 +64,7 @@ $routes = array(
     'POST /device/assign/:key' => array('device', 'assign'),
 
     'DELETE /device/:device_id/mapping/:mapping_id' => array('device', 'deleteMapping'),
+    'DELETE /device/:device_id/adjustment/:adjustment_id' => array('device', 'deleteAdjustment'),
 
     'GET /device/:device_id/json' => array('device_json', 'index'),
     'GET /device/:device_id/json/:timestamp' => array('device_json', 'get'),

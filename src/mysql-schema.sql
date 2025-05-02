@@ -1,15 +1,21 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: db
--- Generation Time: Feb 09, 2025 at 05:23 PM
--- Server version: 8.0.31
--- PHP Version: 8.0.19
+-- Generation Time: May 02, 2025 at 07:28 PM
+-- Server version: 8.4.4
+-- PHP Version: 8.2.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `air_quality_info`
@@ -98,14 +104,25 @@ CREATE TABLE `devices` (
   `lng` decimal(17,14) DEFAULT NULL,
   `radius` decimal(5,1) NOT NULL DEFAULT '250.0',
   `elevation` int DEFAULT NULL,
-  `temperature_offset` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `pm25_offset` decimal(4,0) NOT NULL DEFAULT '0',
-  `pm10_offset` decimal(4,0) NOT NULL DEFAULT '0',
   `csv_fields` varchar(1024) NOT NULL DEFAULT 'pm25,pm10,temperature,pressure,humidity,heater_temperature,heater_humidity',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_update` int DEFAULT NULL,
   `assign_token` varchar(32) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `device_adjustments`
+--
+
+CREATE TABLE `device_adjustments` (
+  `id` int NOT NULL,
+  `device_id` int NOT NULL,
+  `db_name` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `multiplier` decimal(8,4) NOT NULL DEFAULT '1.0000',
+  `offset` decimal(6,2) NOT NULL DEFAULT '0.00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -285,6 +302,13 @@ ALTER TABLE `devices`
   ADD KEY `id` (`id`,`user_id`);
 
 --
+-- Indexes for table `device_adjustments`
+--
+ALTER TABLE `device_adjustments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `device_id` (`device_id`);
+
+--
 -- Indexes for table `device_hierarchy`
 --
 ALTER TABLE `device_hierarchy`
@@ -368,6 +392,12 @@ ALTER TABLE `devices`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `device_adjustments`
+--
+ALTER TABLE `device_adjustments`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `device_hierarchy`
 --
 ALTER TABLE `device_hierarchy`
@@ -420,6 +450,12 @@ ALTER TABLE `devices`
   ADD CONSTRAINT `devices_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
+-- Constraints for table `device_adjustments`
+--
+ALTER TABLE `device_adjustments`
+  ADD CONSTRAINT `device_adjustments_devices_id_fkey` FOREIGN KEY (`device_id`) REFERENCES `devices` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+--
 -- Constraints for table `device_hierarchy`
 --
 ALTER TABLE `device_hierarchy`
@@ -469,3 +505,7 @@ ALTER TABLE `user_tokens`
 ALTER TABLE `widgets`
   ADD CONSTRAINT `widgets_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

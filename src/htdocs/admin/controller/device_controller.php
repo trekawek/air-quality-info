@@ -91,8 +91,8 @@ class DeviceController extends AbstractController {
         }
 
         $deviceForm = $this->getDeviceForm($device);
+        $adjustmentForm = $this->getAdjustmentForm($device);
         $mappingForm = $this->getMappingForm($deviceId);
-        $sensorOptionsForm = $this->getSensorOptionsForm($device);
         $csvFieldsForm = $this->getCsvFieldsForm($device);
 
         if ($deviceForm->isSubmitted() && $deviceForm->validate($_POST)) {
@@ -120,21 +120,14 @@ class DeviceController extends AbstractController {
             $deviceForm->getElement('elevation')->addGroupClass('show');
         }
 
+        if ($adjustmentForm->isSubmitted() && $adjustmentForm->validate($_POST)) {
+            $this->deviceModel->addAdjustment($deviceId, $_POST['db_name'], $_POST['multiplier'], $_POST['offset']);
+            $this->alert(__('Created a new adjustment', 'success'));    
+        }
+
         if ($mappingForm->isSubmitted() && $mappingForm->validate($_POST)) {
             $this->deviceModel->addMapping($deviceId, $_POST['db_name'], $_POST['json_name']);
             $this->alert(__('Created a new mapping', 'success'));    
-        }
-
-        if ($sensorOptionsForm->isSubmitted() && $sensorOptionsForm->validate($_POST)) {
-            $data = array(
-                'temperature_offset' => $_POST['temperature_offset'],
-                'pm25_offset' => $_POST['pm25_offset'],
-                'pm10_offset' => $_POST['pm10_offset'],
-            );
-            $this->deviceModel->updateDevice($deviceId, $data);
-            $this->alert(__('Updated the device', 'success'));
-            $device = $this->getDevice($deviceId);
-            $sensorOptionsForm->setDefaultValues($device);
         }
 
         if ($csvFieldsForm->isSubmitted() && $csvFieldsForm->validate($_POST)) {
@@ -146,6 +139,7 @@ class DeviceController extends AbstractController {
         }
 
         $mapping = $this->deviceModel->getMappingForDevice($deviceId);
+        $adjustments = $this->deviceModel->getDeviceAdjustments($deviceId);
 
         $this->render(array(
             'view' => 'admin/views/device/edit.php'
@@ -153,10 +147,11 @@ class DeviceController extends AbstractController {
             'device' => $device,
             'deviceId' => $deviceId,
             'deviceForm' => $deviceForm,
+            'adjustmentForm' => $adjustmentForm,
             'mappingForm' => $mappingForm,
-            'sensorOptionsForm' => $sensorOptionsForm,
             'csvFieldsForm' => $csvFieldsForm,
             'mapping' => $mapping,
+            'adjustments' => $adjustments,
             'lastRecord' => $this->recordModel->getLastData($deviceId),
             'jsonUpdates' => $this->jsonUpdateModel->getJsonUpdates($deviceId, 5),
             'breadcrumbs' => $breadcrumbs,
@@ -175,6 +170,12 @@ class DeviceController extends AbstractController {
         $this->getDevice($deviceId); // validate the device ownership
         $this->deviceModel->deleteDevice($deviceId);
         $this->alert(__('Deleted the device'));
+    }
+
+    public function deleteAdjustment($deviceId, $adjustmentId) {
+        $this->getDevice($deviceId); // validate the device ownership
+        $this->deviceModel->deleteAdjustment($deviceId, $adjustmentId);
+        $this->alert(__('Deleted the adjustment'));
     }
 
     public function deleteMapping($deviceId, $mappingId) {
@@ -249,20 +250,23 @@ class DeviceController extends AbstractController {
         return $mappingForm;
     }
 
-    private function getSensorOptionsForm($device) {
-        $sensorOptionsForm = new \AirQualityInfo\Lib\Form\Form("sensorOptions");
-        $sensorOptionsForm->addElement('temperature_offset', 'number', 'Temperature offset', array('min' => -10, 'max' => 10, 'step' => '.01'))
-            ->addRule('required')
-            ->addRule('range', array('min' => -10, 'max' => 10));
-        $sensorOptionsForm->addElement('pm25_offset', 'number', 'PM2.5 offset', array('min' => -100, 'max' => 100, 'step' => '1'))
-            ->addRule('required')
-            ->addRule('range', array('min' => -100, 'max' => 100));
-        $sensorOptionsForm->addElement('pm10_offset', 'number', 'PM10 offset', array('min' => -100, 'max' => 100, 'step' => '1'))
-            ->addRule('required')
-            ->addRule('range', array('min' => -100, 'max' => 100));
+    private function getAdjustmentForm($deviceId) {
+        $options = array_keys(\AirQualityInfo\Model\Updater::VALUE_MAPPING);
+        $options = array_combine($options, $options);
 
-        $sensorOptionsForm->setDefaultValues($device);
-        return $sensorOptionsForm;
+        $adjustmentForm = new \AirQualityInfo\Lib\Form\Form("adjustmentForm");
+        $adjustmentForm->addElement('db_name', 'select', 'Database field')
+            ->addRule('required')
+            ->setOptions($options);
+        $adjustmentForm->addElement('multiplier', 'number', 'Multiplier', array('step' => "0.0001"))
+            ->addRule('required')
+            ->setOptions($options);
+        $adjustmentForm->addElement('offset', 'number', 'Offset', array('step' => "0.01"))
+            ->addRule('required')
+            ->setOptions($options);
+        $adjustmentForm->setDefaultValues(array('multiplier' => 1, 'offset' => 0));
+
+        return $adjustmentForm;
     }
 
     private function getCsvFieldsForm($device) {

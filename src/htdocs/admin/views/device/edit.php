@@ -43,12 +43,42 @@
 
         <div class="card">
             <div class="card-header">
-                <?php echo __('Sensor options') ?>
+                <?php echo __('Device adjustments') ?>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><?php echo __('Value type') ?></th>
+                            <th><?php echo __('Multiplier') ?></th>
+                            <th><?php echo __('Offset') ?></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($adjustments as $a): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($a['db_name']) ?></td>
+                            <td><?php echo $a['multiplier'] ?></td>
+                            <td><?php echo $a['offset'] ?></td>
+                            <td>
+                                <a href="<?php echo l('device', 'deleteAdjustment', null, array('device_id' => $deviceId, 'adjustment_id' => $a['id'])) ?>" class="btn btn-danger delete-link"><i class="fa fa-trash-o "></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <?php endforeach ?>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <?php echo __('Add device adjustment') ?>
             </div>
             <div class="card-body">
                 <form action="<?php echo l('device', 'edit', null, array('device_id' => $deviceId)) ?>" method="post">
-                    <?php $sensorOptionsForm->render() ?>
-                    <button type="submit" class="btn btn-primary"><?php echo __('Update') ?></button>
+                    <?php $adjustmentForm->render() ?>
+                    <button type="submit" class="btn btn-primary"><?php echo __('Add adjustment') ?></button>
                 </form>
             </div>
         </div>

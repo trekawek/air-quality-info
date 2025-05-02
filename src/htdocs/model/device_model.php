@@ -110,6 +110,26 @@ class DeviceModel {
         $stmt->closeCursor();
     }
 
+    public function addAdjustment($deviceId, $dbName, $multiplier, $offset) {
+        $stmt = $this->pdo->prepare("INSERT INTO `device_adjustments` (`device_id`, `db_name`, `multiplier`, `offset`) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$deviceId, $dbName, $multiplier, $offset]);
+        $stmt->closeCursor();
+    }
+
+    public function deleteAdjustment($deviceId, $adjustmentId) {
+        $stmt = $this->pdo->prepare("DELETE FROM `device_adjustments` WHERE `device_id` = ? AND `id` = ?");
+        $stmt->execute([$deviceId, $adjustmentId]);
+        $stmt->closeCursor();
+    }
+
+    public function getDeviceAdjustments($deviceId) {
+        $stmt = $this->pdo->prepare("SELECT `id`, `db_name`, `multiplier`, `offset` FROM `device_adjustments` WHERE `device_id` = ?");
+        $stmt->execute([$deviceId]);
+        $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        return $data;
+    }
+
     public function addMapping($deviceId, $dbName, $jsonName) {
         $stmt = $this->pdo->prepare("INSERT INTO `device_mapping` (`device_id`, `db_name`, `json_name`) VALUES (?, ?, ?)");
         $stmt->execute([$deviceId, $dbName, $jsonName]);

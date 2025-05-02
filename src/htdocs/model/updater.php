@@ -79,6 +79,8 @@ class Updater {
 
     public function insertBatch($device, $batch) {
         $mapping = $this->getMapping($device);
+        $adjustments = $this->device_model->getDeviceAdjustments($device['id']);
+
         $records = array();
         foreach ($batch as $row) {
             $data = $row['data'];
@@ -88,17 +90,14 @@ class Updater {
             foreach (array_keys(Updater::VALUE_MAPPING) as $k) {
                 $r[$k] = Updater::readValue($mapping, $device, $k, $data);
             }
-            if (isset($r['temperature']) && $r['temperature'] !== null) {
-                $r['temperature'] += $device['temperature_offset'];
+            foreach ($adjustments as $a) {
+                $f = $a['db_name'];
+                if (isset($r[$f]) && $r[$f] !== null) {
+                    $r[$f] = $r[$f] * $a['multiplier'] + $a['offset'];
+                }
             }
             if (!isset($r['pm10']) || $r['pm10'] == null) {
                 continue;
-            }
-            if (isset($r['pm25']) && $r['pm25'] !== null) {
-                $r['pm25'] += $device['pm25_offset'];
-            }
-            if (isset($r['pm10']) && $r['pm10'] !== null) {
-                $r['pm10'] += $device['pm10_offset'];
             }
             $records[] = $r;
         }
