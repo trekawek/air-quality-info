@@ -114,7 +114,7 @@ var mapsLoaded = (function() {
 
 		var bounds = new L.LatLngBounds(positions);
 		map.fitBounds(bounds, {maxZoom: 17});
-		map.setMaxZoom(17);
+		map.setMaxZoom(20);
 		map.setMinZoom(2);
 		map.addLayer(clusterGroup);
 	}
