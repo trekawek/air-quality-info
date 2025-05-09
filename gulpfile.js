@@ -18,6 +18,8 @@ var paths = {
       'node_modules/leaflet/dist/leaflet.css',
       'node_modules/leaflet.markercluster/dist/MarkerCluster.css',
       'node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css',
+      'node_modules/leaflet-fullscreen/dist/leaflet.fullscreen.css',
+
     ],
     dest: 'src/htdocs/public/css/'
   },
@@ -50,6 +52,7 @@ var paths = {
       'node_modules/smartmenus/dist/addons/bootstrap-4/jquery.smartmenus.bootstrap-4.js',
       'node_modules/leaflet/dist/leaflet.js',
       'node_modules/leaflet.markercluster/dist/leaflet.markercluster.js',
+      'node_modules/leaflet-fullscreen/dist/Leaflet.fullscreen.js',
     ],
     dest: 'src/htdocs/public/js/'
   },
@@ -67,8 +70,9 @@ var paths = {
   images: {
     src: [
       'node_modules/leaflet/dist/images/**',
+      'node_modules/leaflet-fullscreen/dist/*.png',
     ],
-    dest: 'src/htdocs/public/img/'
+    dest: 'src/htdocs/public/css/'
   },
   themes: [
     {

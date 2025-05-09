@@ -74,7 +74,7 @@ var mapsLoaded = (function() {
 	}
 	
 	function initMap(mapDiv, data) {
-		L.Icon.Default.imagePath = '/public/img/';
+		L.Icon.Default.imagePath = '/public/css/';
 
 		const map = L.map(mapDiv);//.setView([data[0].lat, data[1].lng], 3);
 		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -113,10 +113,17 @@ var mapsLoaded = (function() {
 		});
 
 		var bounds = new L.LatLngBounds(positions);
-		map.fitBounds(bounds, {maxZoom: 17});
-		map.setMaxZoom(20);
+		if (positions.length > 0) {
+			map.fitBounds(bounds, {maxZoom: 17});
+		}
 		map.setMinZoom(2);
 		map.addLayer(clusterGroup);
+		map.addControl(new L.Control.Fullscreen({
+			title: {
+				'false': __('View fullscreen'),
+				'true': __('Exit fullscreen'),
+			}
+		}));		
 	}
 
 	return mapsLoaded;
