@@ -23,6 +23,10 @@
     background-image: url("/public/img/flags/hungary.png");
 }
 
+.flag-it {
+    background-image: url("/public/img/flags/italy.png");
+}
+
 .flag-pl {
     background-image: url("/public/img/flags/poland.png");
 }
