@@ -91,6 +91,7 @@ class DeviceController extends AbstractController {
         }
 
         $deviceForm = $this->getDeviceForm($device);
+        $predefinedAdjustmentForm = $this->getPredefinedAdjustmentForm($device);
         $adjustmentForm = $this->getAdjustmentForm($device);
         $mappingForm = $this->getMappingForm($deviceId);
         $csvFieldsForm = $this->getCsvFieldsForm($device);
@@ -113,6 +114,19 @@ class DeviceController extends AbstractController {
             $this->alert(__('Updated the device', 'success'));
             $device = $this->getDevice($deviceId);
             $deviceForm->setDefaultValues($device);
+        }
+
+        if ($predefinedAdjustmentForm->isSubmitted() && $predefinedAdjustmentForm->validate($_POST)) {
+            $data = array(
+                'predefined_adjustment' => $_POST['predefined_adjustment'],
+            );
+            if ($data['predefined_adjustment'] == '') {
+                $data['predefined_adjustment'] = null;
+            }
+            $this->deviceModel->updateDevice($deviceId, $data);
+            $this->alert(__('Updated the device', 'success'));
+            $device = $this->getDevice($deviceId);
+            $predefinedAdjustmentForm->setDefaultValues($device);
         }
 
         if ($device['location_provided']) {
@@ -147,6 +161,7 @@ class DeviceController extends AbstractController {
             'device' => $device,
             'deviceId' => $deviceId,
             'deviceForm' => $deviceForm,
+            'predefinedAdjustmentForm' => $predefinedAdjustmentForm,
             'adjustmentForm' => $adjustmentForm,
             'mappingForm' => $mappingForm,
             'csvFieldsForm' => $csvFieldsForm,
@@ -234,6 +249,18 @@ class DeviceController extends AbstractController {
             ->addGroupClass('collapse');
         $deviceForm->addElement('lat', 'hidden');
         $deviceForm->addElement('lng', 'hidden');
+        $deviceForm->setDefaultValues($device);
+        return $deviceForm;
+    }
+
+    private function getPredefinedAdjustmentForm($device) {
+        $options = array_keys(\AirQualityInfo\Model\Updater::PREDEFINED_ADJUSTMENTS);
+        array_unshift($options, '');
+        $options = array_combine($options, $options);
+
+        $deviceForm = new \AirQualityInfo\Lib\Form\Form("predefinedAdjustmentForm");
+        $deviceForm->addElement('predefined_adjustment', 'select', 'Predefined adjustment')
+            ->setOptions($options);
         $deviceForm->setDefaultValues($device);
         return $deviceForm;
     }

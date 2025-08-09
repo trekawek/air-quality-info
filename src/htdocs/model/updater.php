@@ -29,6 +29,17 @@ class Updater {
         'gps_height'    => array('GPS_height'),
     );
 
+    const PREDEFINED_ADJUSTMENTS = array(
+        'OpenAirSen' => array(
+            'SDS_P1'   => array('multiplier' => 0.943, 'offset' =>  1.929),
+            'SDS_P2'   => array('multiplier' => 1.002, 'offset' =>  1.031),
+            'PMS_P1'   => array('multiplier' => 1.088, 'offset' => -0.761),
+            'PMS_P2'   => array('multiplier' => 1.079, 'offset' => -0.324),
+            'SPS30_P1' => array('multiplier' => 1.009, 'offset' =>  0.383),
+            'SPS30_P2' => array('multiplier' => 1.033, 'offset' =>  0.328),
+        ),
+    );
+
     private $record_model;
 
     private $device_model;
@@ -84,6 +95,9 @@ class Updater {
         $records = array();
         foreach ($batch as $row) {
             $data = $row['data'];
+            if ($device['predefined_adjustment'] != null) {
+                $data = Updater::applyPredefinedAdjustment($device['predefined_adjustment'], $data);
+            }
             $r = array(
                 'timestamp'   => $row['time'],
             );
@@ -123,6 +137,19 @@ class Updater {
             }
         }
         return $value === null ? $undefinedValue : $value;
+    }
+
+    private static function applyPredefinedAdjustment($adjustmentType, $data) {
+        if (!isset(Updater::PREDEFINED_ADJUSTMENTS[$adjustmentType])) {
+            return $data;
+        }
+        $adjustments = Updater::PREDEFINED_ADJUSTMENTS[$adjustmentType];
+        foreach ($adjustments as $f => $a) {
+            if (isset($data[$f])) {
+                $data[$f] = $data[$f] * $a['multiplier'] + $a['offset'];
+            }
+        }
+        return $data;
     }
 
     private function getMapping($device) {

@@ -88,6 +88,7 @@ CREATE TABLE `devices` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
   `update_mode` enum('push','pull') NOT NULL DEFAULT 'push',
+  `predefined_adjustment` enum('OpenAirSen') DEFAULT NULL,
   `esp8266_id` bigint DEFAULT NULL,
   `ttn_id` varchar(256) DEFAULT NULL,
   `http_username` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,

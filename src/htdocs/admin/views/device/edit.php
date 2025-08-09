@@ -43,6 +43,18 @@
 
         <div class="card">
             <div class="card-header">
+                <?php echo __('Predefined device adjustments') ?>
+            </div>
+            <div class="card-body">
+                <form action="<?php echo l('device', 'edit', null, array('device_id' => $deviceId)) ?>" method="post">
+                    <?php $predefinedAdjustmentForm->render() ?>
+                    <button type="submit" class="btn btn-primary"><?php echo __('Update predefined adjustment') ?></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
                 <?php echo __('Device adjustments') ?>
             </div>
             <div class="card-body">
