@@ -29,10 +29,10 @@ class UpdateController {
 
     public function update($device, $payload, $data = null) {
         $now = time();
-        /*if ($device['last_update'] !== null && $now - $device['last_update'] < 90) {
+        if ($device['last_update'] !== null && $now - $device['last_update'] < 90) {
             http_response_code(429);
             die();
-        }*/
+        }
         $data = json_decode($payload, true);
         if (isset($data['esp8266id']) && $data['esp8266id'] != $device['esp8266_id']) {
             $this->deviceModel->updateDevice($device['id'], array('esp8266_id' => $data['esp8266id']));
