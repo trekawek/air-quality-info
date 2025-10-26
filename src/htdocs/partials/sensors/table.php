@@ -117,7 +117,7 @@
         if ($sensors['rainfall'] !== null) {
           $weather[] = '<i class="wi wi-raindrops"></i> '.round($sensors['rainfall'], 0).' mm';
         }
-        if ($sensors['rainfall'] !== null) {
+        if ($sensors['noise_level'] !== null) {
           $weather[] = '🔊 '.round($sensors['noise_level'], 0).' dB';
         }
         if (!empty($weather)): ?>
