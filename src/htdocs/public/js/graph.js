@@ -557,7 +557,7 @@ function renderGraph(ctx, data, type, avgType) {
         var emptyPressureData = emptyTimeSeries(noiseLevelData);
         config.data = {
             datasets: [{
-                borderColor: window.chartColors.blue,
+                borderColor: window.chartColors.grey,
                 label: __('Noise level') + ' (dB)',
                 data: noiseLevelData,
                 borderWidth: 2,
@@ -565,7 +565,7 @@ function renderGraph(ctx, data, type, avgType) {
                 name: type,
                 hidden: !getVisibility(type, true),
             },{
-                borderColor: window.chartColors.lightBlue,
+                borderColor: window.chartColors.lightGrey,
                 data: emptyPressureData,
                 borderWidth: 2,
                 fill: false,
