@@ -12,6 +12,7 @@ $jsLocale['Humidity'] = 'Wilgotność';
 $jsLocale['Low'] = 'Niski';
 $jsLocale['Medium'] = 'Średni';
 $jsLocale['Night view'] = 'Widok nocny';
+$jsLocale['Noise level'] = 'Poziom hałasu';
 $jsLocale['PM₁₀ limit'] = 'Limit PM₁₀';
 $jsLocale['PM₂.₅ limit'] = 'Limit PM₂.₅';
 $jsLocale['Pollution level'] = 'Poziom zanieczyszczenia';

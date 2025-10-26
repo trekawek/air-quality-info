@@ -3,7 +3,7 @@ namespace AirQualityInfo\Model;
 
 class RecordModel {
 
-    const FIELDS = array('pm25','pm10','pm1','pm4','n05','n1','n25','n4','n10','co2','temperature','pressure','humidity','ambient_light','heater_temperature','heater_humidity','wind_speed','rainfall');
+    const FIELDS = array('pm25','pm10','pm1','pm4','n05','n1','n25','n4','n10','co2','temperature','pressure','humidity','ambient_light','heater_temperature','heater_humidity','wind_speed','rainfall','noise_level');
 
     const AGGREGATES = array(
         array('resolution' => 1 * 180,      'ttl' => 24 * 60 * 60),
@@ -222,6 +222,10 @@ class RecordModel {
             
             case 'rainfall':
             $fields = array('rainfall');
+            break;
+
+            case 'noise_level':
+            $fields = array('noise_level');
             break;
                         
             case 'pm':

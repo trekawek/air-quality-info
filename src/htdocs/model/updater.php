@@ -20,6 +20,7 @@ class Updater {
         'ambient_light'      => array('ambient_light'),
         'wind_speed'  => array('wind_speed'),  // km/h
         'rainfall'    => array('rainfall'),    // mm
+        'noise_level' => array('DNMS_noise_LAeq'), // db
         'heater_temperature' => array('temperature', 'HECA_temperature'),
         'heater_humidity'    => array('humidity', 'HECA_humidity'),
         'gps_time'    => array('GPS_time'),

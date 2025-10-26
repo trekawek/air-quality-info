@@ -552,6 +552,35 @@ function renderGraph(ctx, data, type, avgType) {
         }];
         break;
 
+        case 'noise_level':
+        var noiseLevelData = mapToTimeSeries(data.data.noise_level);
+        var emptyPressureData = emptyTimeSeries(noiseLevelData);
+        config.data = {
+            datasets: [{
+                borderColor: window.chartColors.blue,
+                label: __('Noise level') + ' (dB)',
+                data: noiseLevelData,
+                borderWidth: 2,
+                fill: false,
+                name: type,
+                hidden: !getVisibility(type, true),
+            },{
+                borderColor: window.chartColors.lightBlue,
+                data: emptyPressureData,
+                borderWidth: 2,
+                fill: false,
+                hidden: !getVisibility(type, true),
+                visibilityName: type,
+            }]
+        };
+        config.options.scales.yAxes = [{
+            display: true,
+            scaleLabel: {
+                display: false
+            }
+        }];
+        break;
+
         case 'humidity':
         var humidityData = mapToTimeSeries(data.data.humidity);
         var detectorHumidityData = mapToTimeSeries(data.data.heater_humidity);

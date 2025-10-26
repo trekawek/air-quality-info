@@ -12,6 +12,7 @@ $jsLocale['Humidity'] = '';
 $jsLocale['Low'] = '';
 $jsLocale['Medium'] = '';
 $jsLocale['Night view'] = '';
+$jsLocale['Noise level'] = '';
 $jsLocale['PM₁₀ limit'] = '';
 $jsLocale['PM₂.₅ limit'] = '';
 $jsLocale['Pollution level'] = '';
