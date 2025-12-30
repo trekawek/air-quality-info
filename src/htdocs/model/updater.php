@@ -32,12 +32,12 @@ class Updater {
 
     const PREDEFINED_ADJUSTMENTS = array(
         'OpenAirSen' => array(
-            'SDS_P1'   => array('multiplier' => 0.943, 'offset' =>  1.929),
-            'SDS_P2'   => array('multiplier' => 1.002, 'offset' =>  1.031),
+            'SDS_P1'   => array('multiplier' => 1.090, 'offset' =>  23.70),
+            'SDS_P2'   => array('multiplier' => 1.370, 'offset' =>  5.600),
             'PMS_P1'   => array('multiplier' => 1.088, 'offset' => -0.761),
             'PMS_P2'   => array('multiplier' => 1.079, 'offset' => -0.324),
-            'SPS30_P1' => array('multiplier' => 1.009, 'offset' =>  0.383),
-            'SPS30_P2' => array('multiplier' => 1.033, 'offset' =>  0.328),
+            'SPS30_P1' => array('multiplier' => 0.699, 'offset' =>  2.377),
+            'SPS30_P2' => array('multiplier' => 0.833, 'offset' =>  3.416),
         ),
     );
 
