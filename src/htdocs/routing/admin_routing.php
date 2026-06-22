@@ -1,7 +1,7 @@
 <?php
 namespace AirQualityInfo;
 
-Lib\CsrfToken::verifyToken(isset($_POST['_csrf_token']) ? $_POST['_csrf_token'] : null);
+Lib\CsrfToken::verifyToken();
 
 $authorizedUser = null;
 $userModel = $diContainer->injectClass('\\AirQualityInfo\\Model\\UserModel');
