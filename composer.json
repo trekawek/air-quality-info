@@ -1,10 +1,13 @@
 {
     "config": {
         "vendor-dir": "src/htdocs/vendor",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "require": {
-        "php": "^7.4",
+        "php": "^8.4",
         "ext-simplexml": "*",
         "ext-zip": "*",
         "aws/aws-sdk-php": "^3.52",

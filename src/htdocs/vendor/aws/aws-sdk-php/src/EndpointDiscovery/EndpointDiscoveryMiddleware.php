@@ -21,7 +21,7 @@ class EndpointDiscoveryMiddleware
     private static $discoveryCooldown = 60;
 
     private $args;
-    private $client;
+    private \WeakReference $client;
     private $config;
     private $discoveryTimes = [];
     private $nextHandler;
@@ -32,7 +32,7 @@ class EndpointDiscoveryMiddleware
         $args,
         $config
     ) {
-        return function (callable $handler) use (
+        return static function (callable $handler) use (
             $client,
             $args,
             $config
@@ -53,7 +53,7 @@ class EndpointDiscoveryMiddleware
         $config
     ) {
         $this->nextHandler = $handler;
-        $this->client = $client;
+        $this->client = \WeakReference::create($client);
         $this->args = $args;
         $this->service = $client->getApi();
         $this->config = $config;
@@ -69,8 +69,15 @@ class EndpointDiscoveryMiddleware
             $config = ConfigurationProvider::unwrap($this->config);
             $isRequired = !empty($op['endpointdiscovery']['required']);
 
-            // Continue only if required by operation or enabled by config
-            if ($isRequired || $config->isEnabled()) {
+            if ($isRequired && !($config->isEnabled())) {
+                throw new UnresolvedEndpointException('This operation '
+                    . 'requires the use of endpoint discovery, but this has '
+                    . 'been disabled in the configuration. Enable endpoint '
+                    . 'discovery or use a different operation.');
+            }
+
+            // Continue only if enabled by config
+            if ($config->isEnabled()) {
                 if (isset($op['endpointoperation'])) {
                     throw new UnresolvedEndpointException('This operation is '
                         . 'contradictorily marked both as using endpoint discovery '
@@ -84,7 +91,7 @@ class EndpointDiscoveryMiddleware
                 $identifiers = $this->getIdentifiers($op);
 
                 $cacheKey = $this->getCacheKey(
-                    $this->client->getCredentials()->wait(),
+                    $this->client->get()->getCredentials()->wait(),
                     $cmd,
                     $identifiers
                 );
@@ -171,7 +178,7 @@ class EndpointDiscoveryMiddleware
     ) {
         $discCmd = $this->getDiscoveryCommand($cmd, $identifiers);
         $this->discoveryTimes[$cacheKey] = time();
-        $result = $this->client->execute($discCmd);
+        $result = $this->client->get()->execute($discCmd);
 
         if (isset($result['Endpoints'])) {
             $endpointData = [];
@@ -230,7 +237,7 @@ class EndpointDiscoveryMiddleware
                 $params['Identifiers'][$identifier] = $cmd[$identifier];
             }
         }
-        $command = $this->client->getCommand($endpointOperation, $params);
+        $command = $this->client->get()->getCommand($endpointOperation, $params);
         $command->getHandlerList()->appendBuild(
             Middleware::mapRequest(function (RequestInterface $r) {
                 return $r->withHeader(
@@ -315,8 +322,8 @@ class EndpointDiscoveryMiddleware
 
             // If no more cached endpoints, make discovery call
             // if none made within cooldown for given key
-            if (time() - $this->discoveryTimes[$cacheKey]
-                < self::$discoveryCooldown
+            if (isset($this->discoveryTimes[$cacheKey])
+                && time() - $this->discoveryTimes[$cacheKey] < self::$discoveryCooldown
             ) {
 
                 // If no more cached endpoints and it's required,
@@ -386,6 +393,9 @@ class EndpointDiscoveryMiddleware
             $split = explode('/', $parsed['path'], 2);
             $parsed['host'] = $split[0];
             if (isset($split[1])) {
+                if (substr($split[1], 0 , 1) !== '/') {
+                    $split[1] = '/' . $split[1];
+                }
                 $parsed['path'] = $split[1];
             } else {
                 $parsed['path'] = '';

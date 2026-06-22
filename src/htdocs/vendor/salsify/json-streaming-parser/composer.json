@@ -26,14 +26,13 @@
     }
   ],
   "require": {
-    "php": "^7.1",
+    "php": ">=7.1",
     "ext-ctype": "*",
     "ext-mbstring": "*"
   },
-
   "require-dev": {
     "ext-json": "*",
-    "satooshi/php-coveralls": "~2.0"
+    "phpunit/phpunit": "~9.6"
   },
   "autoload": {
     "psr-4": {

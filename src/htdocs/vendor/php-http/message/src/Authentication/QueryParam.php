@@ -25,9 +25,6 @@ final class QueryParam implements Authentication
         $this->params = $params;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function authenticate(RequestInterface $request)
     {
         $uri = $request->getUri();
@@ -38,7 +35,7 @@ final class QueryParam implements Authentication
 
         $params = array_merge($params, $this->params);
 
-        $query = http_build_query($params, null, '&');
+        $query = http_build_query($params, '', '&');
 
         $uri = $uri->withQuery($query);
 

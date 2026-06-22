@@ -46,10 +46,7 @@ final class PluginClient implements HttpClient, HttpAsyncClient
     /**
      * @param ClientInterface|HttpAsyncClient $client  An HTTP async client
      * @param Plugin[]                        $plugins A plugin chain
-     * @param array                           $options {
-     *
-     *     @var int $max_restarts
-     * }
+     * @param array{'max_restarts'?: int}     $options
      */
     public function __construct($client, array $plugins = [], array $options = [])
     {
@@ -67,9 +64,6 @@ final class PluginClient implements HttpClient, HttpAsyncClient
         $this->options = $this->configure($options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
         // If the client doesn't support sync calls, call async
@@ -90,9 +84,6 @@ final class PluginClient implements HttpClient, HttpAsyncClient
         return $pluginChain($request)->wait();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sendAsyncRequest(RequestInterface $request)
     {
         $pluginChain = $this->createPluginChain($this->plugins, function (RequestInterface $request) {
@@ -127,7 +118,6 @@ final class PluginClient implements HttpClient, HttpAsyncClient
      */
     private function createPluginChain(array $plugins, callable $clientCallable): callable
     {
-        /** @var callable(RequestInterface): Promise */
         return new PluginChain($plugins, $clientCallable, $this->options);
     }
 }

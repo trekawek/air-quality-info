@@ -5,8 +5,6 @@ with the Mailgun API. Below are examples to get you started. For additional
 examples, please see our official documentation at http://documentation.mailgun.com
 
 [![Latest Version](https://img.shields.io/github/release/mailgun/mailgun-php.svg?style=flat-square)](https://github.com/mailgun/mailgun-php/releases)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/mailgun/mailgun-php.svg?style=flat-square)](https://scrutinizer-ci.com/g/mailgun/mailgun-php)
-[![Quality Score](https://img.shields.io/scrutinizer/g/mailgun/mailgun-php.svg?style=flat-square)](https://scrutinizer-ci.com/g/mailgun/mailgun-php)
 [![Total Downloads](https://img.shields.io/packagist/dt/mailgun/mailgun-php.svg?style=flat-square)](https://packagist.org/packages/mailgun/mailgun-php)
 [![Join the chat at https://gitter.im/mailgun/mailgun-php](https://badges.gitter.im/mailgun/mailgun-php.svg)](https://gitter.im/mailgun/mailgun-php?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -21,16 +19,20 @@ composer:
 curl -sS https://getcomposer.org/installer | php
 ```
 
+## Required minimum php version
+ - minimum php version 7.3
+
 The Mailgun API Client is not hard coupled to Guzzle, Buzz or any other library that sends
 HTTP messages. Instead, it uses the [PSR-18](https://www.php-fig.org/psr/psr-18/) client abstraction.
 This will give you the flexibility to choose what
-[PSR-7 implementation and HTTP client](https://packagist.org/providers/php-http/client-implementation)
+[PSR-7 implementation](https://packagist.org/providers/psr/http-message-implementation)
+and [HTTP client](https://packagist.org/providers/psr/http-client-implementation)
 you want to use.
 
 If you just want to get started quickly you should run the following command:
 
 ```bash
-composer require mailgun/mailgun-php kriswallsmith/buzz nyholm/psr7
+composer require mailgun/mailgun-php symfony/http-client nyholm/psr7
 ```
 
 ## Usage
@@ -62,6 +64,49 @@ $mg->messages()->send('example.com', [
 ```
 
 Attention: `$domain` must match to the domain you have configured on [app.mailgun.com](https://app.mailgun.com/app/domains).
+
+### Usage of new method for updating web scheme
+
+```php
+# Include the Autoloader (see "Libraries" for install instructions)
+require 'vendor/autoload.php';
+use Mailgun\Mailgun;
+
+# Instantiate the client.
+$mgClient = Mailgun::create('KEY', 'FULL_DOMAIN_URL');
+$domain = "DOMAIN";
+
+# Issue the call to the client.
+$result = $mgClient->domains()->updateWebScheme($domain, 'https');
+
+print_r($result);
+```
+
+### Custom http request to the API
+
+```php
+<?php
+# Include the Autoloader (see "Libraries" for install instructions)
+require 'vendor/autoload.php';
+use Mailgun\Mailgun;
+
+# Instantiate the client.
+$mgClient = Mailgun::create('KEY', 'ENDPOINT');
+$domain = "DOMAIN";
+
+$path = 'some path';
+$params = [];
+
+# Issue the call to the client.
+$resultPost = $mgClient->httpClient()->httpPost($path, $params);
+
+$resultGet = $mgClient->httpClient()->httpGet($path, $params);
+
+$resultPut = $mgClient->httpClient()->httpPut($path, $params);
+
+$resultDelete = $mgClient->httpClient()->httpDelete($path, $params);
+
+```
 
 ### All usage examples
 
@@ -146,8 +191,8 @@ $mg->messages()->send('example.com', [
 For usage examples on each API endpoint, head over to our official documentation
 pages.
 
-This SDK includes a [Message Builder](src/Mailgun/Messages/README.md),
-[Batch Message](src/Mailgun/Messages/README.md) and [Opt-In Handler](src/Mailgun/Lists/README.md) component.
+This SDK includes a [Message Builder](src/Message/README.md),
+[Batch Message](src/Message/README.md).
 
 Message Builder allows you to quickly create the array of parameters, required
 to send a message, by calling a methods for each parameter.
@@ -163,6 +208,7 @@ If you are using a framework you might consider these composer packages to make 
 * [katanyoo/yii2-mailgun-mailer](https://github.com/katanyoo/yii2-mailgun-mailer) for Yii2
 * [narendravaghela/cakephp-mailgun](https://github.com/narendravaghela/cakephp-mailgun) for CakePHP
 * [drupal/mailgun](https://www.drupal.org/project/mailgun) for Drupal
+* [Laravel](https://laravel.com/docs/8.x/mail#mailgun-driver) Mail comes with Mailgun driver support
 
 ## Contribute
 
@@ -195,4 +241,4 @@ If you find a bug, please submit the issue in Github directly.
 [Mailgun-PHP Issues](https://github.com/mailgun/mailgun-php/issues)
 
 As always, if you need additional assistance, drop us a note through your account at
-[https://app.mailgun.com/app/support/list](https://app.mailgun.com/app/support/list).
+[https://app.mailgun.com/support](https://app.mailgun.com/support).

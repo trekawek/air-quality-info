@@ -57,14 +57,14 @@ class UrlSigner
         // Get the real scheme by removing wildcards from the scheme
         $scheme = str_replace('*', '', $urlSections[0]);
         $uri = new Uri($scheme . '://' . $urlSections[1]);
-        $query = Psr7\parse_query($uri->getQuery(), PHP_QUERY_RFC3986);
+        $query = Psr7\Query::parse($uri->getQuery(), PHP_QUERY_RFC3986);
         $signature = $this->signer->getSignature(
             $this->createResource($scheme, (string) $uri),
             $expires,
             $policy
         );
         $uri = $uri->withQuery(
-            http_build_query($query + $signature, null, '&', PHP_QUERY_RFC3986)
+            http_build_query($query + $signature, '', '&', PHP_QUERY_RFC3986)
         );
 
         return $scheme === 'rtmp'
@@ -101,7 +101,7 @@ class UrlSigner
                 $parts = parse_url($url);
                 $pathParts = pathinfo($parts['path']);
                 $resource = ltrim(
-                    $pathParts['dirname'] . '/' . $pathParts['basename'],
+                    str_replace('\\', '/', $pathParts['dirname']) . '/' . $pathParts['basename'],
                     '/'
                 );
 

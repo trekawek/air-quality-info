@@ -31,10 +31,10 @@ final class DecoderPlugin implements Plugin
     private $useContentEncoding;
 
     /**
-     * @param array $config {
+     * @param array{'use_content_encoding'?: bool} $config
      *
-     *    @var bool $use_content_encoding Whether this plugin should look at the Content-Encoding header first or only at the Transfer-Encoding (defaults to true).
-     * }
+     * Configuration options:
+     *   - use_content_encoding: Whether this plugin should look at the Content-Encoding header first or only at the Transfer-Encoding (defaults to true)
      */
     public function __construct(array $config = [])
     {
@@ -48,9 +48,6 @@ final class DecoderPlugin implements Plugin
         $this->useContentEncoding = $options['use_content_encoding'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handleRequest(RequestInterface $request, callable $next, callable $first): Promise
     {
         $encodings = extension_loaded('zlib') ? ['gzip', 'deflate'] : ['identity'];

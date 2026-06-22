@@ -4,6 +4,7 @@ namespace Aws\Api\Parser;
 use Aws\Api\DateTimeResult;
 use Aws\Api\ListShape;
 use Aws\Api\MapShape;
+use Aws\Api\Parser\Exception\ParserException;
 use Aws\Api\Shape;
 use Aws\Api\StructureShape;
 
@@ -61,21 +62,32 @@ class XmlParser
                 }
             }
         }
-
+        if (isset($shape['union'])
+            && $shape['union']
+            && empty($target)
+        ) {
+            foreach ($value as $key => $val) {
+                $name = $val->children()->getName();
+                $target['Unknown'][$name] = $val->$name;
+            }
+        }
         return $target;
     }
 
     private function memberKey(Shape $shape, $name)
     {
-        if (null !== $shape['locationName']) {
-            return $shape['locationName'];
+        // Check if locationName came from shape definition
+        if ($shape instanceof StructureShape && isset($shape['locationName'])) {
+            $originalDef = $shape->getOriginalDefinition($shape->getName());
+
+            if ($originalDef && isset($originalDef['locationName'])
+                && $originalDef['locationName'] === $shape['locationName']
+            ) {
+                return $name;
+            }
         }
 
-        if ($shape instanceof ListShape && $shape['flattened']) {
-            return $shape->getMember()['locationName'] ?: $name;
-        }
-
-        return $name;
+        return $shape['locationName'] ?? $name;
     }
 
     private function parse_list(ListShape $shape, \SimpleXMLElement  $value)
@@ -123,7 +135,12 @@ class XmlParser
 
     private function parse_float(Shape $shape, $value)
     {
-        return (float) (string) $value;
+        $value = (string) $value;
+
+        return match ($value) {
+            'NaN', 'Infinity', '-Infinity' => $value,
+            default => (float) $value
+        };
     }
 
     private function parse_integer(Shape $shape, $value)
@@ -138,21 +155,23 @@ class XmlParser
 
     private function parse_timestamp(Shape $shape, $value)
     {
-        if (!empty($shape['timestampFormat'])
-            && $shape['timestampFormat'] === 'unixTimestamp') {
-            return DateTimeResult::fromEpoch((string) $value);
+        if (is_string($value)
+            || is_int($value)
+            || (is_object($value)
+                && method_exists($value, '__toString'))
+        ) {
+            return DateTimeResult::fromTimestamp(
+                (string) $value,
+                !empty($shape['timestampFormat']) ? $shape['timestampFormat'] : null
+            );
         }
-        return new DateTimeResult($value);
+        throw new ParserException('Invalid timestamp value passed to XmlParser::parse_timestamp');
     }
 
     private function parse_xml_attribute(Shape $shape, Shape $memberShape, $value)
     {
-        $namespace = $shape['xmlNamespace']['uri']
-            ? $shape['xmlNamespace']['uri']
-            : '';
-        $prefix = $shape['xmlNamespace']['prefix']
-            ? $shape['xmlNamespace']['prefix']
-            : '';
+        $namespace = $shape['xmlNamespace']['uri'] ?? '';
+        $prefix = $shape['xmlNamespace']['prefix'] ?? '';
         if (!empty($prefix)) {
             $prefix .= ':';
         }

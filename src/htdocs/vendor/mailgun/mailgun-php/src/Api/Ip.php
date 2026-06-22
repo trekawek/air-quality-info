@@ -15,6 +15,7 @@ use Mailgun\Assert;
 use Mailgun\Model\Ip\IndexResponse;
 use Mailgun\Model\Ip\ShowResponse;
 use Mailgun\Model\Ip\UpdateResponse;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -28,6 +29,7 @@ class Ip extends HttpApi
      * Returns a list of IPs.
      *
      * @return IndexResponse|ResponseInterface
+     * @throws ClientExceptionInterface
      */
     public function index(?bool $dedicated = null)
     {
@@ -46,6 +48,7 @@ class Ip extends HttpApi
      * Returns a list of IPs assigned to a domain.
      *
      * @return IndexResponse|ResponseInterface
+     * @throws ClientExceptionInterface
      */
     public function domainIndex(string $domain)
     {
@@ -60,6 +63,7 @@ class Ip extends HttpApi
      * Returns a single ip.
      *
      * @return ShowResponse|ResponseInterface
+     * @throws ClientExceptionInterface
      */
     public function show(string $ip)
     {
@@ -74,6 +78,7 @@ class Ip extends HttpApi
      * Assign a dedicated IP to the domain specified.
      *
      * @return UpdateResponse|ResponseInterface
+     * @throws ClientExceptionInterface
      */
     public function assign(string $domain, string $ip)
     {
@@ -93,6 +98,7 @@ class Ip extends HttpApi
      * Unassign an IP from the domain specified.
      *
      * @return UpdateResponse|ResponseInterface
+     * @throws ClientExceptionInterface
      */
     public function unassign(string $domain, string $ip)
     {

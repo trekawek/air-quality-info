@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Mailgun\Model\Message;
 
 use Mailgun\Model\ApiResponse;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
@@ -33,6 +34,10 @@ final class ShowResponse implements ApiResponse
     private $messageUrl;
     private $contentIdMap;
     private $messageHeaders;
+    /**
+     * @var StreamInterface|null
+     */
+    private $rawStream;
 
     private function __construct()
     {
@@ -51,11 +56,12 @@ final class ShowResponse implements ApiResponse
         $model->bodyHtml = $data['body-html'] ?? null;
         $model->strippedHtml = $data['stripped-html'] ?? null;
         $model->messageUrl = $data['message-url'] ?? null;
-        $model->messageHeaders = $data['message-headers'] ?? null;
+        $model->messageHeaders = $data['message-headers'] ?? [];
         $model->recipient = $data['recipient'] ?? null;
         $model->bodyMime = $data['body-mime'] ?? null;
         $model->attachments = $data['attachments'] ?? [];
         $model->contentIdMap = $data['content-id-map'] ?? null;
+        $model->rawStream = $data['raw_stream'] ?? null;
 
         return $model;
     }
@@ -139,5 +145,23 @@ final class ShowResponse implements ApiResponse
     public function getMessageHeaders(): array
     {
         return $this->messageHeaders;
+    }
+
+    /**
+     * Only available with message/rfc2822.
+     *
+     * @return StreamInterface|null
+     */
+    public function getRawStream(): ?StreamInterface
+    {
+        return $this->rawStream;
+    }
+
+    /**
+     * @param StreamInterface|null $rawStream
+     */
+    public function setRawStream(?StreamInterface $rawStream): void
+    {
+        $this->rawStream = $rawStream;
     }
 }

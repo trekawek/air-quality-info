@@ -34,7 +34,7 @@ class MultipartStreamBuilder
     private $boundary;
 
     /**
-     * @var array Element where each Element is an array with keys ['contents', 'headers', 'filename']
+     * @var array Element where each Element is an array with keys ['contents', 'headers']
      */
     private $data = [];
 
@@ -75,13 +75,29 @@ class MultipartStreamBuilder
     /**
      * Add a resource to the Multipart Stream.
      *
-     * @param string                          $name     the formpost name
-     * @param string|resource|StreamInterface $resource
-     * @param array                           $options  {
+     * @param string|resource|\Psr\Http\Message\StreamInterface $resource the filepath, resource or StreamInterface of the data
+     * @param array                                             $headers  additional headers array: ['header-name' => 'header-value']
      *
-     *     @var array $headers additional headers ['header-name' => 'header-value']
-     *     @var string $filename
-     * }
+     * @return MultipartStreamBuilder
+     */
+    public function addData($resource, array $headers = [])
+    {
+        $stream = $this->createStream($resource);
+        $this->data[] = ['contents' => $stream, 'headers' => $headers];
+
+        return $this;
+    }
+
+    /**
+     * Add a resource to the Multipart Stream.
+     *
+     * @param string                                                    $name     the formpost name
+     * @param string|resource|StreamInterface                           $resource
+     * @param array{headers?: array<string, string>, filename?: string} $options
+     *
+     * Options:
+     * - headers: additional headers as hashmap ['header-name' => 'header-value']
+     * - filename: used to determine the mime type
      *
      * @return MultipartStreamBuilder
      */
@@ -98,15 +114,14 @@ class MultipartStreamBuilder
         if (empty($options['filename'])) {
             $options['filename'] = null;
             $uri = $stream->getMetadata('uri');
-            if ('php://' !== substr($uri, 0, 6)) {
+            if ('php://' !== substr($uri, 0, 6) && 'data://' !== substr($uri, 0, 7)) {
                 $options['filename'] = $uri;
             }
         }
 
         $this->prepareHeaders($name, $stream, $options['filename'], $options['headers']);
-        $this->data[] = ['contents' => $stream, 'headers' => $options['headers'], 'filename' => $options['filename']];
 
-        return $this;
+        return $this->addData($stream, $options['headers']);
     }
 
     /**
@@ -116,37 +131,47 @@ class MultipartStreamBuilder
      */
     public function build()
     {
-        $streams = '';
+        // Open a temporary read-write stream as buffer.
+        // If the size is less than predefined limit, things will stay in memory.
+        // If the size is more than that, things will be stored in temp file.
+        $buffer = fopen('php://temp', 'r+');
         foreach ($this->data as $data) {
             // Add start and headers
-            $streams .= "--{$this->getBoundary()}\r\n".
-                $this->getHeaders($data['headers'])."\r\n";
+            fwrite($buffer, "--{$this->getBoundary()}\r\n".
+                $this->getHeaders($data['headers'])."\r\n");
 
-            // Convert the stream to string
-            /* @var $contentStream StreamInterface */
+            /** @var $contentStream StreamInterface */
             $contentStream = $data['contents'];
-            if ($contentStream->isSeekable()) {
-                $streams .= $contentStream->__toString();
-            } else {
-                $streams .= $contentStream->getContents();
-            }
 
-            $streams .= "\r\n";
+            // Read stream into buffer
+            if ($contentStream->isSeekable()) {
+                $contentStream->rewind(); // rewind to beginning.
+            }
+            if ($contentStream->isReadable()) {
+                while (!$contentStream->eof()) {
+                    // Read 1MB chunk into buffer until reached EOF.
+                    fwrite($buffer, $contentStream->read(1048576));
+                }
+            } else {
+                fwrite($buffer, $contentStream->__toString());
+            }
+            fwrite($buffer, "\r\n");
         }
 
         // Append end
-        $streams .= "--{$this->getBoundary()}--\r\n";
+        fwrite($buffer, "--{$this->getBoundary()}--\r\n");
 
-        return $this->createStream($streams);
+        // Rewind to starting position for reading.
+        fseek($buffer, 0);
+
+        return $this->createStream($buffer);
     }
 
     /**
      * Add extra headers if they are missing.
      *
-     * @param string          $name
-     * @param StreamInterface $stream
-     * @param string          $filename
-     * @param array           &$headers
+     * @param string $name
+     * @param string $filename
      */
     private function prepareHeaders($name, StreamInterface $stream, $filename, array &$headers)
     {
@@ -160,13 +185,6 @@ class MultipartStreamBuilder
             }
         }
 
-        // Set a default content-length header if one was not provided
-        if (!$this->hasHeader($headers, 'content-length')) {
-            if ($length = $stream->getSize()) {
-                $headers['Content-Length'] = (string) $length;
-            }
-        }
-
         // Set a default Content-Type if one was not provided
         if (!$this->hasHeader($headers, 'content-type') && $hasFilename) {
             if ($type = $this->getMimetypeHelper()->getMimetypeFromFilename($filename)) {
@@ -177,8 +195,6 @@ class MultipartStreamBuilder
 
     /**
      * Get the headers formatted for the HTTP message.
-     *
-     * @param array $headers
      *
      * @return string
      */
@@ -195,8 +211,7 @@ class MultipartStreamBuilder
     /**
      * Check if header exist.
      *
-     * @param array  $headers
-     * @param string $key     case insensitive
+     * @param string $key case insensitive
      *
      * @return bool
      */
@@ -252,8 +267,6 @@ class MultipartStreamBuilder
 
     /**
      * If you have custom file extension you may overwrite the default MimetypeHelper with your own.
-     *
-     * @param MimetypeHelper $mimetypeHelper
      *
      * @return MultipartStreamBuilder
      */

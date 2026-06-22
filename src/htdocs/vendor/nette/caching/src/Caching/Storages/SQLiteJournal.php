@@ -1,38 +1,31 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
 
-declare(strict_types=1);
-
 namespace Nette\Caching\Storages;
 
 use Nette;
 use Nette\Caching\Cache;
+use function array_values, count, extension_loaded, implode, is_file, str_repeat, touch;
 
 
 /**
  * SQLite based journal.
  */
-class SQLiteJournal implements IJournal
+class SQLiteJournal implements Journal
 {
-	use Nette\SmartObject;
-
-	/** @string */
-	private $path;
-
-	/** @var \PDO */
-	private $pdo;
+	private \PDO $pdo;
 
 
-	public function __construct(string $path)
-	{
+	public function __construct(
+		private readonly string $path,
+	) {
 		if (!extension_loaded('pdo_sqlite')) {
 			throw new Nette\NotSupportedException('SQLiteJournal requires PHP extension pdo_sqlite which is not loaded.');
 		}
-		$this->path = $path;
 	}
 
 
@@ -43,7 +36,6 @@ class SQLiteJournal implements IJournal
 		}
 
 		$this->pdo = new \PDO('sqlite:' . $this->path);
-		$this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		$this->pdo->exec('
 			PRAGMA foreign_keys = OFF;
 			PRAGMA journal_mode = WAL;
@@ -59,31 +51,35 @@ class SQLiteJournal implements IJournal
 			CREATE UNIQUE INDEX IF NOT EXISTS idx_tags_key_tag ON tags(key, tag);
 			CREATE UNIQUE INDEX IF NOT EXISTS idx_priorities_key ON priorities(key);
 			CREATE INDEX IF NOT EXISTS idx_priorities_priority ON priorities(priority);
+			PRAGMA synchronous = NORMAL;
 		');
 	}
 
 
 	public function write(string $key, array $dependencies): void
 	{
-		if (!$this->pdo) {
+		if (!isset($this->pdo)) {
 			$this->open();
 		}
+
 		$this->pdo->exec('BEGIN');
 
-		if (!empty($dependencies[Cache::TAGS])) {
+		if (!empty($dependencies[Cache::Tags])) {
 			$this->pdo->prepare('DELETE FROM tags WHERE key = ?')->execute([$key]);
 
-			foreach ($dependencies[Cache::TAGS] as $tag) {
+			$arr = [];
+			foreach ($dependencies[Cache::Tags] as $tag) {
 				$arr[] = $key;
 				$arr[] = $tag;
 			}
-			$this->pdo->prepare('INSERT INTO tags (key, tag) SELECT ?, ?' . str_repeat('UNION SELECT ?, ?', count($arr) / 2 - 1))
+
+			$this->pdo->prepare('INSERT INTO tags (key, tag) SELECT ?, ?' . str_repeat('UNION SELECT ?, ?', intdiv(count($arr), 2) - 1))
 				->execute($arr);
 		}
 
-		if (!empty($dependencies[Cache::PRIORITY])) {
+		if (!empty($dependencies[Cache::Priority])) {
 			$this->pdo->prepare('REPLACE INTO priorities (key, priority) VALUES (?, ?)')
-				->execute([$key, (int) $dependencies[Cache::PRIORITY]]);
+				->execute([$key, (int) $dependencies[Cache::Priority]]);
 		}
 
 		$this->pdo->exec('COMMIT');
@@ -92,10 +88,11 @@ class SQLiteJournal implements IJournal
 
 	public function clean(array $conditions): ?array
 	{
-		if (!$this->pdo) {
+		if (!isset($this->pdo)) {
 			$this->open();
 		}
-		if (!empty($conditions[Cache::ALL])) {
+
+		if (!empty($conditions[Cache::All])) {
 			$this->pdo->exec('
 				BEGIN;
 				DELETE FROM tags;
@@ -107,15 +104,15 @@ class SQLiteJournal implements IJournal
 		}
 
 		$unions = $args = [];
-		if (!empty($conditions[Cache::TAGS])) {
-			$tags = (array) $conditions[Cache::TAGS];
+		if (!empty($conditions[Cache::Tags])) {
+			$tags = (array) $conditions[Cache::Tags];
 			$unions[] = 'SELECT DISTINCT key FROM tags WHERE tag IN (?' . str_repeat(', ?', count($tags) - 1) . ')';
 			$args = $tags;
 		}
 
-		if (!empty($conditions[Cache::PRIORITY])) {
+		if (!empty($conditions[Cache::Priority])) {
 			$unions[] = 'SELECT DISTINCT key FROM priorities WHERE priority <= ?';
-			$args[] = (int) $conditions[Cache::PRIORITY];
+			$args[] = (int) $conditions[Cache::Priority];
 		}
 
 		if (empty($unions)) {
@@ -139,6 +136,6 @@ class SQLiteJournal implements IJournal
 		$this->pdo->prepare("DELETE FROM priorities WHERE key IN ($unionSql)")->execute($args);
 		$this->pdo->exec('COMMIT');
 
-		return $keys;
+		return array_values($keys);
 	}
 }

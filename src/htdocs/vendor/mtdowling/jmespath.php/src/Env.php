@@ -20,7 +20,7 @@ final class Env
      * @param string $expression JMESPath expression to evaluate
      * @param mixed  $data       JSON-like data to search
      *
-     * @return mixed|null Returns the matching data or null
+     * @return mixed Returns the matching data or null
      */
     public static function search($expression, $data)
     {
@@ -57,7 +57,10 @@ final class Env
     public static function cleanCompileDir()
     {
         $total = 0;
-        $compileDir = self::getEnvVariable(self::COMPILE_DIR) ?: sys_get_temp_dir();
+        $compileDir = self::getEnvVariable(self::COMPILE_DIR);
+        if ($compileDir === 'on' || !$compileDir) {
+            $compileDir = sys_get_temp_dir();
+        }
 
         foreach (glob("{$compileDir}/jmespath_*.php") as $file) {
             $total++;

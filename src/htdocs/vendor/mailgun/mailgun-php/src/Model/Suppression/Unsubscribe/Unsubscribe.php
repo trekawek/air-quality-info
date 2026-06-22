@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Mailgun\Model\Suppression\Unsubscribe;
 
+use DateTimeImmutable;
+
 /**
  * @author Sean Johnson <sean@mailgun.com>
  */
@@ -20,30 +22,42 @@ class Unsubscribe
     private $createdAt;
     private $tags = [];
 
-    private function __construct()
+    final private function __construct()
     {
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function create(array $data): self
     {
-        $model = new self();
+        $model = new static();
         $model->tags = $data['tags'] ?? [];
         $model->address = $data['address'] ?? null;
-        $model->createdAt = isset($data['created_at']) ? new \DateTimeImmutable($data['created_at']) : null;
+        $model->createdAt = isset($data['created_at']) ? new DateTimeImmutable($data['created_at']) : null;
 
         return $model;
     }
 
+    /**
+     * @return string|null
+     */
     public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    /**
+     * @return DateTimeImmutable|null
+     */
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
 
+    /**
+     * @return array
+     */
     public function getTags(): array
     {
         return $this->tags;

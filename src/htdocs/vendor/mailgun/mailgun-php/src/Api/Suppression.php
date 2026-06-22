@@ -41,28 +41,45 @@ class Suppression
      */
     private $hydrator;
 
-    public function __construct(ClientInterface $httpClient, RequestBuilder $requestBuilder, Hydrator $hydrator)
+    /**
+     * @param ClientInterface $httpClient
+     * @param RequestBuilder  $requestBuilder
+     * @param Hydrator        $hydrator
+     */
+    public function __construct($httpClient, RequestBuilder $requestBuilder, Hydrator $hydrator)
     {
         $this->httpClient = $httpClient;
         $this->requestBuilder = $requestBuilder;
         $this->hydrator = $hydrator;
     }
 
+    /**
+     * @return Bounce
+     */
     public function bounces(): Bounce
     {
         return new Bounce($this->httpClient, $this->requestBuilder, $this->hydrator);
     }
 
+    /**
+     * @return Complaint
+     */
     public function complaints(): Complaint
     {
         return new Complaint($this->httpClient, $this->requestBuilder, $this->hydrator);
     }
 
+    /**
+     * @return Unsubscribe
+     */
     public function unsubscribes(): Unsubscribe
     {
         return new Unsubscribe($this->httpClient, $this->requestBuilder, $this->hydrator);
     }
 
+    /**
+     * @return Whitelist
+     */
     public function whitelists(): Whitelist
     {
         return new Whitelist($this->httpClient, $this->requestBuilder, $this->hydrator);

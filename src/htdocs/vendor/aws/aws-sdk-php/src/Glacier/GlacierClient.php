@@ -121,10 +121,10 @@ class GlacierClient extends AwsClient
      */
     private function getChecksumsMiddleware()
     {
-        return function (callable $handler) {
-            return function (
+        return static function (callable $handler) {
+            return static function (
                 CommandInterface $command,
-                RequestInterface $request = null
+                ?RequestInterface $request = null
             ) use ($handler) {
                 // Accept "ContentSHA256" with a lowercase "c" to match other Glacier params.
                 if (!$command['ContentSHA256'] && $command['contentSHA256']) {
@@ -192,14 +192,15 @@ class GlacierClient extends AwsClient
      */
     private function getApiVersionMiddleware()
     {
-        return function (callable $handler) {
-            return function (
+        $apiVersion = $this->getApi()->getMetadata('apiVersion');
+        return static function (callable $handler) use ($apiVersion)  {
+            return static function (
                 CommandInterface $command,
-                RequestInterface $request = null
-            ) use ($handler) {
+                ?RequestInterface $request = null
+            ) use ($handler, $apiVersion) {
                 return $handler($command, $request->withHeader(
                     'x-amz-glacier-version',
-                    $this->getApi()->getMetadata('apiVersion')
+                    $apiVersion
                 ));
             };
         };

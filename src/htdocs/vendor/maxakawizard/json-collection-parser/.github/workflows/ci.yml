@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+    cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+
+  tests:
+    name: Tests
+
+    env:
+      extensions: mbstring
+
+    strategy:
+      matrix:
+        include:
+          - php: '7.1'
+          - php: '7.2'
+          - php: '7.3'
+          - php: '7.4'
+            deps: 'low'
+          - php: '7.4'
+            deps: 'psr-http-message-v1'
+            coverage: 'yes'
+            phpcs: 'yes'
+          - php: '8.0'
+          - php: '8.1'
+          - php: '8.2'
+          - php: '8.3'
+          - php: '8.4'
+          - php: '8.5'
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: "xdebug"
+          ini-values: date.timezone=Europe/Kiev,memory_limit=-1,default_socket_timeout=10,session.gc_probability=0,apc.enable_cli=1,zend.assertions=1
+          php-version: "${{ matrix.php }}"
+          extensions: "${{ env.extensions }}"
+          tools: composer:v2
+
+      - name: Configure environment
+        run: |
+          php -v
+          mkdir -p build/logs
+
+      - name: Install dependencies
+        if: "matrix.deps != 'low'"
+        run: |
+          composer i -o -q --no-suggest
+
+      - name: Install dependencies (low)
+        if: "matrix.deps == 'low'"
+        run: |
+          composer u -o -q --no-suggest --prefer-lowest
+
+      - name: Install psr/http-message v1
+        if: "matrix.deps == 'psr-http-message-v1'"
+        run: |
+          composer u psr/http-message -o -q --no-suggest --prefer-lowest
+
+      - name: Run phpcs
+        if: "matrix.phpcs == 'yes'"
+        run: |
+          composer phpcs
+
+      - name: Run PHPUnit
+        if: "matrix.coverage != 'yes'"
+        run: |
+          vendor/bin/phpunit
+
+      - name: Run PHPUnit with coverage report
+        if: "matrix.coverage == 'yes'"
+        run: |
+          vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+      - name: Send coverage
+        if: "matrix.coverage == 'yes'"
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_PARALLEL: true
+          COVERALLS_FLAG_NAME: "PHP ${{ matrix.php }}"
+        run: |
+          composer require "php-coveralls/php-coveralls:~2.5"
+          php vendor/bin/php-coveralls -v
+          curl -k https://coveralls.io/webhook?repo_token=${{ secrets.GITHUB_TOKEN }} -d "repo_name=$GITHUB_REPOSITORY&payload[build_num]=$GITHUB_RUN_ID&payload[status]=done"
+

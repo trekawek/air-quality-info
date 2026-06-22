@@ -33,9 +33,6 @@ final class CookiePlugin implements Plugin
         $this->cookieJar = $cookieJar;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handleRequest(RequestInterface $request, callable $next, callable $first): Promise
     {
         $cookies = [];
@@ -97,7 +94,7 @@ final class CookiePlugin implements Plugin
     {
         $parts = array_map('trim', explode(';', $setCookieHeader));
 
-        if (empty($parts) || !strpos($parts[0], '=')) {
+        if ('' === $parts[0] || false === strpos($parts[0], '=')) {
             return null;
         }
 
@@ -167,7 +164,7 @@ final class CookiePlugin implements Plugin
      *
      * @param string $part A single cookie value in format key=value
      *
-     * @return array{0:string, 1:?string}
+     * @return array{0:string, 1:string|null}
      */
     private function createValueKey(string $part): array
     {

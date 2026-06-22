@@ -2,6 +2,7 @@
 namespace Aws;
 
 use Aws\Api\Parser\Exception\ParserException;
+use Aws\Exception\AwsException;
 use GuzzleHttp\Promise;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -47,7 +48,7 @@ class WrappedHttpHandler
         callable $httpHandler,
         callable $parser,
         callable $errorParser,
-        $exceptionClass = 'Aws\Exception\AwsException',
+        $exceptionClass = AwsException::class,
         $collectStats = false
     ) {
         $this->httpHandler = $httpHandler;
@@ -84,7 +85,7 @@ class WrappedHttpHandler
                 . ' receiver to Aws\WrappedHttpHandler is not supported.');
         }
 
-        return Promise\promise_for($fn($request, $options))
+        return Promise\Create::promiseFor($fn($request, $options))
             ->then(
                 function (
                     ResponseInterface $res
@@ -165,10 +166,11 @@ class WrappedHttpHandler
             throw new \RuntimeException('The HTTP handler was rejected without an "exception" key value pair.');
         }
 
-        $serviceError = "AWS HTTP error: " . $err['exception']->getMessage();
+        $serviceError = "AWS HTTP error:\n";
 
         if (!isset($err['response'])) {
             $parts = ['response' => null];
+            $serviceError .= $err['exception']->getMessage();
         } else {
             try {
                 $parts = call_user_func(
@@ -176,8 +178,9 @@ class WrappedHttpHandler
                     $err['response'],
                     $command
                 );
-                $serviceError .= " {$parts['code']} ({$parts['type']}): "
-                    . "{$parts['message']} - " . $err['response']->getBody();
+
+                $serviceError .= "{$parts['code']} ({$parts['type']}): "
+                    . "{$parts['message']}";
             } catch (ParserException $e) {
                 $parts = [];
                 $serviceError .= ' Unable to parse error information from '

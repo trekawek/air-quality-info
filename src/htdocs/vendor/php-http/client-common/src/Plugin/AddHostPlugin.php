@@ -28,10 +28,10 @@ final class AddHostPlugin implements Plugin
     private $replace;
 
     /**
-     * @param array $config {
+     * @param array{'replace'?: bool} $config
      *
-     *     @var bool $replace True will replace all hosts, false will only add host when none is specified.
-     * }
+     * Configuration options:
+     *   - replace: True will replace all hosts, false will only add host when none is specified
      */
     public function __construct(UriInterface $host, array $config = [])
     {
@@ -48,9 +48,6 @@ final class AddHostPlugin implements Plugin
         $this->replace = $options['replace'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handleRequest(RequestInterface $request, callable $next, callable $first): Promise
     {
         if ($this->replace || '' === $request->getUri()->getHost()) {

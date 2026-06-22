@@ -15,6 +15,7 @@ use Mailgun\Api\Message;
 use Mailgun\Message\Exceptions\MissingRequiredParameter;
 use Mailgun\Message\Exceptions\RuntimeException;
 use Mailgun\Message\Exceptions\TooManyRecipients;
+use Psr\Http\Client\ClientExceptionInterface;
 
 /**
  * This class is used for batch sending. See the official documentation (link below)
@@ -49,6 +50,11 @@ class BatchMessage extends MessageBuilder
      */
     private $api;
 
+    /**
+     * @param Message $messageApi
+     * @param string  $domain
+     * @param bool    $autoSend
+     */
     public function __construct(Message $messageApi, string $domain, bool $autoSend)
     {
         $this->api = $messageApi;
@@ -57,14 +63,15 @@ class BatchMessage extends MessageBuilder
     }
 
     /**
-     * @param array $variables {
+     * @param string $headerName
+     * @param string $address
+     * @param array  $variables  {
+     *                           id?:string
+     *                           full_name?: string,
+     *                           first?: string,
+     *                           last?: string,
      *
-     *     @var string $id
-     *     @var string $full_name
-     *     @var string $first
-     *     @var string $last
-     * }
-     *
+     * @return MessageBuilder
      * @throws MissingRequiredParameter
      * @throws TooManyRecipients
      */
@@ -84,15 +91,16 @@ class BatchMessage extends MessageBuilder
         if (array_key_exists($headerName, $this->counters['recipients']) && !array_key_exists('id', $variables)) {
             $variables['id'] = $headerName.'_'.$this->counters['recipients'][$headerName];
         }
-
-        $this->batchRecipientAttributes[$address] = $variables;
+        if ($variables) {
+            $this->batchRecipientAttributes[$address] = $variables;
+        }
 
         return $this;
     }
 
     /**
      * @throws RuntimeException
-     * @throws MissingRequiredParameter
+     * @throws MissingRequiredParameter|ClientExceptionInterface
      */
     public function finalize(): void
     {
@@ -114,11 +122,11 @@ class BatchMessage extends MessageBuilder
             throw MissingRequiredParameter::create('subject');
         }
 
-        if (empty($message['text']) && empty($message['html'])) {
-            throw MissingRequiredParameter::create('text" or "html');
+        if (empty($message['text']) && empty($message['html']) && empty($message['template'])) {
+            throw MissingRequiredParameter::create('text", "html" or "template');
         }
 
-        $message['recipient-variables'] = json_encode($this->batchRecipientAttributes);
+        $message['recipient-variables'] = json_encode($this->batchRecipientAttributes, JSON_FORCE_OBJECT);
         $response = $this->api->send($this->domain, $message);
 
         $this->batchRecipientAttributes = [];

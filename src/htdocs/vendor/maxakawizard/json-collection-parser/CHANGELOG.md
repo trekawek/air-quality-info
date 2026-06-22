@@ -1,8 +1,33 @@
 CHANGELOG
 =========
 
+## 1.10.1 (2026-06-02)
+* Add test runs for PHP 8.4 and 8.5
+* Fix deprecation warning in tests for PHP 8.5
+* Add CONTRIBUTING.md
+* Update tests configuration
+
+## 1.10.0 (2023-12-19)
+* Add test runs for PHP 8.3
+* Add support for psr/http-message 2.0
+* Add lowest dependencies test run
+
+## 1.9.1 (2023-07-07)
+* Add test runs for PHP 8.2
+
+## 1.9.0 (2022-07-13)
+* Migrate from Travis to Github Actions
+* Add test runs for PHP 8.1
+
+## 1.8.0 (2021-02-08)
+* Add support for PHP 8.0
+
+## 1.7.0 (2020-05-06)
+* Add chunking support
+* Add PSR-7 Http Message interface support
+
 ## 1.6.1 (2019-11-15)
-* Fix issue with nested arrays of objects 
+* Fix issue with nested arrays of objects
 
 ## 1.6.0 (2019-10-12)
 * Add support for more input formats (documents flow)

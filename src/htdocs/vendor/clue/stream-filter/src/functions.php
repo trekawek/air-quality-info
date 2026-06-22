@@ -20,7 +20,7 @@ namespace Clue\StreamFilter;
  * an individual chunk of data and should return the updated chunk:
  *
  * ```php
- * $filter = Filter\append($stream, function ($chunk) {
+ * $filter = Clue\StreamFilter\append($stream, function ($chunk) {
  *     // will be called each time you read or write a $chunk to/from the stream
  *     return $chunk;
  * });
@@ -29,7 +29,7 @@ namespace Clue\StreamFilter;
  * As such, you can also use native PHP functions or any other `callable`:
  *
  * ```php
- * Filter\append($stream, 'strtoupper');
+ * Clue\StreamFilter\append($stream, 'strtoupper');
  *
  * // will write "HELLO" to the underlying stream
  * fwrite($stream, 'hello');
@@ -39,7 +39,7 @@ namespace Clue\StreamFilter;
  * then this signature will be invoked once ending (flushing) the filter:
  *
  * ```php
- * Filter\append($stream, function ($chunk = null) {
+ * Clue\StreamFilter\append($stream, function ($chunk = null) {
  *     if ($chunk === null) {
  *         // will be called once ending the filter
  *         return 'end';
@@ -59,7 +59,7 @@ namespace Clue\StreamFilter;
  * the `Exception` will be transformed to a PHP warning instead:
  *
  * ```php
- * Filter\append($stream, function ($chunk) {
+ * Clue\StreamFilter\append($stream, function ($chunk) {
  *     throw new \RuntimeException('Unexpected chunk');
  * });
  *
@@ -71,12 +71,12 @@ namespace Clue\StreamFilter;
  * when either writing to the stream or only when reading from the stream:
  *
  * ```php
- * Filter\append($stream, function ($chunk) {
+ * Clue\StreamFilter\append($stream, function ($chunk) {
  *     // will be called each time you write to the stream
  *     return $chunk;
  * }, STREAM_FILTER_WRITE);
  *
- * Filter\append($stream, function ($chunk) {
+ * Clue\StreamFilter\append($stream, function ($chunk) {
  *     // will be called each time you read from the stream
  *     return $chunk;
  * }, STREAM_FILTER_READ);
@@ -104,13 +104,27 @@ namespace Clue\StreamFilter;
  */
 function append($stream, $callback, $read_write = STREAM_FILTER_ALL)
 {
-    $ret = @\stream_filter_append($stream, register(), $read_write, $callback);
+    $errstr = '';
+    \set_error_handler(function ($_, $error) use (&$errstr) {
+        // Match errstr from PHP's warning message.
+        // stream_filter_append() expects parameter 1 to be resource,...
+        $errstr = $error; // @codeCoverageIgnore
+    });
+
+    try {
+        $ret = \stream_filter_append($stream, register(), $read_write, $callback);
+    } catch (\TypeError $e) { // @codeCoverageIgnoreStart
+        // Throws TypeError on PHP 8.0+
+        \restore_error_handler();
+        throw $e;
+    } // @codeCoverageIgnoreEnd
+
+    \restore_error_handler();
 
     // PHP 8 throws above on type errors, older PHP and memory issues can throw here
     // @codeCoverageIgnoreStart
     if ($ret === false) {
-        $error = \error_get_last() + array('message' => '');
-        throw new \RuntimeException('Unable to append filter: ' . $error['message']);
+        throw new \RuntimeException('Unable to append filter: ' . $errstr);
     }
     // @codeCoverageIgnoreEnd
 
@@ -126,7 +140,7 @@ function append($stream, $callback, $read_write = STREAM_FILTER_ALL)
  * If the given filter can not be added, it throws an `Exception`.
  *
  * ```php
- * $filter = Filter\prepend($stream, function ($chunk) {
+ * $filter = Clue\StreamFilter\prepend($stream, function ($chunk) {
  *     // will be called each time you read or write a $chunk to/from the stream
  *     return $chunk;
  * });
@@ -147,13 +161,27 @@ function append($stream, $callback, $read_write = STREAM_FILTER_ALL)
  */
 function prepend($stream, $callback, $read_write = STREAM_FILTER_ALL)
 {
-    $ret = @\stream_filter_prepend($stream, register(), $read_write, $callback);
+    $errstr = '';
+    \set_error_handler(function ($_, $error) use (&$errstr) {
+        // Match errstr from PHP's warning message.
+        // stream_filter_prepend() expects parameter 1 to be resource,...
+        $errstr = $error; // @codeCoverageIgnore
+    });
+
+    try {
+        $ret = \stream_filter_prepend($stream, register(), $read_write, $callback);
+    } catch (\TypeError $e) { // @codeCoverageIgnoreStart
+        // Throws TypeError on PHP 8.0+
+        \restore_error_handler();
+        throw $e;
+    } // @codeCoverageIgnoreEnd
+
+    \restore_error_handler();
 
     // PHP 8 throws above on type errors, older PHP and memory issues can throw here
     // @codeCoverageIgnoreStart
     if ($ret === false) {
-        $error = \error_get_last() + array('message' => '');
-        throw new \RuntimeException('Unable to prepend filter: ' . $error['message']);
+        throw new \RuntimeException('Unable to prepend filter: ' . $errstr);
     }
     // @codeCoverageIgnoreEnd
 
@@ -168,7 +196,7 @@ function prepend($stream, $callback, $read_write = STREAM_FILTER_ALL)
  * and getting the filtered output string.
  *
  * ```php
- * $fun = Filter\fun('string.rot13');
+ * $fun = Clue\StreamFilter\fun('string.rot13');
  *
  * assert('grfg' === $fun('test'));
  * assert('test' === $fun($fun('test'));
@@ -181,7 +209,7 @@ function prepend($stream, $callback, $read_write = STREAM_FILTER_ALL)
  * Accessing an unknown filter function will result in a `RuntimeException`:
  *
  * ```php
- * Filter\fun('unknown'); // throws RuntimeException
+ * Clue\StreamFilter\fun('unknown'); // throws RuntimeException
  * ```
  *
  * Some filters may accept or require additional filter parameters – most
@@ -194,7 +222,7 @@ function prepend($stream, $callback, $read_write = STREAM_FILTER_ALL)
  * For example, the `string.strip_tags` filter can be invoked like this:
  *
  * ```php
- * $fun = Filter\fun('string.strip_tags', '<a><b>');
+ * $fun = Clue\StreamFilter\fun('string.strip_tags', '<a><b>');
  *
  * $ret = $fun('<b>h<br>i</b>');
  * assert('<b>hi</b>' === $ret);
@@ -208,7 +236,7 @@ function prepend($stream, $callback, $read_write = STREAM_FILTER_ALL)
  * The filter function can be closed by invoking without any arguments:
  *
  * ```php
- * $fun = Filter\fun('zlib.deflate');
+ * $fun = Clue\StreamFilter\fun('zlib.deflate');
  *
  * $ret = $fun('hello') . $fun('world') . $fun();
  * assert('helloworld' === gzinflate($ret));
@@ -218,7 +246,7 @@ function prepend($stream, $callback, $read_write = STREAM_FILTER_ALL)
  * Doing so will result in a `RuntimeException`:
  *
  * ```php
- * $fun = Filter\fun('string.rot13');
+ * $fun = Clue\StreamFilter\fun('string.rot13');
  * $fun();
  *
  * $fun('test'); // throws RuntimeException
@@ -242,16 +270,25 @@ function prepend($stream, $callback, $read_write = STREAM_FILTER_ALL)
 function fun($filter, $parameters = null)
 {
     $fp = \fopen('php://memory', 'w');
+
+    $errstr = '';
+    \set_error_handler(function ($_, $error) use (&$errstr) {
+        // Match errstr from PHP's warning message.
+        // stream_filter_append() expects parameter 1 to be resource,...
+        $errstr = $error;
+    });
+
     if (\func_num_args() === 1) {
-        $filter = @\stream_filter_append($fp, $filter, \STREAM_FILTER_WRITE);
+        $filter = \stream_filter_append($fp, $filter, \STREAM_FILTER_WRITE);
     } else {
-        $filter = @\stream_filter_append($fp, $filter, \STREAM_FILTER_WRITE, $parameters);
+        $filter = \stream_filter_append($fp, $filter, \STREAM_FILTER_WRITE, $parameters);
     }
+
+    \restore_error_handler();
 
     if ($filter === false) {
         \fclose($fp);
-        $error = \error_get_last() + array('message' => '');
-        throw new \RuntimeException('Unable to access built-in filter: ' . $error['message']);
+        throw new \RuntimeException('Unable to access built-in filter: ' . $errstr);
     }
 
     // append filter function which buffers internally
@@ -288,10 +325,10 @@ function fun($filter, $parameters = null)
  * Remove a filter previously added via `append()` or `prepend()`.
  *
  * ```php
- * $filter = Filter\append($stream, function () {
+ * $filter = Clue\StreamFilter\append($stream, function () {
  *     // …
  * });
- * Filter\remove($filter);
+ * Clue\StreamFilter\remove($filter);
  * ```
  *
  * @param resource $filter
@@ -301,10 +338,26 @@ function fun($filter, $parameters = null)
  */
 function remove($filter)
 {
-    if (@\stream_filter_remove($filter) === false) {
+    $errstr = '';
+    \set_error_handler(function ($_, $error) use (&$errstr) {
+        // Match errstr from PHP's warning message.
+        // stream_filter_remove() expects parameter 1 to be resource,...
+        $errstr = $error;
+    });
+
+    try {
+        $ret = \stream_filter_remove($filter);
+    } catch (\TypeError $e) { // @codeCoverageIgnoreStart
+        // Throws TypeError on PHP 8.0+
+        \restore_error_handler();
+        throw $e;
+    } // @codeCoverageIgnoreEnd
+
+    \restore_error_handler();
+
+    if ($ret === false) {
         // PHP 8 throws above on type errors, older PHP and memory issues can throw here
-        $error = \error_get_last();
-        throw new \RuntimeException('Unable to remove filter: ' . $error['message']);
+        throw new \RuntimeException('Unable to remove filter: ' . $errstr);
     }
 }
 

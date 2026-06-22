@@ -8,22 +8,25 @@ namespace JmesPath;
  * logic to determine the filename:
  *
  * 1. Start with the string "jmespath_"
- * 2. Append the MD5 checksum of the expression.
+ * 2. Append the MD5 checksum of the expression salted with the PHP version
+ *    and compiled-cache epoch.
  * 3. Append ".php"
  */
 class CompilerRuntime
 {
+    const CACHE_VERSION = 5;
+
     private $parser;
     private $compiler;
     private $cacheDir;
     private $interpreter;
 
     /**
-     * @param string $dir Directory used to store compiled PHP files.
-     * @param Parser $parser JMESPath parser to utilize
+     * @param string|null $dir Directory used to store compiled PHP files.
+     * @param Parser|null $parser JMESPath parser to utilize
      * @throws \RuntimeException if the cache directory cannot be created
      */
-    public function __construct($dir = null, Parser $parser = null)
+    public function __construct($dir = null, ?Parser $parser = null)
     {
         $this->parser = $parser ?: new Parser();
         $this->compiler = new TreeCompiler();
@@ -46,12 +49,12 @@ class CompilerRuntime
      *                           is similar to data returned from json_decode
      *                           using associative arrays rather than objects.
      *
-     * @return mixed|null Returns the matching data or null
+     * @return mixed Returns the matching data or null
      * @throws \RuntimeException
      */
     public function __invoke($expression, $data)
     {
-        $functionName = 'jmespath_' . md5($expression);
+        $functionName = self::functionName($expression);
 
         if (!function_exists($functionName)) {
             $filename = "{$this->cacheDir}/{$functionName}.php";
@@ -64,6 +67,23 @@ class CompilerRuntime
         return $functionName($this->interpreter, $data);
     }
 
+    /**
+     * @internal Shared with DebugRuntime so cache naming cannot drift.
+     */
+    public static function functionName($expression)
+    {
+        return 'jmespath_' . md5(
+            'jmespath:' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION
+            . ':' . self::CACHE_VERSION . ':' . $expression
+        );
+    }
+
+    /** @internal */
+    public function getCacheDir()
+    {
+        return $this->cacheDir;
+    }
+
     private function compile($filename, $expression, $functionName)
     {
         $code = $this->compiler->visit(
@@ -72,12 +92,26 @@ class CompilerRuntime
             $expression
         );
 
-        if (!file_put_contents($filename, $code)) {
+        $tempFile = $filename . '.' . bin2hex(random_bytes(12)) . '.tmp';
+
+        if (!file_put_contents($tempFile, $code)) {
             throw new \RuntimeException(sprintf(
                 'Unable to write the compiled PHP code to: %s (%s)',
-                $filename,
+                $tempFile,
                 var_export(error_get_last(), true)
             ));
+        }
+
+        if (!rename($tempFile, $filename)) {
+            @unlink($tempFile);
+            if (!file_exists($filename)) {
+                throw new \RuntimeException(
+                    "Unable to move the compiled PHP code to: {$filename}"
+                );
+            }
+            // Another process won the race; its file is equivalent.
+        } elseif (function_exists('opcache_invalidate')) {
+            opcache_invalidate($filename, true);
         }
     }
 }

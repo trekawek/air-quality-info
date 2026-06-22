@@ -25,14 +25,14 @@ class Journal implements \Countable, \IteratorAggregate
      * @param ResponseInterface $response The response
      * @param float|null        $duration The duration in seconds
      */
-    public function record(RequestInterface $request, ResponseInterface $response, float $duration = null): void
+    public function record(RequestInterface $request, ResponseInterface $response, ?float $duration = null): void
     {
         $this->addEntry(new Entry($request, $response, $duration));
     }
 
     public function addEntry(Entry $entry): void
     {
-        array_push($this->entries, $entry);
+        $this->entries[] = $entry;
         $this->entries = \array_slice($this->entries, $this->getLimit() * -1);
         end($this->entries);
     }

@@ -58,7 +58,7 @@ class UploadedFile implements UploadedFileInterface
     public function __construct($streamOrFile, $size, $errorStatus, $clientFilename = null, $clientMediaType = null)
     {
         if (false === \is_int($errorStatus) || !isset(self::ERRORS[$errorStatus])) {
-            throw new \InvalidArgumentException('Upload file error status must be an integer value and one of the "UPLOAD_ERR_*" constants.');
+            throw new \InvalidArgumentException('Upload file error status must be an integer value and one of the "UPLOAD_ERR_*" constants');
         }
 
         if (false === \is_int($size)) {
@@ -80,7 +80,7 @@ class UploadedFile implements UploadedFileInterface
 
         if (\UPLOAD_ERR_OK === $this->error) {
             // Depending on the value set file or stream variable.
-            if (\is_string($streamOrFile)) {
+            if (\is_string($streamOrFile) && '' !== $streamOrFile) {
                 $this->file = $streamOrFile;
             } elseif (\is_resource($streamOrFile)) {
                 $this->stream = Stream::create($streamOrFile);
@@ -114,7 +114,9 @@ class UploadedFile implements UploadedFileInterface
             return $this->stream;
         }
 
-        $resource = \fopen($this->file, 'r');
+        if (false === $resource = @\fopen($this->file, 'r')) {
+            throw new \RuntimeException(\sprintf('The file "%s" cannot be opened: %s', $this->file, \error_get_last()['message'] ?? ''));
+        }
 
         return Stream::create($resource);
     }
@@ -128,15 +130,23 @@ class UploadedFile implements UploadedFileInterface
         }
 
         if (null !== $this->file) {
-            $this->moved = 'cli' === \PHP_SAPI ? \rename($this->file, $targetPath) : \move_uploaded_file($this->file, $targetPath);
+            $this->moved = 'cli' === \PHP_SAPI ? @\rename($this->file, $targetPath) : @\move_uploaded_file($this->file, $targetPath);
+
+            if (false === $this->moved) {
+                throw new \RuntimeException(\sprintf('Uploaded file could not be moved to "%s": %s', $targetPath, \error_get_last()['message'] ?? ''));
+            }
         } else {
             $stream = $this->getStream();
             if ($stream->isSeekable()) {
                 $stream->rewind();
             }
 
-            // Copy the contents of a stream into another stream until end-of-file.
-            $dest = Stream::create(\fopen($targetPath, 'w'));
+            if (false === $resource = @\fopen($targetPath, 'w')) {
+                throw new \RuntimeException(\sprintf('The file "%s" cannot be opened: %s', $targetPath, \error_get_last()['message'] ?? ''));
+            }
+
+            $dest = Stream::create($resource);
+
             while (!$stream->eof()) {
                 if (!$dest->write($stream->read(1048576))) {
                     break;
@@ -144,10 +154,6 @@ class UploadedFile implements UploadedFileInterface
             }
 
             $this->moved = true;
-        }
-
-        if (false === $this->moved) {
-            throw new \RuntimeException(\sprintf('Uploaded file could not be moved to %s', $targetPath));
         }
     }
 

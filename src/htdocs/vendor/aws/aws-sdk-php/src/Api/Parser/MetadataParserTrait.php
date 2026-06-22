@@ -17,6 +17,10 @@ trait MetadataParserTrait
         &$result
     ) {
         $value = $response->getHeaderLine($shape['locationName'] ?: $name);
+        // Empty values should not be deserialized
+        if ($value === null || $value === '') {
+            return;
+        }
 
         switch ($shape->getType()) {
             case 'float':
@@ -24,6 +28,7 @@ trait MetadataParserTrait
                 $value = (float) $value;
                 break;
             case 'long':
+            case 'integer':
                 $value = (int) $value;
                 break;
             case 'boolean':
@@ -34,11 +39,10 @@ trait MetadataParserTrait
                 break;
             case 'timestamp':
                 try {
-                    if (!empty($shape['timestampFormat'])
-                        && $shape['timestampFormat'] === 'unixTimestamp') {
-                        $value = DateTimeResult::fromEpoch($value);
-                    }
-                    $value = new DateTimeResult($value);
+                    $value = DateTimeResult::fromTimestamp(
+                        $value,
+                        !empty($shape['timestampFormat']) ? $shape['timestampFormat'] : null
+                    );
                     break;
                 } catch (\Exception $e) {
                     // If the value cannot be parsed, then do not add it to the
