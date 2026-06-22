@@ -392,16 +392,20 @@ class RecordModel {
             $values = $this->getLastAvg($deviceId, $hours);
         }
 
-        if ($hours <= 1) {
-            $pm10_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM10_THRESHOLDS_1H;
-            $pm25_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM25_THRESHOLDS_1H;
-            $pm10_limit = \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_1H;
-            $pm25_limit = \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_1H;
-        } else if ($hours >= 24) {
+        // Use the 24h scale for windows of a day or more, and the 1h scale for
+        // anything shorter. The branches must be total: a window strictly
+        // between 1h and 24h previously left the threshold variables undefined,
+        // producing warnings and bogus pollution levels.
+        if ($hours >= 24) {
             $pm10_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM10_THRESHOLDS_24H;
             $pm25_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM25_THRESHOLDS_24H;
             $pm10_limit = \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_24H;
             $pm25_limit = \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_24H;
+        } else {
+            $pm10_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM10_THRESHOLDS_1H;
+            $pm25_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM25_THRESHOLDS_1H;
+            $pm10_limit = \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_1H;
+            $pm25_limit = \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_1H;
         }
 
         if ($values['pm10'] === null) {
