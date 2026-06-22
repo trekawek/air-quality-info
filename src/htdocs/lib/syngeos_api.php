@@ -37,7 +37,10 @@ class SyngeosApi {
             if (isset($record['pressure'])) {
                 $record['pressure'] *= 100;
             }
-            $record['timestamp'] = \DateTime::createFromFormat(\DateTimeInterface::ATOM, $item['sensors'][0]['data'][0]['read_at'])->getTimestamp();
+            $parsed = \DateTime::createFromFormat(\DateTimeInterface::ATOM, $item['sensors'][0]['data'][0]['read_at']);
+            if ($parsed !== false) {
+                $record['timestamp'] = $parsed->getTimestamp();
+            }
         });
         return $record;
     }

@@ -44,7 +44,10 @@ class GiosApi {
             $parser->parse($remoteStream, function ($data) use (&$record, $key) {
                 foreach ($data['Lista danych pomiarowych'] as $v) {
                     if ($v['Wartość'] !== null) {
-                        $record['timestamp'] = \DateTime::createFromFormat('Y-m-d H:i:s', $v['Data'], new \DateTimeZone('Europe/Warsaw'))->getTimestamp();
+                        $parsed = \DateTime::createFromFormat('Y-m-d H:i:s', $v['Data'], new \DateTimeZone('Europe/Warsaw'));
+                        if ($parsed !== false) {
+                            $record['timestamp'] = $parsed->getTimestamp();
+                        }
                         $record[$key] = $v['Wartość'];
                         break;
                     }

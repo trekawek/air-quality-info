@@ -35,7 +35,10 @@ class SmogtokApi {
             if (isset($record['pressure'])) {
                 $record['pressure'] *= 100;
             }
-            $record['timestamp'] = \DateTime::createFromFormat('Y-m-d H:i:s', $item['DT'], new \DateTimeZone('Europe/Warsaw'))->getTimestamp();
+            $parsed = \DateTime::createFromFormat('Y-m-d H:i:s', $item['DT'], new \DateTimeZone('Europe/Warsaw'));
+            if ($parsed !== false) {
+                $record['timestamp'] = $parsed->getTimestamp();
+            }
         });
 
         return $record;

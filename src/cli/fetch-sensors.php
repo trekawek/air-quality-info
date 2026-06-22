@@ -146,7 +146,10 @@ class FetchSensorTask {
                         $records[$deviceId][FetchSensorTask::valueMapping[$k]] = $v;
                     }
                 }
-                $records[$deviceId]['timestamp'] = \DateTime::createFromFormat('Y-m-d H:i:s', $r['timestamp'], new \DateTimeZone('UTC'))->getTimestamp();
+                $parsed = \DateTime::createFromFormat('Y-m-d H:i:s', $r['timestamp'], new \DateTimeZone('UTC'));
+                if ($parsed !== false) {
+                    $records[$deviceId]['timestamp'] = $parsed->getTimestamp();
+                }
             }
         }
 
