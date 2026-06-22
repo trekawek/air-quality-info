@@ -130,7 +130,7 @@ class CsvModel {
     public function storeRecords($deviceId, $records) {
         $device = $this->deviceModel->getDeviceById($deviceId);
         $user = $this->userModel->getUserById($device['user_id']);
-        $fields = explode(',', $device['csv_fields']);
+        $fields = explode(',', $device['csv_fields'] ?? '');
         array_unshift($fields, 'timestamp');
 
         $lastDate = null;

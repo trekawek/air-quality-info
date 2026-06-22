@@ -310,7 +310,7 @@ class DeviceController extends AbstractController {
     }
 
     private static function listToCheckboxValues($commaSeparatedList) {
-        return array_fill_keys(explode(',', $commaSeparatedList), true);
+        return array_fill_keys(explode(',', $commaSeparatedList ?? ''), true);
     }
 
     private static function checkboxValuesToList($formValues, $allowedValues) {

@@ -10,7 +10,9 @@ if ($userId === null) {
 }
 
 $user = $userModel->getUserById($userId);
-date_default_timezone_set($user['timezone']);
+if (!empty($user['timezone'])) {
+    date_default_timezone_set($user['timezone']);
+}
 
 $deviceModel = $diContainer->injectClass('\\AirQualityInfo\\Model\\DeviceModel');
 $devices = $deviceModel->getAllUserDevices($userId);

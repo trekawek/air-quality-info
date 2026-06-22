@@ -7,7 +7,7 @@ $authorizedUser = null;
 $userModel = $diContainer->injectClass('\\AirQualityInfo\\Model\\UserModel');
 if (isset($_SESSION['user_id'])) {
     $authorizedUser = $userModel->getUserById($_SESSION['user_id']);
-    if ($authorizedUser != null) {
+    if ($authorizedUser != null && !empty($authorizedUser['timezone'])) {
         date_default_timezone_set($authorizedUser['timezone']);
     }
 }
