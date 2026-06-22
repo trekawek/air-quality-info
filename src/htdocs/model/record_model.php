@@ -156,7 +156,7 @@ class RecordModel {
             if ($aggregate['resolution'] > $maxResolution) {
                 $maxResolution = $aggregate['resolution'];
             }
-            $this->updateAggregate($deviceId, $aggregate['resolution'], $fromTs);
+            $this->updateAggregate($deviceId, $aggregate['resolution'], $fromTs, $toTs);
             if ($aggregate['ttl'] !== null) {
                 $minTimestamp = $toTs - $aggregate['ttl'];
                 $deleteStmt->execute([$deviceId, $minTimestamp, $aggregate['resolution']]);
@@ -170,7 +170,7 @@ class RecordModel {
         $stmt->closeCursor();
     }
 
-    private function updateAggregate($deviceId, $resolution, $fromTs) {
+    private function updateAggregate($deviceId, $resolution, $fromTs, $toTs) {
         $avgFields = array();
         $fields = array();
         foreach (RecordModel::FIELDS as $f) {
@@ -179,22 +179,29 @@ class RecordModel {
         }
         $avgFields = implode(",", $avgFields);
         $fields = implode(",", $fields);
-    
+
         $roundedTimestamp = ceil($fromTs / $resolution) * $resolution;
         $minRecordTimestamp = $roundedTimestamp - $resolution;
+        // Upper bucket boundary covered by this batch. We must only delete and
+        // recompute aggregate buckets that the incoming records can actually
+        // rebuild. Without this bound an old/out-of-order timestamp would delete
+        // every aggregate from its bucket up to "now" while the raw records
+        // needed to regenerate them have already been purged - destroying
+        // historical aggregates permanently.
+        $maxRecordTimestamp = ceil($toTs / $resolution) * $resolution;
 
-        $stmt = $this->pdo->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` >= ? AND `resolution` = ?");
-        $stmt->execute([$deviceId, $roundedTimestamp, $resolution]);
+        $stmt = $this->pdo->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` >= ? AND `timestamp` <= ? AND `resolution` = ?");
+        $stmt->execute([$deviceId, $roundedTimestamp, $maxRecordTimestamp, $resolution]);
         $stmt->closeCursor();
-        
-        $sql = "INSERT INTO `aggregates` (`device_id`, `timestamp`, `resolution`, $fields)        
+
+        $sql = "INSERT INTO `aggregates` (`device_id`, `timestamp`, `resolution`, $fields)
         SELECT ?, CEILING(`timestamp` / ?) * ? AS `ts`, ?, $avgFields
         FROM `records`
-        WHERE `device_id` = ? AND `timestamp` > ?
+        WHERE `device_id` = ? AND `timestamp` > ? AND `timestamp` <= ?
         GROUP BY `ts`";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$deviceId, $resolution, $resolution, $resolution, $deviceId, $minRecordTimestamp]);
+        $stmt->execute([$deviceId, $resolution, $resolution, $resolution, $deviceId, $minRecordTimestamp, $toTs]);
         $stmt->closeCursor();
     }
 
