@@ -253,7 +253,7 @@ class MainController extends AbstractController {
         }
         sort($arr);
         if (($c % 2) == 1) {
-            return $arr[floor($c / 2)];
+            return $arr[intdiv($c, 2)];
         } else {
             return ($arr[$c / 2 - 1] + $arr[$c / 2]) / 2;
         }
