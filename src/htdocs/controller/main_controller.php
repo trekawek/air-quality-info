@@ -218,7 +218,10 @@ class MainController extends AbstractController {
 	    }
         }
 
-        $level = round(MainController::avg($maxLevels), 0);
+        // avg() returns null when no device has a level; round(null) would
+        // coerce to 0 and mislabel an empty group as level 0 ("Very low").
+        $avgLevel = MainController::avg($maxLevels);
+        $level = $avgLevel === null ? null : round($avgLevel, 0);
         $this->render(array('view' => 'views/all_sensors.php'), array(
             'data' => $data,
             'currentAvgType' => $currentAvgType,
