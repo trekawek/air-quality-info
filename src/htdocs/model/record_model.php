@@ -150,6 +150,12 @@ class RecordModel {
     }
 
     public function createAggregates($deviceId, $fromTs, $toTs) {
+        // Retention windows are about wall-clock age, so anchor the purges to
+        // "now" rather than to the device-supplied toTs. A device reporting a
+        // far-future timestamp would otherwise make (toTs - ttl) exceed the
+        // present and delete all of its still-valid raw records and aggregates.
+        $retentionAnchor = min($toTs, time());
+
         $maxResolution = 0;
         $deleteStmt = $this->pdo->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` < ? AND `resolution` = ?");
         foreach (RecordModel::AGGREGATES as $aggregate) {
@@ -158,14 +164,14 @@ class RecordModel {
             }
             $this->updateAggregate($deviceId, $aggregate['resolution'], $fromTs, $toTs);
             if ($aggregate['ttl'] !== null) {
-                $minTimestamp = $toTs - $aggregate['ttl'];
+                $minTimestamp = $retentionAnchor - $aggregate['ttl'];
                 $deleteStmt->execute([$deviceId, $minTimestamp, $aggregate['resolution']]);
             }
         }
         $deleteStmt->closeCursor();
 
         $stmt = $this->pdo->prepare("DELETE FROM `records` WHERE `device_id` = ? AND `timestamp` < ?");
-        $minTimestamp = $toTs - $maxResolution;
+        $minTimestamp = $retentionAnchor - $maxResolution;
         $stmt->execute([$deviceId, $minTimestamp]);
         $stmt->closeCursor();
     }
