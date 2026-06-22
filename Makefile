@@ -4,4 +4,4 @@ update-php-lib:
 	composer update --prefer-dist
 
 update-js-lib:
-	gulp
+	./node_modules/gulp/bin/gulp.js
