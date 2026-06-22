@@ -142,8 +142,8 @@ class RecordModel {
         $data['count'] = $row['cnt'];
 
         $device = $this->deviceModel->getDeviceById($deviceId);
-        if ($device === false) {
-            $device['elevation'] = 0;
+        if (empty($device)) {
+            $device = array('elevation' => 0);
         }
         $data['pressure'] = RecordModel::normalizePressure($data['pressure'], $device['elevation'], $data['temperature']);
         return $data;
