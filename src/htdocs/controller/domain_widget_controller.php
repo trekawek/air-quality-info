@@ -48,7 +48,7 @@ class DomainWidgetController extends AbstractController {
         $this->render(array('view' => 'views/widget/domain/'.$widget['template'].'.php', 'layout' => false), array(
             'title' => $widget['title'],
             'level' => $maxLevel,
-            'locale' => $this->locale->getValue('_widgets')[$maxLevel],
+            'locale' => ($maxLevel === null ? array() : $this->locale->getValue('_widgets')[$maxLevel]),
             'siteUrl' => $this->getUriPrefix(),
             'widgetId' => $widgetId,
             'hideDetailsLink' => (isset($_GET['hide_details_link']) && $_GET['hide_details_link'] === 'true')
