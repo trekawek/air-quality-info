@@ -21,8 +21,12 @@ class UserController extends AbstractController {
     }
 
     public function logout() {
-        unset($_SESSION['user_id']);
+        // Fully clear and regenerate the session so no authenticated state
+        // (user_id, csrf token, redirect_uri) survives logout.
+        $_SESSION = array();
+        session_regenerate_id(true);
         header('Location: /');
+        die();
     }
 
     public function doLogin() {
