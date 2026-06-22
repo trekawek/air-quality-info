@@ -20,12 +20,12 @@ class UserTokenModel {
     public function getUserIdByToken($token) {
         $stmt = $this->pdo->prepare("SELECT `user_id` FROM `user_tokens` WHERE `token` = ? AND valid_until >= UNIX_TIMESTAMP()");
         $stmt->execute([$token]);
-        $user = null;
+        $userId = null;
         if ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $user = $row;
+            $userId = $row['user_id'];
         }
         $stmt->closeCursor();
-        return $user['user_id'];
+        return $userId;
     }
 
     public function deleteToken($token) {

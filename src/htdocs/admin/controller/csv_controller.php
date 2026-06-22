@@ -53,10 +53,16 @@ class CsvController extends AbstractController {
         $prefix = array();
         foreach($path as $segment) {
             if (!empty($segment)) {
+                // Reject traversal segments so a path cannot escape the user's
+                // own domain prefix (defence in depth for the local-FS code path).
+                if ($segment === '.' || $segment === '..') {
+                    http_response_code(404);
+                    die();
+                }
                 $prefix[]= $segment;
             }
         }
-        if ($prefix[0] !== $this->user['domain']) {
+        if (empty($prefix) || $prefix[0] !== $this->user['domain']) {
             http_response_code(404);
             die();
         }

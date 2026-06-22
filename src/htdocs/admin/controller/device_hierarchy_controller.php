@@ -75,7 +75,8 @@ class DeviceHierarchyController extends AbstractController {
         $nodeForm->addElement('device_id', 'select', 'Device')
             ->addRule('required')
             ->setOptions($devices);
-        if ($nodeForm->isSubmitted() && $nodeForm->validate($_POST)) {
+        if ($nodeForm->isSubmitted() && $nodeForm->validate($_POST)
+                && array_key_exists($_POST['device_id'], $devices)) {
             $id = $this->deviceHierarchyModel->addChild(
                 $this->user['id'],
                 $parentId,

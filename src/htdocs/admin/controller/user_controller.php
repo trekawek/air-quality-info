@@ -21,13 +21,20 @@ class UserController extends AbstractController {
     }
 
     public function logout() {
-        unset($_SESSION['user_id']);
+        // Fully clear and regenerate the session so no authenticated state
+        // (user_id, csrf token, redirect_uri) survives logout.
+        $_SESSION = array();
+        session_regenerate_id(true);
         header('Location: /');
+        die();
     }
 
     public function doLogin() {
         $user = $this->userModel->getUserByEmail($_POST['email']);
         if ($user != null && password_verify($_POST['password'], $user['password_hash'])) {
+            // Regenerate the session id to prevent session fixation: an attacker
+            // who planted a known session id must not retain access post-login.
+            session_regenerate_id(true);
             $_SESSION['user_id'] = $user['id'];
             \AirQualityInfo\Lib\CsrfToken::generateToken();
 
@@ -132,7 +139,11 @@ class UserController extends AbstractController {
             return;
         }
         $userId = $this->userModel->createUser($email, $_POST['password'], $_POST['domain']);
+        // Registration logs the user straight in, so regenerate the session id
+        // here as well to avoid session fixation.
+        session_regenerate_id(true);
         $_SESSION['user_id'] = $userId;
+        \AirQualityInfo\Lib\CsrfToken::generateToken();
         header('Location: /');
     }
 

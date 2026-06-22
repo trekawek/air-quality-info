@@ -28,7 +28,7 @@ class TemplateController extends AbstractController {
             $templateForm->addElement('customize_favicon', 'checkbox', 'Use as a favicon');
         }
         $templateForm->addElement('brand_icon', 'file', 'Update brand icon (1)', array(), 'Use PNG picture')
-            ->addRule('file_max_size', array('value' => 256 * 1024 * 1024, 'message' => __('Maximum allowed size is 256 kB.')))
+            ->addRule('file_max_size', array('value' => 256 * 1024, 'message' => __('Maximum allowed size is 256 kB.')))
             ->addRule('file_type', array('types' => array('image/png', 'image/svg+xml'), 'message' => __('Only PNGs and SVGs are allowed')));
 
         $templateForm->addElement('brand_name', 'text', 'Brand name (2)');

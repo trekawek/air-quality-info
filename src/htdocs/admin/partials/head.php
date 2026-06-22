@@ -12,7 +12,7 @@
         <link rel="apple-touch-icon" sizes="512x512" href="/public/img/aqi-512.png">
     </head>
 
-    <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show" data-locale='<?php echo json_encode($currentLocale->getJsMessages()) ?>'>
+    <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show" data-locale='<?php echo json_encode($currentLocale->getJsMessages()) ?>' data-csrf-token="<?php echo \AirQualityInfo\Lib\CsrfToken::getToken() ?>">
         <header class="app-header navbar">
             <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
                 <span class="navbar-toggler-icon"></span>

@@ -142,35 +142,41 @@ class RecordModel {
         $data['count'] = $row['cnt'];
 
         $device = $this->deviceModel->getDeviceById($deviceId);
-        if ($device === false) {
-            $device['elevation'] = 0;
+        if (empty($device)) {
+            $device = array('elevation' => 0);
         }
         $data['pressure'] = RecordModel::normalizePressure($data['pressure'], $device['elevation'], $data['temperature']);
         return $data;
     }
 
     public function createAggregates($deviceId, $fromTs, $toTs) {
+        // Retention windows are about wall-clock age, so anchor the purges to
+        // "now" rather than to the device-supplied toTs. A device reporting a
+        // far-future timestamp would otherwise make (toTs - ttl) exceed the
+        // present and delete all of its still-valid raw records and aggregates.
+        $retentionAnchor = min($toTs, time());
+
         $maxResolution = 0;
         $deleteStmt = $this->pdo->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` < ? AND `resolution` = ?");
         foreach (RecordModel::AGGREGATES as $aggregate) {
             if ($aggregate['resolution'] > $maxResolution) {
                 $maxResolution = $aggregate['resolution'];
             }
-            $this->updateAggregate($deviceId, $aggregate['resolution'], $fromTs);
+            $this->updateAggregate($deviceId, $aggregate['resolution'], $fromTs, $toTs);
             if ($aggregate['ttl'] !== null) {
-                $minTimestamp = $toTs - $aggregate['ttl'];
+                $minTimestamp = $retentionAnchor - $aggregate['ttl'];
                 $deleteStmt->execute([$deviceId, $minTimestamp, $aggregate['resolution']]);
             }
         }
         $deleteStmt->closeCursor();
 
         $stmt = $this->pdo->prepare("DELETE FROM `records` WHERE `device_id` = ? AND `timestamp` < ?");
-        $minTimestamp = $toTs - $maxResolution;
+        $minTimestamp = $retentionAnchor - $maxResolution;
         $stmt->execute([$deviceId, $minTimestamp]);
         $stmt->closeCursor();
     }
 
-    private function updateAggregate($deviceId, $resolution, $fromTs) {
+    private function updateAggregate($deviceId, $resolution, $fromTs, $toTs) {
         $avgFields = array();
         $fields = array();
         foreach (RecordModel::FIELDS as $f) {
@@ -179,22 +185,29 @@ class RecordModel {
         }
         $avgFields = implode(",", $avgFields);
         $fields = implode(",", $fields);
-    
+
         $roundedTimestamp = ceil($fromTs / $resolution) * $resolution;
         $minRecordTimestamp = $roundedTimestamp - $resolution;
+        // Upper bucket boundary covered by this batch. We must only delete and
+        // recompute aggregate buckets that the incoming records can actually
+        // rebuild. Without this bound an old/out-of-order timestamp would delete
+        // every aggregate from its bucket up to "now" while the raw records
+        // needed to regenerate them have already been purged - destroying
+        // historical aggregates permanently.
+        $maxRecordTimestamp = ceil($toTs / $resolution) * $resolution;
 
-        $stmt = $this->pdo->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` >= ? AND `resolution` = ?");
-        $stmt->execute([$deviceId, $roundedTimestamp, $resolution]);
+        $stmt = $this->pdo->prepare("DELETE FROM `aggregates` WHERE `device_id` = ? AND `timestamp` >= ? AND `timestamp` <= ? AND `resolution` = ?");
+        $stmt->execute([$deviceId, $roundedTimestamp, $maxRecordTimestamp, $resolution]);
         $stmt->closeCursor();
-        
-        $sql = "INSERT INTO `aggregates` (`device_id`, `timestamp`, `resolution`, $fields)        
+
+        $sql = "INSERT INTO `aggregates` (`device_id`, `timestamp`, `resolution`, $fields)
         SELECT ?, CEILING(`timestamp` / ?) * ? AS `ts`, ?, $avgFields
         FROM `records`
-        WHERE `device_id` = ? AND `timestamp` > ?
+        WHERE `device_id` = ? AND `timestamp` > ? AND `timestamp` <= ?
         GROUP BY `ts`";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([$deviceId, $resolution, $resolution, $resolution, $deviceId, $minRecordTimestamp]);
+        $stmt->execute([$deviceId, $resolution, $resolution, $resolution, $deviceId, $minRecordTimestamp, $toTs]);
         $stmt->closeCursor();
     }
 
@@ -379,16 +392,20 @@ class RecordModel {
             $values = $this->getLastAvg($deviceId, $hours);
         }
 
-        if ($hours <= 1) {
-            $pm10_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM10_THRESHOLDS_1H;
-            $pm25_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM25_THRESHOLDS_1H;
-            $pm10_limit = \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_1H;
-            $pm25_limit = \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_1H;
-        } else if ($hours >= 24) {
+        // Use the 24h scale for windows of a day or more, and the 1h scale for
+        // anything shorter. The branches must be total: a window strictly
+        // between 1h and 24h previously left the threshold variables undefined,
+        // producing warnings and bogus pollution levels.
+        if ($hours >= 24) {
             $pm10_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM10_THRESHOLDS_24H;
             $pm25_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM25_THRESHOLDS_24H;
             $pm10_limit = \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_24H;
             $pm25_limit = \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_24H;
+        } else {
+            $pm10_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM10_THRESHOLDS_1H;
+            $pm25_thresholds = \AirQualityInfo\Lib\PollutionLevel::PM25_THRESHOLDS_1H;
+            $pm10_limit = \AirQualityInfo\Lib\PollutionLevel::PM10_LIMIT_1H;
+            $pm25_limit = \AirQualityInfo\Lib\PollutionLevel::PM25_LIMIT_1H;
         }
 
         if ($values['pm10'] === null) {
