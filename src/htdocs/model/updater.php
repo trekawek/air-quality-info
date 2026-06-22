@@ -66,7 +66,7 @@ class Updater {
         $gps_height = Updater::readValue($mapping, $device, 'gps_height', $map, null);
         
         if ($gps_lat !== null && $gps_lon !== null && $gps_lat > -200 && $gps_lon > -200) {
-            if ($gps_lat != $device['lat'] || $gps_lon != $device['lon']) {
+            if ($gps_lat != $device['lat'] || $gps_lon != $device['lng']) {
                 $this->device_model->updateDevice($device['id'], array(
                     'lat' => $gps_lat,
                     'lng' => $gps_lon,
