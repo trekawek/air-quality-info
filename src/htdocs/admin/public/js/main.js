@@ -21,6 +21,7 @@ document.querySelectorAll('.delete-link').forEach(link => {
         }
 		var request = new XMLHttpRequest();
     	request.open('DELETE', link.href, true);
+        request.setRequestHeader('X-CSRF-Token', CONFIG.csrfToken);
         request.onload = function () {
             location.href = location.href;
         }
