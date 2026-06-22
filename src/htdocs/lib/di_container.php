@@ -65,7 +65,15 @@ class DiContainer {
                 $value = $this->lazyBindings[$paramName]();
                 $this->bindings[$paramName] = $value;
             } else if ($param->hasType()) {
-                $value = $this->injectClass($param->getType()->__toString());
+                // Only class-typed parameters can be auto-wired. getName()
+                // returns the bare class name (without the leading "?" for
+                // nullable types), and we skip builtin/union/intersection types
+                // instead of feeding "?Foo" or "int" into injectClass().
+                $type = $param->getType();
+                if (!($type instanceof \ReflectionNamedType) || $type->isBuiltin()) {
+                    return null;
+                }
+                $value = $this->injectClass($type->getName());
                 $this->bindings[$paramName] = $value;
             } else {
                 //throw new \Exception("Can't find type for the $paramName in $className");
