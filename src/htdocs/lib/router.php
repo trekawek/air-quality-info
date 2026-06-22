@@ -167,7 +167,7 @@ namespace AirQualityInfo\Lib {
                     $link .= '?';
                     $queryArgsAdded = true;
                 }
-                $link .= "${k}=${v}";
+                $link .= "{$k}={$v}";
             }
         
             return $link;    
