@@ -1,5 +1,8 @@
 build: update-php-lib update-js-lib
 
+test:
+	./tests/session-lifecycle.sh
+
 update-php-lib:
 	composer update --prefer-dist
 
