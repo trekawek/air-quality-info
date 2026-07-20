@@ -15,6 +15,7 @@ x-fpm-volumes: &fpm-volumes
     - ./config.php:/etc/aqi/config.php
     - ./var-data/var-aqi:/var/aqi
     - ./var-data/log:/usr/local/var/log/php-fpm
+    - php-sessions:/var/lib/php/sessions
 
 services:
   fpm:
@@ -22,6 +23,14 @@ services:
     environment: *mysql-variables
     volumes: *fpm-volumes
     restart: on-failure
+
+  session-cleaner:
+    build: docker-img/fpm
+    environment:
+      AQI_SESSION_PATH: /var/lib/php/sessions
+    command: ["/bin/sh", "-c", "while true; do /usr/local/bin/php /usr/local/bin/aqi/cleanup-sessions.php; sleep 300; done"]
+    volumes: *fpm-volumes
+    restart: unless-stopped
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -88,3 +97,6 @@ services:
     command: /usr/local/bin/php /usr/local/bin/aqi/upload-csv.php
     volumes: *fpm-volumes
     restart: on-failure
+
+volumes:
+  php-sessions:

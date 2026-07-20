@@ -3,7 +3,6 @@ namespace AirQualityInfo;
 
 require_once("vendor/autoload.php");
 
-session_start();
 date_default_timezone_set('Europe/Warsaw');
 
 $configFile = getenv('AQI_CONFIG');
@@ -65,5 +64,4 @@ $diContainer->setLazyBinding('mailgun', function() {
     }
 });
 
-Lib\CsrfToken::generateTokenIfNotExists();
 ?>

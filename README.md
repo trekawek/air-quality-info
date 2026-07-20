@@ -40,6 +40,17 @@ docker-compose up
 
 is enough to start the project. The admin dashboard will be available under: http://aqi.eco.localhost:8080/, while the actual Air Quality Info pages will use http://NAME.aqi.eco.localhost:8080 naming schema.
 
+## Session storage
+
+Only requests to an admin domain start a PHP session. Public pages, sensor update
+routes, API requests, and CLI workers are stateless. Session files are stored in
+the `php-sessions` Docker volume rather than `/tmp`; the `session-cleaner` service
+removes expired files every five minutes using PHP's configured
+`session.gc_maxlifetime`.
+
+Keep the cleaner running alongside FPM in production. The current session lifetime
+is configured in `docker-img/fpm/Dockerfile`.
+
 ## Resources
 
 * [Nettigo Air Monitor](https://air.nettigo.pl/)

@@ -1,6 +1,10 @@
 <?php
 namespace AirQualityInfo;
 
+// Only the admin application needs authentication and CSRF state. Public pages,
+// sensor updates, API requests and CLI workers must remain stateless.
+session_start();
+Lib\CsrfToken::generateTokenIfNotExists();
 Lib\CsrfToken::verifyToken();
 
 $authorizedUser = null;
