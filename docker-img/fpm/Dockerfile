@@ -17,6 +17,7 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 # Session files live on a dedicated Docker volume instead of the RAM-backed
 # /tmp. Garbage collection is performed deterministically by session-cleaner.
 RUN printf '%s\n' \
+        'session.upload_progress.enabled = 0' \
         'session.save_path = "/var/lib/php/sessions"' \
         'session.gc_probability = 0' \
         'session.gc_maxlifetime = 1440' \
